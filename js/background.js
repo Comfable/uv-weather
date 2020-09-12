@@ -100,7 +100,6 @@ function uvReader(city,latandlong,country) {
 				dataType: "json",
 				url: url,
 				success: function(result) {
-				//	resolve(result);
 				
 	
 	window.result = result;
@@ -119,12 +118,8 @@ function uvReader(city,latandlong,country) {
 		offsetUnix = offsetTime * 3600;
 	cloudCover = result.currently.cloudCover;
 	icon = result.currently.icon;
-	currentTime = result.currently.time;
 	updateTime = result.currently.time;
-	feelsLikeF = Math.round(result.currently.apparentTemperature);
-		feelsLikeFsign = feelsLikeF + "°";
-		feelsLikeC = f2c(feelsLikeF);
-		feelsLikeCsign = feelsLikeC + "°";
+
 	temperatureF =  Math.round(result.currently.temperature);
 	temperatureC =  f2c(temperatureF);
 	humidity = 100 * (result.currently.humidity);
@@ -141,134 +136,26 @@ function uvReader(city,latandlong,country) {
 	summaryDailyC = summaryUnitConvertor(result.daily.summary);
 	current_tempF_max = Math.round(result.daily.data[0].temperatureMax);
 	current_tempF_min = Math.round(result.daily.data[0].temperatureMin);							   
-	current_tempFsign_max = current_tempF_max + "°";
-	current_tempFsign_min = current_tempF_min + "°";
 
 	current_tempC_max = f2c(current_tempF_max);
 	current_tempC_min = f2c(current_tempF_min);
-	current_tempCsign_max = current_tempC_max + "°";
-	current_tempCsign_min = current_tempC_min + "°";
-	uvMax = Math.round(result.daily.data[0].uvIndex);
-	uvMaxTimeUnix = result.daily.data[0].uvIndexTime;
+
 	uvCurrently = result.currently.uvIndex;
 
 	if (temperatureF > current_tempF_max){
 		temperatureF = current_tempF_max
-		}; 
+		} 
 	if (temperatureF < current_tempF_min){
 	temperatureF = current_tempF_min
 		} 
-
-	temperatureFsign = temperatureF +"°F" 		    
-	temperatureCsign = temperatureC + "°C"; 
-	temperatureSign = "°F";
 
 	sunriseTime = result.daily.data[0].sunriseTime;
 	sunsetTime = result.daily.data[0].sunsetTime;
 
 	forecast_0_tempF = Math.round(result.daily.data[0].temperatureMax);
-	forecast_0_tempC = f2c(forecast_0_tempF);
-
 	forecast_1_tempF = Math.round(result.daily.data[1].temperatureMax);
-	forecast_1_tempC = f2c(forecast_1_tempF);
 
-    forecast_1_tempF_sign = forecast_1_tempF + "°";
-    forecast_1_tempC_sign = forecast_1_tempC + "°";
-    forecast_1_icon = result.daily.data[1].icon;
-    forecast_1_tempF_min = Math.round(result.daily.data[1].temperatureMin);
-    forecast_1_tempC_min = f2c(forecast_1_tempF_min);
-    forecast_1_tempF_sign_min = forecast_1_tempF_min + "°";
-    forecast_1_tempC_sign_min = forecast_1_tempC_min + "°";
-	
-	cloudAdj_daily_1 = uv_adj_daily(forecast_1_icon);
-    forecast_1_uv = ( "UVI " + Math.round ((result.daily.data[1].uvIndex) * cloudAdj_daily_1));
-
-    forecast_2_tempF = Math.round(result.daily.data[2].temperatureMax);
-    forecast_2_tempC = f2c(forecast_2_tempF);
-    forecast_2_tempF_sign = forecast_2_tempF + "°";
-    forecast_2_tempC_sign = forecast_2_tempC + "°";
-    forecast_2_icon = result.daily.data[2].icon;
-    forecast_2_tempF_min = Math.round(result.daily.data[2].temperatureMin);
-    forecast_2_tempC_min = f2c(forecast_2_tempF_min);
-    forecast_2_tempF_sign_min = forecast_2_tempF_min + "°";
-    forecast_2_tempC_sign_min = forecast_2_tempC_min + "°";
-
-    cloudAdj_daily_2 = uv_adj_daily(forecast_2_icon);
-    forecast_2_uv = ( "UVI " + Math.round ((result.daily.data[2].uvIndex) * cloudAdj_daily_2));
-
-
-    forecast_3_tempF =Math.round( result.daily.data[3].temperatureMax);
-    forecast_3_tempC = f2c(forecast_3_tempF);
-    forecast_3_tempF_sign = forecast_3_tempF + "°";
-    forecast_3_tempC_sign = forecast_3_tempC + "°";
-    forecast_3_icon = result.daily.data[3].icon;
-    forecast_3_tempF_min = Math.round(result.daily.data[3].temperatureMin);
-    forecast_3_tempC_min = f2c(forecast_3_tempF_min);
-    forecast_3_tempF_sign_min = forecast_3_tempF_min + "°";
-    forecast_3_tempC_sign_min = forecast_3_tempC_min + "°";
-
-	cloudAdj_daily_3 = uv_adj_daily(forecast_3_icon);
-    forecast_3_uv = ( "UVI " + Math.round ((result.daily.data[3].uvIndex) * cloudAdj_daily_3));
-
-
-
-    forecast_4_tempF = Math.round(result.daily.data[4].temperatureMax);
-    forecast_4_tempC = f2c(forecast_4_tempF);
-    forecast_4_tempF_sign = forecast_4_tempF + "°";
-    forecast_4_tempC_sign = forecast_4_tempC + "°";
-    forecast_4_icon = result.daily.data[4].icon;
-    forecast_4_tempF_min = Math.round(result.daily.data[4].temperatureMin);
-    forecast_4_tempC_min = f2c(forecast_4_tempF_min);
-    forecast_4_tempF_sign_min = forecast_4_tempF_min + "°";
-    forecast_4_tempC_sign_min = forecast_4_tempC_min + "°";
-
-	cloudAdj_daily_4 = uv_adj_daily(forecast_4_icon);
-    forecast_4_uv = ( "UVI " + Math.round ((result.daily.data[4].uvIndex) * cloudAdj_daily_4));
-
-
-    forecast_5_tempF = Math.round(result.daily.data[5].temperatureMax);
-    forecast_5_tempC = f2c(forecast_5_tempF);
-    forecast_5_tempF_sign = forecast_5_tempF + "°";
-    forecast_5_tempC_sign = forecast_5_tempC + "°";
-    forecast_5_icon = result.daily.data[5].icon;
-    forecast_5_tempF_min = Math.round(result.daily.data[5].temperatureMin);
-    forecast_5_tempC_min = f2c(forecast_5_tempF_min);
-    forecast_5_tempF_sign_min = forecast_5_tempF_min + "°";
-    forecast_5_tempC_sign_min = forecast_5_tempC_min + "°";
-
-	cloudAdj_daily_5 = uv_adj_daily(forecast_5_icon);
-    forecast_5_uv = ( "UVI " + Math.round ((result.daily.data[5].uvIndex) * cloudAdj_daily_5));
-
-
-    forecast_6_tempF =Math.round( result.daily.data[6].temperatureMax);
-    forecast_6_tempC = f2c(forecast_6_tempF);
-    forecast_6_tempF_sign = forecast_6_tempF + "°";
-    forecast_6_tempC_sign = forecast_6_tempC + "°";
-    forecast_6_icon = result.daily.data[6].icon;
-    forecast_6_tempF_min = Math.round(result.daily.data[6].temperatureMin);
-    forecast_6_tempC_min = f2c(forecast_6_tempF_min);
-    forecast_6_tempF_sign_min = forecast_6_tempF_min + "°";
-    forecast_6_tempC_sign_min = forecast_6_tempC_min + "°";
-
-	cloudAdj_daily_6 = uv_adj_daily(forecast_6_icon);
-    forecast_6_uv = ( "UVI " + Math.round ((result.daily.data[6].uvIndex) * cloudAdj_daily_6));
-
-
-    forecast_7_tempF =Math.round( result.daily.data[7].temperatureMax);
-    forecast_7_tempC = f2c(forecast_7_tempF);
-    forecast_7_tempF_sign = forecast_7_tempF + "°";
-    forecast_7_tempC_sign = forecast_7_tempC + "°";
-    forecast_7_icon = result.daily.data[7].icon;
-    forecast_7_tempF_min = Math.round(result.daily.data[7].temperatureMin);
-    forecast_7_tempC_min = f2c(forecast_7_tempF_min);
-    forecast_7_tempF_sign_min = forecast_7_tempF_min + "°";
-    forecast_7_tempC_sign_min = forecast_7_tempC_min + "°";
-
-	cloudAdj_daily_7 = uv_adj_daily(forecast_7_icon);
-    forecast_7_uv = ( "UVI " + Math.round ((result.daily.data[7].uvIndex) * cloudAdj_daily_7));
-
-
-	if (currentTime > sunriseTime && currentTime < sunsetTime) {
+	if (updateTime > sunriseTime && updateTime < sunsetTime) {
 			isDay = true;							     	
 		}
 			else {
@@ -286,7 +173,7 @@ function uvReader(city,latandlong,country) {
 	};
 
 
-	//animatedBadgeInterval = setInterval(function() {animatedBadge(isDay,sunnyDay,cloudy,rainy); }, 1000 / 30);
+	animatedBadgeInterval = setInterval(function() {animatedBadge(isDay,sunnyDay,cloudy,rainy); }, 1000 / 30);
 
 
 	function accufeelCalc() {
@@ -313,12 +200,7 @@ function uvReader(city,latandlong,country) {
 		accufeelResultC = Math.round(accufeel(temperatureC, TmrtC, windSpeedMS, humidity));
 
 		accufeelResultF = c2f(accufeelResultC);
-		accufeelResultCsign = accufeelResultC + "°";
-		accufeelResultFsign = accufeelResultF + "°";
-		accufeelResultCsignTitle = "AccuFeel " + accufeelResultC + "°";
-		accufeelResultFsignTitle = "AccuFeel " + accufeelResultF + "°";
 	}
-	//setTimeout(accufeelCalc,500);
 	accufeelCalc();
 
 //Solar Times --------------------------------------------------------------------------------------------------------------
@@ -468,19 +350,19 @@ function uvReader(city,latandlong,country) {
 									
 			updateTimeRelativeBadge = moment.unix(updateTime + offsetUnix).format('h:mm:ss A');
 			if (setSettingUT == "u" && setSettingFC == "f") {
-				toolTipBadge = temperatureF + "° " + summary + "\n" + accufeelResultFsign + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
+				toolTipBadge = temperatureF + "° " + summary + "\n" + accufeelResultF + "° " + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
 				chrome.browserAction.setTitle({title: toolTipBadge});
 				}
 			else if (setSettingUT == "u" && setSettingFC == "c") {
-				toolTipBadge = temperatureC + "° " + summary + "\n" + accufeelResultCsign + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
+				toolTipBadge = temperatureC + "° " + summary + "\n" + accufeelResultC + "° " + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
 				chrome.browserAction.setTitle({title: toolTipBadge});
 				}
 			else if (setSettingUT == "t" && setSettingFC == "f") {
-				toolTipBadge = temperatureF + "° " + summary + "\n" + accufeelResultFsign + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
+				toolTipBadge = temperatureF + "° " + summary + "\n" + accufeelResultF + "° " + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
 				chrome.browserAction.setTitle({title: toolTipBadge});
 				}
 			else if (setSettingUT == "t" && setSettingFC == "c") {
-				toolTipBadge = temperatureC + "° " + summary + "\n" + accufeelResultCsign + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
+				toolTipBadge = temperatureC + "° " + summary + "\n" + accufeelResultC + "° " + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
 				chrome.browserAction.setTitle({title: toolTipBadge});
 				};
 			return;
@@ -490,10 +372,10 @@ function uvReader(city,latandlong,country) {
 	utfc = UTFC(function(value){	
 			});
 
-	// setTimeout(function(){
-	// 	clearInterval(animatedBadgeInterval);   
-	// 	}, 500);
-	// setTimeout(badgeBackgroundImage, 550)
+	setTimeout(function(){
+		clearInterval(animatedBadgeInterval);   
+		}, 500);
+	setTimeout(badgeBackgroundImage, 550)
 
 }, //---- uvReader success 
 

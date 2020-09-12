@@ -1,4 +1,3 @@
-//Animited Badge --------------------------------------------------------------
 var context = document.createElement('canvas').getContext('2d');
 var start = new Date();
 var lines = 16,

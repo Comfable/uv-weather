@@ -5,6 +5,6 @@
 
 $(document).ready(function () {
     ga('create', 'UA-40112085-15', 'auto');
-    ga('set', 'checkProtocolTask', function () { }); // Removes failing protocol check. @see: http://stackoverflow.com/a/22152353/1958200
+    ga('set', 'checkProtocolTask', function () { });
     ga('send', 'pageview', ('popup' || 'unknown') + '.html');
 });

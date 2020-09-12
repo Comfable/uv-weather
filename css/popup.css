@@ -63,13 +63,12 @@ input[type="search"]::-webkit-search-cancel-button {
   /* Remove default */
   -webkit-appearance: none;
 
-  /* Now your own custom styles */
+  /* Custom styles */
   height: 12px;
   width: 12px;
   background-image: url("/images/close.png");
   background-repeat: no-repeat;
   background-position: center;
-  /* Will place small red box on the right of input (positioning carries over) */
 
 }
 
@@ -83,58 +82,6 @@ html {
     background: transparent;  /* Optional: just make scrollbar invisible */
 }
 
-
-.easy-autocomplete.eac-square input {
-  border: 1px solid #CCC;
-  border-radius: 3px;
-  color: #7f8c8d;
-  font-family: inherit;
-  font-size: 12px !important;
-  font-style: italic;
-  font-weight: 300;
-  margin: 0;
-  padding: 12px 43px 12px 15px;
-  outline: none;
-  font: inherit;
-  appearance: none;
-  -webkit-appearance: none;
-  box-sizing: border-box;
-  height: 40px;
-  width: 100% !important
-}
-.easy-autocomplete.eac-square ul {
-  border-color: #7f8c8d;
-  border-top: 0;
-  box-shadow: none;
-  top: 0;
-  font-size: 12px !important;
-}
-.easy-autocomplete.eac-square ul li, .easy-autocomplete.eac-square ul .eac-category {
-  border-color: #7f8c8d;
-  font-family: inherit;
-  font-size: 12px !important;
-  font-weight: 300;
-  padding: 6px 12px;
-  transition: all 0.4s ease 0s;
-}
-.easy-autocomplete.eac-square ul li *, .easy-autocomplete.eac-square ul .eac-category * {
-  font-weight: 300;
-  font-size: 12px !important;
-}
-.easy-autocomplete.eac-square ul li.selected, .easy-autocomplete.eac-square ul .eac-category.selected {
-  background-color: #f1f1f1;
-  font-weight: 300;
-  font-size: 12px !important;
-}
-.easy-autocomplete.eac-square ul li b, .easy-autocomplete.eac-square ul .eac-category b {
-  font-weight: 600;
-  font-size: 12px !important;
-}
-.eac-square input {
-  background-image: url("/images/icon_search.png");
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-}
 .searchBox_Class {
 	position: relative;
 	text-align: left;

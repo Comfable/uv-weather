@@ -18,7 +18,7 @@ function toJulian(date) { return date / dayS - 0.5 + J1970; } //date : unix time
 function fromJulian(j)  { return (j + 0.5 - J1970) * dayS; }
 function toDays(date)   { return toJulian(date) - J2000; }
 
-var e = rad * 23.4397; // obliquity of the Earth
+var e = rad * 23.4397;
 
 function rightAscension(l, b) { return atan(sin(l) * cos(e) - tan(b) * sin(e), cos(l)); }
 function declination(l, b)    { return asin(sin(b) * cos(e) + cos(b) * sin(e) * sin(l)); }
@@ -29,8 +29,8 @@ function altitude(H, phi, dec) { return asin(sin(phi) * sin(dec) + cos(phi) * co
 function siderealTime(d, lw) { return rad * (280.16 + 360.9856235 * d) - lw; }
 
 function astroRefraction(h) {
-    if (h < 0) // the following formula works for positive altitudes only.
-        h = 0; // if h = -0.08901179 a div/0 would occur.
+    if (h < 0)
+        h = 0;
 
     return 0.0002967 / Math.tan(h + 0.00312536 / (h + 0.08901179));
 }
@@ -40,8 +40,8 @@ function solarMeanAnomaly(d) { return rad * (357.5291 + 0.98560028 * d); }
 
 function eclipticLongitude(M) {
 
-    var C = rad * (1.9148 * sin(M) + 0.02 * sin(2 * M) + 0.0003 * sin(3 * M)), // equation of center
-        P = rad * 102.9372; // perihelion of the Earth
+    var C = rad * (1.9148 * sin(M) + 0.02 * sin(2 * M) + 0.0003 * sin(3 * M)),
+        P = rad * 102.9372;
 
     return M + C + P + PI;
 }
