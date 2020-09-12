@@ -211,12 +211,21 @@ function uvReader(city,latandlong,country) {
 		solarNoon = timesSolar.solarNoon;
 		goldenHourEnd = timesSolar.goldenHourEnd;
 		goldenHour = timesSolar.goldenHour;
-		dayLength = moment.utc(moment.unix(sunsetTimeSolar).diff(moment.unix(sunriseTimeSolar))).format("HH:mm") + " HH:MM";
+		//dayLength = moment.utc(dayjs.unix(sunsetTimeSolar).diff(dayjs.unix(sunriseTimeSolar))).format("HH:mm") + " HH:MM";
+		totalSeconds  = dayjs(dayjs.unix(sunsetTimeSolar)).diff(dayjs(dayjs.unix(sunriseTimeSolar)), 'second');
+		totalHours = Math.floor(totalSeconds/(60*60));
+		totalSeconds = totalSeconds - (totalHours*60*60);
+		totalMinutes = Math.ceil(totalSeconds/60);
+		if (totalHours<10) {totalHours = "0"+totalHours};
+		if (totalMinutes<10) {totalMinutes = "0"+totalMinutes};
+		dayLength =  totalHours + ":" + totalMinutes + " HH:MM";
 
 		dusk = timesSolar.dusk;
 		dawn = timesSolar.dawn;
 		nightStarts = timesSolar.night;
 		nightEnds = timesSolar.nightEnd;
+
+		
 
 
 	iconTitleWeather(icon);
@@ -348,7 +357,7 @@ function uvReader(city,latandlong,country) {
 			};
 		}
 									
-			updateTimeRelativeBadge = moment.unix(updateTime + offsetUnix).format('h:mm:ss A');
+			updateTimeRelativeBadge = dayjs.unix(updateTime + offsetUnix).format('h:mm:ss A');
 			if (setSettingUT == "u" && setSettingFC == "f") {
 				toolTipBadge = temperatureF + "° " + summary + "\n" + accufeelResultF + "° " + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
 				chrome.browserAction.setTitle({title: toolTipBadge});

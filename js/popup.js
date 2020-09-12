@@ -62,7 +62,7 @@ $(document).ready(function(){
           });
     
 
-  updateTimeRelative = "Updated " + moment.unix(b.updateTime).fromNow();
+  updateTimeRelative = "Updated " + dayjs.unix(b.updateTime).format("h:mm:ss A");
   $('.current_temp_Class, .current_uv_group_Class, .current_temp_max_Class, .current_temp_min_Class, .current_accufeel_Class, .location_Class').powerTip({ placement: 'e' });
   $('#current_temp').data('powertip', updateTimeRelative);
   $('.icon_uv_Class').powerTip({ placement: 's' });
@@ -233,32 +233,34 @@ $(document).ready(function(){
 
   
   function solarFunction(){
-    $("#solar_now_date").html(moment.unix(b.updateTime + b.offsetUnix).format('MMMM Do YYYY, h:mm A'));
-    $("#solar_1_time").html(moment.unix(b.sunriseTimeSolar + b.offsetUnix).format('h:mm A'));
-    $("#solar_2_time").html(moment.unix(b.sunsetTimeSolar + b.offsetUnix).format('h:mm A'));
-    $("#solar_3_time").html(moment.unix(b.solarNoon + b.offsetUnix).format('h:mm A'));
+    $("#solar_now_date").html(dayjs.unix(b.updateTime + b.offsetUnix).format('MMMM DD, h:mm A'));
+    $("#solar_1_time").html(dayjs.unix(b.sunriseTimeSolar + b.offsetUnix).format('h:mm A'));
+    $("#solar_2_time").html(dayjs.unix(b.sunsetTimeSolar + b.offsetUnix).format('h:mm A'));
+    $("#solar_3_time").html(dayjs.unix(b.solarNoon + b.offsetUnix).format('h:mm A'));
     $("#solar_4_time").html(b.dayLength);
-    $("#solar_5_time").html(moment.unix(b.goldenHourEnd + b.offsetUnix).format('h:mm A'));
-    $("#solar_6_time").html(moment.unix(b.goldenHour + b.offsetUnix).format('h:mm A')); 
-    $("#solar_7_time").html(moment.unix(b.dusk + b.offsetUnix).format('h:mm A'));
-    $("#solar_8_time").html(moment.unix(b.dawn + b.offsetUnix).format('h:mm A'));
-    $("#solar_9_time").html(moment.unix(b.nightStarts + b.offsetUnix).format('h:mm A'));
-    $("#solar_10_time").html(moment.unix(b.nightEnds + b.offsetUnix).format('h:mm A'));
+    $("#solar_5_time").html(dayjs.unix(b.goldenHourEnd + b.offsetUnix).format('h:mm A'));
+    $("#solar_6_time").html(dayjs.unix(b.goldenHour + b.offsetUnix).format('h:mm A')); 
+    $("#solar_7_time").html(dayjs.unix(b.dusk + b.offsetUnix).format('h:mm A'));
+    $("#solar_8_time").html(dayjs.unix(b.dawn + b.offsetUnix).format('h:mm A'));
+    $("#solar_9_time").html(dayjs.unix(b.nightStarts + b.offsetUnix).format('h:mm A'));
+
     $('.solar_Class').powerTip({ placement: 'w' });      
-  }
+  }   
+   A = Date.now();
+
   solarFunction();
 
   
   function next7Function(){
-    $("#next7_update_date").html('Updated at ' + moment.unix(b.updateTime + b.offsetUnix).format('MMM Do, h:mm A'));
+    $("#next7_update_date").html('Updated at ' + dayjs.unix(b.updateTime + b.offsetUnix).format('MMM DD, h:mm A'));
 
     for (i=1;i<4;i++){
-        $(`#forecast_${i}_day`).html(moment.unix(b.result.daily.data[i].time).format('dddd'));
+        $(`#forecast_${i}_day`).html(dayjs.unix(b.result.daily.data[i].time).format('dddd'));
         $(`#forecast_${i}_uv`).html( "UVI " + (Math.round ((b.result.daily.data[i].uvIndex) * uv_adj_daily(b.result.daily.data[i].icon))));
     }
 
     for(i=1;i<8;i++){
-        $(`#forecast_${i*10}_day`).html(moment.unix(b.result.daily.data[i].time).format('dddd'));
+        $(`#forecast_${i*10}_day`).html(dayjs.unix(b.result.daily.data[i].time).format('dddd'));
         $(`#forecast_${i*10}_uv`).html( "UVI " + (Math.round ((b.result.daily.data[i].uvIndex) * uv_adj_daily(b.result.daily.data[i].icon))));
     }
 
@@ -334,9 +336,9 @@ $(document).ready(function(){
 
 
   function next48Function(){
-    $("#next48_update_date").html('Updated at ' + moment.unix(b.updateTime + b.offsetUnix).format('MMM Do, h:mm A'));
+    $("#next48_update_date").html('Updated at ' + dayjs.unix(b.updateTime + b.offsetUnix).format('MMM DD, h:mm A'));
     for(i=1;i<25;i++){
-        $(`#forecast_${i}_hours`).html(moment.unix(b.result.hourly.data[i].time + b.offsetUnix).format('h A'));
+        $(`#forecast_${i}_hours`).html(dayjs.unix(b.result.hourly.data[i].time + b.offsetUnix).format('h A'));
         $(`#forecast_${i}_hours_uv`).html("UVI " + Math.round((b.result.hourly.data[i].uvIndex) * uv_adj_daily(b.result.hourly.data[i].icon, b.result.hourly.data[i].cloudCover)));
     }
   
@@ -416,7 +418,7 @@ $(document).ready(function(){
           if (typeof (element.context[0].short_code) !== 'undefined') {
             countryShort = (element.context[0].short_code).split('-').splice(0,1).join('');
             countryShort = countryShort.toUpperCase();
-            cityCountry = (cityProvince + ', ' + countryShort).slice(0, 40);
+            cityCountry = (cityProvince + ', ' + countryShort).slice(0, 35);
           }
           else {
             cityCountry = cityProvince;
@@ -546,10 +548,11 @@ $(document).ready(function(){
    });
 
 
+
   function refreshPopup(){
     setTimeout(function(){
 
-    updateTimeRelative = "Updated " + moment.unix(b.updateTime).fromNow();
+    updateTimeRelative = "Updated " + dayjs.unix(b.updateTime).format("h:mm:ss A");
     $('#current_temp').data('powertip', updateTimeRelative);
 
     if (setSettingFC == "c"){
