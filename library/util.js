@@ -148,3 +148,29 @@ function update_tomorrow_is_c(forecast_1_tempF,forecast_0_tempF) {
 	else {
 	 }
 };
+
+
+function degToCompass(num) { 
+    while( num < 0 ) num += 360 ;
+    while( num >= 360 ) num -= 360 ; 
+    val= Math.round( (num -11.25 ) / 22.5 ) ;
+    arr=["North","North-northeast","Northeast","East-northeast","East","East-southeast", "Southeast", 
+          "South-southeast","South","South-southwest","Southwest","West-southwest","West","West-northwest","Northwest","North-northwest"] ;
+    return arr[ Math.abs(val) ] ;
+}
+
+
+function weatherEmoji(icon) {
+	if (icon == 'clear-day') {currentEmoji = '😎'}
+	else if (icon == 'clear-night') {currentEmoji = '🌚'}
+	else if  (icon == 'rain') {currentEmoji = '☔️'}
+	else if (icon == 'snow') {currentEmoji = '❄️'}
+	else if (icon == 'sleet') {currentEmoji = '😱'}
+	else if (icon == 'wind') {currentEmoji = '👻'}
+	else if (icon == 'fog') {currentEmoji = '🌫'}
+	else if (icon == 'cloudy') {currentEmoji = '☁️'}
+	else if (icon == 'partly-cloudy-night') {currentEmoji = '☁️'}
+	else if (icon == 'partly-cloudy-day') {currentEmoji = '🌤'}
+	else {currentEmoji = '😎'}
+	return currentEmoji;
+};			

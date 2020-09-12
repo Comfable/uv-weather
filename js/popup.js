@@ -363,12 +363,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
     document.querySelector("#current_report_summary").textContent = b.summaryMinutely;
     document.querySelector("#report_update_date").textContent = dayjs.unix(b.updateTime + b.offsetUnix).format('MMM DD, h:mm A');
     document.querySelector("#current_report_uv").textContent = b.uv1 + " " + b.current_uv_note;
-    document.querySelector("#current_report_wind").textContent = b.windSpeedMPH + " mph";
-    document.querySelector("#current_report_windBearing").textContent = b.windBearing + "°";
-    document.querySelector("#current_report_windGust").textContent = b.windGustMPH + " mph";
+    document.querySelector("#current_report_wind").textContent = b.windSpeedMPH + " mph (" + b.windSpeedMS10R + " ms)";
+    document.querySelector("#current_report_windBearing").textContent = b.windBearing + "° (" + b.windCompass + ")";
+    document.querySelector("#current_report_windGust").textContent = b.windGustMPH + " mph (" + b.windGustMS + " ms)";
     document.querySelector("#current_report_humidity").textContent = b.humidity + "%";
-    document.querySelector("#current_report_visibility").textContent = b.visibility + " mi";
-    document.querySelector("#current_report_pressure").textContent = b.pressure + " mb";
+    document.querySelector("#current_report_visibility").textContent = b.visibility + " mi (" + b.visibilityKM + " km)";
+    document.querySelector("#current_report_pressure").textContent = b.pressure + " mb (hPa)";
     document.querySelector("#current_report_cloud").textContent = b.cloudCover + "%";
     document.querySelector("#current_report_ozone").textContent = b.ozone + " du";
     document.querySelector("#current_report_precipitation").textContent =  b.precipProbability + "%";
@@ -657,6 +657,14 @@ currentIcon.classList.add("sub_menu_current_icon_Class");
 var currentSubMenu = document.getElementById("sub_menu_home");
 currentSubMenu.classList.add("sub_menu_current_Class");
 
+function closeAllPopup() {
+    modalSetting.style.display = "none";
+    modal48hours.style.display = "none";
+    modal7days.style.display = "none";
+    modalSolar.style.display = "none";
+    modalCurrent.style.display = "none";
+  }; 
+
 function removeClassIcons() {
     var settingIcon = document.getElementById("setting_icon_popup_page");
     var solarIcon = document.getElementById("solar_icon_popup_page");
@@ -684,10 +692,9 @@ function removeClassIcons() {
     homeSub.classList.remove("sub_menu_current_Class");
     next7Sub.classList.remove("sub_menu_current_Class");
     next48Sub.classList.remove("sub_menu_current_Class");
-  }
+  };
 
-// Get the modal
-var modalBlocker = document.getElementsByClassName("modalBlocker")[0];
+
 var modalSetting = document.getElementById("setting_popup");
 var modalSolar = document.getElementById("solar_popup");
 var modalInfo = document.getElementById("info_popup");
@@ -697,13 +704,9 @@ var location = document.getElementById("location");
 var modalCurrent = document.getElementById("currentReport_popup");
 
 document.querySelector("#setting_popup_page").addEventListener("click", (e) => {
-    modal7days.style.display = "none";
-    modal48hours.style.display = "none";
-    modalSolar.style.display = "none";
-    modalInfo.style.display = "none";
-    modalCurrent.style.display = "none"; 
-    modalSetting.style.display = "block";
+    closeAllPopup();
     removeClassIcons();    
+    modalSetting.style.display = "block";
     var element = document.getElementById("setting_icon_popup_page");
     element.classList.add("sub_menu_icon_active_Class");
 
@@ -715,13 +718,9 @@ document.querySelector("#setting_popup_page").addEventListener("click", (e) => {
 });
 
 document.querySelector("#solar_popup_page").addEventListener("click", (e) => { 
-    modal7days.style.display = "none";
-    modal48hours.style.display = "none";
-    modalInfo.style.display = "none";
-    modalSetting.style.display = "none";
-    modalCurrent.style.display = "none"; 
+    closeAllPopup();
+    removeClassIcons();   
     modalSolar.style.display = "block";
-    removeClassIcons();    
     var element = document.getElementById("solar_icon_popup_page");
     element.classList.add("sub_menu_icon_active_Class");    
 
@@ -733,11 +732,7 @@ document.querySelector("#solar_popup_page").addEventListener("click", (e) => {
   });
 
 document.querySelector("#home_popup_page").addEventListener("click", (e) => { 
-    modal7days.style.display = "none";
-    modal48hours.style.display = "none";
-    modalSolar.style.display = "none";
-    modalSetting.style.display = "none";
-    modalCurrent.style.display = "none";
+    closeAllPopup();
     removeClassIcons();
     var element = document.getElementById("home_icon_popup_page");
     element.classList.add("sub_menu_icon_active_Class");
@@ -750,13 +745,9 @@ document.querySelector("#home_popup_page").addEventListener("click", (e) => {
 });
 
 document.querySelector("#next7_day").addEventListener("click", (e) => { 
-    modal48hours.style.display = "none";
-    modalSolar.style.display = "none";
-    modalInfo.style.display = "none";
-    modalSetting.style.display = "none";
-    modalCurrent.style.display = "none";  
+    closeAllPopup();
+    removeClassIcons();
     modal7days.style.display = "block";
-    removeClassIcons();    
     var element = document.getElementById("next7_icon_popup_page");
     element.classList.add("sub_menu_icon_active_Class");    
     
@@ -768,13 +759,9 @@ document.querySelector("#next7_day").addEventListener("click", (e) => {
   });
 
 document.querySelector("#next48").addEventListener("click", (e) => {
-    modal7days.style.display = "none";
-    modalSolar.style.display = "none";
-    modalInfo.style.display = "none";
-    modalSetting.style.display = "none";
-    modalCurrent.style.display = "none";  
+    closeAllPopup();
+    removeClassIcons();
     modal48hours.style.display = "block";
-    removeClassIcons();  
     var element = document.getElementById("next48_icon_popup_page");
     element.classList.add("sub_menu_icon_active_Class");    
     
@@ -786,13 +773,9 @@ document.querySelector("#next48").addEventListener("click", (e) => {
   });
 
 document.querySelector("#location").addEventListener("click", (e) => { 
-    modal48hours.style.display = "none";
-    modal7days.style.display = "none";
-    modalSolar.style.display = "none";
-    modalInfo.style.display = "none";
-    modalCurrent.style.display = "none";
-    modalBlocker.style.display = "none";
+    closeAllPopup();
     removeClassIcons();
+    modalSetting.style.display = "block";
     var element = document.getElementById("setting_icon_popup_page");
     element.classList.add("sub_menu_icon_active_Class");
 
@@ -801,33 +784,23 @@ document.querySelector("#location").addEventListener("click", (e) => {
 
     var currentSubMenu = document.getElementById("sub_menu_setting");
     currentSubMenu.classList.add("sub_menu_current_Class");
-    modalSetting.style.display = "block";
   });
 
 document.querySelector("#report_button").addEventListener("click", (e) => {
-    modalSetting.style.display = "none";
-    modal48hours.style.display = "none";
-    modal7days.style.display = "none";
-    modalSolar.style.display = "none";
-    modalInfo.style.display = "none";
-    modalBlocker.style.display = "none";
+    closeAllPopup();
     removeClassIcons();
+    modalCurrent.style.display = "block";
 
     var currentIcon = document.getElementById("home_icon_popup_page");
     currentIcon.classList.add("sub_menu_current_icon_Class");
 
     var currentSubMenu = document.getElementById("sub_menu_home");
     currentSubMenu.classList.add("sub_menu_current_Class");
-    modalCurrent.style.display = "block";
   });
 
 
 document.querySelector("#report_popup_close").addEventListener("click", (e) => {
-    modalSetting.style.display = "none";
-    modal48hours.style.display = "none";
-    modal7days.style.display = "none";
-    modalSolar.style.display = "none";
-    modalCurrent.style.display = "none";
+    closeAllPopup();
     removeClassIcons();
     var element = document.getElementById("home_icon_popup_page");
     element.classList.add("sub_menu_icon_active_Class");
@@ -840,29 +813,16 @@ document.querySelector("#report_popup_close").addEventListener("click", (e) => {
   });
 
 
-document.querySelector("#setting_popup_modalBlocker").addEventListener("click", (e) => {
-    modalSetting.style.display = "none";
-    modal48hours.style.display = "none";
-    modal7days.style.display = "none";
-    modalSolar.style.display = "none";
-    modalInfo.style.display = "none";
-    modalCurrent.style.display = "none";
-  });
-
 document.querySelector("#image_background").addEventListener("click", (e) => {
-    modalSetting.style.display = "none";
-    modal48hours.style.display = "none";
-    modal7days.style.display = "none";
-    modalSolar.style.display = "none";
-    modalInfo.style.display = "none";
-    modalCurrent.style.display = "none";
+    closeAllPopup();
     removeClassIcons();
+
     var element = document.getElementById("home_icon_popup_page");
     element.classList.add("sub_menu_icon_active_Class");
 
     var currentIcon = document.getElementById("home_icon_popup_page");
     currentIcon.classList.add("sub_menu_current_icon_Class");
-
+    
     var currentSubMenu = document.getElementById("sub_menu_home");
     currentSubMenu.classList.add("sub_menu_current_Class");    
   });

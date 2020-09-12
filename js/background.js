@@ -113,19 +113,27 @@ function uvReader(city,latandlong,country) {
 	pressure = result.currently.hasOwnProperty('pressure') ? Math.round(result.currently.pressure) : '-';
 	windSpeedMPH = Math.round(result.currently.windSpeed); //miles per hour
 		windSpeedMS10 = windSpeedMPH * 0.4470389; //meter per second
+		windSpeedMS10R = Math.round(windSpeedMPH * 0.4470389 * 10) / 10;
 		windSpeedMS = windSpeedMS10 * 0.33; // on humun hieght an urban area
 	windGustMPH = Math.round(result.currently.windGust); //miles per hour
+	windGustMS = Math.round(windGustMPH * 0.4470389 * 10) / 10; //miles per hour
+	weatherEmojiIcon = weatherEmoji(icon);
+
 		if (result.currently.windSpeed > 0) {
 			windBearing = Math.round(result.currently.windBearing); //true north at 0° and progressing clockwise
+			windCompass = degToCompass(result.currently.windBearing);
 		}
 		else {
 			windBearing = "-";
+			windCompass = "-";
 		}
 
-		visibility = result.currently.hasOwnProperty('visibility') ? Math.round(result.currently.visibility) : '-';
+		visibility = result.currently.hasOwnProperty('visibility') ? Math.round(result.currently.visibility *10)/10 : '-';
+		visibilityKM = result.currently.hasOwnProperty('visibility') ? Math.round(result.currently.visibility * 1.60934 *10)/10 : '-';
 
 		if (visibility >= 10) {
-			visibility = "+10"
+			visibility = "+10";
+			visibilityKM = "+16";
 		}
 
 	ozone = result.currently.hasOwnProperty('ozone') ? Math.round(result.currently.ozone) : '-';
@@ -286,32 +294,36 @@ function uvReader(city,latandlong,country) {
 
 
 
-	function badgeBackgroundImage(){
-		if (isDay && sunnyDay){
+	function badgeBackgroundImage() {
+		if (isDay && sunnyDay && temperatureF >= 50){
 			chrome.browserAction.setBadgeBackgroundColor({color: '#fc923b'});
 			chrome.browserAction.setIcon({path : { "128": "images/sun-128.png"}})
 			}
-		else if (isDay && cloudy){
+		else if(isDay && sunnyDay && temperatureF < 50) {
+			chrome.browserAction.setBadgeBackgroundColor({color: '#f8bd90'});
+			chrome.browserAction.setIcon({path : { "128": "images/sun-cold-128.png"}})
+			}			
+		else if(isDay && cloudy) {
 			chrome.browserAction.setBadgeBackgroundColor({color: '#549dd0'});
 			chrome.browserAction.setIcon({path : { "128": "images/cloud-day-128.png"}});
 			}
-		else if (isNight && cloudy){
+		else if(isNight && cloudy) {
 			chrome.browserAction.setBadgeBackgroundColor({color: '#000000'});
 			chrome.browserAction.setIcon({path : { "128": "images/cloud-night-128.png"}});							     		
 			}
-		else if (isDay && rainy){
+		else if(isDay && rainy) {
 			chrome.browserAction.setBadgeBackgroundColor({color: '#549dd0'});
 			chrome.browserAction.setIcon({path : { "128": "images/rain-day-128.png"}});
 			}
-		else if (isNight && rainy){
+		else if(isNight && rainy) {
 			chrome.browserAction.setBadgeBackgroundColor({color: '#000000'});
 			chrome.browserAction.setIcon({path : { "128": "images/rain-night-128.png"}});
 			}
-		else if (isDay && snowy){
+		else if(isDay && snowy) {
 			chrome.browserAction.setBadgeBackgroundColor({color: '#549dd0'});
 			chrome.browserAction.setIcon({path : { "128": "images/snow-day-128.png"}});
 			}
-		else if (isNight && snowy){
+		else if(isNight && snowy) {
 			chrome.browserAction.setBadgeBackgroundColor({color: '#000000'});
 			chrome.browserAction.setIcon({path : { "128": "images/snow-night-128.png"}});
 			}			

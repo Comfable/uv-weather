@@ -397,7 +397,6 @@ html {
 	position: relative;
 	text-align: left;
 	font-weight: normal;
-	font-size: 12px;
 	color: rgba(27,41,52,1);
 	margin-top: 15px;
 }
@@ -405,28 +404,24 @@ html {
 	position: relative;
 	text-align: left;
 	font-weight: normal;
-	font-size: 12px;
 	color: rgba(27,41,52,1);
 }
 .setting_title_temp_Class {
 	position: relative;
 	text-align: left;
 	font-weight: normal;
-	font-size: 12px;
 	color: rgba(27,41,52,1);
 }
 .setting_body_temp_Class {
 	position: relative;
 	text-align: left;
 	font-weight: normal;
-	font-size: 12px;
 	color: rgba(27,41,52,1);
 }
 .setting_defualt_text_uv_Class {
 	position: relative;
 	text-align: left;
 	font-weight: normal;
-	font-size: 12px;
 	color: rgba(27,41,52,1);
 }
 .setting_defualt_text_tempc_Class {
@@ -811,24 +806,6 @@ html {
  left: 115%;
  }
 
-.modalBlocker {
-  width: 560px;
-  height: 456px;
-  overflow: auto;
-  left: 0px;
-  top: 0px;
-  -webkit-border-radius: 0px !important;
-  -moz-border-radius: 0px !important;
-  -o-border-radius: 0px !important;
-  -ms-border-radius: 0px !important;
-  border-radius: 0px;
-  background-color: rgb(0,0,0);
-  background-color: rgba(0,0,0,0.7);
-  z-index: 1300;
-  display: none; 
-  position: fixed;
-  z-index: 1;
-}
 .modal {
   position: absolute;
   width: 310px;
@@ -882,7 +859,8 @@ html {
 .setting_unit_badge_Class {
 	position: absolute;
 	left: 30px;
-	top: 380px;	
+	top: 380px;
+  	font-size: 11px;
 }
 
 .searchBox_Class {
@@ -1012,8 +990,7 @@ html {
 
 .current_report_title_Class {
 	position: relative;
-	width: 140px;
-	max-width: 140px;
+	width: 110px;
 	display: inline-block;
 	text-align: left;
 	font-weight: 250;
@@ -1022,8 +999,7 @@ html {
 }
 .current_report_value_Class {
 	position: relative;
-	width: 60px;
-	max-width: 60px;
+	width: 160px;
 	display: inline-block;
 	text-align: left;
 	font-weight: 250;
@@ -1084,7 +1060,7 @@ html {
 	display: inline-block;
 	text-align: left;
 	font-weight: 250;
-	font-size: 14px;
+	font-size: 13px;
 	color: rgba(27,41,52,1);
 	margin-right: 10px;
 	margin-left: 0;
@@ -1176,4 +1152,3 @@ html {
 .report_button_Class:hover {
 	filter: sepia(5%) saturate(652%) hue-rotate(198deg) brightness(117%) contrast(77%);
 }
-
