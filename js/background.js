@@ -1,554 +1,535 @@
-var fromSearchs;
 const amb = 'pk.eyJ1IjoiY29tZmFibGUiLCJhIjoiY2sybTF6Z3FpMGRkeTNscWxhMnNybnU3cyJ9.VDvM0a0jaMlLMwlqBI8kUw';
 const ads = '2589e0786e11ce470e7d98e9153039f4';
-chrome.runtime.onInstalled.addListener(function(details){
-    if(details.reason == "install"){
-		chrome.storage.local.set({'fromSearch': "locationIP"});
-		//chrome.tabs.create({url: "https://qsun.co/uv-weather-welcome/"});
-        //console.log("This is a first install!");
-    }else if(details.reason == "update"){
-        var thisVersion = chrome.runtime.getManifest().version;
-        //console.log("Updated from " + details.previousVersion + " to " + thisVersion + "!");
-    }
+
+chrome.storage.local.get(['verUpdate'], function(data) {
+	verUpdate = data.verUpdate;
+	if(verUpdate !== 1 && verUpdate !== 2) {
+		fetch('https://us-central1-swift-district-134123.cloudfunctions.net/gfc-geo')
+	  	.then((resp) => resp.json())
+	  	 .then(function(result) {
+			countryAPI = JSON.stringify(result.country);
+			country = (countryAPI.split('"'))[1];
+			if (country == "ZZ") {
+					country = " "
+				}
+			city = JSON.stringify(result.city);
+			region = (JSON.stringify(result.region).split('"'))[1];
+			latandlong = JSON.stringify(result.cityLatLong);
+			fullname = ((city.split('"'))[1].charAt(0).toUpperCase() + (city.split('"'))[1].slice(1)) + ", " + region.toUpperCase() + ", " + country;
+			chrome.storage.local.set({'city': city});
+			chrome.storage.local.set({'latlong': latandlong});
+			chrome.storage.local.set({'country': country});
+			chrome.storage.local.set({'fullname': fullname});
+			chrome.storage.local.set({'verUpdate': 1});
+			uvReader(city,latandlong,country);
+		})
+	}
+	else{
+		chrome.storage.local.get(['latlong', 'city', 'country'], function(data) {
+	  		latandlong = data.latlong;
+	 		city = data.city;
+	 		country = data.country;
+	 		uvReader(city,latandlong,country);
+		});	
+	}
 });
 
 
+//open popup
 chrome.runtime.onMessage.addListener(
-	function(request, sender, sendResponse){
-			if(request.msg == "fromSearchUpdate"){
-					chrome.storage.local.get(['latlongPopup', 'cityPopup', 'countryPopup'], function(data){
-					  		latandlong = data.latlongPopup;
-					 		city = data.cityPopup;
-					 		country = data.countryPopup;		 		
-					 		uvReader(city,latandlong,country);
-					 			
-				});
-			}
+	function(request, sender, sendResponse) {
+		if(request.msg == "backgroundUpdate" && (navigator.onLine)) {
+			chrome.storage.local.get(['latlong', 'city', 'country'], function(data) {
+				latandlong = data.latlong;
+		 		city = data.city;
+		 		country = data.country;
+				uvReader(city,latandlong,country);
+			});
+		}
 	}
 );
 
-
-chrome.storage.local.get('fromSearch', function(data){
-fromSearchs = data.fromSearch;
-				
-	if (fromSearchs !== "locationSearch"){
-
-			fetch('https://us-central1-swift-district-134123.cloudfunctions.net/gfc-geo')
-		  	.then((resp) => resp.json())
-		  	 .then(function(result) {
-				countryAPI = JSON.stringify(result.country);
-				country = (countryAPI.split('"'))[1];
-				if (country == "ZZ") {
-					country = " "
-				}
-				city = JSON.stringify(result.city);
-				region = (JSON.stringify(result.region).split('"'))[1];
-				latandlong = JSON.stringify(result.cityLatLong);
-				fullname = ((city.split('"'))[1].charAt(0).toUpperCase() + (city.split('"'))[1].slice(1)) + ", " + region.toUpperCase() + ", " + country
-		  	 	chrome.storage.local.set({'fullname': fullname});
-				//latandlong = '"-13.9448,143.2027"';
-				uvReader(city,latandlong,country);
-		})
+//from search
+chrome.runtime.onMessage.addListener(
+	function(request, sender, sendResponse) {
+		if(request.msg == "fromSearchUpdate" && (navigator.onLine)) {
+			chrome.storage.local.get(['latlong', 'city', 'country'], function(data){
+		  		latandlong = data.latlong;
+		 		city = data.city;
+		 		country = data.country;
+		 		uvReader(city,latandlong,country);
+			});
+		}
 	}
+);
 
-else{
+//60 min update
+intervalUpdateTime = 1000 * 60 * 60; //miliseconds * seconds * minutes
+var intervalUpdateTimes = window.setInterval(_ => {
+	if(navigator.onLine) {
+		chrome.storage.local.get(['latlong', 'city', 'country'], function(data){
+			latandlong = data.latlong;
+			city = data.city;
+			country = data.country;
+			uvReader(city,latandlong,country)
+		});
+	}
+}, intervalUpdateTime);
 
-	chrome.storage.local.get(['latlongPopup', 'cityPopup', 'countryPopup'], function(data){
-		latandlong = data.latlongPopup;
-		city = data.cityPopup;
-		country = data.countryPopup;		 		
-		uvReader(city,latandlong,country);				 			
-	});
-}	
 
-
-});
 
 
 //uvReader----------------------------------------------------------------------------------
-
 function uvReader(city,latandlong,country) {
 
 	country = country;
 
-		cityName = (city.split('"'))[1].charAt(0).toUpperCase() + (city.split('"'))[1].slice(1);
-		if (cityName && cityName.length > 15) {
-			citys = cityName.substr(0,15)
-		}
-		else {
-			citys = cityName
-		}
-
-		latlong = (latandlong.split('"'))[1];
-		lat = (latlong.split(','))[0];
-		lon = (latlong.split(','))[1];
-		
-	fetch('https://uv-weather.herokuapp.com/https://api.darksky.net/forecast/' + ads +'/' + latlong + '?solar')
-	  	.then((resp) => resp.json())
-	  	.then(function(result) {				
-	
-	window.result = result;
-
-	isDay = false;
-	isNight = false;
-	cloudy = false;
-	sunnyDay = false;
-	rainy = false;
-	snowy = false;
-
-		systemTime = new Date();
-		systemTimeUnix = Math.round((systemTime).getTime() / 1000);
-		DeviceTimeDifferenceFromGMT = systemTime.getTimezoneOffset() / 60;
-	offsetTime = DeviceTimeDifferenceFromGMT + result.offset;
-		offsetUnix = offsetTime * 3600;
-	cloudCover = Math.round(result.currently.cloudCover * 100);
-	icon = result.currently.icon;
-	updateTime = result.currently.time;
-
-	temperatureF =  Math.round(result.currently.temperature);
-	temperatureC =  f2c(temperatureF);
-	humidity = Math.round(100 * (result.currently.humidity));
-	dewPointF = Math.round(result.currently.dewPoint);
-	dewPointC = f2c(dewPointF);
-	pressure = result.currently.hasOwnProperty('pressure') ? Math.round(result.currently.pressure) : '-';
-	windSpeedMPH = Math.round(result.currently.windSpeed);
-	windSpeedKMH = Math.round(windSpeedMPH * 1.609334);
-		windSpeedMS10 = windSpeedMPH * 0.4470389;
-		windSpeedMS10R = Math.round(windSpeedMPH * 0.4470389 * 10) / 10;
-		windSpeedMS = windSpeedMS10 * 0.33; // on humun hieght an urban area
-	windGustMPH = Math.round(result.currently.windGust);
-	windGustKMH = Math.round(windGustMPH * 1.609334);
-	windGustMS = Math.round(windGustMPH * 0.4470389 * 10) / 10;
-	weatherEmojiIcon = weatherEmoji(icon);
-
-		if (result.currently.windSpeed > 0) {
-			windBearing = Math.round(result.currently.windBearing); //true north at 0° and progressing clockwise
-			windCompass = degToCompass(result.currently.windBearing);
-		}
-		else {
-			windBearing = "-";
-			windCompass = "-";
-		}
-
-		visibility = result.currently.hasOwnProperty('visibility') ? Math.round(result.currently.visibility *10)/10 : '-';
-		visibilityKM = result.currently.hasOwnProperty('visibility') ? Math.round(result.currently.visibility * 1.60934 *10)/10 : '-';
-
-		if (visibility >= 10) {
-			visibility = "+10";
-			visibilityKM = "+16";
-		}
-
-	ozone = result.currently.hasOwnProperty('ozone') ? Math.round(result.currently.ozone) : '-';
-	precipProbability = result.currently.hasOwnProperty('precipProbability') ? Math.round(result.currently.precipProbability * 100) : '-';
-
-	summary = result.currently.hasOwnProperty('summary') ? result.currently.summary : '-'
-
-	if (result.hasOwnProperty('minutely')) {
-		if(result.minutely.hasOwnProperty('summary')) {
-			summaryMinutely = result.minutely.summary;
-		}
+	cityName = (city.split('"'))[1].charAt(0).toUpperCase() + (city.split('"'))[1].slice(1);
+	if(cityName && cityName.length > 15) {
+		citys = cityName.substr(0,15)
 	}
 	else {
-		summaryMinutely = result.currently.hasOwnProperty('summary') ? result.currently.summary : '-'
+		citys = cityName
 	}
 
-	summaryHourlyF = result.hourly.hasOwnProperty('summary') ? result.hourly.summary : '-'
-	summaryDailyF = result.daily.hasOwnProperty('summary') ? result.daily.summary : '-'
+	latlong = (latandlong.split('"'))[1];
+	lat = (latlong.split(','))[0];
+	lon = (latlong.split(','))[1];
+		
+	fetch('https://uv-weather.herokuapp.com/https://api.darksky.net/forecast/' + ads +'/' + latlong + '?solar')
+	.then((resp) => resp.json())
+	.then(function(result) {				
+	
+		window.result = result;
 
-	summaryHourlyC = summaryUnitConvertor(result.hourly.summary);
-	summaryDailyC = summaryUnitConvertor(result.daily.summary);
-	current_tempF_max = Math.round(result.daily.data[0].temperatureMax);
-	current_tempF_min = Math.round(result.daily.data[0].temperatureMin);							   
+		isDay = false;
+		isNight = false;
+		cloudy = false;
+		sunnyDay = false;
+		rainy = false;
+		snowy = false;
 
-	current_tempC_max = f2c(current_tempF_max);
-	current_tempC_min = f2c(current_tempF_min);
+			systemTime = new Date();
+			systemTimeUnix = Math.round((systemTime).getTime() / 1000);
+			DeviceTimeDifferenceFromGMT = systemTime.getTimezoneOffset() / 60;
+		offsetTime = DeviceTimeDifferenceFromGMT + result.offset;
+			offsetUnix = offsetTime * 3600;
+		cloudCover = Math.round(result.currently.cloudCover * 100);
+		icon = result.currently.icon;
+		updateTime = result.currently.time;
 
-	uvCurrently = result.currently.hasOwnProperty('uvIndex') ? result.currently.uvIndex : '-'
+		temperatureF =  Math.round(result.currently.temperature);
+		temperatureC =  f2c(temperatureF);
+		humidity = Math.round(100 * (result.currently.humidity));
+		dewPointF = Math.round(result.currently.dewPoint);
+		dewPointC = f2c(dewPointF);
+		pressure = result.currently.hasOwnProperty('pressure') ? Math.round(result.currently.pressure) : '-';
+		windSpeedMPH = Math.round(result.currently.windSpeed);
+		windSpeedKMH = Math.round(windSpeedMPH * 1.609334);
+			windSpeedMS10 = windSpeedMPH * 0.4470389;
+			windSpeedMS10R = Math.round(windSpeedMPH * 0.4470389 * 10) / 10;
+			windSpeedMS = windSpeedMS10 * 0.33; // on humun hieght an urban area
+		windGustMPH = Math.round(result.currently.windGust);
+		windGustKMH = Math.round(windGustMPH * 1.609334);
+		windGustMS = Math.round(windGustMPH * 0.4470389 * 10) / 10;
+		weatherEmojiIcon = weatherEmoji(icon);
 
-	if (temperatureF > current_tempF_max){
-		temperatureF = current_tempF_max
-		} 
-	if (temperatureF < current_tempF_min){
-	temperatureF = current_tempF_min
-		} 
-
-	sunriseTime = result.daily.data[0].sunriseTime;
-	sunsetTime = result.daily.data[0].sunsetTime;
-
-	forecast_0_tempF = Math.round(result.daily.data[0].temperatureMax);
-	forecast_1_tempF = Math.round(result.daily.data[1].temperatureMax);
-
-	if (updateTime > sunriseTime && updateTime < sunsetTime) {
-
-			isDay = true;					     	
-		}
-			else {
-			isNight = true;							     	
-		};
-
-	if (icon === "cloudy" || icon === "partly-cloudy-day" || icon === "partly-cloudy-night") {
-			cloudy = true;							
-		}
-			else if (icon=== "rain"){
-			rainy = true; 
-		}
-			else if (icon=== "snow" || icon=== "sleet"){
-			snowy = true; 
-		}			else {
-			sunnyDay = true;
-	};
-
-
-
-//flickr ----------------------------------------------------------------------
-function GetWeatherBackground(icon) {
-
-	  switch(icon) {
-	    case 'clear-day':
-	  			galleryID = '72157711948824252';
-	      break;
-	    case 'clear-night':
-	  			galleryID = '72157711948534226';
-	      break;
-	    case 'rain':
-	            if (isDay) {
-	  			galleryID = '72157711948916072';
-	              }
-	            else {
-	  			galleryID = '72157711948918142';
-	              }
-	      break;
-	    case 'snow':
-	            if (isDay) {
-	  			galleryID = '72157711948582321';
-	              }
-	            else {
-	  			galleryID = '72157711948925407';
-	              }
-	      break;
-	    case 'sleet':
-	            if (isDay) {
-	  			galleryID = '72157711948578771';
-	              }
-	            else {
-	  			galleryID = '72157711948921797';
-	              }
-	      break;
-	    case 'wind':
-	            if (isDay) {
-	  			galleryID = '72157711950448603';
-	              }
-	            else {
-	  			galleryID = '72157711948587066';
-	              }     
-	      break;
-	    case 'fog':
-	            if (isDay) {
-	  			galleryID = '72157711948567181';
-	              }
-	            else {
-	  			galleryID = '72157711950432483';
-	              }
-	      break;
-	    case 'cloudy':
-	            if (isDay) {
-	  			galleryID = '72157711950426443';
-	              }
-	            else {
-	  			galleryID = '72157711948906242';
-	              }
-	      break;
-	    case 'partly-cloudy-day':
-	  			galleryID = '72157711950434293';
-	      break;
-	    case 'partly-cloudy-night':
-	  			galleryID = '72157711948913902';
-	      break;
-	    default:
-	  			galleryID = '72157711948824252';
-	    break;
-	   }
-
-};
-
-GetWeatherBackground(icon);
-//flickr -------------------------------------------------------------------
-
-
-
-	animatedBadgeInterval = setInterval(function() {animatedBadge(isDay,sunnyDay,cloudy,rainy,snowy); }, 1000 / 30);
-
-
-	function accufeelCalc() {
-
-		if (result.hourly.data[0].hasOwnProperty('solar')) {
-			ghiSolarClearSki = result.hourly.data[0].solar.ghi; //GHI = DHI + DNI * cos (θ)
-
-			if (ghiSolarClearSki >=250) { 
-				cloudAdj_hourly = uv_adj_daily(icon);
-				ghiSolarCloud = ghiSolarClearSki * cloudAdj_hourly;
-				TglobeC = 0.01498*ghiSolarCloud + 1.184*temperatureC - 0.0789*humidity - 2.739;	//day
+			if (result.currently.windSpeed > 0) {
+				windBearing = Math.round(result.currently.windBearing); //true north at 0° and progressing clockwise
+				windCompass = degToCompass(result.currently.windBearing);
 			}
-			 else {	//Low GHI
-				TglobeC = temperatureC;
+			else {
+				windBearing = "-";
+				windCompass = "-";
+			}
+
+			visibility = result.currently.hasOwnProperty('visibility') ? Math.round(result.currently.visibility *10)/10 : '-';
+			visibilityKM = result.currently.hasOwnProperty('visibility') ? Math.round(result.currently.visibility * 1.60934 *10)/10 : '-';
+
+			if (visibility >= 10) {
+				visibility = "+10";
+				visibilityKM = "+16";
+			}
+
+		ozone = result.currently.hasOwnProperty('ozone') ? Math.round(result.currently.ozone) : '-';
+		precipProbability = result.currently.hasOwnProperty('precipProbability') ? Math.round(result.currently.precipProbability * 100) : '-';
+
+		summary = result.currently.hasOwnProperty('summary') ? result.currently.summary : '-'
+
+		if(result.hasOwnProperty('minutely')) {
+			if(result.minutely.hasOwnProperty('summary')) {
+				summaryMinutely = result.minutely.summary;
 			}
 		}
 		else {
-			TglobeC = temperatureC;	//night
+			summaryMinutely = result.currently.hasOwnProperty('summary') ? result.currently.summary : '-'
+		}
+
+		summaryHourlyF = result.hourly.hasOwnProperty('summary') ? result.hourly.summary : '-'
+		summaryDailyF = result.daily.hasOwnProperty('summary') ? result.daily.summary : '-'
+
+		summaryHourlyC = summaryUnitConvertor(result.hourly.summary);
+		//summaryHourlyC = result.hourly.summary;
+
+		summaryDailyC = summaryUnitConvertor(result.daily.summary);
+		//summaryDailyC = result.daily.summary;
+		current_tempF_max = Math.round(result.daily.data[0].temperatureMax);
+		current_tempF_min = Math.round(result.daily.data[0].temperatureMin);							   
+
+		current_tempC_max = f2c(current_tempF_max);
+		current_tempC_min = f2c(current_tempF_min);
+
+		uvCurrently = result.currently.hasOwnProperty('uvIndex') ? result.currently.uvIndex : '-'
+
+		if(temperatureF > current_tempF_max) {
+			temperatureF = current_tempF_max
+			} 
+		if(temperatureF < current_tempF_min) {
+		temperatureF = current_tempF_min
+			} 
+
+		sunriseTime = result.daily.data[0].sunriseTime;
+		sunsetTime = result.daily.data[0].sunsetTime;
+
+		forecast_0_tempF = Math.round(result.daily.data[0].temperatureMax);
+		forecast_1_tempF = Math.round(result.daily.data[1].temperatureMax);
+
+		if (updateTime > sunriseTime && updateTime < sunsetTime) {
+
+				isDay = true;					     	
+			}
+				else {
+				isNight = true;							     	
+			};
+
+		if (icon === "cloudy" || icon === "partly-cloudy-day" || icon === "partly-cloudy-night") {
+				cloudy = true;							
+			}
+				else if (icon=== "rain"){
+				rainy = true; 
+			}
+				else if (icon=== "snow" || icon=== "sleet"){
+				snowy = true; 
+			}			else {
+				sunnyDay = true;
 		};
-										
-		Tmrta =	Math.pow(TglobeC + 273.15, 4) + (2.5 * 100000000 * Math.pow(windSpeedMS, 0.60) * (TglobeC - temperatureC));
-		TmrtC =	Math.pow(Tmrta, 1/4) - 273.15;
-						
-		accufeelResultC = Math.round(accufeel(temperatureC, TmrtC, windSpeedMS, humidity));
 
-		accufeelResultF = c2f(accufeelResultC);
-	}
-	accufeelCalc();
 
-//Solar Times --------------------------------------------------------------------------------------------------------------
-	localTimeUnix = Math.round(systemTimeUnix + offsetUnix);
-	timesSolar = SunCalc.getTimes(localTimeUnix, lat, lon);
-		sunriseTimeSolar = timesSolar.sunrise;
-		sunsetTimeSolar = timesSolar.sunset;
-		solarNoon = timesSolar.solarNoon;
-		goldenHourEnd = timesSolar.goldenHourEnd;
-		goldenHour = timesSolar.goldenHour;
-		totalSeconds  = dayjs(dayjs.unix(sunsetTimeSolar)).diff(dayjs(dayjs.unix(sunriseTimeSolar)), 'second');
-		totalHours = Math.floor(totalSeconds/(60*60));
-		totalSeconds = totalSeconds - (totalHours*60*60);
-		totalMinutes = Math.ceil(totalSeconds/60);
-		if (totalHours<10) {totalHours = "0"+totalHours};
-		if (totalMinutes<10) {totalMinutes = "0"+totalMinutes};
-		dayLength =  totalHours + ":" + totalMinutes + " HH:MM";
 
-		dusk = timesSolar.dusk;
-		dawn = timesSolar.dawn;
-		nightStarts = timesSolar.night;
-		nightEnds = timesSolar.nightEnd;
+		function GetWeatherBackground(icon) {
+		  switch(icon) {
+		    case 'clear-day':
+		  			galleryID = '72157711948824252';
+		      break;
+		    case 'clear-night':
+		  			galleryID = '72157711948534226';
+		      break;
+		    case 'rain':
+		            if (isDay) {
+		  			galleryID = '72157711948916072';
+		              }
+		            else {
+		  			galleryID = '72157711948918142';
+		              }
+		      break;
+		    case 'snow':
+		            if (isDay) {
+		  			galleryID = '72157711948582321';
+		              }
+		            else {
+		  			galleryID = '72157711948925407';
+		              }
+		      break;
+		    case 'sleet':
+		            if (isDay) {
+		  			galleryID = '72157711948578771';
+		              }
+		            else {
+		  			galleryID = '72157711948921797';
+		              }
+		      break;
+		    case 'wind':
+		            if (isDay) {
+		  			galleryID = '72157711950448603';
+		              }
+		            else {
+		  			galleryID = '72157711948587066';
+		              }     
+		      break;
+		    case 'fog':
+		            if (isDay) {
+		  			galleryID = '72157711948567181';
+		              }
+		            else {
+		  			galleryID = '72157711950432483';
+		              }
+		      break;
+		    case 'cloudy':
+		            if (isDay) {
+		  			galleryID = '72157711950426443';
+		              }
+		            else {
+		  			galleryID = '72157711948906242';
+		              }
+		      break;
+		    case 'partly-cloudy-day':
+		  			galleryID = '72157711950434293';
+		      break;
+		    case 'partly-cloudy-night':
+		  			galleryID = '72157711948913902';
+		      break;
+		    default:
+		  			galleryID = '72157711948824252';
+		    break;
+		   }
+		};
+
+		GetWeatherBackground(icon);
+
+
+
+		animatedBadgeInterval = setInterval(function() {animatedBadge(isDay,sunnyDay,cloudy,rainy,snowy); }, 1000 / 30);
+
+
+		function accufeelCalc() {
+
+			if (result.hourly.data[0].hasOwnProperty('solar')) {
+				ghiSolarClearSki = result.hourly.data[0].solar.ghi; //GHI = DHI + DNI * cos (θ)
+
+				if (ghiSolarClearSki >=250) { 
+					cloudAdj_hourly = uv_adj_daily(icon);
+					ghiSolarCloud = ghiSolarClearSki * cloudAdj_hourly;
+					TglobeC = 0.01498*ghiSolarCloud + 1.184*temperatureC - 0.0789*humidity - 2.739;	//day
+				}
+				 else {	//Low GHI
+					TglobeC = temperatureC;
+				}
+			}
+			else {
+				TglobeC = temperatureC;	//night
+			};
+											
+			Tmrta =	Math.pow(TglobeC + 273.15, 4) + (2.5 * 100000000 * Math.pow(windSpeedMS, 0.60) * (TglobeC - temperatureC));
+			TmrtC =	Math.pow(Tmrta, 1/4) - 273.15;
+							
+			accufeelResultC = Math.round(accufeel(temperatureC, TmrtC, windSpeedMS, humidity));
+
+			accufeelResultF = c2f(accufeelResultC);
+		}
+		accufeelCalc();
+
+		//Solar Times --------------------------------------------------------------------------------------------------------------
+		localTimeUnix = Math.round(systemTimeUnix + offsetUnix);
+		timesSolar = SunCalc.getTimes(localTimeUnix, lat, lon);
+			sunriseTimeSolar = timesSolar.sunrise;
+			sunsetTimeSolar = timesSolar.sunset;
+			solarNoon = timesSolar.solarNoon;
+			goldenHourEnd = timesSolar.goldenHourEnd;
+			goldenHour = timesSolar.goldenHour;
+			totalSeconds  = dayjs(dayjs.unix(sunsetTimeSolar)).diff(dayjs(dayjs.unix(sunriseTimeSolar)), 'second');
+			totalHours = Math.floor(totalSeconds/(60*60));
+			totalSeconds = totalSeconds - (totalHours*60*60);
+			totalMinutes = Math.ceil(totalSeconds/60);
+			if (totalHours<10) {totalHours = "0"+totalHours};
+			if (totalMinutes<10) {totalMinutes = "0"+totalMinutes};
+			dayLength =  totalHours + ":" + totalMinutes + " HH:MM";
+
+			dusk = timesSolar.dusk;
+			dawn = timesSolar.dawn;
+			nightStarts = timesSolar.night;
+			nightEnds = timesSolar.nightEnd;
+
+
+
+		iconTitleWeather(icon);
+
+		update_tomorrow_is_f(forecast_1_tempF,forecast_0_tempF);
+
+		update_tomorrow_is_c(forecast_1_tempF,forecast_0_tempF);
 
 		
+		if (icon === "rain" || icon === "sleet" || icon === "snow")
+			{cloudAdj = 0.31;}
+		else if (cloudCover < 20)
+			{cloudAdj = 1;}
+		else if (cloudCover >= 20 && cloudCover < 70)
+			{cloudAdj = 0.89;}
+		else if (cloudCover >= 70 && cloudCover < 90)
+			{cloudAdj = 0.73;}
+		else if (cloudCover >= 90)
+			{cloudAdj = 0.31;}
+		else {cloudAdj = 1;}
 
+		uv1 = Math.round(uvCurrently * cloudAdj);
 
-	iconTitleWeather(icon);
-
-	update_tomorrow_is_f(forecast_1_tempF,forecast_0_tempF);
-
-	update_tomorrow_is_c(forecast_1_tempF,forecast_0_tempF);
-
-	
-	if (icon === "rain" || icon === "sleet" || icon === "snow")
-		{cloudAdj = 0.31;}
-	else if (cloudCover < 20)
-		{cloudAdj = 1;}
-	else if (cloudCover >= 20 && cloudCover < 70)
-		{cloudAdj = 0.89;}
-	else if (cloudCover >= 70 && cloudCover < 90)
-		{cloudAdj = 0.73;}
-	else if (cloudCover >= 90)
-		{cloudAdj = 0.31;}
-	else {cloudAdj = 1;}
-
-	uv1 = Math.round(uvCurrently * cloudAdj);
-
-	if (isNight) {
-		current_uv_note = (" (Night)");
-		}
-	else if (uv1 >= 0 && uv1 <= 2) {
-		current_uv_note = (" (Low)");
-		}
-	else if (uv1 >= 3 && uv1 <= 5) {
-		current_uv_note = (" (Moderate)");
-		}
-	else if (uv1 >= 6 && uv1 <= 7) {
-		current_uv_note = (" (High)");
-		}
-	else if (uv1 >= 8 && uv1 <= 10) {
-		current_uv_note = (" (Very High)");
-		}
-	else if (uv1 >= 11) {
-		current_uv_note = (" (Extreme)");
-		};
-
-
-
-
-	function badgeBackgroundImage() {
-		if (isDay && sunnyDay && temperatureF >= 50){
-			chrome.browserAction.setBadgeBackgroundColor({color: '#fc923b'});
-			chrome.browserAction.setIcon({path : { "128": "images/sun-128.png"}})
+		if (isNight) {
+			current_uv_note = (" (Night)");
 			}
-		else if(isDay && sunnyDay && temperatureF < 50) {
-			chrome.browserAction.setBadgeBackgroundColor({color: '#f8bd90'});
-			chrome.browserAction.setIcon({path : { "128": "images/sun-cold-128.png"}})
-			}			
-		else if(isDay && cloudy) {
-			chrome.browserAction.setBadgeBackgroundColor({color: '#549dd0'});
-			chrome.browserAction.setIcon({path : { "128": "images/cloud-day-128.png"}});
+		else if (uv1 >= 0 && uv1 <= 2) {
+			current_uv_note = (" (Low)");
 			}
-		else if(isNight && cloudy) {
-			chrome.browserAction.setBadgeBackgroundColor({color: '#000000'});
-			chrome.browserAction.setIcon({path : { "128": "images/cloud-night-128.png"}});							     		
+		else if (uv1 >= 3 && uv1 <= 5) {
+			current_uv_note = (" (Moderate)");
 			}
-		else if(isDay && rainy) {
-			chrome.browserAction.setBadgeBackgroundColor({color: '#549dd0'});
-			chrome.browserAction.setIcon({path : { "128": "images/rain-day-128.png"}});
+		else if (uv1 >= 6 && uv1 <= 7) {
+			current_uv_note = (" (High)");
 			}
-		else if(isNight && rainy) {
-			chrome.browserAction.setBadgeBackgroundColor({color: '#000000'});
-			chrome.browserAction.setIcon({path : { "128": "images/rain-night-128.png"}});
+		else if (uv1 >= 8 && uv1 <= 10) {
+			current_uv_note = (" (Very High)");
 			}
-		else if(isDay && snowy) {
-			chrome.browserAction.setBadgeBackgroundColor({color: '#549dd0'});
-			chrome.browserAction.setIcon({path : { "128": "images/snow-day-128.png"}});
-			}
-		else if(isNight && snowy) {
-			chrome.browserAction.setBadgeBackgroundColor({color: '#000000'});
-			chrome.browserAction.setIcon({path : { "128": "images/snow-night-128.png"}});
-			}			
-		else {
-			chrome.browserAction.setBadgeBackgroundColor({color: '#000000'});
-			chrome.browserAction.setIcon({path : { "128": "images/moon-128.png"}});
-		}
-	}
-
-
-	function tempc(){
-		chrome.browserAction.setBadgeText({"text":temperatureC +"°C" });
-		badgeBackgroundImage();
-	}
-								 
-	function tempf(){
-		chrome.browserAction.setBadgeText({"text":temperatureF +"°F" });
-		badgeBackgroundImage();
-	}
-
-	function uvi(){
-		if (uv1>9) {
-          chrome.browserAction.setBadgeText({"text": "UV"+ uv1});
-        }
-        else {
-          chrome.browserAction.setBadgeText({"text": "UV "+ uv1});
-        }
-		badgeBackgroundImage();
-	}
-
-
-	function UTFC() {
-	
-		chrome.storage.local.get(['setSettingFC', 'setSettingUT'], function(data) {
-		setSettingFC = data.setSettingFC;
-		setSettingUT = data.setSettingUT;
-   		
-
-		if (typeof setSettingFC === 'undefined') {
-			if (country == "US" || country == "us" || country == "United States of America") {
-				setSettingFC = "f";
-				chrome.storage.local.set({'setSettingFC': 'f'});
-				} else {
-				setSettingFC = "c";
-				chrome.storage.local.set({'setSettingFC': 'c'});
-			}
-		}
-
-		if (typeof setSettingUT === 'undefined') {
-			setSettingUT = "t";
-			chrome.storage.local.set({'setSettingUT': 't'});
-			if (country == "US" || country == "us" || country == "United States of America") {
-				tempf ();
-				} else {
-					tempc ();
-				 }
-			}
-		else {
-			if (setSettingUT == "t") {
-				if (setSettingFC == "f") {
-					tempf ();}
-				else {
-				tempc ();}
-			}
-			else {
-				uvi ();
+		else if (uv1 >= 11) {
+			current_uv_note = (" (Extreme)");
 			};
+
+
+		function badgeBackgroundImage() {
+			if(isDay && sunnyDay && temperatureF >= 50) {
+				chrome.browserAction.setBadgeBackgroundColor({color: '#fc923b'});
+				chrome.browserAction.setIcon({path : { "128": "images/sun-128.png"}})
+				}
+			else if(isDay && sunnyDay && temperatureF < 50) {
+				chrome.browserAction.setBadgeBackgroundColor({color: '#f8bd90'});
+				chrome.browserAction.setIcon({path : { "128": "images/sun-cold-128.png"}})
+				}			
+			else if(isDay && cloudy) {
+				chrome.browserAction.setBadgeBackgroundColor({color: '#549dd0'});
+				chrome.browserAction.setIcon({path : { "128": "images/cloud-day-128.png"}});
+				}
+			else if(isNight && cloudy) {
+				chrome.browserAction.setBadgeBackgroundColor({color: '#000000'});
+				chrome.browserAction.setIcon({path : { "128": "images/cloud-night-128.png"}});							     		
+				}
+			else if(isDay && rainy) {
+				chrome.browserAction.setBadgeBackgroundColor({color: '#549dd0'});
+				chrome.browserAction.setIcon({path : { "128": "images/rain-day-128.png"}});
+				}
+			else if(isNight && rainy) {
+				chrome.browserAction.setBadgeBackgroundColor({color: '#000000'});
+				chrome.browserAction.setIcon({path : { "128": "images/rain-night-128.png"}});
+				}
+			else if(isDay && snowy) {
+				chrome.browserAction.setBadgeBackgroundColor({color: '#549dd0'});
+				chrome.browserAction.setIcon({path : { "128": "images/snow-day-128.png"}});
+				}
+			else if(isNight && snowy) {
+				chrome.browserAction.setBadgeBackgroundColor({color: '#000000'});
+				chrome.browserAction.setIcon({path : { "128": "images/snow-night-128.png"}});
+				}			
+			else {
+				chrome.browserAction.setBadgeBackgroundColor({color: '#000000'});
+				chrome.browserAction.setIcon({path : { "128": "images/moon-128.png"}});
+			}
 		}
-									
-			updateTimeRelativeBadge = dayjs.unix(updateTime + offsetUnix).format('h:mm A');
-			if (setSettingUT == "u" && setSettingFC == "f") {
-				toolTipBadge = temperatureF + "° " + summary + "\n" + accufeelResultF + "° " + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
-				chrome.browserAction.setTitle({title: toolTipBadge});
+
+
+		function tempc() {
+			chrome.browserAction.setBadgeText({"text":temperatureC +"°C" });
+			badgeBackgroundImage();
+		}
+									 
+		function tempf() {
+			chrome.browserAction.setBadgeText({"text":temperatureF +"°F" });
+			badgeBackgroundImage();
+		}
+
+		function uvi() {
+			if (uv1>9) {
+	          chrome.browserAction.setBadgeText({"text": "UV"+ uv1});
+	        }
+	        else {
+	          chrome.browserAction.setBadgeText({"text": "UV "+ uv1});
+	        }
+			badgeBackgroundImage();
+		}
+
+
+		function UTFC() {
+		
+			chrome.storage.local.get(['setSettingFC', 'setSettingUT'], function(data) {
+			setSettingFC = data.setSettingFC;
+			setSettingUT = data.setSettingUT;
+	   		
+
+			if(typeof setSettingFC === 'undefined') {
+				if (country == "US" || country == "us" || country == "United States of America") {
+					setSettingFC = "f";
+					chrome.storage.local.set({'setSettingFC': 'f'});
+					} else {
+					setSettingFC = "c";
+					chrome.storage.local.set({'setSettingFC': 'c'});
 				}
-			else if (setSettingUT == "u" && setSettingFC == "c") {
-				toolTipBadge = temperatureC + "° " + summary + "\n" + accufeelResultC + "° " + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
-				chrome.browserAction.setTitle({title: toolTipBadge});
+			}
+
+			if(typeof setSettingUT === 'undefined') {
+				setSettingUT = "t";
+				chrome.storage.local.set({'setSettingUT': 't'});
+				if (country == "US" || country == "us" || country == "United States of America") {
+					tempf ();
+					} else {
+						tempc ();
+					 }
 				}
-			else if (setSettingUT == "t" && setSettingFC == "f") {
-				toolTipBadge = temperatureF + "° " + summary + "\n" + accufeelResultF + "° " + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
-				chrome.browserAction.setTitle({title: toolTipBadge});
+			else {
+				if(setSettingUT == "t") {
+					if (setSettingFC == "f") {
+						tempf ();}
+					else {
+					tempc ();}
 				}
-			else if (setSettingUT == "t" && setSettingFC == "c") {
-				toolTipBadge = temperatureC + "° " + summary + "\n" + accufeelResultC + "° " + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
-				chrome.browserAction.setTitle({title: toolTipBadge});
+				else {
+					uvi ();
 				};
-			return;
-	});
-
-
-
-
-
-
-
-
-
-
-
-}						
-	utfc = UTFC(function(value){	
+			}
+										
+				updateTimeRelativeBadge = dayjs.unix(updateTime + offsetUnix).format('h:mm A');
+				if(setSettingUT == "u" && setSettingFC == "f") {
+					toolTipBadge = temperatureF + "° " + summary + "\n" + accufeelResultF + "° " + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
+					chrome.browserAction.setTitle({title: toolTipBadge});
+					}
+				else if(setSettingUT == "u" && setSettingFC == "c") {
+					toolTipBadge = temperatureC + "° " + summary + "\n" + accufeelResultC + "° " + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
+					chrome.browserAction.setTitle({title: toolTipBadge});
+					}
+				else if(setSettingUT == "t" && setSettingFC == "f") {
+					toolTipBadge = temperatureF + "° " + summary + "\n" + accufeelResultF + "° " + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
+					chrome.browserAction.setTitle({title: toolTipBadge});
+					}
+				else if(setSettingUT == "t" && setSettingFC == "c") {
+					toolTipBadge = temperatureC + "° " + summary + "\n" + accufeelResultC + "° " + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
+					chrome.browserAction.setTitle({title: toolTipBadge});
+					};
+				return;
 			});
 
-	setTimeout(function(){
-		clearInterval(animatedBadgeInterval);   
-		}, 500);
-	setTimeout(badgeBackgroundImage, 550)
+		}
+		
+		if(navigator.onLine) {						
+			utfc = UTFC(function(value){	
+				});
+
+			setTimeout(function(){
+				clearInterval(animatedBadgeInterval);   
+				}, 500);
+			setTimeout(badgeBackgroundImage, 550)
+		}
 
 
-})
+	})
 
-} 
-
-	
-
-
-intervalUpdateTime = 1000 * 60 * 60; //miliseconds * seconds * minutes
-var intervalUpdateTimes = window.setInterval(_ => {
-	uvReader(city,latandlong,country)
-	}, intervalUpdateTime);
-
-
-chrome.runtime.onMessage.addListener(
-	function(request, sender, sendResponse){
-			if(request.msg == "backgroundUpdate") {
-			uvReader(city,latandlong,country);
-			}
-	}
-);
-
+}; 
 
 
 
 /* Check whether new version is installed */
 chrome.runtime.onInstalled.addListener(function(details) {
     /* other 'reason's include 'update' */
-    if (details.reason == "install") {
+    if(details.reason == "install" && (navigator.onLine)) {
         /* If first install, set uninstall URL */
         var uninstallGoogleFormLink = 'https://qsun.co/uv-weather-goodbye/';
         /* If Chrome version supports it... */
-        if (chrome.runtime.setUninstallURL) {
+        if(chrome.runtime.setUninstallURL) {
         	chrome.storage.local.clear();
             chrome.runtime.setUninstallURL(uninstallGoogleFormLink);
         }
     }
-});	
-
-
-
+});
