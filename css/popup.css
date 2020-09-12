@@ -92,10 +92,6 @@ html {
     padding: 0 30px 0 30px;
 }
 
-.image_background_Class {
-	opacity: 0.33;
-	filter: blur(25px);
-}
 .image_background {
 	position: absolute;
 	width: 250px;
@@ -587,7 +583,6 @@ html {
 	margin-right: 5px;
 	margin-bottom: 3px;
 }
-
 .solar_popup_page_Class {
 	position: absolute;
 	left: 280px;
@@ -685,10 +680,10 @@ html {
 	font-size: 12px;
 	line-height: 20px;
 	color: rgba(27,41,52,1);
-    padding: 60px 30px 0 30px;
+    padding: 30px 30px 0 30px;
     overflow: hidden;
     display: block;
-    white-space: normal !important; 
+    white-space: normal !important;
 }
 .title_subtitle_modal_Class {
 	position: relative;
@@ -816,4 +811,74 @@ html {
     overflow: hidden;
     display: block;
     white-space: normal !important; 
+}
+.info_popup_page_Class {
+	position: absolute;
+	left: 530px;
+	top: 10px;
+	display: flex;
+	flex-direction: row;
+	align-items: flex-end;
+	justify-content: center;
+}
+.info_popup_icon_Class {
+	position: relative;
+	width: 20px;
+	max-width: 20px;
+	height: 20px;
+	display: inline-block;
+	background-image: url("/images/info.svg");
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	vertical-align: center;
+}
+.supportUs_title_Class {
+	position: relative;
+	text-align: center;
+	font-weight: 550;
+	font-size: 16px;
+	line-height: 20px;
+	color: rgba(27,41,52,1);
+    padding: 60px 30px 0 30px;
+    overflow: hidden;
+    display: block;
+    white-space: normal !important;
+}
+.rateUs_text_Class {
+	position: relative;
+	text-align: center;
+	font-weight: 250;
+	font-size: 12px;
+	line-height: 20px;
+	color: rgba(27,41,52,1);
+    padding: 10px 30px 0 30px;
+    overflow: hidden;
+    display: block;
+    white-space: normal !important;
+}
+.link_rate_app_Class {
+	position: relative;
+	width: 105px;
+	max-width: 105px;
+	height: 18px;
+	display: inline-block;
+	background-image: url("/images/5-star-rating.png");
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	vertical-align: center;
+    margin-top: 5px;
+}
+.supportUs_text_Class {
+	position: relative;
+	text-align: center;
+	font-weight: 250;
+	font-size: 12px;
+	line-height: 20px;
+	color: rgba(27,41,52,1);
+    padding: 5px 10px 0 10px;
+    overflow: hidden;
+    display: block;
+    white-space: normal !important;
 }

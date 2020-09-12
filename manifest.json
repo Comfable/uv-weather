@@ -1,10 +1,10 @@
    {
     "name": "UV Weather",
-    "version": "1.0.24",
+    "version": "1.0.25",
     "description": "The best way to check the UV Index & weather forecast right in your browser.",
-    "permissions": [ "https://api.darksky.net/", "activeTab", "geolocation","storage" ],
+    "permissions": [ "activeTab", "https://api.darksky.net/", "geolocation","storage" ],
     "background": {
-    "scripts": ["/library/dayjs.min.js", "/library/util.js", "/library/jquery-3.4.1.min.js", "/js/background.js", "/library/accufeel.min.js", "/library/suncalc.js", "/library/jquery.powertip.min.js", "/library/jquery.modal.min.js"],
+    "scripts": ["/library/dayjs.min.js", "/library/util.js", "/library/jquery-3.4.1.min.js", "/js/background.js", "/library/accufeel.min.js", "/library/suncalc.js"],
     "persistent":true
     },
     "content_security_policy":"script-src 'self' https://www.google-analytics.com; object-src 'self'",

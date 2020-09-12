@@ -22,7 +22,7 @@
 </head>
 
 <body>
-  <aside id="image_background" class="image_background" style="width: 250px; height: 526px; left: 0px; top: 0px; background-color: #ffffff; border: 0px solid transparent;"></aside>
+  <aside id="image_background" class="image_background" style="width: 250px; height: 526px; left: 0px; top: 0px; background-color: #ffffff; border: 0px solid transparent; filter: brightness(75%);"></aside>
   <div id="current_icon_update" class="current_icon_update"></div>
   <div id="current_temp_group" class="current_temp_group_Class"> <span id="current_temp" class="current_temp_Class">17</span>
     <span>
@@ -155,6 +155,14 @@
       </span>
       </a>
     </div>
+    
+    <div>
+      <a id="info_popup_page" class="info_popup_page_Class blacklink" href="#info_popup" rel="modal:open">
+        <span id="info_popup_icon" class="info_popup_icon_Class">
+      </span>
+      </a>
+    </div>
+
     <!-- Setting Page -->
     <div id="setting_popup" class="setting_popup_Class modal">
       <div id="title_uv" class="title_uv_group_Class_setting">
@@ -669,7 +677,7 @@
 </div>
 
 
-<!-- Next Solar Page -->
+<!-- Solar Page -->
   <div id="solar_popup" class="solar_popup_Class modal">
 
     <div id="title_solar" class="title_uv_group_Class_setting">
@@ -759,6 +767,43 @@
         </div>
       </div>
     </div>
+
+
+    <!-- Info Page -->
+    <div id="info_popup" class="info_popup_Class modal">
+
+      <div id="title_uv" class="title_uv_group_Class_setting">
+        <div id="title_uv" class="title_uv_Class">UV Weather</div>
+        <div id="title_powered" class="title_powered_Class" title="Find out more on <br> offical <a target='_blank' href='https://qsun.co' class='whitelink'> QSun website</a>">powered by QSun<sup>®</sup>
+        </div>
+        <div id="title_version" class="title_version_Class">Version 1.0.10</div>
+    
+         <div id="aboutUs" class="aboutUs_Class">
+           Created in October of 2019 and based in Toronto, Canada, UV Weather is the best way to check the UV Index & weather forecast right in your browser.
+           <br><br>
+           UV Weather by <a target='_blank' href="https://comfable.com" class="blacklink">Comfable Inc.</a>
+           <br>
+           © Copyright 2019     
+         </div>
+
+         <div id="supportUs" class="supportUs_title_Class">
+           Make UV Weather Even Better!
+         </div>
+
+         <div id="rateUs" class="rateUs_text_Class">
+            <div> <a target='_blank' href="https://chrome.google.com/webstore/detail/uv-weather/ngeokhpbgoadbpdpnplcminbjhdecjeb" class="blacklink">Rate us on Chrome Web Store</a>
+              </div>
+            <div> <a target='_blank' href="https://chrome.google.com/webstore/detail/uv-weather/ngeokhpbgoadbpdpnplcminbjhdecjeb" class="blacklink"><span id="link_rate_app" class="link_rate_app_Class"></span></a>
+              </div>
+         <div id="supportUs" class="supportUs_text_Class">
+           Your support keeps UV Weather running.     
+         </div>
+
+        </div>
+
+    </div>
+
+
 </body>
 
 </html>
