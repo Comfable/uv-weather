@@ -84,12 +84,12 @@ function uvReader(city,latandlong,country) {
 	
 	window.result = result;
 
-	var isDay = false;
-	var isNight = false;
-	var cloudy = false;
-	var sunnyDay = false;
-	var rainy = false;
-	var snowy = false;
+	isDay = false;
+	isNight = false;
+	cloudy = false;
+	sunnyDay = false;
+	rainy = false;
+	snowy = false;
 
 		systemTime = new Date();
 		systemTimeUnix = Math.round((systemTime).getTime() / 1000);
@@ -136,7 +136,8 @@ function uvReader(city,latandlong,country) {
 	forecast_1_tempF = Math.round(result.daily.data[1].temperatureMax);
 
 	if (updateTime > sunriseTime && updateTime < sunsetTime) {
-			isDay = true;							     	
+
+			isDay = true;					     	
 		}
 			else {
 			isNight = true;							     	

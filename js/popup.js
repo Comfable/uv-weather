@@ -104,7 +104,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
   }
   uvRecommendation();
 
-
   function iconCurrent() {
   switch(b.icon) {
     case 'clear-day':
