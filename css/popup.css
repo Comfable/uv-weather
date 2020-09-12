@@ -908,7 +908,7 @@ html {
   -ms-border-radius: 0px !important;
   border-radius: 0px;
   background-color: rgb(0,0,0);
-  background-color: rgba(0,0,0,0.6);
+  background-color: rgba(0,0,0,0.7);
   z-index: 1000;
   display: none; 
   position: fixed;

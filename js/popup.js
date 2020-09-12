@@ -404,6 +404,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
 
   version_manifest = chrome.runtime.getManifest().version;
+  document.querySelector("#title_version").textContent = "Version " + version_manifest;
   document.querySelector("#title_version_setting").textContent = "Version " + version_manifest;
   document.querySelector("#title_version_info").textContent = "Version " + version_manifest;
 
@@ -497,10 +498,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
           }
 
 
-          if (typeof(cityProvince) !== 'undefined' && typeof(shortCountryCode) !== 'undefined') {
-              cityShortCountry = (cityProvince + ', ' + shortCountry).slice(0, 75);
-          }
-          else if (typeof(shortCountryCode) === 'undefined') {
+          if (typeof(shortCountryCode) !== 'undefined' && typeof(shortCountryCode) !== 'undefined') {
               cityShortCountry = cityProvince;
           }    
           else {
@@ -528,16 +526,19 @@ document.addEventListener("DOMContentLoaded", function(event) {
           chrome.storage.local.set({'cityPopup': city});
           chrome.storage.local.set({'countryPopup': country});
           chrome.storage.local.set({'fromSearch': "locationSearch"});
-          chrome.runtime.sendMessage({ msg: "fromSearchUpdate" });
-           
-           setTimeout(function(){
-              refreshPopup();
-           }, 750); 
+
+          setTimeout(function(){
+            chrome.runtime.sendMessage({ msg: "fromSearchUpdate" });
+            modalSetting.style.display = "none";
+          }, 50);
 
            setTimeout(function(){
-              modalSetting.style.display = "none";
+              refreshPopup();
+           }, 1050); 
+
+           setTimeout(function(){
               modalBlocker.style.display = "none";
-           }, 1000); 
+           }, 1500); 
 
 
       }
