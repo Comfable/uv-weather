@@ -653,11 +653,13 @@ function uvReader(city,latandlong,country) {
 	}
 
 
-	function UTFC(){
+	function UTFC() {
 	
 		chrome.storage.local.get(['setSettingFC', 'setSettingUT'], function(data) {
 		setSettingFC = data.setSettingFC;
 		setSettingUT = data.setSettingUT;
+   		
+
 		if (typeof setSettingFC === 'undefined') {
 			if (country == "US" || country == "us") {
 				setSettingFC = "f";

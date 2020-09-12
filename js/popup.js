@@ -11,24 +11,23 @@ $(document).ready(function(){
   country = b.country;
 
   function UTFC (){
-    chrome.storage.sync.get(['setSettingFC', 'setSettingUT'], function(data) {
+    chrome.storage.local.get(['setSettingFC', 'setSettingUT'], function(data) {
     setSettingFC = data.setSettingFC;
     setSettingUT = data.setSettingUT;
-
 
     if (typeof setSettingFC === 'undefined') {
          if (country == "US") {
              setSettingFC = "f";
-             chrome.storage.sync.set({'setSettingFC': 'f'});
+             chrome.storage.local.set({'setSettingFC': 'f'});
          } else {
             setSettingFC = "c";
-            chrome.storage.sync.set({'setSettingFC': 'c'});
+            chrome.storage.local.set({'setSettingFC': 'c'});
          }
       }
 
     if (typeof setSettingUT === 'undefined') {
         setSettingUT = "t";
-        chrome.storage.sync.set({'setSettingUT': 't'});
+        chrome.storage.local.set({'setSettingUT': 't'});
       }
 
     if (setSettingUT == "u") {
@@ -60,7 +59,7 @@ $(document).ready(function(){
       });
     }
     utfc = UTFC(function(value){  
-  });
+          });
     
 
   updateTimeRelative = "Updated " + moment.unix(b.updateTime).fromNow();
