@@ -1,15 +1,16 @@
-	var fromSearchs;
-	const amb = 'pk.eyJ1IjoiY29tZmFibGUiLCJhIjoiY2sybTF6Z3FpMGRkeTNscWxhMnNybnU3cyJ9.VDvM0a0jaMlLMwlqBI8kUw';
-	const ads = '2589e0786e11ce470e7d98e9153039f4';
-	chrome.runtime.onInstalled.addListener(function(details){
-	    if(details.reason == "install"){
-			chrome.storage.local.set({'fromSearch': "locationIP"});
-	        //console.log("This is a first install!");
-	    }else if(details.reason == "update"){
-	        var thisVersion = chrome.runtime.getManifest().version;
-	        //console.log("Updated from " + details.previousVersion + " to " + thisVersion + "!");
-	    }
-	});
+var fromSearchs;
+const amb = 'pk.eyJ1IjoiY29tZmFibGUiLCJhIjoiY2sybTF6Z3FpMGRkeTNscWxhMnNybnU3cyJ9.VDvM0a0jaMlLMwlqBI8kUw';
+const ads = '2589e0786e11ce470e7d98e9153039f4';
+chrome.runtime.onInstalled.addListener(function(details){
+    if(details.reason == "install"){
+		chrome.storage.local.set({'fromSearch': "locationIP"});
+		//chrome.tabs.create({url: "https://qsun.co/uv-weather-welcome/"});
+        //console.log("This is a first install!");
+    }else if(details.reason == "update"){
+        var thisVersion = chrome.runtime.getManifest().version;
+        //console.log("Updated from " + details.previousVersion + " to " + thisVersion + "!");
+    }
+});
 
 
 chrome.runtime.onMessage.addListener(
@@ -144,10 +145,10 @@ function uvReader(city,latandlong,country) {
 	if (icon === "cloudy" || icon === "partly-cloudy-day" || icon === "partly-cloudy-night") {
 			cloudy = true;							
 		}
-			else if (icon=== "rain" || icon=== "sleet"){
+			else if (icon=== "rain"){
 			rainy = true; 
 		}
-			else if (icon=== "snow"){
+			else if (icon=== "snow" || icon=== "sleet"){
 			snowy = true; 
 		}			else {
 			sunnyDay = true;
@@ -395,4 +396,21 @@ chrome.runtime.onMessage.addListener(
 			uvReader(city,latandlong,country);
 			}
 	}
-);	
+);
+
+
+
+
+/* Check whether new version is installed */
+chrome.runtime.onInstalled.addListener(function(details) {
+    /* other 'reason's include 'update' */
+    if (details.reason == "install") {
+        /* If first install, set uninstall URL */
+        var uninstallGoogleFormLink = 'https://qsun.co/uv-weather-goodbye/';
+        /* If Chrome version supports it... */
+        if (chrome.runtime.setUninstallURL) {
+        	chrome.storage.local.clear();
+            chrome.runtime.setUninstallURL(uninstallGoogleFormLink);
+        }
+    }
+});	

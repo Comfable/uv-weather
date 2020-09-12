@@ -16,7 +16,7 @@
 
 @font-face {
 	font-family: "Helvetica";
-	src: url("/font/helvetica.woff") format("woff");
+	src: url("/helvetica.woff") format("woff");
 }
 body {
 	background: #E5E5E5;

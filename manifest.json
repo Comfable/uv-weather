@@ -1,8 +1,8 @@
    {
     "name": "UV Weather",
-    "version": "1.0.29",
-    "description": "The best way to check the UV Index & weather forecast right in your browser.",
-    "permissions": [ "activeTab", "geolocation","storage" ],
+    "version": "1.0.30",
+    "description": "Instant weather updates. Easier than looking outside.",
+    "permissions": [ "activeTab","storage" ],
     "background": {
     "scripts": ["/library/dayjs.min.js", "/library/util.min.js", "/js/background.js", "/library/accufeel.min.js", "/library/suncalc.min.js"],
     "persistent":true
