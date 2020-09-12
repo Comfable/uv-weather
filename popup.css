@@ -100,11 +100,12 @@ html {
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
-	top: 35px;
-	left: 77.5px;
-	width: 95px;
-	height: 95px;
+	top: 25px;
+	left: 60px;
+	width: 130px;
+	height: 130px;
 	transform: matrix(1,0,0,1,0,0);
+	filter: invert(100%) drop-shadow( 1px 1px 1px rgba(0, 0, 0, .5));
 }
 .current_temp_group_Class {
 	position: absolute;

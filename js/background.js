@@ -38,8 +38,14 @@ fromSearchs = data.fromSearch;
 		  	 .then(function(result) {
 				countryAPI = JSON.stringify(result.country);
 				country = (countryAPI.split('"'))[1];
+				if (country == "ZZ") {
+					country = " "
+				}
 				city = JSON.stringify(result.city);
+				region = (JSON.stringify(result.region).split('"'))[1];
 				latandlong = JSON.stringify(result.cityLatLong);
+				fullname = ((city.split('"'))[1].charAt(0).toUpperCase() + (city.split('"'))[1].slice(1)) + ", " + region.toUpperCase() + ", " + country
+		  	 	chrome.storage.local.set({'fullname': fullname});
 				//latandlong = '"-13.9448,143.2027"';
 				uvReader(city,latandlong,country);
 		})
@@ -76,8 +82,7 @@ function uvReader(city,latandlong,country) {
 		latlong = (latandlong.split('"'))[1];
 		lat = (latlong.split(','))[0];
 		lon = (latlong.split(','))[1];
-
-
+		
 	fetch('https://uv-weather.herokuapp.com/https://api.darksky.net/forecast/' + ads +'/' + latlong + '?solar')
 	  	.then((resp) => resp.json())
 	  	.then(function(result) {				
