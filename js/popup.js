@@ -376,7 +376,7 @@ switch(forecast_icon) {
 
   var manifest = chrome.runtime.getManifest();
   version_manifest = manifest.version;
-  $("#title_version").html("Version " + version_manifest);
+  $(".title_version_Class").html("Version " + version_manifest);
 
 
 //Click events
@@ -414,8 +414,6 @@ switch(forecast_icon) {
       document.getElementById("setting_defualt_button_f").disabled = true;
       document.getElementById("setting_defualt_button_c").disabled = false;
   });
-
-
 
 function refreshPopup(){
   setTimeout(function() {
