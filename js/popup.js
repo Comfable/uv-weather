@@ -195,12 +195,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 
   function ctemp(){
-      document.querySelector("#current_report_dewPoint").textContent = b.dewPointC + "°";
+      document.querySelector("#current_report_dewPoint").textContent = b.dewPointC + "° C";
       document.querySelector("#current_temp").textContent = b.temperatureC;
-      document.querySelector("#current_report_temp").textContent = b.temperatureC + "°";
+      document.querySelector("#current_report_temp").textContent = b.temperatureC + "° C";
       document.querySelector("#temp_sign").textContent = "°C"
       document.querySelector("#current_accufeel").textContent = "AccuFeel " + b.accufeelResultC + "°";
-      document.querySelector("#current_report_accufeel").textContent = b.accufeelResultC + "°";
+      document.querySelector("#current_report_accufeel").textContent = b.accufeelResultC + "° C";
       document.querySelector("#current_temp_max").textContent = b.current_tempC_max + "°";
       document.querySelector("#current_temp_min").textContent = b.current_tempC_min + "°";
       document.querySelector("#forecast_tomorrow").textContent = b.update_tomorrow_c;
@@ -223,12 +223,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
   }
 
   function ftemp(){
-    document.querySelector("#current_report_dewPoint").textContent = b.dewPointF + "°";
+    document.querySelector("#current_report_dewPoint").textContent = b.dewPointF + "° F";
     document.querySelector("#current_temp").textContent = b.temperatureF;
-    document.querySelector("#current_report_temp").textContent = b.temperatureF + "°";
+    document.querySelector("#current_report_temp").textContent = b.temperatureF + "° F";
     document.querySelector("#temp_sign").textContent = "°F"
     document.querySelector("#current_accufeel").textContent = "AccuFeel " + b.accufeelResultF + "°";
-    document.querySelector("#current_report_accufeel").textContent = b.accufeelResultF + "°";    
+    document.querySelector("#current_report_accufeel").textContent = b.accufeelResultF + "° F";    
     document.querySelector("#current_temp_max").textContent = b.current_tempF_max + "°";
     document.querySelector("#current_temp_min").textContent = b.current_tempF_min + "°";
     document.querySelector("#forecast_tomorrow").textContent = b.update_tomorrow_f;
@@ -381,6 +381,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     for(i=1;i<25;i++){
       document.querySelector(`#forecast_${i}_hours`).textContent = dayjs.unix(b.result.hourly.data[i].time + b.offsetUnix).format('h A');
       document.querySelector(`#forecast_${i}_hours_uv`).textContent = "UVI " + Math.round((b.result.hourly.data[i].uvIndex) * uv_adj_daily(b.result.hourly.data[i].icon, b.result.hourly.data[i].cloudCover));
+      document.querySelector(`#forecast_${i}_hours_rain`).textContent = Math.round(((b.result.hourly.data[i].precipProbability) * 100)/5)*5 + "%";
     }
   
     var i;
@@ -679,7 +680,6 @@ document.querySelector("#next7_day").addEventListener("click", (e) => {
   });
 
 document.querySelector("#next48").addEventListener("click", (e) => {
-    modal7days.style.display = "none";
     modal48hours.style.display = "block";
     //modalBlocker.style.display = "block";
   });

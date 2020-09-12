@@ -341,7 +341,7 @@ html {
 	position: relative;
 	text-align: center;
 	font-weight: 250;
-	font-size: 19px;
+	font-size: 18px;
 	color: rgba(27,41,52,1);
 	width: 310px;
     margin: 0 auto;
@@ -350,7 +350,7 @@ html {
 	position: relative;
 	text-align: center;
 	font-weight: 250;
-	font-size: 12px;
+	font-size: 11px;
 	color: rgba(27,41,52,1);
 	width: 310px;
     margin: 0 auto;
@@ -455,7 +455,7 @@ html {
 .forecast_Class {
 	position: absolute;
 	left: 280px;
-	top: 250px;
+	top: 252px;
 }
 .one_day_Class {
 	position: relative;
@@ -483,8 +483,8 @@ html {
 }
 .forecast_uv_Class {
 	position: relative;
-	width: 50px;
-	max-width: 50px;
+	width: 60px;
+	max-width: 60px;
 	display: inline-block;
 	text-align: left;
 	font-weight: 250;
@@ -516,16 +516,7 @@ html {
 	background-size: cover;
 	border: 0px solid transparent;
 }
-.forecast_next7_day_Class {
-	position: relative;
-	width: 100px;
-	max-width: 100px;
-	display: inline-block;
-	text-align: left;
-	font-weight: 250;
-	font-size: 14px;
-	color: rgba(27,41,52,1);
-}
+
 .link_text_app_Class {
 	position: absolute;
 	left: 280px;
@@ -554,66 +545,7 @@ html {
 	vertical-align: center;
 }
 
-.setting_popup_page_Class {
-	position: absolute;
-	left: 450px;
-	top: 480px;
-	display: flex;
-	flex-direction: row;
-	align-items: flex-end;
-	justify-content: center;
-}
-.setting_popup_icon_Class {
-	position: relative;
-	width: 20px;
-	max-width: 20px;
-	height: 20px;
-	display: inline-block;
-	background-image: url("/images/settings.svg");
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: cover;
-	vertical-align: center;
-}
-.setting_popup_text_Class {
-	position: relative;
-	text-align: left;
-	font-weight: normal;
-	font-size: 12px;
-	color: rgba(27,41,52,1);
-	margin-right: 5px;
-	margin-bottom: 3px;
-}
-.solar_popup_page_Class {
-	position: absolute;
-	left: 280px;
-	top: 480px;
-	display: flex;
-	flex-direction: row;
-	align-items: flex-end;
-	justify-content: center;
-}
-.solar_popup_icon_Class {
-	position: relative;
-	width: 20px;
-	max-width: 20px;
-	height: 20px;
-	display: inline-block;
-	background-image: url("/images/sun.svg");
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: cover;
-	vertical-align: center;
-}
-.solar_popup_text_Class {
-	position: relative;
-	text-align: left;
-	font-weight: normal;
-	font-size: 12px;
-	color: rgba(27,41,52,1);
-	margin-right: 5px;
-	margin-bottom: 3px;
-}
+
 
 
 .blocker {
@@ -713,14 +645,14 @@ html {
 }
 .next48_table_Class {
 	position: absolute;
-	left: 50px;
-	right: 50px;
+	left: 30px;
+	right: 30px;
 	top: 170px;
 }
 .forecast_day_modal_Class {
 	position: relative;
-	width: 80px;
-	max-width: 80px;
+	width: 65px;
+	max-width: 65px;
 	display: inline-block;
 	text-align: left;
 	font-weight: 250;
@@ -729,8 +661,8 @@ html {
 }
 .forecast_uv_modal_Class {
 	position: relative;
-	width: 60px;
-	max-width: 60px;
+	width: 55px;
+	max-width: 55px;
 	display: inline-block;
 	text-align: left;
 	font-weight: 250;
@@ -740,20 +672,20 @@ html {
 }
 .forecast_temp_modal_Class {
 	position: relative;
-	width: 25px;
-	max-width: 25px;
+	width: 24px;
+	max-width: 24px;
 	display: inline-block;
 	text-align: right;
 	font-weight: 250;
 	font-size: 14px;
 	color: rgba(27,41,52,1);
-	padding-right: 5px;
+	padding-right: 2px;
 }
 .forecast_temp_min_modal_Class {
 	position: relative;
 	display: inline-block;
-	width: 25px;
-	max-width: 25px;
+	width: 24px;
+	max-width: 24px;
 	text-align: right;
 	font-weight: 250;
 	font-size: 14px;
@@ -785,27 +717,6 @@ html {
     overflow: hidden;
     display: block;
     white-space: normal !important; 
-}
-.info_popup_page_Class {
-	position: absolute;
-	left: 525px;
-	top: 15px;
-	display: flex;
-	flex-direction: row;
-	align-items: flex-end;
-	justify-content: center;
-}
-.info_popup_icon_Class {
-	position: relative;
-	width: 20px;
-	max-width: 20px;
-	height: 20px;
-	display: inline-block;
-	background-image: url("/images/info.svg");
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: cover;
-	vertical-align: center;
 }
 .supportUs_title_Class {
 	position: relative;
@@ -1014,6 +925,7 @@ html {
   transition: all 0.1s ease-in-out;
   -webkit-transition: all -webkit-transform 0.1s ease;
   overflow: hidden;
+  background-color: #ffffff;
 }
 
 .autoComplete_result {
@@ -1097,18 +1009,6 @@ html {
 
 .button_current_report_Class:focus { outline:0 !important; }
 
-.next48_Class {
-	position: absolute;
-	left: 0px;
-	top: 312px;
-	width: 100px;
-	max-width: 100px;
-	display: inline-block;
-	text-align: left;
-	font-weight: 250;
-	font-size: 14px;
-	color: rgba(27,41,52,1);
-}
 .current_report_title_Class {
 	position: relative;
 	width: 140px;
@@ -1137,7 +1037,7 @@ html {
 	position: relative;
 	width: 220px;
 	max-width: 220px;
-	margin: 25px 40px 0 40px;
+	margin: 25px 30px 0 30px;
 }
 
 .modal_report {
@@ -1160,11 +1060,91 @@ html {
 }
 
 .uv_weather_logo_Class {
-	width: 70px;
-	height: 70px;
-	margin-bottom: 7px; 
+	width: 60px;
+	height: 60px;
+	margin-bottom: 3px; 
 }
 
 .setting_currentLocation_title_class{
-	margin-top: 50px;
+	margin-top: 55px;
 }
+.icon_raindrop_Class {
+	width: 10px;
+	height: 10px; 
+	margin-left: 15px;
+	margin-top: 2px;
+	margin-right: 0;
+	padding-right: 0;
+}
+.forecast_rain_modal_Class {
+	position: relative;
+	width: 25px;
+	max-width: 25px;
+	display: inline-block;
+	text-align: left;
+	font-weight: 250;
+	font-size: 14px;
+	color: rgba(27,41,52,1);
+	margin-right: 10px;
+	margin-left: 0;
+	padding-left: 0;
+}
+.forecast_uv_daily_modal_Class {
+	position: relative;
+	width: 55px;
+	max-width: 55px;
+	display: inline-block;
+	text-align: left;
+	font-weight: 250;
+	font-size: 14px;
+	color: rgba(27,41,52,1);
+	padding-left: 25px;
+}
+
+.icon_play_Class {
+	position: relative;
+	width: 10px;
+	max-width: 10px;
+	height: 10px;
+	display: inline-block;
+  	background-image: url("/images/angle-arrow-pointing-to-right.svg");
+ 	background-position: center;
+  	background-repeat: no-repeat;
+  	background-size: cover;
+  	cursor: pointer;
+  }
+
+.main_menu_Class {
+	position: absolute;
+	left: 250px;
+	top: 465px;
+	margin-left: 20px;
+}
+.main_menu_culumn_Class{
+	position: relative;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	width: 270px;
+}
+.sub_menu_culumn_Class {
+	width: 55px;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	text-align: center;
+	vertical-align: middle;
+}
+.sub_menu_icon_Class {
+	width: 23px;
+	height: 23px;
+	/*filter: opacity(50%) drop-shadow( 1px 1px 1px rgba(0, 0, 0, .4));*/
+	filter: opacity(70%);
+}
+.sub_menu_text_Class {
+	font-weight: 250;
+	font-size: 9px;
+	color: rgba(27,41,52,1);
+}
+
