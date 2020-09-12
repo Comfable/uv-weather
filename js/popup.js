@@ -77,38 +77,22 @@ $(document).ready(function(){
   
 
   function uvIconFunction() {
-      $("#icon_uv_1").css('opacity', '.3');
-      $("#icon_uv_2").css('opacity', '.3');
-      $("#icon_uv_3").css('opacity', '.3');
-      $("#icon_uv_4").css('opacity', '.3');
-      $("#icon_uv_5").css('opacity', '.3');
-      $("#icon_uv_6").css('opacity', '.3');
+      $("#icon_uv_1, #icon_uv_2, #icon_uv_3, #icon_uv_4, #icon_uv_5, #icon_uv_6").css('opacity', '.3');
   
   if (b.uv1 == 1) {
       $("#icon_uv_1").css('opacity', '1');
     }
   else if (b.uv1 == 2) {
-      $("#icon_uv_1").css('opacity', '1');
-      $("#icon_uv_2").css('opacity', '1');
+      $("#icon_uv_1, #icon_uv_2").css('opacity', '1');
     }
   else if (b.uv1 >= 3 && b.uv1 <= 5) {
-      $("#icon_uv_1").css('opacity', '1');
-      $("#icon_uv_2").css('opacity', '1');
-      $("#icon_uv_3").css('opacity', '1');
+      $("#icon_uv_1, #icon_uv_2, #icon_uv_3").css('opacity', '1');
     }
   else if (b.uv1 >= 6 && b.uv1 <= 7) {
-      $("#icon_uv_1").css('opacity', '1');
-      $("#icon_uv_2").css('opacity', '1');
-      $("#icon_uv_3").css('opacity', '1');
-      $("#icon_uv_4").css('opacity', '1');
+      $("#icon_uv_1, #icon_uv_2, #icon_uv_3, #icon_uv_4").css('opacity', '1');
     }
   else if (b.uv1 >= 8) {
-      $("#icon_uv_1").css('opacity', '1');
-      $("#icon_uv_2").css('opacity', '1');
-      $("#icon_uv_3").css('opacity', '1');
-      $("#icon_uv_4").css('opacity', '1');
-      $("#icon_uv_5").css('opacity', '1');
-      $("#icon_uv_6").css('opacity', '1');
+      $("#icon_uv_1, #icon_uv_2, #icon_uv_3, #icon_uv_4, #icon_uv_5, #icon_uv_6").css('opacity', '1');
     }
   }
   uvIconFunction();
@@ -206,13 +190,7 @@ for (p = 1; p < 8; p++) {
 var i;
 for (i = 1; i < 8; i++) {
 
-  if (i == 1) {forecast_icon = b.forecast_1_icon;}
-  else if (i == 2) {forecast_icon = b.forecast_2_icon;}
-  else if (i == 3) {forecast_icon = b.forecast_3_icon;}
-  else if (i == 4) {forecast_icon = b.forecast_4_icon;}
-  else if (i == 5) {forecast_icon = b.forecast_5_icon;}
-  else if (i == 6) {forecast_icon = b.forecast_6_icon;}
-  else if (i == 7) {forecast_icon = b.forecast_7_icon;}
+  forecast_icon = b[`forecast_${i}_icon`]; 
 
   switch(forecast_icon) {
     case 'clear-day':
@@ -273,32 +251,9 @@ for (i = 1; i < 8; i++) {
     }
   }
 
-  var j;
+  var i;
   for (i = 1; i < 25; i++) {
-    if (i == 1) {forecast_hours_icon = b.forecast_1_hours_icon;}
-    else if (i == 2) {forecast_hours_icon = b.forecast_2_hours_icon;}
-    else if (i == 3) {forecast_hours_icon = b.forecast_3_hours_icon;}
-    else if (i == 4) {forecast_hours_icon = b.forecast_4_hours_icon;}
-    else if (i == 5) {forecast_hours_icon = b.forecast_5_hours_icon;}
-    else if (i == 6) {forecast_hours_icon = b.forecast_6_hours_icon;}
-    else if (i == 7) {forecast_hours_icon = b.forecast_7_hours_icon;}
-    else if (i == 8) {forecast_hours_icon = b.forecast_8_hours_icon;}
-    else if (i == 9) {forecast_hours_icon = b.forecast_9_hours_icon;}
-    else if (i == 10) {forecast_hours_icon = b.forecast_10_hours_icon;}
-    else if (i == 11) {forecast_hours_icon = b.forecast_11_hours_icon;}
-    else if (i == 12) {forecast_hours_icon = b.forecast_12_hours_icon;}
-    else if (i == 13) {forecast_hours_icon = b.forecast_13_hours_icon;}
-    else if (i == 14) {forecast_hours_icon = b.forecast_14_hours_icon;}
-    else if (i == 15) {forecast_hours_icon = b.forecast_15_hours_icon;}
-    else if (i == 16) {forecast_hours_icon = b.forecast_16_hours_icon;}
-    else if (i == 17) {forecast_hours_icon = b.forecast_17_hours_icon;}
-    else if (i == 18) {forecast_hours_icon = b.forecast_18_hours_icon;}
-    else if (i == 19) {forecast_hours_icon = b.forecast_19_hours_icon;}
-    else if (i == 20) {forecast_hours_icon = b.forecast_20_hours_icon;}
-    else if (i == 21) {forecast_hours_icon = b.forecast_21_hours_icon;}
-    else if (i == 22) {forecast_hours_icon = b.forecast_22_hours_icon;}
-    else if (i == 23) {forecast_hours_icon = b.forecast_23_hours_icon;}
-    else if (i == 24) {forecast_hours_icon = b.forecast_24_hours_icon;}
+    forecast_hours_icon = b.result.hourly.data[i].icon;
 
   switch(forecast_hours_icon) {
     case 'clear-day':
@@ -350,7 +305,7 @@ for (i = 1; i < 8; i++) {
 
 
   $("#location").html(b.citys);
-  $("#current_uv").html(b.current_uv);
+  $("#current_uv").html(b.uv1);
   $("#current_uv_note").html(b.current_uv_note);
 
   function ctemp(){
@@ -551,7 +506,7 @@ for (i = 1; i < 8; i++) {
     $("#next48_update_date").html('Updated at ' + moment.unix(b.updateTime + b.offsetUnix).format('MMM Do, h:mm A'));
     for(i=1;i<25;i++){
         $(`#forecast_${i}_hours`).html(moment.unix(b.result.hourly.data[i].time + b.offsetUnix).format('h A'));
-        $(`#forecast_${i}_hours_uv`).html(b[`forecast_${i}_hours_uv`]);
+        $(`#forecast_${i}_hours_uv`).html("UVI " + Math.round((b.result.hourly.data[i].uvIndex) * uv_adj_daily(b.result.hourly.data[i].icon, b.result.hourly.data[i].cloudCover)));
     }
   }
   next48Function();
@@ -559,37 +514,29 @@ for (i = 1; i < 8; i++) {
   function refreshPopup(){
     setTimeout(function(){
 
-      updateTimeRelative = "Updated " + moment.unix(b.updateTime).fromNow();
-      $('#current_temp').data('powertip', updateTimeRelative);
-      //$('#current_uv_group').data('powertip', updateTimeRelative);
+    updateTimeRelative = "Updated " + moment.unix(b.updateTime).fromNow();
+    $('#current_temp').data('powertip', updateTimeRelative);
+    //$('#current_uv_group').data('powertip', updateTimeRelative);
 
-      temperatureF = b.temperatureF;
-      temperatureC = b.temperatureC;
+    if (setSettingFC == "c"){
+      ctemp();
+    }
+    else{
+       ftemp();
+    }
 
-      if (setSettingFC == "c"){
-        ctemp();
-      }
-      else{
-        ftemp();
-      }
+    $("#location").html(b.citys);
+    $("#current_uv").html(b.current_uv);
+    $("#current_uv_note").html(b.current_uv_note);
 
-      city = b.city;
-      current_uv = b.current_uv;
-      current_uv_note = b.current_uv_note;
-      uv1 = b.uv1;
-      $("#location").html(b.citys);
-      $("#current_uv").html(current_uv);
-      $("#current_uv_note").html(current_uv_note);
+    $('#current_icon_update').data('powertip', b.summary);
 
-      $('#current_icon_update').data('powertip', b.summary);
+    iconRefreshFunction();
 
-     icon = b.icon;
-     iconRefreshFunction();
-
-     uvIconFunction();
-     solarFunction();
-     next48Function();
-     next7Function();
+    uvIconFunction();
+    solarFunction();
+    next48Function();
+    next7Function();
     }, 500);
   }
 

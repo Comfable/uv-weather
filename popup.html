@@ -3,8 +3,9 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>UV Weather</title>
+    <script src="/library/util.js"></script>
     <script src="/library/accufeel.min.js"></script> 
-    <script type="text/javascript" src="/library/suncalc.js"></script>
+    <script src="/library/suncalc.js"></script>
     <script src="/library/jquery-3.4.1.min.js"></script>
     <link href="/css/popup.css" media="screen" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="/js/background.js"></script>
@@ -70,7 +71,8 @@
 
   <div id="group_uv" class="group_uv_Class">
     <div id="current_uv_group" class="current_uv_group_Class">
-      <span id="current_uv" class="current_uv_Class">UV Index -</span>
+      <span id="current_uv_title" class="current_uv_title_Class">UV Index</span>
+      <span id="current_uv" class="current_uv_Class">-</span>
       <span id="current_uv_note" class="current_uv_note_Class">(-)</span>
     </div>
 
