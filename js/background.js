@@ -219,7 +219,12 @@ function uvReader(city,latandlong,country) {
 		function GetWeatherBackground(icon) {
 		  switch(icon) {
 		    case 'clear-day':
+            	if (isDay) {
 		  			galleryID = '72157711948824252';
+		  		}
+		  		else {
+		  			galleryID = '72157711948534226';
+		  		}
 		      break;
 		    case 'clear-night':
 		  			galleryID = '72157711948534226';
@@ -273,7 +278,12 @@ function uvReader(city,latandlong,country) {
 		              }
 		      break;
 		    case 'partly-cloudy-day':
+            	if (isDay) {
 		  			galleryID = '72157711950434293';
+		  		}
+		  		else {
+		  			galleryID = '72157711948913902';
+		  		}		  			
 		      break;
 		    case 'partly-cloudy-night':
 		  			galleryID = '72157711948913902';
@@ -363,7 +373,7 @@ function uvReader(city,latandlong,country) {
 		uv1 = Math.round(uvCurrently * cloudAdj);
 
 		if (isNight) {
-			current_uv_note = (" (Night)");
+			current_uv_note = (" (night)");
 			}
 		else if (uv1 >= 0 && uv1 <= 2) {
 			current_uv_note = (" (Low)");

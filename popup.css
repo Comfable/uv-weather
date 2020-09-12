@@ -330,38 +330,42 @@ html {
 
 .title_uv_group_Class {
 	position: absolute;
-	left: 250px;
-	top: 50px;
-	text-align: center;	
+	left: 325px;
+	top: 80px;
+	display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+.uv_weather_logo_Class {
+	width: 50px;
+	height: 50px;
+	padding-right: 5px;
 }
 .title_uv_Class {
 	position: relative;
-	text-align: center;
-	font-weight: 250;
-	font-size: 18px;
+	text-align: left;
+	font-size: 15px;
 	color: rgba(27,41,52,1);
-	width: 310px;
-    margin: 0 auto;
 }
 .title_powered_Class {
 	position: relative;
-	text-align: center;
+	text-align: left;
 	font-weight: 250;
-	font-size: 11px;
+	font-size: 9px;
 	color: rgba(27,41,52,1);
-	width: 310px;
-    margin: 0 auto;
 }
 .title_version_Class {
 	position: relative;
-	text-align: center;
+	text-align: left;
 	font-weight: 250;
-	font-size: 12px;
+	font-size: 9px;
 	color: rgba(27,41,52,1);
-	width: 310px;
-    margin: 0 auto;
-    margin-top: 10px;
+	margin-top: 2px;
 }
+
+
+
 .forecast_tomorrow_Class {
 	position: absolute;
 	left: 250px;
@@ -376,9 +380,9 @@ html {
 .setting_popup_Class {
 	padding-top: 455px !important;
 }
-.setting_search_text_class{
+.search_search_text_class {
 	position: absolute;
-	top: 118px;
+	top: 78px;
 	text-align: left;
 	font-weight: 250;
 	font-size: 12px;
@@ -388,6 +392,10 @@ html {
     overflow: hidden;
     display: block;
     white-space: normal !important; 	
+}
+
+.search_currentLocation_title_class {
+	margin-top: 15px;
 }
 
 .setting_title_badge_Class {
@@ -559,7 +567,7 @@ html {
 .title_uv_group_Class_setting {
 	position: absolute;
 	left: 0px;
-	top: 75px;
+	top: 70px;
 }
 .aboutUs_Class {
 	position: relative;
@@ -705,8 +713,23 @@ html {
     white-space: normal !important;
     text-align: center;
 }
+
+.text_setting_Class {
+	position: absolute;
+	top: 135px;
+	text-align: left;
+	font-weight: 250;
+	font-size: 12px;
+	line-height: 20px;
+	color: rgba(27,41,52,1);
+    padding: 10px 30px 0 30px;
+    overflow: hidden;
+    display: block;
+    white-space: normal !important;
+}
 .supportUs_title_Class {
-	position: relative;
+	position: absolute;
+	top: 280px;
 	text-align: center;
 	font-weight: 550;
 	font-size: 16px;
@@ -718,7 +741,8 @@ html {
     white-space: normal !important;
 }
 .rateUs_text_Class {
-	position: relative;
+	position: absolute;
+	top: 325px;
 	text-align: center;
 	font-weight: 250;
 	font-size: 12px;
@@ -851,13 +875,14 @@ html {
 .setting_unit_badge_Class {
 	position: absolute;
 	left: 30px;
-	top: 380px;
+	top: 200px;
   	font-size: 11px;
 }
 
 .searchBox_Class {
-	position: relative;
-	margin: 20px 30px 0 30px;
+	position: absolute;
+	top: 53px;
+	margin: 0 30px 0 30px;
 }
 
 #autoComplete_wrapper {
@@ -882,7 +907,7 @@ html {
   -webkit-appearance: none;
   box-sizing: border-box;
   height: 40px;
-  width: 100%;
+  width: 250px;
   background-image: url("/images/icon_search.png");
   background-repeat: no-repeat;
   background-position: right 10px center;
@@ -897,6 +922,7 @@ html {
   -webkit-transition: all -webkit-transform 0.1s ease;
   overflow: hidden;
   background-color: #ffffff;
+  width: 250px;  
 }
 
 .autoComplete_result {
@@ -1006,7 +1032,7 @@ html {
 	position: relative;
 	width: 220px;
 	max-width: 220px;
-	margin: 46px 30px 0 30px;
+	margin: 23px 30px 0 30px;
 }
 
 .modal_report {
@@ -1026,12 +1052,6 @@ html {
   border-radius: 0px !important;
   background-color: #ffffff;
   z-index: 1200;
-}
-
-.uv_weather_logo_Class {
-	width: 60px;
-	height: 60px;
-	margin-bottom: 3px; 
 }
 
 .setting_currentLocation_title_class{
@@ -1087,7 +1107,7 @@ html {
 	position: absolute;
 	left: 250px;
 	top: 468px;
-	margin-left: 20px;
+	margin-left: 10px;
 }
 .main_menu_Class {
 	position: absolute;
@@ -1100,10 +1120,10 @@ html {
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
-	width: 270px;
+	width: 290px;
 }
 .sub_menu_culumn_Class {
-	width: 55px;
+	width: 60px;
 	align-items: center;
 	justify-content: center;
 	align-content: center;
@@ -1308,7 +1328,7 @@ html {
 }
 
 .resp-sharing-button--linkedin:hover {
-  filter: invert(20%) sepia(41%) saturate(7105%) hue-rotate(186deg) brightness(101%) contrast(101%)
+  filter: invert(20%) sepia(41%) saturate(7105%) hue-rotate(186deg) brightness(101%) contrast(101%);
 }
 
 .modal_noInternet {
@@ -1376,14 +1396,29 @@ html {
 	line-height: 26px;
 }
 
-/*.search_home_Class {
+.search_home_Class {
 	position: absolute;
-	right: 10px;
-  	top: 10px;
+	right: 15px;
+  	top: 15px;
 }
 
 .menu_home_Class {
 	position: absolute;
-	left: 250px;
-  	top: 10px;
-}*/
+	right: 10px;
+  	top: 15px;
+}
+
+.title_page_Class {
+	position: relative;
+	text-align: center;
+	font-size: 15px;
+	color: rgba(27,41,52,1);
+}
+.top_menu_icon_Class {
+	width: 17px;
+	height: 17px;
+	filter: opacity(50%);
+}
+.top_menu_icon_Class:hover {
+	filter: invert(48%) sepia(52%) saturate(2544%) hue-rotate(342deg) brightness(101%) contrast(101%);
+}

@@ -169,35 +169,40 @@
 
   </div>
 
-<!--   <div class="search_home_Class"> 
+  <div class="search_home_Class"> 
     <a id="search_popup_page" class="search_popup_page_Class blacklink">
-      <img src="images/search.svg" class="sub_menu_icon_Class" />
+      <img src="images/search.svg" class="top_menu_icon_Class" />
     </a>
   </div>
 
-  <div class="menu_home_Class"> 
+<!--   <div class="menu_home_Class"> 
     <a id="menu_popup_page" class="menu_popup_page_Class blacklink">
-      <img src="images/menu.svg" class="sub_menu_icon_Class" />
+      <img src="images/menu.svg" class="top_menu_icon_Class" />
     </a>
   </div> -->
 
-  <div id="UV_Weather" class="UV_Weather_Class">
     <div id="forecast_tomorrow" class="forecast_tomorrow_Class"> <span>Forecast Tomorrow</span>
     </div>
+
+
     <div id="title_uv" class="title_uv_group_Class">
 
-    <img id="uv_weather_logo" src="images/uv-weather.svg" class="uv_weather_logo_Class" />
 
-
-      <div id="title_uv" class="title_uv_Class">UV Weather</div>
-      <a target='_blank' href="https://qsun.co/?utm_source=uvweather&utm_medium=extension&utm_campaign=UV%20Weather" class="blacklink"> 
+      <img id="uv_weather_logo" src="images/uv-weather.svg" class="uv_weather_logo_Class" /></img>
+        <span>
+          <span id="title_uv" class="title_uv_Class">UV WEATHER</span>
           <a target='_blank' href="https://qsun.co/?utm_source=uvweather&utm_medium=extension&utm_campaign=UV%20Weather" class="blacklink"> 
-            <div id="title_powered" class="title_powered_Class">powered by QSun<sup>®</sup>
-          </a>
-      </a>  
-      </div>
-      <!-- <div id="title_version" class="title_version_Class">Version 1.0.10</div> -->    
+              <a target='_blank' href="https://qsun.co/?utm_source=uvweather&utm_medium=extension&utm_campaign=UV%20Weather" class="blacklink"> 
+                <div id="title_powered" class="title_powered_Class">powered by QSun<sup>®</sup></div>
+              </a>
+          </a>  
+          <div id="title_version_home" class="title_version_Class">Version 1.0.10</div>
+        </span>
+
     </div>
+
+
+
     <div id="forecast" class="forecast_Class">
       <div id="one_day" class="one_day_Class"> <span id="forecast_1_day" class="forecast_day_Class">
         1
@@ -242,7 +247,6 @@
 
   </div>
 
-  <div>
 
 
 
@@ -296,7 +300,7 @@
           <div>
             <img src="images/settings.svg" id="setting_icon_popup_page" class="sub_menu_icon_Class" />
             </div>
-            <div class="sub_menu_text_Class">Setting
+            <div class="sub_menu_text_Class">Settings
           </div>
           </a>
         </span>
@@ -306,63 +310,28 @@
 
 
 
-    <!-- Setting Page -->
-      <div id="setting_popup" class="modal">
-      <div id="setting_popup_close" class="modal_close"></div>
-      <div id="title_uv_top" class="title_uv_group_Class_setting">
-        <div id="title_uv" class="title_uv_Class">UV Weather</div>
-          <a target='_blank' href="https://qsun.co/?utm_source=uvweather&utm_medium=extension&utm_campaign=UV%20Weather" class="blacklink"> 
-            <div id="title_powered" class="title_powered_Class">powered by QSun<sup>®</sup>
-          </a> 
-
-          <div id="title_version_setting" class="title_version_Class">Version 1.0.10</div>
-      </div>
-
-
+    <!-- Search Page -->
+      <div id="search_popup" class="modal">
+        <div id="search_popup_close" class="modal_close"></div>
         <div id="searchBox" class="searchBox_Class">
 
             <input type="search" id="autoComplete" placeholder="Enter your city or town"/>
 
         </div>
 
-        <div id="setting_search_text" class="setting_search_text_class">By default, UV Weather uses your current location. However, you can select a different location.
+        <div id="search_search_text" class="search_search_text_class">By default, UV Weather uses your current location. However, you can select a different location.
 
-          <div id="setting_currentLocation_title" class="setting_currentLocation_title_class">Current Location:<b></div>
-          <div id="setting_currentLocation_text" class="setting_currentLocation_text_class"><b>-<b></div>
+          <div id="search_currentLocation_title" class="search_currentLocation_title_class">Current Location:<b></div>
+          <div id="search_currentLocation_text" class="search_currentLocation_text_class"><b>-<b></div>
         </div>
       </div>
 
 
-      <div id="setting_unit_badge" class="setting_unit_badge_Class">
-          <div id="setting_temp" class="setting_title_temp_Class"> <span style="margin-right: 23px;">
-            UNIT
-            </span>
-            <span id="setting_body_temp" class="setting_body_temp_Class">
-                <label style="margin-right: 10px;">
-                    <input type="radio" id="setting_defualt_button_f" style="vertical-align: middle; margin-top: -2px;" name="radioTemp">
-                       <span  class="setting_defualt_button_tempf_Class"></span>°F</label>
-            <label>
-              <input type="radio" id="setting_defualt_button_c" style="vertical-align: middle; margin-top: -2px; margin-left: 9px;" name="radioTemp"> <span class="setting_defualt_text_tempc_Class"></span>°C</label>
-            </span>
-          </div>
-          <div id="setting_badge" class="setting_title_badge_Class"> <span style="margin-right: 10px;">
-             BADGE
-            </span>
-            <span id="setting_body_badge" class="setting_body_badge_Class">
-                <label style="margin-right: 13px;">
-                  <input type="radio" id="setting_defualt_button_u" style="vertical-align: middle; margin-top: -2px;" name="radioBadge">
-                   <span  class="setting_defualt_text_uv_Class"></span>UVI</label>
-            <label>
-              <input type="radio" id="setting_defualt_button_t" style="vertical-align: middle; margin-top: -2px;" name="radioBadge"> <span class="setting_defualt_text_temp_Class"></span>Temperature</label>
-            </span>
-          </div>
-      </div>
-    </div>
     <!-- Next 48 Hours Page -->
     <div id="next48_popup" class="modal_next48">
       <!-- <div id="next48_popup_close" class="modal_close"></div> -->
       <div id="title_next48" class="title_uv_group_Class_setting">
-        <div id="title_next48_text" class="title_uv_Class">Next 24 Hours</div>
+        <div id="title_next48_text" class="title_page_Class">Next 24 Hours</div>
         <div id="next48_update_date" class="title_subtitle_modal_Class">October 25, 2019</div>
       </div>
       <div class="next48_table_Class">
@@ -818,7 +787,7 @@
     <div id="currentReport_popup" class="modal_report">
           <div id="report_popup_close" class="modal_close"></div>
       <div id="title_report" class="title_uv_group_Class_setting">
-            <div id="title_report_text" class="title_uv_Class">Current</div>
+            <div id="title_report_text" class="title_page_Class">Current</div>
             <div id="report_update_date" class="title_subtitle_modal_Class">October 25, 2019</div>
             <div id="current_report_summary" class="title_subtitle_modal_Class">-</div>
 
@@ -980,7 +949,7 @@
     <div id="next7_popup" class="modal">
       <!-- <div id="next7_popup_close" class="modal_close"></div> -->
       <div id="title_next7" class="title_uv_group_Class_setting">
-        <div id="title_next7_text" class="title_uv_Class">Next 7 Days</div>
+        <div id="title_next7_text" class="title_page_Class">Next 7 Days</div>
         <div id="next7_update_date" class="title_subtitle_modal_Class">October 25, 2019</div>
       </div>
       <div class="next7_table_Class">
@@ -1112,7 +1081,7 @@
   <div id="solar_popup" class="modal">
     <!-- <div id="solar_popup_close" class="modal_close"></div> -->
     <div id="title_solar" class="title_uv_group_Class_setting">
-        <div id="title_solar_text" class="title_uv_Class">
+        <div id="title_solar_text" class="title_page_Class">
           Solar Times
         </div>
         <div id="solar_now_date" class="title_subtitle_modal_Class">
@@ -1217,24 +1186,47 @@
     </div>
 
 
-    <!-- Info Page -->
-    <div id="info_popup" class="modal">
-    <!-- <div id="info_popup_close" class="modal_close"></div> -->
-      <div id="title_uv" class="title_uv_group_Class_setting">
-        <div id="title_uv" class="title_uv_Class">UV Weather</div>
-          <a target='_blank' href="https://qsun.co/?utm_source=uvweather&utm_medium=extension&utm_campaign=UV%20Weather" class="blacklink"> 
-            <div id="title_powered" class="title_powered_Class">powered by QSun<sup>®</sup>
-          </a> 
+    <!-- Setting Page -->
+    <div id="setting_popup" class="modal">
+
+        <div id="title_solar" class="title_uv_group_Class_setting">
+            <div id="title_solar_text" class="title_page_Class">
+              Settings
+            </div>
+            <div id="title_version_setting" class="title_subtitle_modal_Class">
+             Version 1.0.10
+            </div>
         </div>
-        <div id="title_version_info" class="title_version_Class">Version 1.0.10</div>
-    
-         <div id="aboutUs" class="aboutUs_Class">
-           Created in October of 2019 and based in Toronto, Canada, UV Weather is the best way to check the UV Index & weather forecast right in your browser.
-           <br><br>
-           UV Weather by <a target='_blank' href="https://comfable.com/?utm_source=uvweather&utm_medium=extension&utm_campaign=UV%20Weather" class="blacklink">Comfable Inc.</a>
-           <br>
-           © Copyright 2019     
-         </div>
+
+            <div id="text_setting" class="text_setting_Class">
+                Select your default temperature unit and the notification icon
+            </div>
+
+        <div id="setting_unit_badge" class="setting_unit_badge_Class">
+            <div id="setting_temp" class="setting_title_temp_Class"> <span style="margin-right: 23px;">
+              UNIT
+              </span>
+              <span id="setting_body_temp" class="setting_body_temp_Class">
+                  <label style="margin-right: 10px;">
+                      <input type="radio" id="setting_defualt_button_f" style="vertical-align: middle; margin-top: -2px;" name="radioTemp">
+                         <span  class="setting_defualt_button_tempf_Class"></span>°F</label>
+              <label>
+                <input type="radio" id="setting_defualt_button_c" style="vertical-align: middle; margin-top: -2px; margin-left: 9px;" name="radioTemp"> <span class="setting_defualt_text_tempc_Class"></span>°C</label>
+              </span>
+            </div>
+            <div id="setting_badge" class="setting_title_badge_Class"> <span style="margin-right: 10px;">
+               BADGE
+              </span>
+              <span id="setting_body_badge" class="setting_body_badge_Class">
+                  <label style="margin-right: 13px;">
+                    <input type="radio" id="setting_defualt_button_u" style="vertical-align: middle; margin-top: -2px;" name="radioBadge">
+                     <span  class="setting_defualt_text_uv_Class"></span>UVI</label>
+              <label>
+                <input type="radio" id="setting_defualt_button_t" style="vertical-align: middle; margin-top: -2px;" name="radioBadge"> <span class="setting_defualt_text_temp_Class"></span>Temperature</label>
+              </span>
+            </div>
+        </div>
+
 
          <div id="supportUs" class="supportUs_title_Class">
            Make UV Weather Even Better!
@@ -1252,6 +1244,12 @@
         </div>
 
     </div>
+
+
+
+
+
+
 
 
 </body>

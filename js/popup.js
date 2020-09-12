@@ -13,7 +13,7 @@ if(navigator.onLine) {
   country = b.country;
 
   chrome.storage.local.get('fullname', function(data) {
-    document.querySelector("#setting_currentLocation_text").textContent = data.fullname;
+    document.querySelector("#search_currentLocation_text").textContent = data.fullname;
   });
   
 
@@ -210,7 +210,12 @@ if(navigator.onLine) {
 
   switch(b.icon) {
     case 'clear-day':
+      if (b.isDay) {
       document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_clear-day.svg")';
+        }
+        else {
+      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_clear-night.svg")';
+        }
       break;
     case 'clear-night':
       document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_clear-night.svg")';
@@ -234,7 +239,12 @@ if(navigator.onLine) {
       document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_cloudy.svg")';
       break;
     case 'partly-cloudy-day':
+      if(b.isDay) {
       document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_partly-cloudy-day.svg")';
+        }
+        else {
+      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_partly-cloudy-night.svg")';
+      }
       break;
     case 'partly-cloudy-night':
       document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_partly-cloudy-night.svg")';
@@ -249,7 +259,12 @@ if(navigator.onLine) {
   function groundCurrent() {
   switch(b.icon) {
     case 'clear-day':
+            if (b.isDay) {
       document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/clear-day.jpg")';
+              }
+            else {
+      document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/clear-night.jpg")'; 
+            }     
       break;
     case 'clear-night':
       document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/clear-night.jpg")';      
@@ -303,7 +318,12 @@ if(navigator.onLine) {
               }
       break;
     case 'partly-cloudy-day':
+            if (b.isDay) {
       document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/partly-cloudy-day.jpg")';
+              }
+            else {
+      document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/partly-cloudy-night.jpg")';
+              }
       break;
     case 'partly-cloudy-night':
       document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/partly-cloudy-night.jpg")';
@@ -559,9 +579,8 @@ if(navigator.onLine) {
   trackSunExposure();
 
   version_manifest = chrome.runtime.getManifest().version;
+  document.querySelector("#title_version_home").textContent = "Version " + version_manifest;
   document.querySelector("#title_version_setting").textContent = "Version " + version_manifest;
-
-
 
 
   const autoCompletejs = new autoComplete({
@@ -578,7 +597,7 @@ if(navigator.onLine) {
               } 
 
           if (query !== '') {
-            const source = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?types=place&proximity=${latandlongMapBox}&limit=7&autocomplete=true&language=en,de,fr,nl,it,ja,ar,es,zh,sv,ko&access_token=${token}`);
+            const source = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?types=place&proximity=${latandlongMapBox}&limit=10&autocomplete=true&language=en,de,fr,nl,it,ja,ar,es,zh,sv,ko&access_token=${token}`);
 
             const data = await source.json();
             return data.features;
@@ -592,7 +611,7 @@ if(navigator.onLine) {
       debounce: 300,
       searchEngine: "strict",
       highlight: true,
-      maxResults: 7,
+      maxResults: 10,
       resultsList: {
           render: true,
           container: source => {
@@ -620,7 +639,7 @@ if(navigator.onLine) {
           }
 
           if (typeof(cityProvince) !== 'undefined' && typeof(shortCountryCode) !== 'undefined') {
-              cityShortCountry = (cityProvince + ', ' + shortCountry).slice(0, 85);
+              cityShortCountry = (cityProvince + ', ' + shortCountry).slice(0, 82);
           }
           else if (typeof(shortCountryCode) === 'undefined') {
               cityShortCountry = cityProvince;
@@ -683,7 +702,7 @@ if(navigator.onLine) {
           chrome.storage.local.set({'city': city});
           chrome.storage.local.set({'country': country});
 
-          document.querySelector("#setting_currentLocation_text").textContent = fullname;
+          document.querySelector("#search_currentLocation_text").textContent = fullname;
 
           setTimeout(function(){
             chrome.runtime.sendMessage({ msg: "fromSearchUpdate" });
@@ -763,6 +782,7 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
 
   function closeAllPopup() {
       modalSetting.style.display = "none";
+      modalSearch.style.display = "none";
       modal48hours.style.display = "none";
       modal7days.style.display = "none";
       modalSolar.style.display = "none";
@@ -799,7 +819,9 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
   };
 
 
+  var modalSearch = document.getElementById("search_popup");
   var modalSetting = document.getElementById("setting_popup");
+
   var modalSolar = document.getElementById("solar_popup");
   var modalInfo = document.getElementById("info_popup");
   var modal7days = document.getElementById("next7_popup");
@@ -825,6 +847,18 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
 
     var currentSubMenu = document.getElementById("sub_menu_home");
     currentSubMenu.classList.add("sub_menu_current_Class");
+  });
+
+  document.querySelector("#search_popup_page").addEventListener("click", (e) => {
+    closeAllPopup();
+    removeClassIcons();
+    modalSearch.style.display = "block";
+
+    var currentIcon = document.getElementById("home_icon_popup_page");
+    currentIcon.classList.add("sub_menu_current_icon_Class");
+
+    var currentSubMenu = document.getElementById("sub_menu_home");
+    currentSubMenu.classList.add("sub_menu_current_Class");    
   });
 
   document.querySelector("#setting_popup_page").addEventListener("click", (e) => {
@@ -899,7 +933,7 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
   document.querySelector("#location").addEventListener("click", (e) => { 
     closeAllPopup();
     removeClassIcons();
-    modalSetting.style.display = "block";
+    modalSearch.style.display = "block";
     var element = document.getElementById("setting_icon_popup_page");
     element.classList.add("sub_menu_icon_active_Class");
 
@@ -936,7 +970,7 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
     currentSubMenu.classList.add("sub_menu_current_Class");    
   });
 
-  document.querySelector("#setting_popup_close").addEventListener("click", (e) => {
+  document.querySelector("#search_popup_close").addEventListener("click", (e) => {
     closeAllPopup();
     removeClassIcons();
     var element = document.getElementById("home_icon_popup_page");
