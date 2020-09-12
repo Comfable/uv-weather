@@ -3,7 +3,7 @@ var start = new Date();
 var lines = 16,
 cW = 40,
 cH = 40;
-function animatedBadge(isDay,sunnyDay,cloudy,rainy) {
+function animatedBadge(isDay,sunnyDay,cloudy,rainy,Snowy) {
 	var rotation = parseInt(((new Date() - start) / 1000) * lines) / lines;
 	context.save();
 	context.clearRect(0, 0, cW, cH);
@@ -18,7 +18,7 @@ function animatedBadge(isDay,sunnyDay,cloudy,rainy) {
 		if (isDay && sunnyDay) {
 			context.strokeStyle = 'rgba(254, 102, 1,' + i / lines + ')';
 		}
-		else if (isDay && (cloudy || rainy)) {
+		else if (isDay && (cloudy || rainy || Snowy)) {
 			context.strokeStyle = 'rgba(31, 97, 143,' + i / lines + ')';
 		}
 		else {

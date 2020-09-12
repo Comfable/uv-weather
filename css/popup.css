@@ -79,7 +79,7 @@ html {
 }
 ::-webkit-scrollbar {
     width: 0px;  /* Remove scrollbar space */
-    background: transparent;  /* Optional: just make scrollbar invisible */
+    background: transparent;  /* Make scrollbar invisible */
 }
 
 .searchBox_Class {
@@ -817,32 +817,3 @@ html {
     display: block;
     white-space: normal !important; 
 }
-
-/* Main input wrapper */
-.algolia-places {}
-
-/* The algolia-places input */
-.ap-input, .ap-hint {}
-
-/* The style of the svg icons when the input is on hover */
-.ap-input:hover ~ .ap-input-icon svg {}
-.ap-input:focus ~ .ap-input-icon svg {}
-.ap-input-icon:hover svg {}
-
-/* The dropdown style */
-.ap-dropdown-menu {}
-
-/* The suggestions style */
-.ap-suggestion {}
-
-/* The highlighted names style */
-.ap-suggestion em {}
-
-/* The addresses style */
-.ap-address {}
-
-/* The icons of each suggestions (can be a building or a pin) */
-.ap-suggestion-icon {display: none;}
-
-/* The styles of the Algolia Places input footer */
-.ap-footer {display: none;}
