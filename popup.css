@@ -16,20 +16,20 @@
 
 @font-face {
 	font-family: "Helvetica";
-	src: url("/helvetica.woff") format("woff");
+	src: url("/fonts/helvetica.woff") format("woff");
 }
+
 body {
 	background: #E5E5E5;
 	width: 560px;
 	height: 526px;
+	font-weight: 250!important;
 	background-color: rgba(255,255,255,1);
 	border: 0px solid transparent;
 	margin: 0;
 	padding: 0;
 	text-decoration: none !important;
-	font-family: 'Helvetica', Tahoma, sans-serif;
 	font-style: normal;
-	font-weight: normal;
 	white-space: nowrap;
 	--web-view-name: UV Weather;
 	--web-view-id: UV_Weather;
@@ -38,6 +38,7 @@ body {
 	--web-enable-deep-linking: true;
 	-webkit-user-select: none;  /* Chrome all / Safari all */
   	user-select: none;
+  	font-family: Helvetica;
 }
 a:hover {
   cursor: pointer;
@@ -898,7 +899,6 @@ html {
   border: 1px solid #ccc;
   border-radius: 3px;
   color: #7f8c8d;
-  font-family: inherit;
   font-style: italic;
   font-weight: 300;
   padding: 12px 43px 12px 15px;
@@ -979,7 +979,7 @@ html {
 }
 
 .no_result {
-    margin: 0.15rem auto;
+    margin: .15rem auto;
     padding: 0.6rem;
     border: 0.05rem solid #e3e3e3;
     list-style: none;
@@ -987,7 +987,34 @@ html {
     transition: all 0.1s ease-in-out;
     background-color: #fff;
     outline: none;
+    white-space: normal;
+  	line-height: 150%;
   }
+
+ .button_current_report_missing_Class {
+  background-color: #ff662b;
+  border: solid 1px #ff662b;
+  border-radius: 20px;
+  color: white;
+  padding: 10px 30px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  margin: 25px 0px 25px 5px;
+  cursor: pointer;
+  transition: all 0.15s;
+  align-content: center;
+}
+
+.button_current_report_missing_Class:hover { 
+  background-color: white;
+  border: solid 1px #ff662b;
+  color: #ff662b;
+}
+
+.button_current_report_missing_Class:focus { outline:0 !important; }
+
 
  .button_current_report_Class {
   background-color: rgba(27,41,52,0);
@@ -1281,7 +1308,6 @@ html {
 .resp-sharing-button {
   	border-radius: 10px;
   	transition: 25ms ease-out;
-  	font-family: Helvetica Neue,Helvetica,Arial,sans-serif
 }
 
 .resp-sharing-button__icon svg {
@@ -1411,8 +1437,9 @@ html {
 .title_page_Class {
 	position: relative;
 	text-align: center;
-	font-size: 15px;
+	font-size: 16px;
 	color: rgba(27,41,52,1);
+	font-weight: 500!important;
 }
 .top_menu_icon_Class {
 	width: 17px;
@@ -1492,4 +1519,15 @@ html {
 	background-repeat: no-repeat;
 	background-size: cover;
 	vertical-align: center;
+}
+
+.noResult_text_Class {
+	width: 310px !important;
+	text-align: left !important;
+	font-weight: 250 !important;
+	font-size: 14px !important;
+	color: rgba(27,41,52,1) !important;
+    margin: 0 auto !important;
+    white-space: normal !important;
+    display: block !important;
 }

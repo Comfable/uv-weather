@@ -729,8 +729,11 @@ if(navigator.onLine) {
           const result = document.createElement("li");
           result.setAttribute("class", "no_result");
           result.setAttribute("tabindex", "1");
-          result.innerHTML = "No Results";
+          result.innerHTML = "Oops! We missed this place. <br> <br> If we miss your city, or something on the search isn't right, you can tell us. <br> We review your report, and update the database.<button class='button_current_report_missing_Class'>Report a Missing Place</button>";
           document.querySelector("#autoComplete_list").appendChild(result);
+          document.querySelector(".button_current_report_missing_Class").addEventListener("click", (e) => { 
+              window.open('https://uvweather.net/add-a-place', '_blank');
+          });
       },
       onSelection: feedback => {
 
@@ -790,10 +793,8 @@ if(navigator.onLine) {
 
 
 
-     
 
-
-
+    
 
   document.querySelector("#setting_defualt_button_u").addEventListener("click", (e) => { 
       setSettingUT = "u";
@@ -1085,7 +1086,7 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
   });
 
   document.querySelector("#currentLocation_button").addEventListener("click", (e) => {
-      fetch('https://us-central1-swift-district-134123.cloudfunctions.net/gfc-geo')
+      fetch('https://us-central1-uv-weather.cloudfunctions.net/geolocation')
         .then((resp) => resp.json())
          .then(function(result) {
         countryAPI = JSON.stringify(result.country);

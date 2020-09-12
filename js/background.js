@@ -1,11 +1,10 @@
 const amb = 'pk.eyJ1IjoiY29tZmFibGUiLCJhIjoiY2sybTF6Z3FpMGRkeTNscWxhMnNybnU3cyJ9.VDvM0a0jaMlLMwlqBI8kUw';
-const ads = '2589e0786e11ce470e7d98e9153039f4';
 
 chrome.storage.local.get(['verUpdate'], function(data) {
 	verUpdate = data.verUpdate;
 
 	if(verUpdate !== 1 && verUpdate !== 2) {
-			fetch('https://us-central1-swift-district-134123.cloudfunctions.net/gfc-geo')
+			fetch('https://us-central1-uv-weather.cloudfunctions.net/geolocation')
 		  	.then((resp) => resp.json())
 		  	 .then(function(result) {
 				countryAPI = JSON.stringify(result.country);
@@ -50,7 +49,6 @@ chrome.runtime.onMessage.addListener(
 );
 
 
-//60 min update
 intervalUpdateTime = 1000 * 60 * 60; //miliseconds * seconds * minutes
 var intervalUpdateTimes = window.setInterval(_ => {
 	if(navigator.onLine) {
@@ -81,14 +79,18 @@ function uvReader(city,latandlong,country) {
 
 	latlong = (latandlong.split('"'))[1];
 	lat = (latlong.split(','))[0];
-	lon = (latlong.split(','))[1];
-		
-	fetch('https://uv-weather.herokuapp.com/https://api.darksky.net/forecast/' + ads +'/' + latlong + '?solar')
+	lng = (latlong.split(','))[1];
+
+	//const ads = '2589e0786e11ce470e7d98e9153039f4';	
+	//fetch('https://uv-weather.herokuapp.com/https://api.darksky.net/forecast/' + ads +'/' + latlong + '?solar')
+	var weather_url = new URL('https://api.uvweather.net/uvweather');
+	//var weather_url = new URL('https://us-central1-uv-weather.cloudfunctions.net/uvweather');
+		params = {lat: lat.toString(), lng: lng.toString()}
+	Object.keys(params).forEach(key => weather_url.searchParams.append(key, params[key]))
+	fetch(weather_url)
 	.then((resp) => resp.json())
 	.then(function(result) {				
-	
 		window.result = result;
-
 		isDay = false;
 		isNight = false;
 		cloudy = false;
@@ -234,7 +236,7 @@ function uvReader(city,latandlong,country) {
 
 		//Solar Times --------------------------------------------------------------------------------------------------------------
 		localTimeUnix = Math.round(systemTimeUnix + offsetUnix);
-		timesSolar = SunCalc.getTimes(localTimeUnix, lat, lon);
+		timesSolar = SunCalc.getTimes(localTimeUnix, lat, lng);
 			sunriseTimeSolar = timesSolar.sunrise;
 			sunsetTimeSolar = timesSolar.sunset;
 			solarNoon = timesSolar.solarNoon;
@@ -439,7 +441,7 @@ chrome.runtime.onInstalled.addListener(function(details) {
     /* other 'reason's include 'update' */
     if(details.reason == "install" && (navigator.onLine)) {
         /* If first install, set uninstall URL */
-        var uninstallGoogleFormLink = 'https://qsun.co/uv-weather-goodbye/';
+        var uninstallGoogleFormLink = 'https://uvweather.net/goodbye/';
         /* If Chrome version supports it... */
         if(chrome.runtime.setUninstallURL) {
         	chrome.storage.local.clear();
