@@ -1,6 +1,6 @@
    {
     "name": "UV Weather",
-    "version": "1.0.37",
+    "version": "1.0.38",
     "description": "Instant weather update. Easier than looking outside.",
     "permissions": [ "activeTab","storage" ],
     "background": {

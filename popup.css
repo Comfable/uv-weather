@@ -780,7 +780,7 @@ html {
  text-align: left;
  padding: 10px;
  border-radius: 3px;
- z-index: 1000;
+ z-index: 10500;
  opacity: 0;
  transition: opacity .6s;
  font-size: 12px;
@@ -887,7 +887,7 @@ html {
 
 .searchBox_Class {
 	position: relative;
-	margin: 40px 30px 0 30px;
+	margin: 20px 30px 0 30px;
 }
 
 #autoComplete_wrapper {
@@ -1142,15 +1142,38 @@ html {
 	text-align: center;
 	vertical-align: middle;
 }
+
 .sub_menu_icon_Class {
 	width: 20px;
 	height: 20px;
 	/*filter: opacity(50%) drop-shadow( 1px 1px 1px rgba(0, 0, 0, .4));*/
 	filter: opacity(70%);
 }
+
+.sub_menu_current_Class {
+	margin-bottom: 5px;
+}
+
+.sub_menu_current_icon_Class {
+	width: 25px;
+	height: 25px;
+}
+
 .sub_menu_text_Class {
 	font-weight: 250;
 	font-size: 9px;
 	color: rgba(27,41,52,1);
+}
+
+.sub_menu_icon_Class:hover {
+	filter: invert(48%) sepia(52%) saturate(2544%) hue-rotate(342deg) brightness(101%) contrast(101%);
+}
+
+.sub_menu_icon_active_Class {
+	filter: invert(48%) sepia(52%) saturate(2544%) hue-rotate(342deg) brightness(101%) contrast(101%);
+}
+
+.report_button_Class:hover {
+	filter: sepia(5%) saturate(652%) hue-rotate(198deg) brightness(117%) contrast(77%);
 }
 

@@ -438,8 +438,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   version_manifest = chrome.runtime.getManifest().version;
   //document.querySelector("#title_version").textContent = "Version " + version_manifest;
-  //document.querySelector("#title_version_setting").textContent = "Version " + version_manifest;
-  document.querySelector("#title_version_info").textContent = "Version " + version_manifest;
+  document.querySelector("#title_version_setting").textContent = "Version " + version_manifest;
+  //document.querySelector("#title_version_info").textContent = "Version " + version_manifest;
 
 
 
@@ -580,9 +580,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
               refreshPopup();
            }, 1050); 
 
-           setTimeout(function(){
-              modalSetting.style.display = "none";
-           }, 1750); 
+           // setTimeout(function(){
+           //    modalSetting.style.display = "none";
+           // }, 1750); 
 
 
       }
@@ -648,6 +648,43 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
    });
 
 
+var element = document.getElementById("home_icon_popup_page");
+element.classList.add("sub_menu_icon_active_Class");
+
+var currentIcon = document.getElementById("home_icon_popup_page");
+currentIcon.classList.add("sub_menu_current_icon_Class");
+
+var currentSubMenu = document.getElementById("sub_menu_home");
+currentSubMenu.classList.add("sub_menu_current_Class");
+
+function removeClassIcons() {
+    var settingIcon = document.getElementById("setting_icon_popup_page");
+    var solarIcon = document.getElementById("solar_icon_popup_page");
+    var homeIcon = document.getElementById("home_icon_popup_page"); 
+    var next7Icon = document.getElementById("next7_icon_popup_page");
+    var next48Icon = document.getElementById("next48_icon_popup_page"); 
+    settingIcon.classList.remove("sub_menu_icon_active_Class");
+    solarIcon.classList.remove("sub_menu_icon_active_Class");
+    homeIcon.classList.remove("sub_menu_icon_active_Class");
+    next7Icon.classList.remove("sub_menu_icon_active_Class");
+    next48Icon.classList.remove("sub_menu_icon_active_Class");
+    settingIcon.classList.remove("sub_menu_current_icon_Class");
+    solarIcon.classList.remove("sub_menu_current_icon_Class");
+    homeIcon.classList.remove("sub_menu_current_icon_Class");
+    next7Icon.classList.remove("sub_menu_current_icon_Class");
+    next48Icon.classList.remove("sub_menu_current_icon_Class");
+
+    var settingSub = document.getElementById("sub_menu_setting");
+    var solarSub = document.getElementById("sub_menu_solar");
+    var homeSub = document.getElementById("sub_menu_home"); 
+    var next7Sub = document.getElementById("sub_menu_next7");
+    var next48Sub = document.getElementById("sub_menu_next48"); 
+    settingSub.classList.remove("sub_menu_current_Class");
+    solarSub.classList.remove("sub_menu_current_Class");
+    homeSub.classList.remove("sub_menu_current_Class");
+    next7Sub.classList.remove("sub_menu_current_Class");
+    next48Sub.classList.remove("sub_menu_current_Class");
+  }
 
 // Get the modal
 var modalBlocker = document.getElementsByClassName("modalBlocker")[0];
@@ -666,16 +703,16 @@ document.querySelector("#setting_popup_page").addEventListener("click", (e) => {
     modalInfo.style.display = "none";
     modalCurrent.style.display = "none"; 
     modalSetting.style.display = "block";
-    //modalBlocker.style.display = "block";
-});
+    removeClassIcons();    
+    var element = document.getElementById("setting_icon_popup_page");
+    element.classList.add("sub_menu_icon_active_Class");
 
-document.querySelector("#home_popup_page").addEventListener("click", (e) => { 
-    modal7days.style.display = "none";
-    modal48hours.style.display = "none";
-    modalSolar.style.display = "none";
-    modalSetting.style.display = "none";
-    modalCurrent.style.display = "none";  
-  });
+    var currentIcon = document.getElementById("setting_icon_popup_page");
+    currentIcon.classList.add("sub_menu_current_icon_Class");
+
+    var currentSubMenu = document.getElementById("sub_menu_setting");
+    currentSubMenu.classList.add("sub_menu_current_Class");
+});
 
 document.querySelector("#solar_popup_page").addEventListener("click", (e) => { 
     modal7days.style.display = "none";
@@ -684,18 +721,33 @@ document.querySelector("#solar_popup_page").addEventListener("click", (e) => {
     modalSetting.style.display = "none";
     modalCurrent.style.display = "none"; 
     modalSolar.style.display = "block";
-    //modalBlocker.style.display = "block";
+    removeClassIcons();    
+    var element = document.getElementById("solar_icon_popup_page");
+    element.classList.add("sub_menu_icon_active_Class");    
+
+    var currentIcon = document.getElementById("solar_icon_popup_page");
+    currentIcon.classList.add("sub_menu_current_icon_Class");
+
+    var currentSubMenu = document.getElementById("sub_menu_solar");
+    currentSubMenu.classList.add("sub_menu_current_Class");
   });
 
-// document.querySelector("#info_popup_page").addEventListener("click", (e) => { 
-//     modal7days.style.display = "none";
-//     modal48hours.style.display = "none";
-//     modalSolar.style.display = "none";
-//     modalSetting.style.display = "none";
-//     modalCurrent.style.display = "none";  
-//     modalInfo.style.display = "block";
-//     //modalBlocker.style.display = "block";
-//   });
+document.querySelector("#home_popup_page").addEventListener("click", (e) => { 
+    modal7days.style.display = "none";
+    modal48hours.style.display = "none";
+    modalSolar.style.display = "none";
+    modalSetting.style.display = "none";
+    modalCurrent.style.display = "none";
+    removeClassIcons();
+    var element = document.getElementById("home_icon_popup_page");
+    element.classList.add("sub_menu_icon_active_Class");
+
+    var currentIcon = document.getElementById("home_icon_popup_page");
+    currentIcon.classList.add("sub_menu_current_icon_Class");
+
+    var currentSubMenu = document.getElementById("sub_menu_home");
+    currentSubMenu.classList.add("sub_menu_current_Class");
+});
 
 document.querySelector("#next7_day").addEventListener("click", (e) => { 
     modal48hours.style.display = "none";
@@ -704,7 +756,15 @@ document.querySelector("#next7_day").addEventListener("click", (e) => {
     modalSetting.style.display = "none";
     modalCurrent.style.display = "none";  
     modal7days.style.display = "block";
-    //modalBlocker.style.display = "block";
+    removeClassIcons();    
+    var element = document.getElementById("next7_icon_popup_page");
+    element.classList.add("sub_menu_icon_active_Class");    
+    
+    var currentIcon = document.getElementById("next7_icon_popup_page");
+    currentIcon.classList.add("sub_menu_current_icon_Class");
+
+    var currentSubMenu = document.getElementById("sub_menu_next7");
+    currentSubMenu.classList.add("sub_menu_current_Class");
   });
 
 document.querySelector("#next48").addEventListener("click", (e) => {
@@ -714,7 +774,15 @@ document.querySelector("#next48").addEventListener("click", (e) => {
     modalSetting.style.display = "none";
     modalCurrent.style.display = "none";  
     modal48hours.style.display = "block";
-    //modalBlocker.style.display = "block";
+    removeClassIcons();  
+    var element = document.getElementById("next48_icon_popup_page");
+    element.classList.add("sub_menu_icon_active_Class");    
+    
+    var currentIcon = document.getElementById("next48_icon_popup_page");
+    currentIcon.classList.add("sub_menu_current_icon_Class");
+
+    var currentSubMenu = document.getElementById("sub_menu_next48");
+    currentSubMenu.classList.add("sub_menu_current_Class");
   });
 
 document.querySelector("#location").addEventListener("click", (e) => { 
@@ -724,8 +792,16 @@ document.querySelector("#location").addEventListener("click", (e) => {
     modalInfo.style.display = "none";
     modalCurrent.style.display = "none";
     modalBlocker.style.display = "none";
+    removeClassIcons();
+    var element = document.getElementById("setting_icon_popup_page");
+    element.classList.add("sub_menu_icon_active_Class");
+
+    var currentIcon = document.getElementById("setting_icon_popup_page");
+    currentIcon.classList.add("sub_menu_current_icon_Class");
+
+    var currentSubMenu = document.getElementById("sub_menu_setting");
+    currentSubMenu.classList.add("sub_menu_current_Class");
     modalSetting.style.display = "block";
-    //modalBlocker.style.display = "block";
   });
 
 document.querySelector("#report_button").addEventListener("click", (e) => {
@@ -735,34 +811,16 @@ document.querySelector("#report_button").addEventListener("click", (e) => {
     modalSolar.style.display = "none";
     modalInfo.style.display = "none";
     modalBlocker.style.display = "none";
+    removeClassIcons();
+
+    var currentIcon = document.getElementById("home_icon_popup_page");
+    currentIcon.classList.add("sub_menu_current_icon_Class");
+
+    var currentSubMenu = document.getElementById("sub_menu_home");
+    currentSubMenu.classList.add("sub_menu_current_Class");
     modalCurrent.style.display = "block";
-    //modalBlocker.style.display = "block";
   });
 
-// document.querySelector("#setting_popup_close").addEventListener("click", (e) => {
-//     modalSetting.style.display = "none";
-//     modalBlocker.style.display = "none";
-//   });
-
-// document.querySelector("#next48_popup_close").addEventListener("click", (e) => {
-//     modal48hours.style.display = "none";
-//     modalBlocker.style.display = "none";
-//   });
-
-// document.querySelector("#next7_popup_close").addEventListener("click", (e) => {
-//     modal7days.style.display = "none";
-//     modalBlocker.style.display = "none";
-//   });
-
-// document.querySelector("#solar_popup_close").addEventListener("click", (e) => {
-//     modalSolar.style.display = "none";
-//     modalBlocker.style.display = "none";
-//   });
-
-// document.querySelector("#info_popup_close").addEventListener("click", (e) => {
-//     modalInfo.style.display = "none";
-//     modalBlocker.style.display = "none";
-//   });
 
 document.querySelector("#report_popup_close").addEventListener("click", (e) => {
     modalSetting.style.display = "none";
@@ -770,6 +828,15 @@ document.querySelector("#report_popup_close").addEventListener("click", (e) => {
     modal7days.style.display = "none";
     modalSolar.style.display = "none";
     modalCurrent.style.display = "none";
+    removeClassIcons();
+    var element = document.getElementById("home_icon_popup_page");
+    element.classList.add("sub_menu_icon_active_Class");
+
+    var currentIcon = document.getElementById("home_icon_popup_page");
+    currentIcon.classList.add("sub_menu_current_icon_Class");
+
+    var currentSubMenu = document.getElementById("sub_menu_home");
+    currentSubMenu.classList.add("sub_menu_current_Class");    
   });
 
 
@@ -780,7 +847,6 @@ document.querySelector("#setting_popup_modalBlocker").addEventListener("click", 
     modalSolar.style.display = "none";
     modalInfo.style.display = "none";
     modalCurrent.style.display = "none";
-    modalBlocker.style.display = "none";
   });
 
 document.querySelector("#image_background").addEventListener("click", (e) => {
@@ -790,8 +856,20 @@ document.querySelector("#image_background").addEventListener("click", (e) => {
     modalSolar.style.display = "none";
     modalInfo.style.display = "none";
     modalCurrent.style.display = "none";
-    modalBlocker.style.display = "none";
+    removeClassIcons();
+    var element = document.getElementById("home_icon_popup_page");
+    element.classList.add("sub_menu_icon_active_Class");
+
+    var currentIcon = document.getElementById("home_icon_popup_page");
+    currentIcon.classList.add("sub_menu_current_icon_Class");
+
+    var currentSubMenu = document.getElementById("sub_menu_home");
+    currentSubMenu.classList.add("sub_menu_current_Class");    
   });
+
+
+
+
 
   function refreshPopup(){
     setTimeout(function(){
