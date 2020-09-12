@@ -1,6 +1,6 @@
    {
     "name": "UV Weather",
-    "version": "1.0.28",
+    "version": "1.0.29",
     "description": "The best way to check the UV Index & weather forecast right in your browser.",
     "permissions": [ "activeTab", "geolocation","storage" ],
     "background": {

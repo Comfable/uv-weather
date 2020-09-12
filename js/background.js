@@ -92,8 +92,7 @@ function uvReader(city,latandlong,country) {
 
 		systemTime = new Date();
 		systemTimeUnix = Math.round((systemTime).getTime() / 1000);
-		DeviceTimeDifferenceFromGMT = Math.round(systemTime.getTimezoneOffset() / 60);
-		
+		DeviceTimeDifferenceFromGMT = systemTime.getTimezoneOffset() / 60;
 	offsetTime = DeviceTimeDifferenceFromGMT + result.offset;
 		offsetUnix = offsetTime * 3600;
 	cloudCover = result.currently.cloudCover;
