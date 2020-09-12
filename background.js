@@ -34,6 +34,7 @@
 
 
 				 	 function uvReader(){
+
 						var url = 'https://api.darksky.net/forecast/c6f8f1ec6de2f17011eb59c6a0e4db7a/' + latlong + '?solar';
 						$.ajax({
 							type: "GET",
@@ -41,51 +42,47 @@
 							url: url,
 							success: function (result) {
 							 
-							function animatedBadge() {
-							   	var context=document.createElement('canvas').getContext('2d');
-								var start = new Date();
-								var lines = 16,
-								cW = 40,
-								cH = 40;
 
-								var animatedBadgeInterval = setInterval(function() {
-								  var rotation = parseInt(((new Date() - start) / 1000) * lines) / lines;
-								  context.save();
-								  context.clearRect(0, 0, cW, cH);
-								  context.translate(cW / 2, cH / 2);
-								  context.rotate(Math.PI * 2 * rotation);
-								  for (var i = 0; i < lines; i++) {
-								    context.beginPath();
-								    context.rotate(Math.PI * 2 / lines);
-								    context.moveTo(cW / 10, 0);
-								    context.lineTo(cW / 4, 0);
-								    context.lineWidth = cW / 30;
-								    if (isDay && sunnyDay) {
-								    	context.strokeStyle = 'rgba(254, 102, 1,' + i / lines + ')';
-									}
-									else if (isDay && (cloudy || rainy)) {
-								    	context.strokeStyle = 'rgba(31, 97, 143,' + i / lines + ')';
-								    }
-								    else {
+					// -------------------------------------------------------------------------
+					var context=document.createElement('canvas').getContext('2d');
+					var start = new Date();
+					var lines = 16,
+					cW = 40,
+					cH = 40;
+
+					var animatedBadgeInterval = setInterval(function() {
+						var rotation = parseInt(((new Date() - start) / 1000) * lines) / lines;
+						context.save();
+						 context.clearRect(0, 0, cW, cH);
+						context.translate(cW / 2, cH / 2);
+						context.rotate(Math.PI * 2 * rotation);
+						for (var i = 0; i < lines; i++) {
+							context.beginPath();
+							context.rotate(Math.PI * 2 / lines);
+							context.moveTo(cW / 10, 0);
+							context.lineTo(cW / 4, 0);
+							context.lineWidth = cW / 30;
+							if (isDay && sunnyDay) {
+								context.strokeStyle = 'rgba(254, 102, 1,' + i / lines + ')';
+							}
+								else if (isDay && (cloudy || rainy)) {
+								context.strokeStyle = 'rgba(31, 97, 143,' + i / lines + ')';
+							}
+								else {
 								    	context.strokeStyle = 'rgba(0, 0, 0,' + i / lines + ')';
-								    }
+							}
 								    context.stroke();
-								  }
+						}
 
-								var imageData = context.getImageData(10, 10, 19, 19);
-								  chrome.browserAction.setIcon({
-								    imageData: imageData
-								  });
+						var imageData = context.getImageData(10, 10, 19, 19);
+						chrome.browserAction.setIcon({
+							imageData: imageData
+						});
 
-								context.restore();
-								}, 1000 / 30);
+						context.restore();
+						}, 1000 / 30);
+					// -------------------------------------------------------------------------
 
-								function stopAnimatedBadge() {
-								  clearInterval(animatedBadgeInterval);
-								};
-								setTimeout(stopAnimatedBadge, 500);
-
-							};
 
 							   	country = (countryAPI.split('"'))[1];
 							    cityName = (city.split('"'))[1].charAt(0).toUpperCase() + (city.split('"'))[1].slice(1);
@@ -111,7 +108,7 @@
 							    cloudCover = result.currently.cloudCover;
 							    visibility = result.currently.visibility;
 							    ozone = result.currently.ozone;
-
+								summary = result.currently.summary;
 								if (result.hourly.data[0].hasOwnProperty('solar')) {
 									ghiSolarClearSki = result.hourly.data[0].solar.ghi; //GHI = DHI + DNI * cos (θ)
 									//console.log ("ghiSolarClearSki " + ghiSolarClearSki);
@@ -424,19 +421,19 @@
 									
 									updateTimeRelativeBadge = moment.unix(updateTime).format('h:mm:ss A');
 								if (setSettingUT == "u" && setSettingFC == "f") {
-									toolTipBadge = temperatureF + "° " + iconTitle + "\n" + accufeelResultFsign + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
+									toolTipBadge = temperatureF + "° " + summary + "\n" + accufeelResultFsign + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
 									chrome.browserAction.setTitle({title: toolTipBadge});
 									}
 								else if (setSettingUT == "u" && setSettingFC == "c") {
-									toolTipBadge = temperatureC + "° " + iconTitle + "\n" + accufeelResultCsign + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
+									toolTipBadge = temperatureC + "° " + summary + "\n" + accufeelResultCsign + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
 									chrome.browserAction.setTitle({title: toolTipBadge});
 									}
 								else if (setSettingUT == "t" && setSettingFC == "f") {
-									toolTipBadge = temperatureF + "° " + iconTitle + "\n" + accufeelResultFsign + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
+									toolTipBadge = temperatureF + "° " + summary + "\n" + accufeelResultFsign + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
 									chrome.browserAction.setTitle({title: toolTipBadge});
 									}
 								else if (setSettingUT == "t" && setSettingFC == "c") {
-									toolTipBadge = temperatureC + "° " + iconTitle + "\n" + accufeelResultCsign + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
+									toolTipBadge = temperatureC + "° " + summary + "\n" + accufeelResultCsign + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
 									chrome.browserAction.setTitle({title: toolTipBadge});
 									};
 
@@ -449,12 +446,10 @@
 									});
 
 
-								setTimeout(badgeBackgroundImage, 550);
-								chrome.runtime.onMessage.addListener(
-									function(request, sender, sendResponse){
-										if(request.msg == "animatedBadge") animatedBadge();
-									}
-								);
+								setTimeout(function() {
+			                		clearInterval(animatedBadgeInterval);   
+			            		}, 500);
+		            			setTimeout(badgeBackgroundImage, 550);
 
 
 							},
@@ -468,14 +463,19 @@
  		
 									   
 					}	
+
+								
+
 						uvReader();
-						intervalUpdateTime = 1000 * 60 * 30;//miliseconds * seconds * minutes
+						intervalUpdateTime = 1000 * 60 * 30; //miliseconds * seconds * minutes
 						var intervalUpdateTimes = setInterval(uvReader, intervalUpdateTime);
+
+
+
 
 						chrome.runtime.onMessage.addListener(
 										    function(request, sender, sendResponse){
 										        if(request.msg == "BackgroundUpdate") {
-										        	//clearInterval(intervalUpdateTimes);
 										        	uvReader();
 										        }
 										    }

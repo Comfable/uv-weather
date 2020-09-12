@@ -1,15 +1,12 @@
 ﻿
 var b = chrome.extension.getBackgroundPage();
+chrome.runtime.sendMessage({ msg: "BackgroundUpdate" });
 
 $(function(){
-
-  // setTimeout(backgroundUpdateNew, 5000);
-  // function backgroundUpdateNew(){
-  //   chrome.runtime.sendMessage({ msg: "BackgroundUpdate" });
-  // };
- 
-  chrome.runtime.sendMessage({ msg: "BackgroundUpdate" });
-  chrome.runtime.sendMessage({ msg: "animatedBadge" });
+  
+window.onload = function() { 
+refreshPopup();
+};
 
   country = b.country;
 
@@ -114,8 +111,9 @@ $(function(){
   isNight = b.isNight;
 
   icon = b.icon;
-
+  summary = b.summary;
   updateTime = b.updateTime;
+
   //updateTimeRelative = moment.unix(updateTime).format('h:mm:ss a');
   updateTimeRelative = "Updated " + moment.unix(updateTime).fromNow();
 
@@ -139,54 +137,59 @@ $(function(){
   $('.title_powered_Class').powerTip({placement: 's', mouseOnToPopup: 'true' });
   
 
-  $("#icon_uv_1").css('opacity', '.3');
-  $("#icon_uv_2").css('opacity', '.3');
-  $("#icon_uv_3").css('opacity', '.3');
-  $("#icon_uv_4").css('opacity', '.3');
-  $("#icon_uv_5").css('opacity', '.3');
-  $("#icon_uv_6").css('opacity', '.3');
+  function uvIconFunction() {
+    $("#icon_uv_1").css('opacity', '.3');
+    $("#icon_uv_2").css('opacity', '.3');
+    $("#icon_uv_3").css('opacity', '.3');
+    $("#icon_uv_4").css('opacity', '.3');
+    $("#icon_uv_5").css('opacity', '.3');
+    $("#icon_uv_6").css('opacity', '.3');
 
-  if (uv1 >= 1 && uv1 <= 2) {
-      $("#icon_uv_1").css('opacity', '1');
-      $("#icon_uv_2").css('opacity', '1');
-    }
-  else if (uv1 >= 3 && uv1 <= 5) {
-      $("#icon_uv_1").css('opacity', '1');
-      $("#icon_uv_2").css('opacity', '1');
-      $("#icon_uv_3").css('opacity', '1');
-    }
-  else if (uv1 >= 6 && uv1 <= 7) {
-      $("#icon_uv_1").css('opacity', '1');
-      $("#icon_uv_2").css('opacity', '1');
-      $("#icon_uv_3").css('opacity', '1');
-      $("#icon_uv_4").css('opacity', '1');
-    }
-  else if (uv1 >= 8) {
-      $("#icon_uv_1").css('opacity', '1');
-      $("#icon_uv_2").css('opacity', '1');
-      $("#icon_uv_3").css('opacity', '1');
-      $("#icon_uv_4").css('opacity', '1');
-      $("#icon_uv_5").css('opacity', '1');
-      $("#icon_uv_6").css('opacity', '1');
-    }
-
+    
+    if (uv1 == 1) {
+        $("#icon_uv_2").css('opacity', '1');
+      }
+    else if (uv1 == 2) {
+        $("#icon_uv_1").css('opacity', '1');
+        $("#icon_uv_2").css('opacity', '1');
+      }
+    else if (uv1 >= 3 && uv1 <= 5) {
+        $("#icon_uv_1").css('opacity', '1');
+        $("#icon_uv_2").css('opacity', '1');
+        $("#icon_uv_3").css('opacity', '1');
+      }
+    else if (uv1 >= 6 && uv1 <= 7) {
+        $("#icon_uv_1").css('opacity', '1');
+        $("#icon_uv_2").css('opacity', '1');
+        $("#icon_uv_3").css('opacity', '1');
+        $("#icon_uv_4").css('opacity', '1');
+      }
+    else if (uv1 >= 8) {
+        $("#icon_uv_1").css('opacity', '1');
+        $("#icon_uv_2").css('opacity', '1');
+        $("#icon_uv_3").css('opacity', '1');
+        $("#icon_uv_4").css('opacity', '1');
+        $("#icon_uv_5").css('opacity', '1');
+        $("#icon_uv_6").css('opacity', '1');
+      }
+  };
+   uvIconFunction();
 
 $('.current_icon_update').powerTip({ followMouse: 'true' });
+$('#current_icon_update').data('powertip', summary);
 
+function iconRefreshFunction() {
 switch(icon) {
     case 'clear-day':
       $(".current_icon_update").css('background-image', 'url("images/weather_icon/w_sun.svg")');   
       $(".image_background").css('background-image', 'url("images/background/clear-day.jpg")');
-      $('#current_icon_update').data('powertip', 'Clear Day');
       break;
     case 'clear-night':
       $(".current_icon_update").css('background-image', 'url("images/weather_icon/w_moon.svg")');
-      $('#current_icon_update').data('powertip', 'Clear Night');
       $(".image_background").css('background-image', 'url("images/background/clear-night.jpg")');
       break;
     case 'rain':
       $(".current_icon_update").css('background-image', 'url("images/weather_icon/w_cloud_rain.svg")');
-      $('#current_icon_update').data('powertip', 'Rainy');
             if (isDay) {
             $(".image_background").css('background-image', 'url("images/background/rain-day.jpg")');
               }
@@ -196,7 +199,6 @@ switch(icon) {
       break;
     case 'snow':
       $(".current_icon_update").css('background-image', 'url("images/weather_icon/w_cloud_snow.svg")');
-      $('#current_icon_update').data('powertip', 'Snowy');
             if (isDay) {
             $(".image_background").css('background-image', 'url("images/background/snow-day.jpg")');
               }
@@ -206,7 +208,6 @@ switch(icon) {
       break;
     case 'sleet':
       $(".current_icon_update").css('background-image', 'url("images/weather_icon/w_cloud_snow_alt.svg")');
-      $('#current_icon_update').data('powertip', 'Sleety');
             if (isDay) {
             $(".image_background").css('background-image', 'url("images/background/sleet-day.jpg")');
               }
@@ -216,7 +217,6 @@ switch(icon) {
       break;
     case 'wind':
       $(".current_icon_update").css('background-image', 'url("images/weather_icon/w_wind.svg")');
-      $('#current_icon_update').data('powertip', 'Windy');
             if (isDay) {
             $(".image_background").css('background-image', 'url("images/background/wind-day.jpg")');
               }
@@ -226,7 +226,6 @@ switch(icon) {
       break;
     case 'fog':
       $(".current_icon_update").css('background-image', 'url("images/weather_icon/w_cloud_fog_alt.svg")');
-      $('#current_icon_update').data('powertip', 'Foggy');
             if (isDay) {
             $(".image_background").css('background-image', 'url("images/background/fog-day.jpg")');
               }
@@ -236,7 +235,6 @@ switch(icon) {
       break;
     case 'cloudy':
       $(".current_icon_update").css('background-image', 'url("images/weather_icon/w_cloud.svg")');
-      $('#current_icon_update').data('powertip', 'Cloudy');
             if (isDay) {
             $(".image_background").css('background-image', 'url("images/background/cloudy-day.jpg")');
               }
@@ -247,24 +245,25 @@ switch(icon) {
     case 'partly-cloudy-day':
       $(".current_icon_update").css('background-image', 'url("images/weather_icon/w_cloud_sun.svg")');
       $(".image_background").css('background-image', 'url("images/background/partly-cloudy-day.jpg")');
-      $('#current_icon_update').data('powertip', 'Partly Cloudy');
       break;
     case 'partly-cloudy-night':
       $(".current_icon_update").css('background-image', 'url("images/weather_icon/w_cloud_moon.svg")');
       $(".image_background").css('background-image', 'url("images/background/partly-cloudy-night.jpg")');
-      $('#current_icon_update').data('powertip', 'Partly Cloudy');
       break;
     default:
       $(".current_icon_update").css('background-image', 'url("images/w_sun.svg")');
-      $('#current_icon_update').data('powertip', 'Sunny');
       $(".image_background").css('background-image', 'url("images/background/default.png")');
     break;
   }
 
+};
+
+iconRefreshFunction();
     
 $('.forecast_1_icon_Class').powerTip({ placement: 'nw' });      
 $('.forecast_2_icon_Class').powerTip({ placement: 'nw' });      
 $('.forecast_3_icon_Class').powerTip({ placement: 'nw' });      
+
 
 var i;
 for (i = 1; i < 4; i++) {
@@ -411,6 +410,48 @@ switch(forecast_icon) {
 
 
 
+function refreshPopup(){
+  setTimeout(function() {
+
+    var b = chrome.extension.getBackgroundPage();
+
+
+      updateTimeRelative = "Updated " + moment.unix(updateTime).fromNow();
+      $('#current_temp').data('powertip', updateTimeRelative);
+      $('#current_uv_group').data('powertip', updateTimeRelative);
+
+
+      temperatureF = b.temperatureF;
+      temperatureC = b.temperatureC;
+      accufeelResultCsignTitle = "AccuFeel " + b.accufeelResultCsign;
+      accufeelResultFsignTitle = "AccuFeel " + b.accufeelResultFsign;
+
+      if (setSettingFC == "c") {
+        ctemp();
+      }
+      else{
+        ftemp();
+      };
+
+
+      current_uv = b.current_uv;
+      current_uv_note = b.current_uv_note;
+      uv1 = b.uv1;
+      $("#current_uv").html(current_uv);
+      $("#current_uv_note").html(current_uv_note);
+
+     summary = b.summary;
+     $('#current_icon_update').data('powertip', summary);
+
+     icon = b.icon;
+     iconRefreshFunction();
+
+     uvIconFunction();
+
+
+
+  }, 500);
+
+}
 
 });
-
