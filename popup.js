@@ -6,47 +6,49 @@ $(function(){
   chrome.browserAction.setTitle({title: "Live UV & Weather Forecast"});
   
   function UTFC (){
-                  chrome.storage.sync.get(['setSettingFC', 'setSettingUT'], function(data) {
-                    setSettingFC = data.setSettingFC;
-                    setSettingUT = data.setSettingUT;
+    chrome.storage.sync.get(['setSettingFC', 'setSettingUT'], function(data) {
+    setSettingFC = data.setSettingFC;
+    setSettingUT = data.setSettingUT;
   
-                  if (typeof setSettingFC === 'undefined') {
-                    setSettingFC = "f";
-                    chrome.storage.sync.set({'setSettingFC': 'f'});
-                  }
+    if (typeof setSettingFC === 'undefined') {
+        setSettingFC = "f";
+        chrome.storage.sync.set({'setSettingFC': 'f'});
+      }
 
-                  if (typeof setSettingUT === 'undefined') {
-                    setSettingUT = "u";
-                    chrome.storage.sync.set({'setSettingUT': 'u'});
-                   }
-                   if (setSettingUT == "u") {
-                      $("#setting_defualt_button_u").prop("checked", true);
-                      document.getElementById("setting_defualt_button_u").disabled = true;
-                      }
-                    else {
-                      $("#setting_defualt_button_t").prop("checked", true);
-                      document.getElementById("setting_defualt_button_t").disabled = true;
-                      };
+    if (typeof setSettingUT === 'undefined') {
+        setSettingUT = "t";
+        chrome.storage.sync.set({'setSettingUT': 't'});
+      }
 
-                    if (setSettingFC == "f") {
-                      $("#setting_defualt_button_f").prop("checked", true);
-                      document.getElementById("setting_defualt_button_f").disabled = true;
-                      }
-                    else {
-                      $("#setting_defualt_button_c").prop("checked", true);
-                      document.getElementById("setting_defualt_button_c").disabled = true;
-                      };
+    if (setSettingUT == "u") {
+        $("#setting_defualt_button_u").prop("checked", true);
+        document.getElementById("setting_defualt_button_u").disabled = true;
+      }
+    else {
+        $("#setting_defualt_button_t").prop("checked", true);
+        document.getElementById("setting_defualt_button_t").disabled = true;
+      };
 
-                      if (setSettingFC == 'f'){
-                        ftemp();
-                      }
-                      else {
-                        ctemp(); 
-                      };
-                 return;
-                  });
-                  }
-                  utfc = UTFC(function(value){  
+    if (setSettingFC == "f") {
+        $("#setting_defualt_button_f").prop("checked", true);
+        document.getElementById("setting_defualt_button_f").disabled = true;
+      }
+    else {
+        $("#setting_defualt_button_c").prop("checked", true);
+        document.getElementById("setting_defualt_button_c").disabled = true;
+      };
+
+    if (setSettingFC == 'f'){
+        ftemp();
+      }
+    else {
+        ctemp(); 
+      };
+
+    return;
+      });
+    }
+    utfc = UTFC(function(value){  
   });
   
   current_update_icon = background.current_update_icon;
@@ -82,7 +84,6 @@ $(function(){
   forecast_2_uv = background.forecast_2_uv;
   forecast_3_uv = background.forecast_3_uv;
 
-
   forecast_1_icon = background.forecast_1_icon;
   forecast_2_icon = background.forecast_2_icon;
   forecast_3_icon = background.forecast_3_icon;
@@ -115,7 +116,7 @@ $(function(){
       $("#icon_uv_4").css('opacity', '.3');
       $("#icon_uv_5").css('opacity', '.3');
       $("#icon_uv_6").css('opacity', '.3');
-  }
+    }
   else if (uv1 >= 1 && uv1 <= 2) {
       $("#icon_uv_1").css('opacity', '1');
       $("#icon_uv_2").css('opacity', '1');
@@ -123,7 +124,7 @@ $(function(){
       $("#icon_uv_4").css('opacity', '.3');
       $("#icon_uv_5").css('opacity', '.3');
       $("#icon_uv_6").css('opacity', '.3');
-  }
+    }
   else if (uv1 >= 3 && uv1 <= 5) {
       $("#icon_uv_1").css('opacity', '1');
       $("#icon_uv_2").css('opacity', '1');
@@ -131,7 +132,7 @@ $(function(){
       $("#icon_uv_4").css('opacity', '.3');
       $("#icon_uv_5").css('opacity', '.3');
       $("#icon_uv_6").css('opacity', '.3');
-  }
+    }
   else if (uv1 >= 6 && uv1 <= 7) {
       $("#icon_uv_1").css('opacity', '1');
       $("#icon_uv_2").css('opacity', '1');
@@ -139,15 +140,15 @@ $(function(){
       $("#icon_uv_4").css('opacity', '1');
       $("#icon_uv_5").css('opacity', '.3');
       $("#icon_uv_6").css('opacity', '.3');
-  }
-  else if (uv1 >= 8 && uv1 <= 10) {
+    }
+  else if (uv1 >= 8) {
       $("#icon_uv_1").css('opacity', '1');
       $("#icon_uv_2").css('opacity', '1');
       $("#icon_uv_3").css('opacity', '1');
       $("#icon_uv_4").css('opacity', '1');
       $("#icon_uv_5").css('opacity', '1');
       $("#icon_uv_6").css('opacity', '1');
-  }
+    }
 
 
 switch(icon) {
@@ -246,7 +247,7 @@ switch(icon) {
       $('#current_icon_update').data('powertip', 'Sunny');
       $(".image_background").css('background-image', 'url("images/background/default.png")');
     break;
-}
+  }
 
      
 switch(forecast_1_icon) {
@@ -305,7 +306,7 @@ switch(forecast_1_icon) {
       $('#forecast_1_icon').data('powertip', 'Sunny');
       $('.forecast_1_icon_Class').powerTip({ placement: 'nw' });          
     break;
-}
+  }
 
 
 switch(forecast_2_icon) {
@@ -364,7 +365,7 @@ switch(forecast_2_icon) {
       $('#forecast_2_icon').data('powertip', 'Sunny');
       $('.forecast_2_icon_Class').powerTip({ placement: 'nw' });          
     break;
-}
+  }
 
 
 switch(forecast_3_icon) {
@@ -423,7 +424,7 @@ switch(forecast_3_icon) {
       $('#forecast_3_icon').data('powertip', 'Sunny');
       $('.forecast_3_icon_Class').powerTip({ placement: 'nw' });          
     break;
-}
+  }
          
    
   $("#location").html(cityname);
@@ -450,7 +451,7 @@ switch(forecast_3_icon) {
       $("#forecast_1_temp").html(forecast_1_tempC_sign);
       $("#forecast_2_temp").html(forecast_2_tempC_sign);
       $("#forecast_3_temp").html(forecast_3_tempC_sign);      
-  }
+    }
 
   function ftemp(){
       $("#current_temp").html(temperatureF);
@@ -460,12 +461,23 @@ switch(forecast_3_icon) {
       $("#forecast_1_temp").html(forecast_1_temp);
       $("#forecast_2_temp").html(forecast_2_temp);
       $("#forecast_3_temp").html(forecast_3_temp);    
-  }
+    }
 
 
+  if (uv1 == 0 || isNight) {
+      $("#link_qsun_text").html("Track your vitamin D intake");
+   }
+  else{
+      $("#link_qsun_text").html("Track your sun exposure");
+    }
 
 
+  var manifest = chrome.runtime.getManifest();
+  version_manifest = manifest.version;
+  $("#title_version").html("Version " + version_manifest);
 
+
+//Click events
 
   $("#setting_defualt_button_u").click(function () {  
     setSettingUT = "u";
@@ -475,11 +487,6 @@ switch(forecast_3_icon) {
     document.getElementById("setting_defualt_button_u").disabled = true;
     document.getElementById("setting_defualt_button_t").disabled = false;
   });
-
-
-
-
-
 
   $("#setting_defualt_button_t").click(function () {  
     setSettingUT = "t"
@@ -494,11 +501,6 @@ switch(forecast_3_icon) {
     document.getElementById("setting_defualt_button_u").disabled = false;
   });
 
-
-
-
-
-
   $("#setting_defualt_button_c").click(function() {
       setSettingFC = "c";
       chrome.storage.sync.set({'setSettingFC': 'c'});
@@ -509,11 +511,6 @@ switch(forecast_3_icon) {
      document.getElementById("setting_defualt_button_c").disabled = true;
     document.getElementById("setting_defualt_button_f").disabled = false;
    });
-
-
-
-
-
 
   $("#setting_defualt_button_f").click(function() {
       setSettingFC = "f";
@@ -526,13 +523,6 @@ switch(forecast_3_icon) {
     document.getElementById("setting_defualt_button_c").disabled = false;
   });
 
-
-
-
-
-  var manifest = chrome.runtime.getManifest();
-  version_manifest = manifest.version;
-  $("#title_version").html("Version " + version_manifest);
 
 });
 

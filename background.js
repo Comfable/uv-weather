@@ -81,24 +81,50 @@
 							    forecast_1_tempC = Math.round((forecast_1_tempF-32) * 5/9);
 							    forecast_1_tempF_sign = forecast_1_tempF + "°";
 							    forecast_1_tempC_sign = forecast_1_tempC + "°";
-							    forecast_1_uv = ( "UVI " + result.daily.data[1].uvIndex);
 							    forecast_1_icon = result.daily.data[1].icon;
+								
+								cloudAdj_daily_1 = uv_adj_daily(forecast_1_icon);
+							    forecast_1_uv = ( "UVI " + Math.round ((result.daily.data[1].uvIndex) * cloudAdj_daily_1));
+
 
 							    forecast_2_days = result.daily.data[2].time;
 							    forecast_2_tempF = Math.round(result.daily.data[2].temperatureMax);
 							    forecast_2_tempC = Math.round((forecast_2_tempF-32) * 5/9);
 							    forecast_2_tempF_sign = forecast_2_tempF + "°";
 							    forecast_2_tempC_sign = forecast_2_tempC + "°";
-							    forecast_2_uv = ( "UVI " + result.daily.data[2].uvIndex);
 							    forecast_2_icon = result.daily.data[2].icon;
+								
+								cloudAdj_daily_2 = uv_adj_daily(forecast_2_icon);
+							    forecast_2_uv = ( "UVI " + Math.round ((result.daily.data[2].uvIndex) * cloudAdj_daily_2));
+
 
 							    forecast_3_days = result.daily.data[3].time;
 							    forecast_3_tempF =Math.round( result.daily.data[3].temperatureMax);
 							    forecast_3_tempC = Math.round((forecast_3_tempF-32) * 5/9);
 							    forecast_3_tempF_sign = forecast_3_tempF + "°";
 							    forecast_3_tempC_sign = forecast_3_tempC + "°";
-							    forecast_3_uv = ( "UVI " + result.daily.data[3].uvIndex);
 							    forecast_3_icon = result.daily.data[3].icon;
+								
+								cloudAdj_daily_3 = uv_adj_daily(forecast_3_icon);
+							    forecast_3_uv = ( "UVI " + Math.round ((result.daily.data[3].uvIndex) * cloudAdj_daily_3));
+
+								
+								function uv_adj_daily(icon) {
+								    if (icon === "rain" || icon === "sleet" || icon === "snow")
+							            {cloudAdj_daily = 0.73;}
+							        else if (cloudCover < 0.2)
+							            {cloudAdj_daily = 1;}
+							        else if (cloudCover >= 0.2 && cloudCover < 0.7)
+							            {cloudAdj_daily = 0.89;}
+							        else if (cloudCover >= 0.7 && cloudCover < 0.9)
+							            {cloudAdj_daily = 0.73;}
+							        else if (cloudCover >= 0.9)
+							            {cloudAdj_daily = 0.73;}
+							        else
+							            {cloudAdj_daily = 1;}
+
+							        return (cloudAdj_daily);
+							    };
 
 
 								function update_tomorrow_is() {
@@ -276,8 +302,8 @@
 								 	}
 
 								 	if (typeof setSettingUT === 'undefined') {
-								 	 setSettingUT = "u";
-									uvi ();
+								 	 setSettingUT = "t";
+										tempf ();
 									 }
 									else {
 									if (setSettingUT == "t") {
