@@ -253,28 +253,19 @@
 							     }
 
 								function tempc (){
-								  chrome.storage.sync.get(['total'], function(){ 
-				                  chrome.storage.sync.set({'total': temperatureC});
 				                  chrome.browserAction.setBadgeText({"text":temperatureC +"°C" });
 				  				  badgeBackgroundImage();			  
-								  });
 								 };
 								 
 								function tempf (){
-								  chrome.storage.sync.get(['total'], function(){ 
-				                  chrome.storage.sync.set({'total': temperatureF});
 				                  chrome.browserAction.setBadgeText({"text":temperatureF +"°F" });
 				  				  badgeBackgroundImage();  
-									});
 								 };
 
 								 function uvi (){
-								  chrome.storage.sync.get(['total'], function(){
 				                  newTotal = uv1;
-				                  chrome.storage.sync.set({'total': newTotal});
 				                  chrome.browserAction.setBadgeText({"text": "UV " + uv1});
 								  badgeBackgroundImage();
-							     });
 								 };
 
 
@@ -282,17 +273,13 @@
 								  chrome.storage.sync.get(['setSettingFC', 'setSettingUT'], function(data) {
 								    setSettingFC = data.setSettingFC;
 								    setSettingUT = data.setSettingUT;
-								    console.log("setSettingUT00 " + setSettingUT)
-								    console.log("setSettingFC00 " + setSettingFC)
 								   
-								     if (typeof setSettingFC === 'undefined') {
-								 	setSettingFC = "f";
-								 	chrome.storage.sync.set({'setSettingFC': 'f'});
+								    if (typeof setSettingFC === 'undefined') {
+								 	 setSettingFC = "f";
 								 	}
 
 								 	if (typeof setSettingUT === 'undefined') {
-								 	setSettingUT = "u";
-								 	chrome.storage.sync.set({'setSettingUT': 'u'});
+								 	 setSettingUT = "u";
 									uvi ();
 									 }
 									else {
@@ -309,7 +296,8 @@
 
 								 return;
 								  });
-								}
+								}						
+
 									utfc = UTFC(function(value){	
 									});
 
@@ -318,8 +306,6 @@
 										        if(request.msg == "startFunc") uvi();
 										    }
 										);
-				    			    
-
 							},
 
 							error: function (jqXHR, textStatus) {

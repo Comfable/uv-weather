@@ -1,8 +1,8 @@
    {
     "name": "UV Weather",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": "The best way to see the UV Index live and weather forecast in your browser.",
-    "permissions": [ "geolocation","storage","activeTab" ],
+    "permissions": [ "activeTab","geolocation","storage" ],
     "content_scripts": [ {"matches": ["<all_urls>"], "js": ["jquery-3.4.1.min.js", "jquery.powertip.min.js"] } ],
     "background": {
     "scripts": ["jquery-3.4.1.min.js","background.js"],

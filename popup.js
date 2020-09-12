@@ -2,44 +2,39 @@
 var background = chrome.extension.getBackgroundPage();
 
 $(function(){
-  chrome.storage.onChanged.addListener(function(changes, namespace) {
-     console.log("change recived!");
-  });
 
   chrome.browserAction.setTitle({title: "Live UV & Weather Forecast"});
-
-function UTFC (){
+  
+  function UTFC (){
                   chrome.storage.sync.get(['setSettingFC', 'setSettingUT'], function(data) {
                     setSettingFC = data.setSettingFC;
                     setSettingUT = data.setSettingUT;
-                    console.log("setSettingUT00p " + setSettingUT)
-                    console.log("setSettingFC00p " + setSettingFC)
   
-                    if (typeof setSettingFC === 'undefined') {
-                  setSettingFC = "f";
-                  chrome.storage.sync.set({'setSettingFC': 'f'});
+                  if (typeof setSettingFC === 'undefined') {
+                    setSettingFC = "f";
+                    chrome.storage.sync.set({'setSettingFC': 'f'});
                   }
 
-                    if (typeof setSettingUT === 'undefined') {
-                  setSettingUT = "u";
-                  chrome.storage.sync.set({'setSettingUT': 'u'});
+                  if (typeof setSettingUT === 'undefined') {
+                    setSettingUT = "u";
+                    chrome.storage.sync.set({'setSettingUT': 'u'});
                    }
                    if (setSettingUT == "u") {
                       $("#setting_defualt_button_u").prop("checked", true);
-                      $("#setting_defualt_button_t").prop("checked", false);
+                      document.getElementById("setting_defualt_button_u").disabled = true;
                       }
                     else {
                       $("#setting_defualt_button_t").prop("checked", true);
-                      $("#setting_defualt_button_u").prop("checked", false);
+                      document.getElementById("setting_defualt_button_t").disabled = true;
                       };
 
                     if (setSettingFC == "f") {
                       $("#setting_defualt_button_f").prop("checked", true);
-                      $("#setting_defualt_button_c").prop("checked", false);
+                      document.getElementById("setting_defualt_button_f").disabled = true;
                       }
                     else {
                       $("#setting_defualt_button_c").prop("checked", true);
-                      $("#setting_defualt_button_f").prop("checked", false);
+                      document.getElementById("setting_defualt_button_c").disabled = true;
                       };
 
                       if (setSettingFC == 'f'){
@@ -52,7 +47,7 @@ function UTFC (){
                   });
                   }
                   utfc = UTFC(function(value){  
-                  });
+  });
   
   current_update_icon = background.current_update_icon;
 
@@ -80,7 +75,6 @@ function UTFC (){
   forecast_3_temp = background.forecast_3_tempF_sign;
 
   forecast_1_tempC_sign = background.forecast_1_tempC_sign;
-
   forecast_2_tempC_sign = background.forecast_2_tempC_sign;
   forecast_3_tempC_sign = background.forecast_3_tempC_sign;
 
@@ -96,6 +90,7 @@ function UTFC (){
   forecast_1_update_icon = background.forecast_1_update_icon;
   forecast_2_update_icon = background.forecast_2_update_icon;
   forecast_3_update_icon = background.forecast_3_update_icon;
+
   isDay = background.isDay;
   isNight = background.isNight;
 
@@ -447,25 +442,6 @@ switch(forecast_3_icon) {
   $("#forecast_3_uv").html(forecast_3_uv);
 
 
-  $("#setting_defualt_button_u").click(function () {  
-    setSettingUT = "u";
-    chrome.storage.sync.set({'setSettingUT': 'u'});
-    chrome.browserAction.setBadgeText({"text": "UV "+ uv1 });
-    chrome.runtime.sendMessage({ msg: "startFunc" });
-  });
-
-  $("#setting_defualt_button_t").click(function () {  
-    setSettingUT = "t"
-    chrome.storage.sync.set({'setSettingUT': 't'});
-    if (setSettingFC == "c"){
-        chrome.browserAction.setBadgeText({"text": temperatureCsign});
-    }
-    else {
-        chrome.browserAction.setBadgeText({"text": temperatureF+ "°F"});
-    }    
-  });
-
-
   function ctemp(){
    $("#current_temp").html(temperatureC);
       $("#temp_sign").html("°C");
@@ -475,15 +451,6 @@ switch(forecast_3_icon) {
       $("#forecast_2_temp").html(forecast_2_tempC_sign);
       $("#forecast_3_temp").html(forecast_3_tempC_sign);      
   }
-
-  $("#setting_defualt_button_c").click(function() {
-      setSettingFC = "c";
-      chrome.storage.sync.set({'setSettingFC': 'c'});
-      if (setSettingUT == "t") {
-        chrome.browserAction.setBadgeText({"text": temperatureCsign});
-      };
-     ctemp(); 
-   });
 
   function ftemp(){
       $("#current_temp").html(temperatureF);
@@ -495,6 +462,59 @@ switch(forecast_3_icon) {
       $("#forecast_3_temp").html(forecast_3_temp);    
   }
 
+
+
+
+
+
+  $("#setting_defualt_button_u").click(function () {  
+    setSettingUT = "u";
+    chrome.storage.sync.set({'setSettingUT': 'u'});
+    chrome.browserAction.setBadgeText({"text": "UV "+ uv1 });
+    chrome.runtime.sendMessage({ msg: "startFunc" });
+    document.getElementById("setting_defualt_button_u").disabled = true;
+    document.getElementById("setting_defualt_button_t").disabled = false;
+  });
+
+
+
+
+
+
+  $("#setting_defualt_button_t").click(function () {  
+    setSettingUT = "t"
+    chrome.storage.sync.set({'setSettingUT': 't'});
+    if (setSettingFC == "c"){
+        chrome.browserAction.setBadgeText({"text": temperatureCsign});
+    }
+    else {
+        chrome.browserAction.setBadgeText({"text": temperatureF+ "°F"});
+    }
+    document.getElementById("setting_defualt_button_t").disabled = true;
+    document.getElementById("setting_defualt_button_u").disabled = false;
+  });
+
+
+
+
+
+
+  $("#setting_defualt_button_c").click(function() {
+      setSettingFC = "c";
+      chrome.storage.sync.set({'setSettingFC': 'c'});
+      if (setSettingUT == "t") {
+        chrome.browserAction.setBadgeText({"text": temperatureCsign});
+      };
+     ctemp(); 
+     document.getElementById("setting_defualt_button_c").disabled = true;
+    document.getElementById("setting_defualt_button_f").disabled = false;
+   });
+
+
+
+
+
+
   $("#setting_defualt_button_f").click(function() {
       setSettingFC = "f";
       chrome.storage.sync.set({'setSettingFC': 'f'});
@@ -502,7 +522,13 @@ switch(forecast_3_icon) {
         chrome.browserAction.setBadgeText({"text": temperatureF+ "°F"});
       };
       ftemp();
+     document.getElementById("setting_defualt_button_f").disabled = true;
+    document.getElementById("setting_defualt_button_c").disabled = false;
   });
+
+
+
+
 
   var manifest = chrome.runtime.getManifest();
   version_manifest = manifest.version;
