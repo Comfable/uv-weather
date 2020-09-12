@@ -4,7 +4,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title>UV Weather</title>
-  <script src="/library/util.min.js"></script>
+  <script src="/library/util.js"></script>
   <script src="/library/dayjs.min.js"></script>
   <script src="/library/accufeel.min.js"></script>
   <script src="/library/suncalc.min.js"></script>
@@ -116,10 +116,19 @@
     </a>
   </div>
   </div>
+
+
+
+
+
   <div id="UV_Weather" class="UV_Weather_Class">
     <div id="forecast_tomorrow" class="forecast_tomorrow_Class"> <span>Forecast Tomorrow</span>
     </div>
     <div id="title_uv" class="title_uv_group_Class">
+
+    <img id="uv_weather_logo" src="images/uv-weather.svg" class="uv_weather_logo_Class" />
+
+
       <div id="title_uv" class="title_uv_Class">UV Weather</div>
       <a target='_blank' href="https://qsun.co" class="blacklink"> 
           <a target='_blank' href="https://qsun.co" class="blacklink"> 
@@ -127,7 +136,7 @@
           </a>
       </a>  
       </div>
-      <div id="title_version" class="title_version_Class">Version 1.0.10</div>
+      <!-- <div id="title_version" class="title_version_Class">Version 1.0.10</div> -->    
     </div>
     <div id="forecast" class="forecast_Class">
       <div id="one_day" class="one_day_Class"> <span id="forecast_1_day" class="forecast_day_Class">
@@ -220,8 +229,7 @@
         </div>
 
         <div id="setting_search_text" class="setting_search_text_class">By default, UV Weather uses your current location. However, you can select a different location.
-          <br>
-          <br>
+
           <div id="setting_currentLocation_title" class="setting_currentLocation_title_class">Current Location:<b></div>
           <div id="setting_currentLocation_text" class="setting_currentLocation_text_class"><b>-<b></div>
         </div>
@@ -607,13 +615,12 @@
 
 
     <!-- Report Page -->
-    <div id="currentReport_popup" class="modal">
+    <div id="currentReport_popup" class="modal_report">
           <div id="report_popup_close" class="modal_close"></div>
-          <div id="title_report" class="title_uv_group_Class_setting">
+      <div id="title_report" class="title_uv_group_Class_setting">
             <div id="title_report_text" class="title_uv_Class">Current</div>
             <div id="report_update_date" class="title_subtitle_modal_Class">October 25, 2019</div>
             <div id="current_report_summary" class="title_subtitle_modal_Class">-</div>
-          </div>
 
       <div class="report_table_Class">
 
@@ -648,6 +655,51 @@
             </span>
           </div>
 
+        <hr class="hr_forecast"> 
+
+          <div id="report_6" class="report_model_Class"> 
+            <span id="current_report_title_6" class="current_report_title_Class">
+              Humidity
+            </span>
+              <span id="current_report_humidity" class="current_report_value_Class">
+              value
+            </span>
+          </div>
+
+
+        <hr class="hr_forecast">
+
+          <div id="report_5" class="report_model_Class"> 
+            <span id="current_report_title_5" class="current_report_title_Class">
+              Precipitation 
+            </span>
+              <span id="current_report_precipitation" class="current_report_value_Class">
+              value
+            </span>
+          </div>
+
+        <hr class="hr_forecast">
+
+          <div id="report_10" class="report_model_Class"> 
+            <span id="current_report_title_10" class="current_report_title_Class">
+              Cloud Cover
+            </span>
+              <span id="current_report_cloud" class="current_report_value_Class">
+              value
+            </span>
+          </div>
+
+        <hr class="hr_forecast">  
+
+          <div id="report_7" class="report_model_Class"> 
+            <span id="current_report_title_7" class="current_report_title_Class">
+              Dew Point
+            </span>
+              <span id="current_report_dewPoint" class="current_report_value_Class">
+              value
+            </span>
+          </div>
+
         <hr class="hr_forecast">
 
           <div id="report_4" class="report_model_Class"> 
@@ -659,43 +711,32 @@
             </span>
           </div>
 
-        <hr class="hr_forecast"> 
+        <hr class="hr_forecast">
 
-          <div id="report_5" class="report_model_Class"> 
-            <span id="current_report_title_5" class="current_report_title_Class">
-              Humidity
+          <div id="report_12" class="report_model_Class"> 
+            <span id="current_report_title_12" class="current_report_title_Class">
+              Wind Direction
             </span>
-              <span id="current_report_humidity" class="current_report_value_Class">
+              <span id="current_report_windBearing" class="current_report_value_Class">
               value
             </span>
           </div>
 
         <hr class="hr_forecast">
 
-          <div id="report_6" class="report_model_Class"> 
-            <span id="current_report_title_6" class="current_report_title_Class">
-              Dew Point
+          <div id="report_13" class="report_model_Class"> 
+            <span id="current_report_title_13" class="current_report_title_Class">
+              Wind Gust
             </span>
-              <span id="current_report_dewPoint" class="current_report_value_Class">
+              <span id="current_report_windGust" class="current_report_value_Class">
               value
             </span>
           </div>
+                              
+        <hr class="hr_forecast">
 
-        <hr class="hr_forecast">  
-
-          <div id="report_7" class="report_model_Class"> 
-            <span id="current_report_title_7" class="current_report_title_Class">
-              Visibility
-            </span>
-              <span id="current_report_visibility" class="current_report_value_Class">
-              value
-            </span>
-          </div>
-
-        <hr class="hr_forecast"> 
-
-          <div id="report_8" class="report_model_Class"> 
-            <span id="current_report_title_8" class="current_report_title_Class">
+          <div id="report_9" class="report_model_Class"> 
+            <span id="current_report_title_9" class="current_report_title_Class">
               Pressure
             </span>
               <span id="current_report_pressure" class="current_report_value_Class">
@@ -707,26 +748,30 @@
 
           <div id="report_8" class="report_model_Class"> 
             <span id="current_report_title_8" class="current_report_title_Class">
-              Cloud Cover
+              Visibility
             </span>
-              <span id="current_report_cloud" class="current_report_value_Class">
+              <span id="current_report_visibility" class="current_report_value_Class">
               value
             </span>
           </div>
 
         <hr class="hr_forecast"> 
 
-          <div id="report_8" class="report_model_Class"> 
-            <span id="current_report_title_8" class="current_report_title_Class">
+          <div id="report_11" class="report_model_Class"> 
+            <span id="current_report_title_11" class="current_report_title_Class">
               Ozone
             </span>
               <span id="current_report_ozone" class="current_report_value_Class">
               value
             </span>
-          </div>          
+          </div> 
+          <br>
+          <br>
       </div>
 
     </div>
+
+  </div>
 
 
 
@@ -966,7 +1011,7 @@
         <hr class="hr_forecast">
         <div id="solar_4" class="solar_Class"> 
           <span id="solar_4_name" class="solar_name_Class">
-            Length
+            Day Length
           </span>
           <span id="solar_4_time" class="solar_time_Class">
             -:-

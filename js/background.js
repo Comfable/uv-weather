@@ -101,25 +101,50 @@ function uvReader(city,latandlong,country) {
 		DeviceTimeDifferenceFromGMT = systemTime.getTimezoneOffset() / 60;
 	offsetTime = DeviceTimeDifferenceFromGMT + result.offset;
 		offsetUnix = offsetTime * 3600;
-	cloudCover = result.currently.cloudCover;
+	cloudCover = Math.round(result.currently.cloudCover * 100);
 	icon = result.currently.icon;
 	updateTime = result.currently.time;
 
 	temperatureF =  Math.round(result.currently.temperature);
 	temperatureC =  f2c(temperatureF);
-	humidity = 100 * (result.currently.humidity);
+	humidity = Math.round(100 * (result.currently.humidity));
 	dewPointF = Math.round(result.currently.dewPoint);
 	dewPointC = f2c(dewPointF);
-	pressure = Math.round(result.currently.pressure);
-	windSpeedMPH = result.currently.windSpeed; //miles per hour
+	pressure = result.currently.hasOwnProperty('pressure') ? Math.round(result.currently.pressure) : '-';
+	windSpeedMPH = Math.round(result.currently.windSpeed); //miles per hour
 		windSpeedMS10 = windSpeedMPH * 0.4470389; //meter per second
 		windSpeedMS = windSpeedMS10 * 0.33; // on humun hieght an urban area
-	visibility = Math.round(result.currently.visibility);
-	ozone = Math.round(result.currently.ozone);
+	windGustMPH = Math.round(result.currently.windGust); //miles per hour
+		if (result.currently.windSpeed > 0) {
+			windBearing = Math.round(result.currently.windBearing); //true north at 0° and progressing clockwise
+		}
+		else {
+			windBearing = "-";
+		}
 
-	summary = result.currently.summary;
-	summaryHourlyF = result.hourly.summary;
-	summaryDailyF = result.daily.summary;
+		visibility = result.currently.hasOwnProperty('visibility') ? Math.round(result.currently.visibility) : '-';
+
+		if (visibility >= 10) {
+			visibility = "+10"
+		}
+
+	ozone = result.currently.hasOwnProperty('ozone') ? Math.round(result.currently.ozone) : '-';
+	precipProbability = result.currently.hasOwnProperty('precipProbability') ? Math.round(result.currently.precipProbability * 100) : '-';
+
+	summary = result.currently.hasOwnProperty('summary') ? result.currently.summary : '-'
+
+	if (result.hasOwnProperty('minutely')) {
+		if(result.minutely.hasOwnProperty('summary')) {
+			summaryMinutely = result.minutely.summary;
+		}
+	}
+	else {
+		summaryMinutely = result.currently.hasOwnProperty('summary') ? result.currently.summary : '-'
+	}
+
+	summaryHourlyF = result.hourly.hasOwnProperty('summary') ? result.hourly.summary : '-'
+	summaryDailyF = result.daily.hasOwnProperty('summary') ? result.daily.summary : '-'
+
 	summaryHourlyC = summaryUnitConvertor(result.hourly.summary);
 	summaryDailyC = summaryUnitConvertor(result.daily.summary);
 	current_tempF_max = Math.round(result.daily.data[0].temperatureMax);
@@ -128,7 +153,7 @@ function uvReader(city,latandlong,country) {
 	current_tempC_max = f2c(current_tempF_max);
 	current_tempC_min = f2c(current_tempF_min);
 
-	uvCurrently = result.currently.uvIndex;
+	uvCurrently = result.currently.hasOwnProperty('uvIndex') ? result.currently.uvIndex : '-'
 
 	if (temperatureF > current_tempF_max){
 		temperatureF = current_tempF_max
@@ -228,13 +253,13 @@ function uvReader(city,latandlong,country) {
 	
 	if (icon === "rain" || icon === "sleet" || icon === "snow")
 		{cloudAdj = 0.31;}
-	else if (cloudCover < 0.2)
+	else if (cloudCover < 20)
 		{cloudAdj = 1;}
-	else if (cloudCover >= 0.2 && cloudCover < 0.7)
+	else if (cloudCover >= 20 && cloudCover < 70)
 		{cloudAdj = 0.89;}
-	else if (cloudCover >= 0.7 && cloudCover < 0.9)
+	else if (cloudCover >= 70 && cloudCover < 90)
 		{cloudAdj = 0.73;}
-	else if (cloudCover >= 0.9)
+	else if (cloudCover >= 90)
 		{cloudAdj = 0.31;}
 	else {cloudAdj = 1;}
 
@@ -265,7 +290,6 @@ function uvReader(city,latandlong,country) {
 		if (isDay && sunnyDay){
 			chrome.browserAction.setBadgeBackgroundColor({color: '#fc923b'});
 			chrome.browserAction.setIcon({path : { "128": "images/sun-128.png"}})
-			console.log("*********** 1 ")
 			}
 		else if (isDay && cloudy){
 			chrome.browserAction.setBadgeBackgroundColor({color: '#549dd0'});

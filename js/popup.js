@@ -360,15 +360,18 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
  function reportFunction() {
     document.querySelector("#title_report_text").textContent = b.citys;
-    document.querySelector("#current_report_summary").textContent = b.summary;
+    document.querySelector("#current_report_summary").textContent = b.summaryMinutely;
     document.querySelector("#report_update_date").textContent = dayjs.unix(b.updateTime + b.offsetUnix).format('MMM DD, h:mm A');
     document.querySelector("#current_report_uv").textContent = b.uv1 + " " + b.current_uv_note;
-    document.querySelector("#current_report_wind").textContent = Math.round(b.windSpeedMPH) + " MPH";
+    document.querySelector("#current_report_wind").textContent = b.windSpeedMPH + " mph";
+    document.querySelector("#current_report_windBearing").textContent = b.windBearing + "°";
+    document.querySelector("#current_report_windGust").textContent = b.windGustMPH + " mph";
     document.querySelector("#current_report_humidity").textContent = b.humidity + "%";
-    document.querySelector("#current_report_visibility").textContent = b.visibility + " MI";
-    document.querySelector("#current_report_pressure").textContent = b.pressure + " MB";
-    document.querySelector("#current_report_cloud").textContent = Math.round(b.cloudCover * 100) + "%";
-    document.querySelector("#current_report_ozone").textContent = b.ozone + " DU";
+    document.querySelector("#current_report_visibility").textContent = b.visibility + " mi";
+    document.querySelector("#current_report_pressure").textContent = b.pressure + " mb";
+    document.querySelector("#current_report_cloud").textContent = b.cloudCover + "%";
+    document.querySelector("#current_report_ozone").textContent = b.ozone + " du";
+    document.querySelector("#current_report_precipitation").textContent =  b.precipProbability + "%";
   }
   reportFunction();
 
@@ -433,7 +436,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   trackYour();
 
   version_manifest = chrome.runtime.getManifest().version;
-  document.querySelector("#title_version").textContent = "Version " + version_manifest;
+  //document.querySelector("#title_version").textContent = "Version " + version_manifest;
   document.querySelector("#title_version_setting").textContent = "Version " + version_manifest;
   document.querySelector("#title_version_info").textContent = "Version " + version_manifest;
 
@@ -570,7 +573,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
           setTimeout(function(){
             chrome.runtime.sendMessage({ msg: "fromSearchUpdate" });
-            modalSetting.style.display = "none";
           }, 50);
 
            setTimeout(function(){
@@ -578,8 +580,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
            }, 1050); 
 
            setTimeout(function(){
-              modalBlocker.style.display = "none";
-           }, 1500); 
+              modalSetting.style.display = "none";
+           }, 1750); 
 
 
       }
@@ -658,38 +660,52 @@ var modalCurrent = document.getElementById("currentReport_popup");
 
 document.querySelector("#setting_popup_page").addEventListener("click", (e) => { 
     modalSetting.style.display = "block";
-    modalBlocker.style.display = "block";
+    //modalBlocker.style.display = "block";
 });
 
 document.querySelector("#solar_popup_page").addEventListener("click", (e) => { 
     modalSolar.style.display = "block";
-    modalBlocker.style.display = "block";
+    //modalBlocker.style.display = "block";
   });
 
 document.querySelector("#info_popup_page").addEventListener("click", (e) => { 
     modalInfo.style.display = "block";
-    modalBlocker.style.display = "block";
+    //modalBlocker.style.display = "block";
   });
 
 document.querySelector("#next7_day").addEventListener("click", (e) => { 
     modal7days.style.display = "block";
-    modalBlocker.style.display = "block";
+    //modalBlocker.style.display = "block";
   });
 
 document.querySelector("#next48").addEventListener("click", (e) => {
     modal7days.style.display = "none";
     modal48hours.style.display = "block";
-    modalBlocker.style.display = "block";
+    //modalBlocker.style.display = "block";
   });
 
 document.querySelector("#location").addEventListener("click", (e) => { 
+    modalSetting.style.display = "none";
+    modal48hours.style.display = "none";
+    modal7days.style.display = "none";
+    modalSolar.style.display = "none";
+    modalInfo.style.display = "none";
+    modalCurrent.style.display = "none";
+    modalBlocker.style.display = "none";
     modalSetting.style.display = "block";
-    modalBlocker.style.display = "block";
+    //modalBlocker.style.display = "block";
   });
 
-document.querySelector("#report_button").addEventListener("click", (e) => { 
+document.querySelector("#report_button").addEventListener("click", (e) => {
+    modalSetting.style.display = "none";
+    modal48hours.style.display = "none";
+    modal7days.style.display = "none";
+    modalSolar.style.display = "none";
+    modalInfo.style.display = "none";
+    modalCurrent.style.display = "none";
+    modalBlocker.style.display = "none";
     modalCurrent.style.display = "block";
-    modalBlocker.style.display = "block";
+    //modalBlocker.style.display = "block";
   });
 
 document.querySelector("#setting_popup_close").addEventListener("click", (e) => {
@@ -733,7 +749,15 @@ document.querySelector("#setting_popup_modalBlocker").addEventListener("click", 
     modalBlocker.style.display = "none";
   });
 
-
+document.querySelector("#image_background").addEventListener("click", (e) => {
+    modalSetting.style.display = "none";
+    modal48hours.style.display = "none";
+    modal7days.style.display = "none";
+    modalSolar.style.display = "none";
+    modalInfo.style.display = "none";
+    modalCurrent.style.display = "none";
+    modalBlocker.style.display = "none";
+  });
 
   function refreshPopup(){
     setTimeout(function(){
