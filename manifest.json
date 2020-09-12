@@ -1,6 +1,6 @@
    {
     "name": "UV Weather",
-    "version": "1.0.10",
+    "version": "1.0.11",
     "description": "The best way to check the UV Index & weather forecast right in your browser.",
     "permissions": [ "activeTab","geolocation","storage" ],
     "content_scripts": [ {"matches": ["https://qsun.co/*", "https://www.google-analytics.com/analytics.js", "https://us-central1-swift-district-134123.cloudfunctions.net/*", "https://api.darksky.net/forecast/*"], "js": ["jquery-3.4.1.min.js", "jquery.powertip.min.js"] } ],

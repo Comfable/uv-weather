@@ -1,12 +1,17 @@
 ﻿
-var background = chrome.extension.getBackgroundPage();
+var b = chrome.extension.getBackgroundPage();
 
 $(function(){
 
+  // setTimeout(backgroundUpdateNew, 5000);
+  // function backgroundUpdateNew(){
+  //   chrome.runtime.sendMessage({ msg: "BackgroundUpdate" });
+  // };
+ 
   chrome.runtime.sendMessage({ msg: "BackgroundUpdate" });
   chrome.runtime.sendMessage({ msg: "animatedBadge" });
 
-  country = background.country;
+  country = b.country;
 
   function UTFC (){
     chrome.storage.sync.get(['setSettingFC', 'setSettingUT'], function(data) {
@@ -61,58 +66,58 @@ $(function(){
   });
   
 
-  current_update_icon = background.current_update_icon;
+  current_update_icon = b.current_update_icon;
 
-  temperatureF = background.temperatureF;
-  temperatureC = background.temperatureC;
-  temperatureSign = background.temperatureSign;
+  temperatureF = b.temperatureF;
+  temperatureC = b.temperatureC;
+  temperatureSign = b.temperatureSign;
 
-  accufeelResultCsignTitle = "AccuFeel " + background.accufeelResultCsign;
-  accufeelResultFsignTitle = "AccuFeel " + background.accufeelResultFsign;
+  accufeelResultCsignTitle = "AccuFeel " + b.accufeelResultCsign;
+  accufeelResultFsignTitle = "AccuFeel " + b.accufeelResultFsign;
 
-  current_tempFsign_max = background.current_tempFsign_max;
-  current_tempFsign_min = background.current_tempFsign_min;
-  current_tempCsign_max = background.current_tempCsign_max;
-  current_tempCsign_min = background.current_tempCsign_min;
-  cityname = background.citys;
-  current_uv = background.current_uv;
-  current_uv_note = background.current_uv_note;
-  uv1 = background.uv1;
+  current_tempFsign_max = b.current_tempFsign_max;
+  current_tempFsign_min = b.current_tempFsign_min;
+  current_tempCsign_max = b.current_tempCsign_max;
+  current_tempCsign_min = b.current_tempCsign_min;
+  cityname = b.citys;
+  current_uv = b.current_uv;
+  current_uv_note = b.current_uv_note;
+  uv1 = b.uv1;
   
-  update_tomorrow = background.update_tomorrow;
+  update_tomorrow = b.update_tomorrow;
 
-  forecast_1_day1 = background.forecast_1_day;
-  forecast_2_day1 = background.forecast_2_day;
-  forecast_3_day1 = background.forecast_3_day;
+  forecast_1_day1 = b.forecast_1_day;
+  forecast_2_day1 = b.forecast_2_day;
+  forecast_3_day1 = b.forecast_3_day;
 
-  forecast_1_temp = background.forecast_1_tempF_sign;
-  forecast_2_temp = background.forecast_2_tempF_sign;
-  forecast_3_temp = background.forecast_3_tempF_sign;
+  forecast_1_temp = b.forecast_1_tempF_sign;
+  forecast_2_temp = b.forecast_2_tempF_sign;
+  forecast_3_temp = b.forecast_3_tempF_sign;
 
-  forecast_1_tempC_sign = background.forecast_1_tempC_sign;
-  forecast_2_tempC_sign = background.forecast_2_tempC_sign;
-  forecast_3_tempC_sign = background.forecast_3_tempC_sign;
+  forecast_1_tempC_sign = b.forecast_1_tempC_sign;
+  forecast_2_tempC_sign = b.forecast_2_tempC_sign;
+  forecast_3_tempC_sign = b.forecast_3_tempC_sign;
 
-  forecast_1_uv = background.forecast_1_uv;
-  forecast_2_uv = background.forecast_2_uv;
-  forecast_3_uv = background.forecast_3_uv;
+  forecast_1_uv = b.forecast_1_uv;
+  forecast_2_uv = b.forecast_2_uv;
+  forecast_3_uv = b.forecast_3_uv;
 
-  forecast_1_icon = background.forecast_1_icon;
-  forecast_2_icon = background.forecast_2_icon;
-  forecast_3_icon = background.forecast_3_icon;
+  forecast_1_icon = b.forecast_1_icon;
+  forecast_2_icon = b.forecast_2_icon;
+  forecast_3_icon = b.forecast_3_icon;
 
-  forecast_1_update_icon = background.forecast_1_update_icon;
-  forecast_2_update_icon = background.forecast_2_update_icon;
-  forecast_3_update_icon = background.forecast_3_update_icon;
+  forecast_1_update_icon = b.forecast_1_update_icon;
+  forecast_2_update_icon = b.forecast_2_update_icon;
+  forecast_3_update_icon = b.forecast_3_update_icon;
 
-  isDay = background.isDay;
-  isNight = background.isNight;
+  isDay = b.isDay;
+  isNight = b.isNight;
 
-  icon = background.icon;
+  icon = b.icon;
 
-  updateTime = background.updateTime;
+  updateTime = b.updateTime;
+  //updateTimeRelative = moment.unix(updateTime).format('h:mm:ss a');
   updateTimeRelative = "Updated " + moment.unix(updateTime).fromNow();
-  console.log("updateTime " + updateTimeRelative);
 
 
   $('.current_temp_Class').powerTip({ placement: 's' });
@@ -133,37 +138,28 @@ $(function(){
 
   $('.title_powered_Class').powerTip({placement: 's', mouseOnToPopup: 'true' });
   
-  if (uv1 == 0) {
-      $("#icon_uv_1").css('opacity', '.3');
-      $("#icon_uv_2").css('opacity', '.3');
-      $("#icon_uv_3").css('opacity', '.3');
-      $("#icon_uv_4").css('opacity', '.3');
-      $("#icon_uv_5").css('opacity', '.3');
-      $("#icon_uv_6").css('opacity', '.3');
-    }
-  else if (uv1 >= 1 && uv1 <= 2) {
+
+  $("#icon_uv_1").css('opacity', '.3');
+  $("#icon_uv_2").css('opacity', '.3');
+  $("#icon_uv_3").css('opacity', '.3');
+  $("#icon_uv_4").css('opacity', '.3');
+  $("#icon_uv_5").css('opacity', '.3');
+  $("#icon_uv_6").css('opacity', '.3');
+
+  if (uv1 >= 1 && uv1 <= 2) {
       $("#icon_uv_1").css('opacity', '1');
       $("#icon_uv_2").css('opacity', '1');
-      $("#icon_uv_3").css('opacity', '.3');
-      $("#icon_uv_4").css('opacity', '.3');
-      $("#icon_uv_5").css('opacity', '.3');
-      $("#icon_uv_6").css('opacity', '.3');
     }
   else if (uv1 >= 3 && uv1 <= 5) {
       $("#icon_uv_1").css('opacity', '1');
       $("#icon_uv_2").css('opacity', '1');
       $("#icon_uv_3").css('opacity', '1');
-      $("#icon_uv_4").css('opacity', '.3');
-      $("#icon_uv_5").css('opacity', '.3');
-      $("#icon_uv_6").css('opacity', '.3');
     }
   else if (uv1 >= 6 && uv1 <= 7) {
       $("#icon_uv_1").css('opacity', '1');
       $("#icon_uv_2").css('opacity', '1');
       $("#icon_uv_3").css('opacity', '1');
       $("#icon_uv_4").css('opacity', '1');
-      $("#icon_uv_5").css('opacity', '.3');
-      $("#icon_uv_6").css('opacity', '.3');
     }
   else if (uv1 >= 8) {
       $("#icon_uv_1").css('opacity', '1');
@@ -175,6 +171,8 @@ $(function(){
     }
 
 
+$('.current_icon_update').powerTip({ followMouse: 'true' });
+
 switch(icon) {
     case 'clear-day':
       $(".current_icon_update").css('background-image', 'url("images/weather_icon/w_sun.svg")');   
@@ -183,13 +181,11 @@ switch(icon) {
       break;
     case 'clear-night':
       $(".current_icon_update").css('background-image', 'url("images/weather_icon/w_moon.svg")');
-      $('.current_icon_update').powerTip({ followMouse: 'true' });
       $('#current_icon_update').data('powertip', 'Clear Night');
       $(".image_background").css('background-image', 'url("images/background/clear-night.jpg")');
       break;
     case 'rain':
       $(".current_icon_update").css('background-image', 'url("images/weather_icon/w_cloud_rain.svg")');
-      $('.current_icon_update').powerTip({ followMouse: 'true' });
       $('#current_icon_update').data('powertip', 'Rainy');
             if (isDay) {
             $(".image_background").css('background-image', 'url("images/background/rain-day.jpg")');
@@ -200,7 +196,6 @@ switch(icon) {
       break;
     case 'snow':
       $(".current_icon_update").css('background-image', 'url("images/weather_icon/w_cloud_snow.svg")');
-      $('.current_icon_update').powerTip({ followMouse: 'true' });
       $('#current_icon_update').data('powertip', 'Snowy');
             if (isDay) {
             $(".image_background").css('background-image', 'url("images/background/snow-day.jpg")');
@@ -211,7 +206,6 @@ switch(icon) {
       break;
     case 'sleet':
       $(".current_icon_update").css('background-image', 'url("images/weather_icon/w_cloud_snow_alt.svg")');
-      $('.current_icon_update').powerTip({ followMouse: 'true' });
       $('#current_icon_update').data('powertip', 'Sleety');
             if (isDay) {
             $(".image_background").css('background-image', 'url("images/background/sleet-day.jpg")');
@@ -222,7 +216,6 @@ switch(icon) {
       break;
     case 'wind':
       $(".current_icon_update").css('background-image', 'url("images/weather_icon/w_wind.svg")');
-      $('.current_icon_update').powerTip({ followMouse: 'true' });
       $('#current_icon_update').data('powertip', 'Windy');
             if (isDay) {
             $(".image_background").css('background-image', 'url("images/background/wind-day.jpg")');
@@ -233,7 +226,6 @@ switch(icon) {
       break;
     case 'fog':
       $(".current_icon_update").css('background-image', 'url("images/weather_icon/w_cloud_fog_alt.svg")');
-      $('.current_icon_update').powerTip({ followMouse: 'true' });
       $('#current_icon_update').data('powertip', 'Foggy');
             if (isDay) {
             $(".image_background").css('background-image', 'url("images/background/fog-day.jpg")');
@@ -244,7 +236,6 @@ switch(icon) {
       break;
     case 'cloudy':
       $(".current_icon_update").css('background-image', 'url("images/weather_icon/w_cloud.svg")');
-      $('.current_icon_update').powerTip({ followMouse: 'true' });
       $('#current_icon_update').data('powertip', 'Cloudy');
             if (isDay) {
             $(".image_background").css('background-image', 'url("images/background/cloudy-day.jpg")');
@@ -256,201 +247,81 @@ switch(icon) {
     case 'partly-cloudy-day':
       $(".current_icon_update").css('background-image', 'url("images/weather_icon/w_cloud_sun.svg")');
       $(".image_background").css('background-image', 'url("images/background/partly-cloudy-day.jpg")');
-      $('.current_icon_update').powerTip({ followMouse: 'true' });
       $('#current_icon_update').data('powertip', 'Partly Cloudy');
       break;
     case 'partly-cloudy-night':
       $(".current_icon_update").css('background-image', 'url("images/weather_icon/w_cloud_moon.svg")');
       $(".image_background").css('background-image', 'url("images/background/partly-cloudy-night.jpg")');
-      $('.current_icon_update').powerTip({ followMouse: 'true' });
       $('#current_icon_update').data('powertip', 'Partly Cloudy');
       break;
     default:
       $(".current_icon_update").css('background-image', 'url("images/w_sun.svg")');
-      $('.current_icon_update').powerTip({ followMouse: 'true' });
       $('#current_icon_update').data('powertip', 'Sunny');
       $(".image_background").css('background-image', 'url("images/background/default.png")');
     break;
   }
 
-     
-switch(forecast_1_icon) {
+    
+$('.forecast_1_icon_Class').powerTip({ placement: 'nw' });      
+$('.forecast_2_icon_Class').powerTip({ placement: 'nw' });      
+$('.forecast_3_icon_Class').powerTip({ placement: 'nw' });      
+
+var i;
+for (i = 1; i < 4; i++) {
+
+  if (i == 1) {forecast_icon = forecast_1_icon;}
+  else if (i == 2) {forecast_icon = forecast_2_icon;}
+  else {forecast_icon = forecast_3_icon;}
+
+switch(forecast_icon) {
     case 'clear-day':
-      $(".forecast_1_icon_Class").css('background-image', 'url("images/weather_icon/b_sun.svg")');
-      $('#forecast_1_icon').data('powertip', 'Clear Day');
-      $('.forecast_1_icon_Class').powerTip({ placement: 'nw' });      
+      $('.forecast_'+ i +'_icon_Class').css('background-image', 'url("images/weather_icon/b_sun.svg")');
+      $('#forecast_'+ i +'_icon').data('powertip', 'Clear Day');
       break;
     case 'clear-night':
-      $(".forecast_1_icon_Class").css('background-image', 'url("images/weather_icon/b_moon.svg")');
-      $('#forecast_1_icon').data('powertip', 'Clear Night');
-      $('.forecast_1_icon_Class').powerTip({ placement: 'nw' });      
+      $('.forecast_'+ i +'_icon_Class').css('background-image', 'url("images/weather_icon/b_moon.svg")');
+      $('#forecast_'+ i +'_icon').data('powertip', 'Clear Night');
      break;
     case 'rain':
-      $(".forecast_1_icon_Class").css('background-image', 'url("images/weather_icon/b_cloud_rain.svg")');
-      $('#forecast_1_icon').data('powertip', 'Rainy');
-      $('.forecast_1_icon_Class').powerTip({ placement: 'nw' });      
+      $('.forecast_'+ i +'_icon_Class').css('background-image', 'url("images/weather_icon/b_cloud_rain.svg")');
+      $('#forecast_'+ i +'_icon').data('powertip', 'Rainy');
      break;
      case 'snow':
-      $(".forecast_1_icon_Class").css('background-image', 'url("images/weather_icon/b_cloud_snow.svg")');
-      $('#forecast_1_icon').data('powertip', 'Snowy');
-      $('.forecast_1_icon_Class').powerTip({ placement: 'nw' });      
+      $('.forecast_'+ i +'_icon_Class').css('background-image', 'url("images/weather_icon/b_cloud_snow.svg")');
+      $('#forecast_'+ i +'_icon').data('powertip', 'Snowy');
      break;
      case 'sleet':
-      $(".forecast_1_icon_Class").css('background-image', 'url("images/weather_icon/b_cloud_snow_alt.svg")');
-      $('#forecast_1_icon').data('powertip', 'Sleety');
-      $('.forecast_1_icon_Class').powerTip({ placement: 'nw' });      
+      $('.forecast_'+ i +'_icon_Class').css('background-image', 'url("images/weather_icon/b_cloud_snow_alt.svg")');
+      $('#forecast_'+ i +'_icon').data('powertip', 'Sleety');
      break;
      case 'wind':
-      $(".forecast_1_icon_Class").css('background-image', 'url("images/weather_icon/b_wind.svg")');
-      $('#forecast_1_icon').data('powertip', 'Windy');
-      $('.forecast_1_icon_Class').powerTip({ placement: 'nw' });      
+      $('.forecast_'+ i +'_icon_Class').css('background-image', 'url("images/weather_icon/b_wind.svg")');
+      $('#forecast_'+ i +'_icon').data('powertip', 'Windy');
      break;
      case 'fog':
-      $(".forecast_1_icon_Class").css('background-image', 'url("images/weather_icon/b_cloud_fog_alt.svg")');
-      $('#forecast_1_icon').data('powertip', 'Foggy');
-      $('.forecast_1_icon_Class').powerTip({ placement: 'nw' });      
+      $('.forecast_'+ i +'_icon_Class').css('background-image', 'url("images/weather_icon/b_cloud_fog_alt.svg")');
+      $('#forecast_'+ i +'_icon').data('powertip', 'Foggy');
      break;
      case 'cloudy':
-      $(".forecast_1_icon_Class").css('background-image', 'url("images/weather_icon/b_cloud.svg")');
-      $('#forecast_1_icon').data('powertip', 'Cloudy');
-      $('.forecast_1_icon_Class').powerTip({ placement: 'nw' });      
+      $('.forecast_'+ i +'_icon_Class').css('background-image', 'url("images/weather_icon/b_cloud.svg")');
+      $('#forecast_'+ i +'_icon').data('powertip', 'Cloudy');
      break;
      case 'partly-cloudy-day':
-      $(".forecast_1_icon_Class").css('background-image', 'url("images/weather_icon/b_cloud_sun.svg")');
-      $('#forecast_1_icon').data('powertip', 'Partly Cloudy');
-      $('.forecast_1_icon_Class').powerTip({ placement: 'nw' });
+      $('.forecast_'+ i +'_icon_Class').css('background-image', 'url("images/weather_icon/b_cloud_sun.svg")');
+      $('#forecast_'+ i +'_icon').data('powertip', 'Partly Cloudy');
      break;
      case 'partly-cloudy-night':
-      $(".forecast_1_icon_Class").css('background-image', 'url("images/weather_icon/b_cloud_moon.svg")');
-      $('#forecast_1_icon').data('powertip', 'Partly Cloudy');
-      $('.forecast_1_icon_Class').powerTip({ placement: 'nw' });      
+      $('.forecast_'+ i +'_icon_Class').css('background-image', 'url("images/weather_icon/b_cloud_moon.svg")');
+      $('#forecast_'+ i +'_icon').data('powertip', 'Partly Cloudy');
      break;
      default:
-      $(".forecast_1_icon_Class").css('background-image', 'url("images/b_sun.svg")');
-      $('#forecast_1_icon').data('powertip', 'Sunny');
-      $('.forecast_1_icon_Class').powerTip({ placement: 'nw' });          
+      $('.forecast_'+ i +'_icon_Class').css('background-image', 'url("images/b_sun.svg")');
+      $('#forecast_'+ i +'_icon').data('powertip', 'Sunny');
     break;
   }
+}
 
 
-switch(forecast_2_icon) {
-    case 'clear-day':
-      $(".forecast_2_icon_Class").css('background-image', 'url("images/weather_icon/b_sun.svg")');
-      $('#forecast_2_icon').data('powertip', 'Clear Day');
-      $('.forecast_2_icon_Class').powerTip({ placement: 'nw' });      
-      break;
-    case 'clear-night':
-      $(".forecast_2_icon_Class").css('background-image', 'url("images/weather_icon/b_moon.svg")');
-      $('#forecast_2_icon').data('powertip', 'Clear Night');
-      $('.forecast_2_icon_Class').powerTip({ placement: 'nw' });      
-     break;
-    case 'rain':
-      $(".forecast_2_icon_Class").css('background-image', 'url("images/weather_icon/b_cloud_rain.svg")');
-      $('#forecast_2_icon').data('powertip', 'Rainy');
-      $('.forecast_2_icon_Class').powerTip({ placement: 'nw' });      
-     break;
-     case 'snow':
-      $(".forecast_2_icon_Class").css('background-image', 'url("images/weather_icon/b_cloud_snow.svg")');
-      $('#forecast_2_icon').data('powertip', 'Snowy');
-      $('.forecast_2_icon_Class').powerTip({ placement: 'nw' });      
-     break;
-     case 'sleet':
-      $(".forecast_2_icon_Class").css('background-image', 'url("images/weather_icon/b_cloud_snow_alt.svg")');
-      $('#forecast_2_icon').data('powertip', 'Sleety');
-      $('.forecast_2_icon_Class').powerTip({ placement: 'nw' });      
-     break;
-     case 'wind':
-      $(".forecast_2_icon_Class").css('background-image', 'url("images/weather_icon/b_wind.svg")');
-      $('#forecast_2_icon').data('powertip', 'Windy');
-      $('.forecast_2_icon_Class').powerTip({ placement: 'nw' });      
-     break;
-     case 'fog':
-      $(".forecast_2_icon_Class").css('background-image', 'url("images/weather_icon/b_cloud_fog_alt.svg")');
-      $('#forecast_2_icon').data('powertip', 'Foggy');
-      $('.forecast_2_icon_Class').powerTip({ placement: 'nw' });      
-     break;
-     case 'cloudy':
-      $(".forecast_2_icon_Class").css('background-image', 'url("images/weather_icon/b_cloud.svg")');
-      $('#forecast_2_icon').data('powertip', 'Cloudy');
-      $('.forecast_2_icon_Class').powerTip({ placement: 'nw' });      
-     break;
-     case 'partly-cloudy-day':
-      $(".forecast_2_icon_Class").css('background-image', 'url("images/weather_icon/b_cloud_sun.svg")');
-      $('#forecast_2_icon').data('powertip', 'Partly Cloudy');
-      $('.forecast_2_icon_Class').powerTip({ placement: 'nw' });
-     break;
-     case 'partly-cloudy-night':
-      $(".forecast_2_icon_Class").css('background-image', 'url("images/weather_icon/b_cloud_moon.svg")');
-      $('#forecast_2_icon').data('powertip', 'Partly Cloudy');
-      $('.forecast_2_icon_Class').powerTip({ placement: 'nw' });      
-     break;
-     default:
-      $(".forecast_2_icon_Class").css('background-image', 'url("images/b_sun.svg")');
-      $('#forecast_2_icon').data('powertip', 'Sunny');
-      $('.forecast_2_icon_Class').powerTip({ placement: 'nw' });          
-    break;
-  }
-
-
-switch(forecast_3_icon) {
-    case 'clear-day':
-      $(".forecast_3_icon_Class").css('background-image', 'url("images/weather_icon/b_sun.svg")');
-      $('#forecast_3_icon').data('powertip', 'Clear Day');
-      $('.forecast_3_icon_Class').powerTip({ placement: 'nw' });      
-      break;
-    case 'clear-night':
-      $(".forecast_3_icon_Class").css('background-image', 'url("images/weather_icon/b_moon.svg")');
-      $('#forecast_3_icon').data('powertip', 'Clear Night');
-      $('.forecast_3_icon_Class').powerTip({ placement: 'nw' });      
-     break;
-    case 'rain':
-      $(".forecast_3_icon_Class").css('background-image', 'url("images/weather_icon/b_cloud_rain.svg")');
-      $('#forecast_3_icon').data('powertip', 'Rainy');
-      $('.forecast_3_icon_Class').powerTip({ placement: 'nw' });      
-     break;
-     case 'snow':
-      $(".forecast_3_icon_Class").css('background-image', 'url("images/weather_icon/b_cloud_snow.svg")');
-      $('#forecast_3_icon').data('powertip', 'Snowy');
-      $('.forecast_3_icon_Class').powerTip({ placement: 'nw' });      
-     break;
-     case 'sleet':
-      $(".forecast_3_icon_Class").css('background-image', 'url("images/weather_icon/b_cloud_snow_alt.svg")');
-      $('#forecast_3_icon').data('powertip', 'Sleety');
-      $('.forecast_3_icon_Class').powerTip({ placement: 'nw' });      
-     break;
-     case 'wind':
-      $(".forecast_3_icon_Class").css('background-image', 'url("images/weather_icon/b_wind.svg")');
-      $('#forecast_3_icon').data('powertip', 'Windy');
-      $('.forecast_3_icon_Class').powerTip({ placement: 'nw' });      
-     break;
-     case 'fog':
-      $(".forecast_3_icon_Class").css('background-image', 'url("images/weather_icon/b_cloud_fog_alt.svg")');
-      $('#forecast_3_icon').data('powertip', 'Foggy');
-      $('.forecast_3_icon_Class').powerTip({ placement: 'nw' });      
-     break;
-     case 'cloudy':
-      $(".forecast_3_icon_Class").css('background-image', 'url("images/weather_icon/b_cloud.svg")');
-      $('#forecast_3_icon').data('powertip', 'Cloudy');
-      $('.forecast_3_icon_Class').powerTip({ placement: 'nw' });      
-     break;
-     case 'partly-cloudy-day':
-      $(".forecast_3_icon_Class").css('background-image', 'url("images/weather_icon/b_cloud_sun.svg")');
-      $('#forecast_3_icon').data('powertip', 'Partly Cloudy');
-      $('.forecast_3_icon_Class').powerTip({ placement: 'nw' });
-     break;
-     case 'partly-cloudy-night':
-      $(".forecast_3_icon_Class").css('background-image', 'url("images/weather_icon/b_cloud_moon.svg")');
-      $('#forecast_3_icon').data('powertip', 'Partly Cloudy');
-      $('.forecast_3_icon_Class').powerTip({ placement: 'nw' });      
-     break;
-     default:
-      $(".forecast_3_icon_Class").css('background-image', 'url("images/b_sun.svg")');
-      $('#forecast_3_icon').data('powertip', 'Sunny');
-      $('.forecast_3_icon_Class').powerTip({ placement: 'nw' });          
-    break;
-  }
-         
-   
   $("#location").html(cityname);
   $("#current_uv").html(current_uv);
   $("#current_uv_note").html(current_uv_note);
@@ -497,13 +368,9 @@ switch(forecast_3_icon) {
       $("#link_qsun_text").html("Track your sun exposure");
     }
 
-
   var manifest = chrome.runtime.getManifest();
   version_manifest = manifest.version;
   $("#title_version").html("Version " + version_manifest);
-
-
-
 
 
 //Click events

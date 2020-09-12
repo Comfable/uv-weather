@@ -17,10 +17,13 @@ body {
 	width: 560px;
 	height: 526px;
 	background-color: rgba(255,255,255,1);
+	border: 0px solid transparent;
 	margin: 0;
 	padding: 0;
 	text-decoration: none !important;
-	border: 0px solid transparent;
+	font-family: Helvetica;
+	font-style: normal;
+	white-space: nowrap;
 	--web-view-name: UV Weather;
 	--web-view-id: UV_Weather;
 	--web-center-horizontally: true;
@@ -48,7 +51,6 @@ a.blacklink:active {color: black; text-decoration: none;}
 }
 .image_background {
 	position: absolute;
-	overflow: visible;
 	width: 250px;
 	height: 526px;
 	left: 0px;
@@ -78,14 +80,11 @@ a.blacklink:active {color: black; text-decoration: none;}
 	margin: 0 auto;
 	display: flex;
 	flex-direction: row;
-	white-space: nowrap;
 	align-items: flex-start;
 	justify-content: center;
 }
 .current_temp_Class {
 	position: relative;
-	font-family: Helvetica;
-	font-style: normal;
 	font-weight: 450;
 	font-size: 55px;
 	color: rgba(255,255,255,1);
@@ -95,8 +94,6 @@ a.blacklink:active {color: black; text-decoration: none;}
 	position: relative;
 	margin-top: 5px;
 	margin-bottom: 4px;
-	font-family: Helvetica;
-	font-style: normal;
 	font-weight: 450;
 	font-size: 25px;
 	color: rgba(255,255,255,1);
@@ -106,8 +103,6 @@ a.blacklink:active {color: black; text-decoration: none;}
 .current_accufeel_Class {
 	position: relative;
 	margin-left: 3px;
-	font-family: Helvetica;
-	font-style: normal;
 	font-weight: 250;
 	font-size: 13px;
 	color: rgba(255,255,255,1);
@@ -119,8 +114,6 @@ a.blacklink:active {color: black; text-decoration: none;}
 	top: 187px;
 	width: 250px;
 	margin: 0 auto;
-	font-family: Helvetica;
-	font-style: normal;
 	font-weight: 250;
 	font-size: 13px;
 	color: rgba(255,255,255,1);
@@ -138,8 +131,6 @@ a.blacklink:active {color: black; text-decoration: none;}
 	top: 210px;
 	width: 250px;
 	margin: 0 auto;
-	font-family: Helvetica;
-	font-style: normal;
 	font-weight: normal;
 	font-size: 18px;
 	color: rgba(255,255,255,1);
@@ -152,7 +143,6 @@ a.blacklink:active {color: black; text-decoration: none;}
 .current_temp_max_Class {
 	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.50);
 	position: relative;
-	white-space: nowrap;
 	text-align: left;
 	font-style: normal;
 	font-weight: normal;
@@ -163,7 +153,6 @@ a.blacklink:active {color: black; text-decoration: none;}
 	font-size: 12px !important;
 	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.50);
 	position: relative;
-	white-space: nowrap;
 	text-align: left;
 	font-style: normal;
 	font-weight: normal;
@@ -173,7 +162,6 @@ a.blacklink:active {color: black; text-decoration: none;}
 	font-size: 12px !important;
 	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.50);
 	position: relative;
-	white-space: nowrap;
 	text-align: left;
 	font-style: normal;
 	font-weight: normal;
@@ -182,10 +170,7 @@ a.blacklink:active {color: black; text-decoration: none;}
 .current_temp_min_Class {
 	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.50);
 	position: relative;
-	white-space: nowrap;
 	text-align: left;
-	font-family: Helvetica;
-	font-style: normal;
 	font-weight: normal;
 	font-size: 18px;
 	color: rgba(255,255,255,1);
@@ -197,7 +182,6 @@ a.blacklink:active {color: black; text-decoration: none;}
 	height: 8.4px;
 	left: 137px;
 	top: 212px;
-	overflow: visible;
 }
 .icon_up_Class {
 	transform: rotate(180deg);
@@ -207,7 +191,6 @@ a.blacklink:active {color: black; text-decoration: none;}
 	height: 8.4px;
 	left: 74px;
 	top: 212px;
-	overflow: visible;
 }
 .group_uv_Class {
 	position: absolute;
@@ -219,17 +202,13 @@ a.blacklink:active {color: black; text-decoration: none;}
 	display: flex;
 	flex-direction: row;
 	width: 250px;
-	white-space: nowrap;
 	margin: 0 auto;
 	align-items: center;
 	justify-content: center;
 }
 .current_uv_Class {
 	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.50);
-	white-space: nowrap;
 	text-align: center;
-	font-family: Helvetica;
-	font-style: normal;
 	font-weight: normal;
 	font-size: 18px;
 	color: rgba(255,255,255,1);
@@ -237,7 +216,6 @@ a.blacklink:active {color: black; text-decoration: none;}
 .current_uv_note_Class {
 	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.50);
 	text-align: center;
-	font-family: Helvetica;
 	font-weight: 250;
 	font-size: 12px;
 	color: rgba(255,255,255,1);
@@ -262,16 +240,11 @@ a.blacklink:active {color: black; text-decoration: none;}
 	position: absolute;
 	left: 0px;
 	top: 475px;
-	overflow: visible;
 	width: 250px;
-	white-space: nowrap;
 	text-align: center;
-	font-family: Helvetica;
-	font-style: normal;
 	font-weight: 250;
 	font-size: 13px;
 	color: #ffffff;
-	text-decoration: none;
 	margin: 0 auto;
 }
 
@@ -299,10 +272,7 @@ a.blacklink:active {color: black; text-decoration: none;}
 }
 .title_uv_Class {
 	position: relative;
-	white-space: nowrap;
 	text-align: center;
-	font-family: Helvetica;
-	font-style: normal;
 	font-weight: 250;
 	font-size: 22px;
 	color: rgba(27,41,52,1);
@@ -311,10 +281,7 @@ a.blacklink:active {color: black; text-decoration: none;}
 }
 .title_powered_Class {
 	position: relative;
-	white-space: nowrap;
 	text-align: center;
-	font-family: Helvetica;
-	font-style: normal;
 	font-weight: 250;
 	font-size: 14px;
 	color: rgba(27,41,52,1);
@@ -323,10 +290,7 @@ a.blacklink:active {color: black; text-decoration: none;}
 }
 .title_version_Class {
 	position: relative;
-	white-space: nowrap;
 	text-align: center;
-	font-family: Helvetica;
-	font-style: normal;
 	font-weight: 250;
 	font-size: 14px;
 	color: rgba(27,41,52,1);
@@ -338,12 +302,8 @@ a.blacklink:active {color: black; text-decoration: none;}
 	position: absolute;
 	left: 250px;
 	top: 200px;
-	overflow: visible;
 	width: 310px;
-	white-space: nowrap;
 	text-align: center;
-	font-family: Helvetica;
-	font-style: normal;
 	font-weight: 250;
 	font-size: 14px;
 	color: rgba(27,41,52,1);
@@ -357,10 +317,7 @@ a.blacklink:active {color: black; text-decoration: none;}
 }
 .setting_title_badge_Class {
 	position: relative;
-	white-space: nowrap;
 	text-align: left;
-	font-family: Helvetica;
-	font-style: normal;
 	font-weight: normal;
 	font-size: 12px;
 	color: rgba(27,41,52,1);
@@ -368,60 +325,42 @@ a.blacklink:active {color: black; text-decoration: none;}
 }
 .setting_body_badge_Class {
 	position: relative;
-	white-space: nowrap;
 	text-align: left;
-	font-family: Helvetica;
-	font-style: normal;
 	font-weight: normal;
 	font-size: 12px;
 	color: rgba(27,41,52,1);
 }
 .setting_title_temp_Class {
 	position: relative;
-	white-space: nowrap;
 	text-align: left;
-	font-family: Helvetica;
-	font-style: normal;
 	font-weight: normal;
 	font-size: 12px;
 	color: rgba(27,41,52,1);
 }
 .setting_body_temp_Class {
 	position: relative;
-	white-space: nowrap;
 	text-align: left;
-	font-family: Helvetica;
-	font-style: normal;
 	font-weight: normal;
 	font-size: 12px;
 	color: rgba(27,41,52,1);
 }
 .setting_defualt_text_uv_Class {
 	position: relative;
-	white-space: nowrap;
 	text-align: left;
-	font-family: Helvetica;
-	font-style: normal;
 	font-weight: normal;
 	font-size: 12px;
 	color: rgba(27,41,52,1);
 }
 .setting_defualt_text_tempc_Class {
 	position: relative;
-	white-space: nowrap;
 	text-align: left;
-	font-family: Helvetica;
-	font-style: normal;
 	font-weight: normal;
 	font-size: 12px;
 	color: rgba(27,41,52,1);
 }
 .setting_defualt_text_tempf_Class {
 	position: relative;
-	white-space: nowrap;
 	text-align: left;
-	font-family: Helvetica;
-	font-style: normal;
 	font-weight: normal;
 	font-size: 12px;
 	color: rgba(27,41,52,1);
@@ -434,7 +373,6 @@ a.blacklink:active {color: black; text-decoration: none;}
 	height: 8.4px;
 	left: 280.49px;
 	top: 371px;
-	overflow: visible;
 }
 .forecast_Class {
 	position: absolute;
@@ -460,10 +398,7 @@ a.blacklink:active {color: black; text-decoration: none;}
 	width: 100px;
 	max-width: 100px;
 	display: inline-block;
-	white-space: nowrap;
 	text-align: left;
-	font-family: Helvetica;
-	font-style: normal;
 	font-weight: 250;
 	font-size: 16px;
 	color: rgba(27,41,52,1);
@@ -473,10 +408,7 @@ a.blacklink:active {color: black; text-decoration: none;}
 	width: 70px;
 	max-width: 70px;
 	display: inline-block;
-	white-space: nowrap;
 	text-align: left;
-	font-family: Helvetica;
-	font-style: normal;
 	font-weight: 250;
 	font-size: 16px;
 	color: rgba(27,41,52,1);
@@ -487,10 +419,7 @@ a.blacklink:active {color: black; text-decoration: none;}
 	width: 30px;
 	max-width: 30px;
 	display: inline-block;
-	white-space: nowrap;
 	text-align: left;
-	font-family: Helvetica;
-	font-style: normal;
 	font-weight: 250;
 	font-size: 16px;
 	color: rgba(27,41,52,1);
@@ -513,10 +442,7 @@ a.blacklink:active {color: black; text-decoration: none;}
 	width: 100px;
 	max-width: 100px;
 	display: inline-block;
-	white-space: nowrap;
 	text-align: left;
-	font-family: Helvetica;
-	font-style: normal;
 	font-weight: 250;
 	font-size: 16px;
 	color: rgba(27,41,52,1);
@@ -526,10 +452,7 @@ a.blacklink:active {color: black; text-decoration: none;}
 	width: 70px;
 	max-width: 70px;
 	display: inline-block;
-	white-space: nowrap;
 	text-align: left;
-	font-family: Helvetica;
-	font-style: normal;
 	font-weight: 250;
 	font-size: 16px;
 	color: rgba(27,41,52,1);
@@ -541,10 +464,7 @@ a.blacklink:active {color: black; text-decoration: none;}
 	width: 30px;
 	max-width: 30px;
 	display: inline-block;
-	white-space: nowrap;
 	text-align: left;
-	font-family: Helvetica;
-	font-style: normal;
 	font-weight: 250;
 	font-size: 16px;
 	color: rgba(27,41,52,1);
@@ -568,10 +488,7 @@ a.blacklink:active {color: black; text-decoration: none;}
 	width: 100px;
 	max-width: 100px;
 	display: inline-block;
-	white-space: nowrap;
 	text-align: left;
-	font-family: Helvetica;
-	font-style: normal;
 	font-weight: 250;
 	font-size: 16px;
 	color: rgba(27,41,52,1);
@@ -581,10 +498,7 @@ a.blacklink:active {color: black; text-decoration: none;}
 	width: 70px;
 	max-width: 70px;
 	display: inline-block;
-	white-space: nowrap;
 	text-align: left;
-	font-family: Helvetica;
-	font-style: normal;
 	font-weight: 250;
 	font-size: 16px;
 	color: rgba(27,41,52,1);
@@ -595,10 +509,7 @@ a.blacklink:active {color: black; text-decoration: none;}
 	width: 30px;
 	max-width: 30px;
 	display: inline-block;
-	white-space: nowrap;
 	text-align: left;
-	font-family: Helvetica;
-	font-style: normal;
 	font-weight: 250;
 	font-size: 16px;
 	color: rgba(27,41,52,1);
@@ -621,10 +532,7 @@ a.blacklink:active {color: black; text-decoration: none;}
 	position: absolute;
 	left: 280px;
 	top: 369px;
-	overflow: visible;
 	text-align: left;
-	font-family: Helvetica;
-	font-style: normal;
 	font-weight: 250;
 	font-size: 13px;
 	color: #1b2934;

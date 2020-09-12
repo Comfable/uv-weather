@@ -421,22 +421,22 @@
 											uvi ();
 											};
 									}
-
-
+									
+									updateTimeRelativeBadge = moment.unix(updateTime).format('h:mm:ss A');
 								if (setSettingUT == "u" && setSettingFC == "f") {
-									toolTipBadge = temperatureF + "° " + iconTitle + "\n" + "AccuFeel " + accufeelResultFsign + "\n" + "UV " + uv1  + " " + "(max ~" + uvMax + " at " + uvMaxTime + ")";
+									toolTipBadge = temperatureF + "° " + iconTitle + "\n" + "AccuFeel " + accufeelResultFsign + "\n" + "UV " + uv1  + " " + "(max ~" + uvMax + " at " + uvMaxTime + ")" + "\n" + "Updated at " + updateTimeRelativeBadge;
 									chrome.browserAction.setTitle({title: toolTipBadge});
 									}
 								else if (setSettingUT == "u" && setSettingFC == "c") {
-									toolTipBadge = temperatureC + "° " + iconTitle + "\n" + "AccuFeel " + accufeelResultCsign + "\n" + "UV " + uv1  + " " + "(max ~" + uvMax + " at " + uvMaxTime + ")";
+									toolTipBadge = temperatureC + "° " + iconTitle + "\n" + "AccuFeel " + accufeelResultCsign + "\n" + "UV " + uv1  + " " + "(max ~" + uvMax + " at " + uvMaxTime + ")" + "\n" + "Updated at " + updateTimeRelativeBadge;
 									chrome.browserAction.setTitle({title: toolTipBadge});
 									}
 								else if (setSettingUT == "t" && setSettingFC == "f") {
-									toolTipBadge = temperatureF + "° " + iconTitle + "\n" + "AccuFeel " + accufeelResultFsign + "\n" + "UV " + uv1  + " " + "(max ~" + uvMax + " at " + uvMaxTime + ")";
+									toolTipBadge = temperatureF + "° " + iconTitle + "\n" + "AccuFeel " + accufeelResultFsign + "\n" + "UV " + uv1  + " " + "(max ~" + uvMax + " at " + uvMaxTime + ")" + "\n" + "Updated at " + updateTimeRelativeBadge;
 									chrome.browserAction.setTitle({title: toolTipBadge});
 									}
 								else if (setSettingUT == "t" && setSettingFC == "c") {
-									toolTipBadge = temperatureC + "° " + iconTitle + "\n" + "AccuFeel " + accufeelResultCsign + "\n" + "UV " + uv1  + " " + "(max ~" + uvMax + " at " + uvMaxTime + ")";
+									toolTipBadge = temperatureC + "° " + iconTitle + "\n" + "AccuFeel " + accufeelResultCsign + "\n" + "UV " + uv1  + " " + "(max ~" + uvMax + " at " + uvMaxTime + ")" + "\n" + "Updated at " + updateTimeRelativeBadge;
 									chrome.browserAction.setTitle({title: toolTipBadge});
 									};
 
@@ -465,33 +465,17 @@
 							
 						});
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
  		
 									   
 					}	
 						uvReader();
-						intervalUpdateTime = 1000*60*30 //milisecond * second * minute
+						intervalUpdateTime = 1000 * 60 * 30;//miliseconds * seconds * minutes
 						var intervalUpdateTimes = setInterval(uvReader, intervalUpdateTime);
 
 						chrome.runtime.onMessage.addListener(
 										    function(request, sender, sendResponse){
 										        if(request.msg == "BackgroundUpdate") {
-										        	clearInterval(intervalUpdateTimes);
+										        	//clearInterval(intervalUpdateTimes);
 										        	uvReader();
 										        }
 										    }
