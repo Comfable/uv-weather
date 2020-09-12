@@ -1,0 +1,32 @@
+   {
+    "name": "UV Weather",
+    "version": "1.0.4",
+    "description": "The best way to see the UV Index live and weather forecast in your browser.",
+    "permissions": [ "geolocation","storage","activeTab" ],
+    "content_scripts": [ {"matches": ["<all_urls>"], "js": ["jquery-3.4.1.min.js", "jquery.powertip.min.js"] } ],
+    "background": {
+    "scripts": ["jquery-3.4.1.min.js","background.js"],
+    "persistent":true
+    },
+    "content_security_policy": "script-src 'self' https://www.google-analytics.com; object-src 'self'",
+    "browser_action": {
+      "default_popup": "popup.html",
+      "default_icon": {
+        "128": "images/UV_index128.png"
+        
+      }
+    },
+    "browser_action": {
+    "default_title": "UV Weather",
+    "default_popup": "popup.html"
+    },
+	
+	  "icons": {
+      "16": "images/UV_index16.png",
+        "32": "images/UV_index32.png",
+        "48": "images/UV_index48.png",
+        "128": "images/UV_index128.png"
+    },
+    "manifest_version": 2
+  }
+   
