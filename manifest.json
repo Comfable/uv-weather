@@ -1,7 +1,7 @@
    {
     "name": "UV Weather",
-    "version": "1.0.30",
-    "description": "Instant weather updates. Easier than looking outside.",
+    "version": "1.0.31",
+    "description": "Instant weather update. Easier than looking outside.",
     "permissions": [ "activeTab","storage" ],
     "background": {
     "scripts": ["/library/dayjs.min.js", "/library/util.min.js", "/js/background.js", "/library/accufeel.min.js", "/library/suncalc.min.js"],
