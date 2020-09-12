@@ -438,7 +438,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   version_manifest = chrome.runtime.getManifest().version;
   //document.querySelector("#title_version").textContent = "Version " + version_manifest;
-  document.querySelector("#title_version_setting").textContent = "Version " + version_manifest;
+  //document.querySelector("#title_version_setting").textContent = "Version " + version_manifest;
   document.querySelector("#title_version_info").textContent = "Version " + version_manifest;
 
 
@@ -461,7 +461,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
               } 
 
           if (query !== '') {
-            const source = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?types=place&proximity=${latandlongMapBox}&limit=8&autocomplete=true&language=en,de,fr,nl,it,ja,ar,es,zh,sv,ko&access_token=${token}`);
+            const source = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?types=place&proximity=${latandlongMapBox}&limit=7&autocomplete=true&language=en,de,fr,nl,it,ja,ar,es,zh,sv,ko&access_token=${token}`);
 
             // Format data into JSON
             const data = await source.json();
@@ -477,7 +477,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       debounce: 300,  // Post duration for engine to start
       searchEngine: "strict",
       highlight: true,
-      maxResults: 8,
+      maxResults: 7,
       resultsList: {
           render: true,
           container: source => {
@@ -659,33 +659,65 @@ var modal48hours = document.getElementById("next48_popup");
 var location = document.getElementById("location");
 var modalCurrent = document.getElementById("currentReport_popup");
 
-document.querySelector("#setting_popup_page").addEventListener("click", (e) => { 
+document.querySelector("#setting_popup_page").addEventListener("click", (e) => {
+    modal7days.style.display = "none";
+    modal48hours.style.display = "none";
+    modalSolar.style.display = "none";
+    modalInfo.style.display = "none";
+    modalCurrent.style.display = "none"; 
     modalSetting.style.display = "block";
     //modalBlocker.style.display = "block";
 });
 
+document.querySelector("#home_popup_page").addEventListener("click", (e) => { 
+    modal7days.style.display = "none";
+    modal48hours.style.display = "none";
+    modalSolar.style.display = "none";
+    modalSetting.style.display = "none";
+    modalCurrent.style.display = "none";  
+  });
+
 document.querySelector("#solar_popup_page").addEventListener("click", (e) => { 
+    modal7days.style.display = "none";
+    modal48hours.style.display = "none";
+    modalInfo.style.display = "none";
+    modalSetting.style.display = "none";
+    modalCurrent.style.display = "none"; 
     modalSolar.style.display = "block";
     //modalBlocker.style.display = "block";
   });
 
-document.querySelector("#info_popup_page").addEventListener("click", (e) => { 
-    modalInfo.style.display = "block";
-    //modalBlocker.style.display = "block";
-  });
+// document.querySelector("#info_popup_page").addEventListener("click", (e) => { 
+//     modal7days.style.display = "none";
+//     modal48hours.style.display = "none";
+//     modalSolar.style.display = "none";
+//     modalSetting.style.display = "none";
+//     modalCurrent.style.display = "none";  
+//     modalInfo.style.display = "block";
+//     //modalBlocker.style.display = "block";
+//   });
 
 document.querySelector("#next7_day").addEventListener("click", (e) => { 
+    modal48hours.style.display = "none";
+    modalSolar.style.display = "none";
+    modalInfo.style.display = "none";
+    modalSetting.style.display = "none";
+    modalCurrent.style.display = "none";  
     modal7days.style.display = "block";
     //modalBlocker.style.display = "block";
   });
 
 document.querySelector("#next48").addEventListener("click", (e) => {
+    modal7days.style.display = "none";
+    modalSolar.style.display = "none";
+    modalInfo.style.display = "none";
+    modalSetting.style.display = "none";
+    modalCurrent.style.display = "none";  
     modal48hours.style.display = "block";
     //modalBlocker.style.display = "block";
   });
 
 document.querySelector("#location").addEventListener("click", (e) => { 
-    modalSetting.style.display = "none";
     modal48hours.style.display = "none";
     modal7days.style.display = "none";
     modalSolar.style.display = "none";
@@ -702,40 +734,42 @@ document.querySelector("#report_button").addEventListener("click", (e) => {
     modal7days.style.display = "none";
     modalSolar.style.display = "none";
     modalInfo.style.display = "none";
-    modalCurrent.style.display = "none";
     modalBlocker.style.display = "none";
     modalCurrent.style.display = "block";
     //modalBlocker.style.display = "block";
   });
 
-document.querySelector("#setting_popup_close").addEventListener("click", (e) => {
-    modalSetting.style.display = "none";
-    modalBlocker.style.display = "none";
-  });
+// document.querySelector("#setting_popup_close").addEventListener("click", (e) => {
+//     modalSetting.style.display = "none";
+//     modalBlocker.style.display = "none";
+//   });
 
-document.querySelector("#next48_popup_close").addEventListener("click", (e) => {
-    modal48hours.style.display = "none";
-    modalBlocker.style.display = "none";
-  });
+// document.querySelector("#next48_popup_close").addEventListener("click", (e) => {
+//     modal48hours.style.display = "none";
+//     modalBlocker.style.display = "none";
+//   });
 
-document.querySelector("#next7_popup_close").addEventListener("click", (e) => {
-    modal7days.style.display = "none";
-    modalBlocker.style.display = "none";
-  });
+// document.querySelector("#next7_popup_close").addEventListener("click", (e) => {
+//     modal7days.style.display = "none";
+//     modalBlocker.style.display = "none";
+//   });
 
-document.querySelector("#solar_popup_close").addEventListener("click", (e) => {
-    modalSolar.style.display = "none";
-    modalBlocker.style.display = "none";
-  });
+// document.querySelector("#solar_popup_close").addEventListener("click", (e) => {
+//     modalSolar.style.display = "none";
+//     modalBlocker.style.display = "none";
+//   });
 
-document.querySelector("#info_popup_close").addEventListener("click", (e) => {
-    modalInfo.style.display = "none";
-    modalBlocker.style.display = "none";
-  });
+// document.querySelector("#info_popup_close").addEventListener("click", (e) => {
+//     modalInfo.style.display = "none";
+//     modalBlocker.style.display = "none";
+//   });
 
 document.querySelector("#report_popup_close").addEventListener("click", (e) => {
+    modalSetting.style.display = "none";
+    modal48hours.style.display = "none";
+    modal7days.style.display = "none";
+    modalSolar.style.display = "none";
     modalCurrent.style.display = "none";
-    modalBlocker.style.display = "none";
   });
 
 

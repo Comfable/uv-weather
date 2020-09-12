@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 22.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!-- Generator: Adobe Illustrator 24.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 330 330" style="enable-background:new 0 0 330 330;" xml:space="preserve">
+	 viewBox="0 0 45.8 45.8" style="enable-background:new 0 0 45.8 45.8;" xml:space="preserve">
 <g>
-	<path d="M165,0C74,0,0,74,0,165s74,165,165,165s165-74,165-165S256,0,165,0z M165,315.5C82,315.5,14.5,248,14.5,165
-		S82,14.5,165,14.5S315.5,82,315.5,165S248,315.5,165,315.5z"/>
-	<path d="M165,70c-11,0-20,9-20,20c0,11,9,20,20,20s20-9,20-20C185,79,176,70,165,70z"/>
-	<path d="M165,140c-8.3,0-15,6.7-15,15v90c0,8.3,6.7,15,15,15s15-6.7,15-15v-90C180,146.7,173.3,140,165,140z"/>
+	<path d="M22.9,0C10.3,0,0,10.3,0,22.9c0,12.7,10.3,22.9,22.9,22.9s22.9-10.3,22.9-22.9C45.8,10.3,35.6,0,22.9,0z M25.6,32.6
+		c0,1.5-1.2,2.7-2.7,2.7c-1.5,0-2.7-1.2-2.7-2.7V20.7c0-1.5,1.2-2.7,2.7-2.7c1.5,0,2.7,1.2,2.7,2.7V32.6z M22.9,15.7
+		c-1.7,0-3-1.3-3-3c0-1.7,1.3-3,3-3c1.7,0,3,1.3,3,3C25.9,14.4,24.6,15.7,22.9,15.7z"/>
 </g>
 </svg>

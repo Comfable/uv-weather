@@ -297,7 +297,7 @@ html {
 .link_qsun_Class {
 	position: absolute;
 	left: 0px;
-	top: 475px;
+	top: 478px;
 	width: 250px;
 	text-align: center;
 	font-weight: 250;
@@ -601,7 +601,7 @@ html {
 	position: absolute;
 	left: 30px;
 	right: 30px;
-	top: 170px;
+	top: 160px;
 }
 .solar_Class {
 	position: relative;
@@ -641,13 +641,13 @@ html {
 	position: absolute;
 	left: 30px;
 	right: 30px;
-	top: 170px;
+	top: 140px;
 }
 .next48_table_Class {
 	position: absolute;
 	left: 30px;
 	right: 30px;
-	top: 170px;
+	top: 140px;
 }
 .forecast_day_modal_Class {
 	position: relative;
@@ -716,7 +716,8 @@ html {
     padding: 0;
     overflow: hidden;
     display: block;
-    white-space: normal !important; 
+    white-space: normal !important;
+    text-align: center;
 }
 .supportUs_title_Class {
 	position: relative;
@@ -725,7 +726,7 @@ html {
 	font-size: 16px;
 	line-height: 20px;
 	color: rgba(27,41,52,1);
-    padding: 50px 30px 0 30px;
+    padding: 25px 30px 0 30px;
     overflow: hidden;
     display: block;
     white-space: normal !important;
@@ -812,7 +813,8 @@ html {
 
 .modalBlocker {
   width: 560px;
-  height: 526px;
+  height: 456px;
+  overflow: auto;
   left: 0px;
   top: 0px;
   -webkit-border-radius: 0px !important;
@@ -822,7 +824,7 @@ html {
   border-radius: 0px;
   background-color: rgb(0,0,0);
   background-color: rgba(0,0,0,0.7);
-  z-index: 1000;
+  z-index: 1300;
   display: none; 
   position: fixed;
   z-index: 1;
@@ -830,14 +832,13 @@ html {
 .modal {
   position: absolute;
   width: 310px;
-  height: 526px;
+  height: 456px;
   left: 250px;
   top: 0px;
   max-width: 310px;
   display: none;
   vertical-align: right;
   width: 100%;
-  height: 100%;
   -webkit-border-radius: 0px !important;
   -moz-border-radius: 0px !important;
   -o-border-radius: 0px !important;
@@ -847,7 +848,7 @@ html {
   z-index: 1000;
 }
 .modal_next48 {
-  height: 526px;
+  height: 456px;
   overflow: auto;
   position: relative;
   width: 310px;
@@ -862,7 +863,7 @@ html {
   -ms-border-radius: 0px !important;
   border-radius: 0px !important;
   background-color: #ffffff;
-  z-index: 1000;
+  z-index: 1100;
 }
 .modal_close {
   position: absolute;
@@ -881,12 +882,12 @@ html {
 .setting_unit_badge_Class {
 	position: absolute;
 	left: 30px;
-	top: 455px;	
+	top: 380px;	
 }
 
 .searchBox_Class {
 	position: relative;
-	margin: 25px 30px 0 30px;
+	margin: 40px 30px 0 30px;
 }
 
 #autoComplete_wrapper {
@@ -1041,7 +1042,7 @@ html {
 }
 
 .modal_report {
-  height: 526px;
+  height: 456px;
   overflow: auto;
   position: relative;
   width: 310px;
@@ -1056,7 +1057,7 @@ html {
   -ms-border-radius: 0px !important;
   border-radius: 0px !important;
   background-color: #ffffff;
-  z-index: 1000;
+  z-index: 1200;
 }
 
 .uv_weather_logo_Class {
@@ -1066,7 +1067,7 @@ html {
 }
 
 .setting_currentLocation_title_class{
-	margin-top: 55px;
+	margin-top: 25px;
 }
 .icon_raindrop_Class {
 	width: 10px;
@@ -1114,10 +1115,15 @@ html {
   	cursor: pointer;
   }
 
-.main_menu_Class {
+.main_menu_home_Class {
 	position: absolute;
 	left: 250px;
-	top: 465px;
+	top: 468px;
+	margin-left: 20px;
+}
+.main_menu_Class {
+	position: absolute;
+	top: 468px;
 	margin-left: 20px;
 }
 .main_menu_culumn_Class{
@@ -1137,8 +1143,8 @@ html {
 	vertical-align: middle;
 }
 .sub_menu_icon_Class {
-	width: 23px;
-	height: 23px;
+	width: 20px;
+	height: 20px;
 	/*filter: opacity(50%) drop-shadow( 1px 1px 1px rgba(0, 0, 0, .4));*/
 	filter: opacity(70%);
 }
