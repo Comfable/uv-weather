@@ -701,8 +701,8 @@ if(navigator.onLine) {
       data: {
           src: async () => {
             const token = 'pk.eyJ1IjoiY29tZmFibGUiLCJhIjoiY2sybTF6Z3FpMGRkeTNscWxhMnNybnU3cyJ9.VDvM0a0jaMlLMwlqBI8kUw';
-            const query = (document.querySelector("#autoComplete").value).replace(/[^a-z0-9]/gi,'*');
-
+            var query = (document.querySelector("#autoComplete").value).replace(/\//g,'*');
+            //const query = queryMain.normalize("NFC").replace(/[\u0300-\u036f]/g, "");
               if (typeof ((b.latandlong.split('"'))[1]) !== 'undefined') {
                 latandlongMapBox = ((b.latandlong.split('"'))[1]).split(',').reverse().join(',');
               }
@@ -711,20 +711,21 @@ if(navigator.onLine) {
               } 
 
           if (query !== '') {
-            const source = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?types=place&proximity=${latandlongMapBox}&limit=10&autocomplete=true&language=en,de,fr,nl,it,ja,ar,es,zh,sv,ko&access_token=${token}`);
+            //const source = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?types=place&proximity=${latandlongMapBox}&limit=10&autocomplete=true&language=en,de,fr,nl,it,ja,ar,es,zh,sv,ko&access_token=${token}`);
+            const source = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?types=place&proximity=${latandlongMapBox}&limit=10&autocomplete=true&access_token=${token}`);
 
             const data = await source.json();
             return data.features;
           }
           },
-          key: ["place_name"],
+          key: ['place_name'],
           cache: false
       },
 
       threshold: 1, 
       debounce: 300,
-      searchEngine: "strict",
-      highlight: true,
+      searchEngine: 'strict',
+      highlight: false,
       maxResults: 10,
       resultsList: {
           render: true,
@@ -780,9 +781,13 @@ if(navigator.onLine) {
       },
       onSelection: feedback => {
 
-          var cityProvince = (feedback.selection.value.place_name_en).split(',').splice(0,2).join(',');
+          //var cityProvince = (feedback.selection.value.place_name_en).split(',').splice(0,2).join(',');
+          var cityProvince = (feedback.selection.value.place_name).split(',').splice(0,2).join(',');
+          
           var shortCountryCode = feedback.selection.value.context[0].short_code;
-          var fullname = feedback.selection.value.place_name_en;
+          
+          //var fullname = feedback.selection.value.place_name_en;
+          var fullname = feedback.selection.value.place_name;
 
           if (typeof (shortCountryCode) !== 'undefined') {
             shortCountryAPI = (shortCountryCode).split('-').splice(0,1).join('');
@@ -807,11 +812,17 @@ if(navigator.onLine) {
           latlong =  '"' + lat + ',' + lng + '"';
           city =  '"' + cityAPI + '"';
 
-          if (((feedback.selection.value.place_name_en).split(','))[2]) {
-              country = ((feedback.selection.value.place_name_en).split(','))[2];
+          // if (((feedback.selection.value.place_name_en).split(','))[2]) {
+          //     country = ((feedback.selection.value.place_name_en).split(','))[2];
+          // }
+          // else {
+          //   country = ((feedback.selection.value.place_name_en).split(','))[1];
+          // }
+          if (((feedback.selection.value.place_name).split(','))[2]) {
+              country = ((feedback.selection.value.place_name).split(','))[2];
           }
           else {
-            country = ((feedback.selection.value.place_name_en).split(','))[1];
+            country = ((feedback.selection.value.place_name).split(','))[1];
           }
 
           chrome.storage.local.set({'fullname': fullname});

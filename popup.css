@@ -595,11 +595,44 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
     align-items: center;
     justify-content: center;
 }
+
+
+@-webkit-keyframes focus-in-contract {
+    0% {
+        letter-spacing: 1em;
+        -webkit-filter: blur(12px);
+        filter: blur(12px);
+        opacity: 0
+    }
+    to {
+        -webkit-filter: blur(0);
+        filter: blur(0);
+        opacity: 1
+    }
+}
+
+@keyframes focus-in-contract {
+    0% {
+        letter-spacing: 1em;
+        -webkit-filter: blur(12px);
+        filter: blur(12px);
+        opacity: 0
+    }
+    to {
+        -webkit-filter: blur(0);
+        filter: blur(0);
+        opacity: 1
+    }
+}
 .uv_weather_logo_Class {
 	width: 50px;
 	height: 50px;
 	padding-right: 5px;
+	-webkit-animation: focus-in-contract .75s cubic-bezier(.25,.46,.45,.94) .1s both;
+    animation: focus-in-contract .75s cubic-bezier(.25,.46,.45,.94) .1s both;
 }
+
+
 .title_uv_Class {
 	position: relative;
 	text-align: left;
@@ -1716,7 +1749,7 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 }
 .search_or_text_class {
 	position: absolute;
-	top: 97px;
+	top: 102px;
 	text-align: center;
 	font-weight: 250;
 	font-size: 12px;
@@ -1726,7 +1759,7 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 .currentLocation_button_Class {
 	position: relative;
 	width: 310px;
-	margin: 7px auto;
+	margin: 11px auto;
 	font-weight: 250;
 	font-size: 12px;
 	color: rgba(0,0,0,1);
