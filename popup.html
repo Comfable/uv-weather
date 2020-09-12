@@ -4,50 +4,58 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title>UV Weather</title>
-  <script src="/library/jquery-3.4.1.min.js"></script>
-  <script src="/library/util.js"></script>
+  <script src="/library/util.min.js"></script>
   <script src="/library/dayjs.min.js"></script>
   <script src="/library/accufeel.min.js"></script>
-  <script src="/library/suncalc.js"></script>
-  <link rel="stylesheet" href="/css/popup.css" media="screen" />
+  <script src="/library/suncalc.min.js"></script>
   <script src="/js/background.js"></script>
-  <script src="/library/jquery.powertip.min.js"></script>
-  <script async src="/library/ga.js"></script>
-  <link rel="stylesheet" href="/css/jquery.powertip.css" />
-  <script async src="/library/jquery.modal.min.js"></script>
-  <link rel="stylesheet" href="/css/jquery.modal.css" />
-  <script src="/library/jquery.easy-autocomplete.min.js"></script>
-  <link rel="stylesheet" href="/css/easy-autocomplete.css">
   <script src="/js/popup.js"></script>
+  <link rel="stylesheet" href="/css/popup.css" media="screen" />
+  <script async src="/library/ga.js"></script>
+  <script src="/library/autoComplete.min.js"></script>
 </head>
 
 <body>
+  <div id="setting_popup_modalBlocker" class="modalBlocker"></div>
+  
   <aside id="image_background" class="image_background" style="width: 250px; height: 526px; left: 0px; top: 0px; background-color: #ffffff; border: 0px solid transparent; filter: brightness(75%);"></aside>
   <div id="current_icon_update" class="current_icon_update"></div>
   <div id="current_temp_group" class="current_temp_group_Class"> <span id="current_temp" class="current_temp_Class">17</span>
     <span>
       <div id="temp_sign_city" class="current_temp_sign_city_Class">
         <span id="temp_sign" class="current_temp_sign_Class">°C</span>
-    <span style="margin-bottom: 6px;"><a id="location" class="location_Class whitelink" href="#setting_popup" rel="modal:open">city</a></span>
+    <span style="margin-bottom: 6px;"><a id="location" class="location_Class whitelink">city</a></span>
   </div>
-  <div id="current_accufeel" class="current_accufeel_Class" title="An Accurate Feels Like Temperature <br> created by Comfable">15°</div>
+
+<span id="current_accufeel_info" class="current_accufeel_Class tooltip">
+  <span id="current_accufeel" class="current_accufeel_Class tooltip">15°
+  </span>
+    
+      <span class="tooltiptext tooltip-right">An Accurate Feels Like Temperature<br>Created by Comfable</span>
+  </span>
+
   </span>
   </div>
   <div>
-    <a id="next48" class="next48_Class whitelink" href="#next48_popup" rel="modal:open"> <span>Next 24 Hours</span>
+    <a id="next48" class="next48_Class whitelink" href="#next48_popup"> 
+      <span>Next 24 Hours</span>
     </a>
   </div>
-  <div id="current_temp_maxmin_group" class="current_temp_maxmin_Class"> <span id="current_temp_max_group" class="current_temp_max_Class" title="Today's Maximum Temperature">
+  <div id="current_temp_maxmin_group" class="current_temp_maxmin_Class"> 
+    <span id="current_temp_max_group" class="current_temp_max_Class tooltip">
+    <span class="tooltiptext tooltip-right">Today's Maximum Temperature</span>
       <span id="current_temp_max_icon" class="current_temp_max_icon_Class">
         ▲
       </span>
     <span id="current_temp_max">
         23°
       </span>
-    </span> <span id="current_temp_min_group" class="current_temp_min_Class" title="Today's Minimum Temperature">
-      <span id="current_temp_min_icon" class="current_temp_min_icon_Class">
-        ▼
-      </span>
+    </span> 
+    <span id="current_temp_min_group" class="current_temp_min_Class tooltip">
+      <span class="tooltiptext tooltip-right">Today's Minimum Temperature</span>
+        <span id="current_temp_min_icon" class="current_temp_min_icon_Class">
+          ▼
+        </span>
     <span id="current_temp_min">
         15°
       </span>
@@ -58,20 +66,45 @@
       <span id="current_uv" class="current_uv_Class">-</span>
       <span id="current_uv_note" class="current_uv_note_Class">(-)</span>
     </div>
-    <div id="icon_uv" class="icon_uv_Class" title="<b>Recommended Sun Protection</b><br><br>
-      <img id='icon_uv_10' src='images/uv_icon/uv_1_g.svg' class='icon_uv_tip_Class'/> Apply sunscreen<br>
-      <img id='icon_uv_20' src='images/uv_icon/uv_2_g.svg' class='icon_uv_tip_Class'/> Wear UV blocking sunglasses<br>
-      <img id='icon_uv_30' src='images/uv_icon/uv_3_g.svg' class='icon_uv_tip_Class'/> Wear a hat<br>
-      <img id='icon_uv_40' src='images/uv_icon/uv_4_g.svg' class='icon_uv_tip_Class'/> Wear sunprotective clothing<br>
-      <img id='icon_uv_50' src='images/uv_icon/uv_5_g.svg' class='icon_uv_tip_Class'/> Stay in the shade<br>
-      <img id='icon_uv_60' src='images/uv_icon/uv_6_g.svg' class='icon_uv_tip_Class'/> Reduce time in the sun">
-      <img id="info_icon" src="images/informationLine.svg" class="icon_uv_all_Class" />
-      <img id="icon_uv_1" src="images/uv_icon/uv_1_g.svg" class="icon_uv_all_Class" />
-      <img id="icon_uv_2" src="images/uv_icon/uv_2_g.svg" class="icon_uv_all_Class" />
-      <img id="icon_uv_3" src="images/uv_icon/uv_3_g.svg" class="icon_uv_all_Class" />
-      <img id="icon_uv_4" src="images/uv_icon/uv_4_g.svg" class="icon_uv_all_Class" />
-      <img id="icon_uv_5" src="images/uv_icon/uv_5_g.svg" class="icon_uv_all_Class" />
-      <img id="icon_uv_6" src="images/uv_icon/uv_6_g.svg" class="icon_uv_all_Class" />
+    <div id="icon_uv" class="icon_uv_Class tooltip">
+        <img id="info_icon" src="images/informationLine.svg" class="icon_uv_all_Class" />
+
+        <img id="icon_uv_1" src="images/uv_icon/uv_1_g.svg" class="icon_uv_all_Class" />
+        <img id="icon_uv_2" src="images/uv_icon/uv_2_g.svg" class="icon_uv_all_Class" />
+        <img id="icon_uv_3" src="images/uv_icon/uv_3_g.svg" class="icon_uv_all_Class" />
+        <img id="icon_uv_4" src="images/uv_icon/uv_4_g.svg" class="icon_uv_all_Class" />
+        <img id="icon_uv_5" src="images/uv_icon/uv_5_g.svg" class="icon_uv_all_Class" />
+        <img id="icon_uv_6" src="images/uv_icon/uv_6_g.svg" class="icon_uv_all_Class" />
+
+          <span class="tooltiptext tooltip-bottom">
+            <span id='icon_uv_title_tooltip' class='icon_uv_title_tooltip_Class'/> Recommended Sun Protection<br></span>
+
+            <span id='icon_uv_1_tooltip' class="icon_uv_text_tooltip_Class"> 
+              <img id='icon_uv_1_text_tooltip' src='images/uv_icon/uv_1_g.svg' class='icon_uv_tip_Class'/> Apply sunscreen<br>
+            </span>
+
+            <span id='icon_uv_2_tooltip' class="icon_uv_text_tooltip_Class"> 
+              <img id='icon_uv_2_text_tooltip' src='images/uv_icon/uv_2_g.svg' class='icon_uv_tip_Class'/> Wear UV blocking sunglasses<br>
+            </span>
+
+            <span id='icon_uv_3_tooltip' class="icon_uv_text_tooltip_Class"> 
+              <img id='icon_uv_3_text_tooltip' src='images/uv_icon/uv_3_g.svg' class='icon_uv_tip_Class'/> Wear a hat<br>
+            </span>
+
+            <span id='icon_uv_4_tooltip' class="icon_uv_text_tooltip_Class"> 
+              <img id='icon_uv_4_text_tooltip' src='images/uv_icon/uv_4_g.svg' class='icon_uv_tip_Class'/> Wear sunprotective clothing<br>
+            </span>
+
+            <span id='icon_uv_5_tooltip' class="icon_uv_text_tooltip_Class"> 
+              <img id='icon_uv_5_text_tooltip' src='images/uv_icon/uv_5_g.svg' class='icon_uv_tip_Class'/> Stay in the shade<br>
+            </span>
+
+            <span id='icon_uv_6_tooltip' class="icon_uv_text_tooltip_Class"> 
+              <img id='icon_uv_6_text_tooltip' src='images/uv_icon/uv_6_g.svg' class='icon_uv_tip_Class'/> Reduce time in the sun
+            </span>
+
+          </span>
+
     </div>
   </div>
   <div id="link_qsun" class="link_qsun_Class">
@@ -88,9 +121,13 @@
     </div>
     <div id="title_uv" class="title_uv_group_Class">
       <div id="title_uv" class="title_uv_Class">UV Weather</div>
-      <div id="title_powered" class="title_powered_Class" title="Find out more on <br> offical <a target='_blank' href='https://qsun.co' class='whitelink'> QSun website</a>">powered by QSun<sup>®</sup>
+      <a target='_blank' href="https://qsun.co" class="blacklink"> 
+          <a target='_blank' href="https://qsun.co" class="blacklink"> 
+            <div id="title_powered" class="title_powered_Class">powered by QSun<sup>®</sup>
+          </a>
+      </a>  
       </div>
-      <div id="title_version" class="title_version_Class">Version 1.0.10</div>
+      <div id="title_version_setting" class="title_version_Class">Version 1.0.10</div>
     </div>
     <div id="forecast" class="forecast_Class">
       <div id="one_day" class="one_day_Class"> <span id="forecast_1_day" class="forecast_day_Class">
@@ -99,10 +136,9 @@
         <span id="forecast_1_uv" class="forecast_uv_Class">
         UVI 5
       </span>
-        <span id="forecast_1_temp" class="forecast_temp_Class" title="Daily Maximum Temperature">
-        23°
+        <span id="forecast_1_temp" class="forecast_temp_Class">
       </span>
-        <span id="forecast_1_icon" class="forecast_1_icon_Class forecast_icon_Class">
+        <span id="forecast_1_icon" class="forecast_10_homePage_icon_Class forecast_icon_Class">
         .
       </span>
       </div>
@@ -113,10 +149,10 @@
         <span id="forecast_2_uv" class="forecast_uv_Class">
         UVI 5
       </span>
-        <span id="forecast_2_temp" class="forecast_temp_Class" title="Daily Maximum Temperature">
+        <span id="forecast_2_temp" class="forecast_temp_Class">
         23°
       </span>
-        <span id="forecast_2_icon" class="forecast_2_icon_Class forecast_icon_Class">
+        <span id="forecast_2_icon" class="forecast_20_homePage_icon_Class forecast_icon_Class">
         .
       </span>
       </div>
@@ -127,79 +163,95 @@
         <span id="forecast_3_uv" class="forecast_uv_Class">
       UVI 5
     </span>
-        <span id="forecast_3_temp" class="forecast_temp_Class" title="Daily Maximum Temperature">
+        <span id="forecast_3_temp" class="forecast_temp_Class">
       23°
     </span>
-        <span id="forecast_3_icon" class="forecast_3_icon_Class forecast_icon_Class">
+        <span id="forecast_3_icon" class="forecast_30_homePage_icon_Class forecast_icon_Class">
       .
     c
   </div>
     <hr class="hr_forecast">
   <div id="next7_day" class="next7_day_Class">
-    <span><a id="forecast_next7_day" class="forecast_next7_day_Class blacklink" href="#next7_popup" rel="modal:open">
+    <span><a id="forecast_next7_day" class="forecast_next7_day_Class blacklink" href="#next7_popup">
       7 Days Forecast →
     </a></span>
       </div>
     </div>
     <div>
-      <a id="solar_popup_page" class="solar_popup_page_Class blacklink" href="#solar_popup" rel="modal:open"> <span id="solar_popup_text" class="solar_popup_text_Class">Solar Times
-      </span>
-        <span id="solar_popup_icon" class="solar_popup_icon_Class">
-      </span>
+      <a id="solar_popup_page" class="solar_popup_page_Class blacklink"> 
+          <span id="solar_popup_text" class="solar_popup_text_Class">Solar Times
+        </span>
+          <span id="solar_popup_icon" class="solar_popup_icon_Class">
+        </span>
       </a>
     </div>
     <div>
-      <a id="setting_popup_page" class="setting_popup_page_Class blacklink" href="#setting_popup" rel="modal:open"> <span id="setting_popup_text" class="setting_popup_text_Class">Settings
-      </span>
-        <span id="setting_popup_icon" class="setting_popup_icon_Class">
-      </span>
+      <a id="setting_popup_page" class="setting_popup_page_Class blacklink"> 
+        <span id="setting_popup_text" class="setting_popup_text_Class">Settings
+        </span>
+          <span id="setting_popup_icon" class="setting_popup_icon_Class">
+        </span>
       </a>
     </div>
     
     <div>
-      <a id="info_popup_page" class="info_popup_page_Class blacklink" href="#info_popup" rel="modal:open">
+      <a id="info_popup_page" class="info_popup_page_Class blacklink">
         <span id="info_popup_icon" class="info_popup_icon_Class">
       </span>
       </a>
     </div>
 
     <!-- Setting Page -->
-    <div id="setting_popup" class="setting_popup_Class modal">
-      <div id="title_uv" class="title_uv_group_Class_setting">
+      <div id="setting_popup" class="modal">
+      <div id="setting_popup_close" class="modal_close"></div>
+      <div id="title_uv_top" class="title_uv_group_Class_setting">
         <div id="title_uv" class="title_uv_Class">UV Weather</div>
-        <div id="title_powered" class="title_powered_Class" title="Find out more on <br> offical <a target='_blank' href='https://qsun.co' class='whitelink'> QSun website</a>">powered by QSun<sup>®</sup>
-        </div>
-        <div id="title_version" class="title_version_Class">Version 1.0.10</div>
-        <div id="setting_search_text" class="setting_search_text_class">By default, UV Weather uses your current location. However, you can select a different location.</div>
+          <a target='_blank' href="https://qsun.co" class="blacklink"> 
+            <div id="title_powered" class="title_powered_Class">powered by QSun<sup>®</sup>
+          </a> 
+
+          <div id="title_version_info" class="title_version_Class">Version 1.0.10</div>
+      </div>
+
         <div id="searchBox" class="searchBox_Class">
-          <input type="search" id="citySearch" placeholder="Enter your city or town" />
+
+            <input type="search" id="autoComplete" placeholder="Enter your city or town"/>
+
         </div>
+
+        <div id="setting_search_text" class="setting_search_text_class">By default, UV Weather uses your current location. However, you can select a different location.</div>
+
       </div>
-      <div id="setting_temp" class="setting_title_temp_Class"> <span style="margin-right: 24px; font-size: 12px;">
-        UNIT
-        </span>
-        <span id="setting_body_temp" class="setting_body_temp_Class">
-            <label style="margin-right: 10px;">
-                <input type="radio" id="setting_defualt_button_f" style="vertical-align: middle; margin-top: -2px;" name="radioTemp">
-                   <span  class="setting_defualt_button_tempf_Class"></span>°F</label>
-        <label>
-          <input type="radio" id="setting_defualt_button_c" style="vertical-align: middle; margin-top: -2px; margin-left: 9px;" name="radioTemp"> <span class="setting_defualt_text_tempc_Class"></span>°C</label>
-        </span>
-      </div>
-      <div id="setting_badge" class="setting_title_badge_Class"> <span style="margin-right: 10px; font-size: 12px;">
-         BADGE
-        </span>
-        <span id="setting_body_badge" class="setting_body_badge_Class">
-            <label style="margin-right: 11px;">
-              <input type="radio" id="setting_defualt_button_u" style="vertical-align: middle; margin-top: -2px;" name="radioBadge">
-               <span  class="setting_defualt_text_uv_Class"></span>UVI</label>
-        <label>
-          <input type="radio" id="setting_defualt_button_t" style="vertical-align: middle; margin-top: -2px;" name="radioBadge"> <span class="setting_defualt_text_temp_Class"></span>Temperature</label>
-        </span>
+
+
+      <div id="setting_unit_badge" class="setting_unit_badge_Class">
+          <div id="setting_temp" class="setting_title_temp_Class"> <span style="margin-right: 24px; font-size: 12px;">
+            UNIT
+            </span>
+            <span id="setting_body_temp" class="setting_body_temp_Class">
+                <label style="margin-right: 10px;">
+                    <input type="radio" id="setting_defualt_button_f" style="vertical-align: middle; margin-top: -2px;" name="radioTemp">
+                       <span  class="setting_defualt_button_tempf_Class"></span>°F</label>
+            <label>
+              <input type="radio" id="setting_defualt_button_c" style="vertical-align: middle; margin-top: -2px; margin-left: 9px;" name="radioTemp"> <span class="setting_defualt_text_tempc_Class"></span>°C</label>
+            </span>
+          </div>
+          <div id="setting_badge" class="setting_title_badge_Class"> <span style="margin-right: 10px; font-size: 12px;">
+             BADGE
+            </span>
+            <span id="setting_body_badge" class="setting_body_badge_Class">
+                <label style="margin-right: 11px;">
+                  <input type="radio" id="setting_defualt_button_u" style="vertical-align: middle; margin-top: -2px;" name="radioBadge">
+                   <span  class="setting_defualt_text_uv_Class"></span>UVI</label>
+            <label>
+              <input type="radio" id="setting_defualt_button_t" style="vertical-align: middle; margin-top: -2px;" name="radioBadge"> <span class="setting_defualt_text_temp_Class"></span>Temperature</label>
+            </span>
+          </div>
       </div>
     </div>
     <!-- Next 48 Hours Page -->
-    <div id="next48_popup" class="next48_popup_Class modal modal_next48">
+    <div id="next48_popup" class="modal_next48">
+      <div id="next48_popup_close" class="modal_close"></div>
       <div id="title_next48" class="title_uv_group_Class_setting">
         <div id="title_next48_text" class="title_uv_Class">Next 24 Hours</div>
         <div id="next48_update_date" class="title_subtitle_modal_Class">October 25, 2019</div>
@@ -547,7 +599,8 @@
       </div>
     </div>
     <!-- Next 7 Days Page -->
-    <div id="next7_popup" class="next7_popup_Class modal">
+    <div id="next7_popup" class="modal">
+      <div id="next7_popup_close" class="modal_close"></div>
       <div id="title_next7" class="title_uv_group_Class_setting">
         <div id="title_next7_text" class="title_uv_Class">Next 7 Days</div>
         <div id="next7_update_date" class="title_subtitle_modal_Class">October 25, 2019</div>
@@ -678,8 +731,8 @@
 
 
 <!-- Solar Page -->
-  <div id="solar_popup" class="solar_popup_Class modal">
-
+  <div id="solar_popup" class="modal">
+    <div id="solar_popup_close" class="modal_close"></div>
     <div id="title_solar" class="title_uv_group_Class_setting">
         <div id="title_solar_text" class="title_uv_Class">
           Solar Times
@@ -693,72 +746,88 @@
     <div class="solar_table_Class">
 
 
-        <div id="solar_8" class="solar_Class" title="Morning nautical twilight ends">
-          <span id="solar_8_name" class="solar_name_Class">
-            DAWN
+        <div id="solar_8" class="solar_Class">
+            <span id="solar_8_name" class="solar_name_Class tooltip">
+              DAWN
+            <span class="tooltiptext tooltip-top">Morning nautical twilight ends</span>
           </span>
           <span id="solar_8_time" class="solar_time_Class">
             --
           </span>
         </div>
         <hr class="hr_forecast">
-        <div id="solar_1" class="solar_Class" title="Top edge of the sun appears on the horizon"> <span id="solar_1_name" class="solar_name_Class">
-            RISE
-          </span>
+        <div id="solar_1" class="solar_Class"> 
+            <span id="solar_1_name" class="solar_name_Class tooltip">
+              RISE
+            <span class="tooltiptext tooltip-top">Top edge of the sun appears on the horizon</span>
+          </span>  
           <span id="solar_1_time" class="solar_time_Class">
             -:- -
           </span>
         </div>
         <hr class="hr_forecast">
-        <div id="solar_5" class="solar_Class" title="Soft light, best time for photography"> <span id="solar_5_name" class="solar_name_Class">
-            GOLDEN HOUR ENDS
-          </span>
+        <div id="solar_5" class="solar_Class"> 
+            <span id="solar_5_name" class="solar_name_Class tooltip">
+              GOLDEN HOUR ENDS
+            <span class="tooltiptext tooltip-top">Soft light, best time for photography</span>
+          </span>           
           <span id="solar_5_time" class="solar_time_Class">
             -:- -
           </span>
         </div>
         <hr class="hr_forecast">
-        <div id="solar_3" class="solar_Class" title="Sun is in the highest position"> <span id="solar_3_name" class="solar_name_Class">
-            PEAK
+        <div id="solar_3" class="solar_Class"> 
+            <span id="solar_3_name" class="solar_name_Class tooltip">
+              PEAK
+             <span class="tooltiptext tooltip-top">Sun is in the highest position</span>
           </span>
           <span id="solar_3_time" class="solar_time_Class">
             -:- -
           </span>
         </div>
         <hr class="hr_forecast">
-        <div id="solar_6" class="solar_Class" title="Soft light, best time for photography"> <span id="solar_6_name" class="solar_name_Class">
-            GOLDEN HOUR STARTS
+        <div id="solar_6" class="solar_Class"> 
+            <span id="solar_6_name" class="solar_name_Class tooltip">
+              GOLDEN HOUR STARTS
+            <span class="tooltiptext tooltip-top">Soft light, best time for photography</span>
           </span>
           <span id="solar_6_time" class="solar_time_Class">
             -:- -
           </span>
         </div>
         <hr class="hr_forecast">
-        <div id="solar_2" class="solar_Class" title="Sun disappears below the horizon"> <span id="solar_2_name" class="solar_name_Class">
-            SET
+        <div id="solar_2" class="solar_Class"> 
+            <span id="solar_2_name" class="solar_name_Class tooltip">
+              SET
+            <span class="tooltiptext tooltip-top">Sun disappears below the horizon</span>
           </span>
           <span id="solar_2_time" class="solar_time_Class">
             -:- -
           </span>
         </div>
         <hr class="hr_forecast">
-        <div id="solar_7" class="solar_Class" title="Evening nautical twilight starts"> <span id="solar_7_name" class="solar_name_Class">
+        <div id="solar_7" class="solar_Class"> 
+          <span id="solar_7_name" class="solar_name_Class tooltip">
             DUSK
+            <span class="tooltiptext tooltip-top">Evening nautical twilight starts</span>
           </span>
           <span id="solar_7_time" class="solar_time_Class">
             --
           </span>
         </div>
         <hr class="hr_forecast">
-        <div id="solar_9" class="solar_Class" title="Dark enough for astronomical observations"> <span id="solar_9_name" class="solar_name_Class">
+        <div id="solar_9" class="solar_Class"> 
+          <span id="solar_9_name" class="solar_name_Class tooltip">
             NIGHT STARTS
+            <span class="tooltiptext tooltip-top">Dark enough for astronomical observations</span>
           </span>
           <span id="solar_9_time" class="solar_time_Class">
             --
           </span>
         </div>
         <hr class="hr_forecast">
-        <div id="solar_4" class="solar_Class"> <span id="solar_4_name" class="solar_name_Class">
+        <div id="solar_4" class="solar_Class"> 
+          <span id="solar_4_name" class="solar_name_Class">
             LENGTH
           </span>
           <span id="solar_4_time" class="solar_time_Class">
@@ -770,11 +839,13 @@
 
 
     <!-- Info Page -->
-    <div id="info_popup" class="info_popup_Class modal">
-
+    <div id="info_popup" class="modal">
+    <div id="info_popup_close" class="modal_close"></div>
       <div id="title_uv" class="title_uv_group_Class_setting">
         <div id="title_uv" class="title_uv_Class">UV Weather</div>
-        <div id="title_powered" class="title_powered_Class" title="Find out more on <br> offical <a target='_blank' href='https://qsun.co' class='whitelink'> QSun website</a>">powered by QSun<sup>®</sup>
+          <a target='_blank' href="https://qsun.co" class="blacklink"> 
+            <div id="title_powered" class="title_powered_Class">powered by QSun<sup>®</sup>
+          </a> 
         </div>
         <div id="title_version" class="title_version_Class">Version 1.0.10</div>
     

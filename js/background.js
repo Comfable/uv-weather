@@ -1,5 +1,6 @@
 	var fromSearchs;
-
+	const amb = 'pk.eyJ1IjoiY29tZmFibGUiLCJhIjoiY2sybTF6Z3FpMGRkeTNscWxhMnNybnU3cyJ9.VDvM0a0jaMlLMwlqBI8kUw';
+	const ads = '2589e0786e11ce470e7d98e9153039f4';
 	chrome.runtime.onInstalled.addListener(function(details){
 	    if(details.reason == "install"){
 			chrome.storage.local.set({'fromSearch': "locationIP"});
@@ -9,25 +10,6 @@
 	        //console.log("Updated from " + details.previousVersion + " to " + thisVersion + "!");
 	    }
 	});
-
-//geoReader----------------------------------------------------------------------------------
- function geoReader(){
-  		return new Promise((resolve, reject) => {
-		var url = "https://us-central1-swift-district-134123.cloudfunctions.net/gfc-geo";
-		$.ajax({
-			type: "GET",
-			dataType: "json",
-			url: url,
-			success: function(result) {
-				resolve(result);
-				},
-
-			// error: function(error) {
-			// 	reject(error)
-			// 	}
-			})
-		})
-  }
 
 
 chrome.runtime.onMessage.addListener(
@@ -44,21 +26,22 @@ chrome.runtime.onMessage.addListener(
 	}
 );
 
+
 chrome.storage.local.get('fromSearch', function(data){
 fromSearchs = data.fromSearch;
 				
 	if (fromSearchs !== "locationSearch"){
 
-		async function geoReaderResult(){
-
-				var geoReaderResponse = await geoReader();
-				countryAPI = JSON.stringify(geoReaderResponse.country);
+			fetch('https://us-central1-swift-district-134123.cloudfunctions.net/gfc-geo')
+		  	.then((resp) => resp.json())
+		  	 .then(function(result) {
+				countryAPI = JSON.stringify(result.country);
 				country = (countryAPI.split('"'))[1];
-				city = JSON.stringify(geoReaderResponse.city);
-				latandlong = JSON.stringify(geoReaderResponse.cityLatLong);
+				city = JSON.stringify(result.city);
+				latandlong = JSON.stringify(result.cityLatLong);
+				//latandlong = '"-13.9448,143.2027"';
 				uvReader(city,latandlong,country);
-		}
-		geoReaderResult();
+		})
 	}
 
 else{
@@ -76,6 +59,7 @@ else{
 
 
 //uvReader----------------------------------------------------------------------------------
+
 function uvReader(city,latandlong,country) {
 
 	country = country;
@@ -93,14 +77,9 @@ function uvReader(city,latandlong,country) {
 		lon = (latlong.split(','))[1];
 
 
-		//return new Promise((resolve, reject) => {
-			var url = 'https://uv-weather.herokuapp.com/https://api.darksky.net/forecast/c6f8f1ec6de2f17011eb59c6a0e4db7a/' + latlong + '?solar';
-			$.ajax({
-				type: "GET",
-				dataType: "json",
-				url: url,
-				success: function(result) {
-				
+	fetch('https://uv-weather.herokuapp.com/https://api.darksky.net/forecast/' + ads +'/' + latlong + '?solar')
+	  	.then((resp) => resp.json())
+	  	.then(function(result) {				
 	
 	window.result = result;
 
@@ -368,7 +347,7 @@ function uvReader(city,latandlong,country) {
 			};
 		}
 									
-			updateTimeRelativeBadge = dayjs.unix(updateTime + offsetUnix).format('h:mm:ss A');
+			updateTimeRelativeBadge = dayjs.unix(updateTime + offsetUnix).format('h:mm A');
 			if (setSettingUT == "u" && setSettingFC == "f") {
 				toolTipBadge = temperatureF + "° " + summary + "\n" + accufeelResultF + "° " + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
 				chrome.browserAction.setTitle({title: toolTipBadge});
@@ -397,13 +376,9 @@ function uvReader(city,latandlong,country) {
 		}, 500);
 	setTimeout(badgeBackgroundImage, 550)
 
-}, //---- uvReader success 
 
-	// error: function(error) {
-	// 					reject(error);
-	// }
-//})
 })
+
 } 
 
 	

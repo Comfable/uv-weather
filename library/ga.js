@@ -3,7 +3,7 @@
     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-$(document).ready(function () {
+document.addEventListener("DOMContentLoaded", function(event) {
     ga('create', 'UA-40112085-15', 'auto');
     ga('set', 'checkProtocolTask', function () { });
     ga('send', 'pageview', ('popup' || 'unknown') + '.html');
