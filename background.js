@@ -9,7 +9,6 @@
 				url: url,
 				success: function (result) {
 				  
-				    console.log("API success geo: " + JSON.stringify (result) );
 				    var city = JSON.stringify(result.city);
 				    var latandlong = JSON.stringify(result.cityLatLong);
 
@@ -32,7 +31,6 @@
 							success: function (result) {
 							   	
 							   	
-							    console.log("API success uv: " +JSON.stringify ( result.currently.uvIndex) );
 							    
 							    citys = ( "in " + (city.split('"'))[1].charAt(0).toUpperCase() + (city.split('"'))[1].slice(1));					
 							    cloudCover = result.currently.cloudCover;
@@ -182,7 +180,6 @@
 							     	sunnyDay = true;
 							     };
 
-							    console.log (cloudCover +" " + icon +" "+currentTime +" "+ sunsetTime +" "+sunriseTime +" "+temperatureF +" "+temperatureC);
 
 								    if (icon === "rain" || icon === "sleet" || icon === "snow")
 							            {cloudAdj = 0.31;}
@@ -309,7 +306,6 @@
 							},
 
 							error: function (jqXHR, textStatus) {
-								console.error("Error with try " + JSON.stringify (jqXHR) );
 								
 							}
 							
@@ -322,7 +318,6 @@
 				
 
 				error: function (jqXHR, textStatus) {
-					console.error("Error with try ");
 					
 				}
 				
