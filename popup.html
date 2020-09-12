@@ -3,7 +3,8 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>UV Weather</title>
-    <script src="/library/accufeel.min.js"></script>  
+    <script src="/library/accufeel.min.js"></script> 
+    <script type="text/javascript" src="/library/suncalc.js"></script>
     <script src="/library/jquery-3.4.1.min.js"></script>
     <link href="/css/popup.css" media="screen" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="/js/background.js"></script>
@@ -14,6 +15,7 @@
     <link rel="stylesheet" type="text/css" href="/css/jquery.powertip.css" />
     <script type="text/javascript" src="/library/jquery.modal.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/css/jquery.modal.css" />
+    <script type="text/javascript" src="/library/places.min.js"></script>
 </head>
 
 
@@ -31,15 +33,19 @@
     <span id="current_temp" class="current_temp_Class">17</span>
 
     <span>
-      <div id="temp_sign" class="current_temp_sign_Class">°C</div>
+      <div id="temp_sign_city" class="current_temp_sign_city_Class">
+        <span id="temp_sign" class="current_temp_sign_Class">°C</span>
+        <span style="margin-bottom: 6px;"><a id="location" class="location_Class whitelink" href="#setting_popup" rel="modal:open">city</a></span>
+      </div>
       <div id="current_accufeel" class="current_accufeel_Class" title="An Accurate Feels Like Temperature <br> created by Comfable">15°</div>
     </span>
 
   </div>
 
 
-  <div id="location" class="location_Class">
-    <span>city</span>
+  <div><a id="next48" class="next48_Class whitelink" href="#next48_popup" rel="modal:open">
+    <span>Next 24 Hours</span>
+  </a>
   </div>
 
   <div id="current_temp_maxmin_group" class="current_temp_maxmin_Class">
@@ -120,54 +126,66 @@
 
 <div id="forecast" class="forecast_Class">
     <div id="one_day" class="one_day_Class">
-      <span id="forecast_1_day" class="forecast_1_day_Class">
+      <span id="forecast_1_day" class="forecast_day_Class">
         1
       </span>
-      <span id="forecast_1_uv" class="forecast_1_uv_Class">
+      <span id="forecast_1_uv" class="forecast_uv_Class">
         UVI 5
       </span>
-      <span id="forecast_1_temp" class="forecast_1_temp_Class" title="Daily Maximum Temperature">
+      <span id="forecast_1_temp" class="forecast_temp_Class" title="Daily Maximum Temperature">
         23°
       </span>
-      <span id="forecast_1_icon" class="forecast_1_icon_Class">
+      <span id="forecast_1_icon" class="forecast_1_icon_Class forecast_icon_Class">
         .
       </span>
     </div>
     <hr class="hr_forecast">
     <div id="two_day" class="two_day_Class">
-      <span id="forecast_2_day" class="forecast_2_day_Class">
+      <span id="forecast_2_day" class="forecast_day_Class">
         2
       </span>
-      <span id="forecast_2_uv" class="forecast_2_uv_Class">
+      <span id="forecast_2_uv" class="forecast_uv_Class">
         UVI 5
       </span>
-      <span id="forecast_2_temp" class="forecast_2_temp_Class" title="Daily Maximum Temperature">
+      <span id="forecast_2_temp" class="forecast_temp_Class" title="Daily Maximum Temperature">
         23°
       </span>
-      <span id="forecast_2_icon" class="forecast_2_icon_Class">
+      <span id="forecast_2_icon" class="forecast_2_icon_Class forecast_icon_Class">
         .
       </span>
     </div>
     <hr class="hr_forecast">
   <div id="three_day" class="three_day_Class">
-    <span id="forecast_3_day" class="forecast_3_day_Class">
+    <span id="forecast_3_day" class="forecast_day_Class">
       3
     </span>
-    <span id="forecast_3_uv" class="forecast_3_uv_Class">
+    <span id="forecast_3_uv" class="forecast_uv_Class">
       UVI 5
     </span>
-    <span id="forecast_3_temp" class="forecast_3_temp_Class" title="Daily Maximum Temperature">
+    <span id="forecast_3_temp" class="forecast_temp_Class" title="Daily Maximum Temperature">
       23°
     </span>
-    <span id="forecast_3_icon" class="forecast_3_icon_Class">
+    <span id="forecast_3_icon" class="forecast_3_icon_Class forecast_icon_Class">
       .
     c
   </div>
+    <hr class="hr_forecast">
+  <div id="next7_day" class="next7_day_Class">
+    <span><a id="forecast_next7_day" class="forecast_next7_day_Class blacklink" href="#next7_popup" rel="modal:open">
+      7 Days Forecast →
+    </a></span>
+  </div>  
 </div>
 
+  <div><a id="solar_popup_page" class="solar_popup_page_Class blacklink" href="#solar_popup" rel="modal:open">
+      <span id="solar_popup_text" class="solar_popup_text_Class">Solar Times
+      </span>
+      <span id="solar_popup_icon" class="solar_popup_icon_Class">
+      </span>
+  </a></div>
 
   <div><a id="setting_popup_page" class="setting_popup_page_Class blacklink" href="#setting_popup" rel="modal:open">
-      <span id="setting_popup_text" class="setting_popup_text_Class">Setting
+      <span id="setting_popup_text" class="setting_popup_text_Class">Settings
       </span>
       <span id="setting_popup_icon" class="setting_popup_icon_Class">
       </span>
@@ -185,18 +203,15 @@
           powered by QSun<sup>®</sup>
         </div>
         <div id="title_version" class="title_version_Class">
-          Version 1.0.10
-        </div>
+          Version 1.0.10</div>
 
-       <div id="aboutUs" class="aboutUs_Class">
-         Created in October of 2019 and based in Toronto, Canada, UV Weather is the best way to check the UV Index & weather forecast right in your browser.
-         <br><br>
-         UV Weather by <a target='_blank' href="https://comfable.com" class="blacklink">Comfable Inc.</a>
-         <br>
-         Powered by <a target='_blank' href="https://qsun.co/app" class="blacklink">QSun</a>
-         <br>
-         © Copyright 2019     
-       </div>
+        <div id="setting_search_text" class="setting_search_text_class">
+           By default, UV Weather uses your current location. However, you can select a different location.
+        </div>
+        
+        <div id="searchBox" class="searchBox_Class">
+          <input type="search" id="citySearch" class="form-control" placeholder="Enter your city or town"/>
+        </div> 
 
     </div>
 
@@ -236,8 +251,699 @@
   </div>
 
 
+<!-- Next 48 Hours Page -->
+  <div id="next48_popup" class="next48_popup_Class modal modal_next48">
+
+    <div id="title_next48" class="title_uv_group_Class_setting">
+        <div id="title_next48_text" class="title_uv_Class">
+          Next 24 Hours
+        </div>
+        <div id="next48_update_date" class="title_subtitle_modal_Class">
+          October 25, 2019
+        </div>
+    </div>
+
+  <div class="next48_table_Class">
+
+    <div id="summery_next48_text" class="summery_modal_Class">
+          No precipitation throughout the week, with high temperatures falling to 63°F on Tuesday.
+    </div>
+
+      <div id="1_hours" class="1_hours_Class">
+          <span id="forecast_1_hours" class="forecast_day_modal_Class">
+            1
+          </span>
+          <span id="forecast_1_hours_uv" class="forecast_uv_modal_Class">
+            UVI 5
+          </span>
+          <span id="forecast_1_hours_temp" class="forecast_temp_modal_Class">
+            23°
+          </span>
+          <span id="forecast_1_hours_icon" class="forecast_1_hours_icon_Class forecast_icon_modal_Class">
+            .
+          </span>
+        </div>
+        <hr class="hr_forecast">
+
+      <div id="2_hours" class="2_hours_Class">
+          <span id="forecast_2_hours" class="forecast_day_modal_Class">
+            2
+          </span>
+          <span id="forecast_2_hours_uv" class="forecast_uv_modal_Class">
+            UVI 5
+          </span>
+          <span id="forecast_2_hours_temp" class="forecast_temp_modal_Class">
+            23°
+          </span>
+          <span id="forecast_2_hours_icon" class="forecast_2_hours_icon_Class forecast_icon_modal_Class">
+            .
+          </span>
+        </div>
+        <hr class="hr_forecast">
+
+      <div id="3_hours" class="3_hours_Class">
+          <span id="forecast_3_hours" class="forecast_day_modal_Class">
+            3
+          </span>
+          <span id="forecast_3_hours_uv" class="forecast_uv_modal_Class">
+            UVI 5
+          </span>
+          <span id="forecast_3_hours_temp" class="forecast_temp_modal_Class">
+            23°
+          </span>
+          <span id="forecast_3_hours_icon" class="forecast_3_hours_icon_Class forecast_icon_modal_Class">
+            .
+          </span>
+        </div>
+        <hr class="hr_forecast">
+
+      <div id="4_hours" class="4_hours_Class">
+          <span id="forecast_4_hours" class="forecast_day_modal_Class">
+            4
+          </span>
+          <span id="forecast_4_hours_uv" class="forecast_uv_modal_Class">
+            UVI 5
+          </span>
+          <span id="forecast_4_hours_temp" class="forecast_temp_modal_Class">
+            23°
+          </span>
+          <span id="forecast_4_hours_icon" class="forecast_4_hours_icon_Class forecast_icon_modal_Class">
+            .
+          </span>
+        </div>
+        <hr class="hr_forecast">
+
+      <div id="5_hours" class="5_hours_Class">
+          <span id="forecast_5_hours" class="forecast_day_modal_Class">
+            5
+          </span>
+          <span id="forecast_5_hours_uv" class="forecast_uv_modal_Class">
+            UVI 5
+          </span>
+          <span id="forecast_5_hours_temp" class="forecast_temp_modal_Class">
+            23°
+          </span>
+          <span id="forecast_5_hours_icon" class="forecast_5_hours_icon_Class forecast_icon_modal_Class">
+            .
+          </span>
+        </div>
+        <hr class="hr_forecast">
+
+      <div id="6_hours" class="6_hours_Class">
+          <span id="forecast_6_hours" class="forecast_day_modal_Class">
+            6
+          </span>
+          <span id="forecast_6_hours_uv" class="forecast_uv_modal_Class">
+            UVI 5
+          </span>
+          <span id="forecast_6_hours_temp" class="forecast_temp_modal_Class">
+            23°
+          </span>
+          <span id="forecast_6_hours_icon" class="forecast_6_hours_icon_Class forecast_icon_modal_Class">
+            .
+          </span>
+        </div>
+        <hr class="hr_forecast">
+
+      <div id="7_hours" class="7_hours_Class">
+          <span id="forecast_7_hours" class="forecast_day_modal_Class">
+            7
+          </span>
+          <span id="forecast_7_hours_uv" class="forecast_uv_modal_Class">
+            UVI 5
+          </span>
+          <span id="forecast_7_hours_temp" class="forecast_temp_modal_Class">
+            23°
+          </span>
+          <span id="forecast_7_hours_icon" class="forecast_7_hours_icon_Class forecast_icon_modal_Class">
+            .
+          </span>
+        </div>
+        <hr class="hr_forecast">
+
+      <div id="8_hours" class="8_hours_Class">
+          <span id="forecast_8_hours" class="forecast_day_modal_Class">
+            8
+          </span>
+          <span id="forecast_8_hours_uv" class="forecast_uv_modal_Class">
+            UVI 5
+          </span>
+          <span id="forecast_8_hours_temp" class="forecast_temp_modal_Class">
+            23°
+          </span>
+          <span id="forecast_8_hours_icon" class="forecast_8_hours_icon_Class forecast_icon_modal_Class">
+            .
+          </span>
+        </div>
+        <hr class="hr_forecast"> 
+
+      <div id="9_hours" class="9_hours_Class">
+          <span id="forecast_9_hours" class="forecast_day_modal_Class">
+            9
+          </span>
+          <span id="forecast_9_hours_uv" class="forecast_uv_modal_Class">
+            UVI 5
+          </span>
+          <span id="forecast_9_hours_temp" class="forecast_temp_modal_Class">
+            23°
+          </span>
+          <span id="forecast_9_hours_icon" class="forecast_9_hours_icon_Class forecast_icon_modal_Class">
+            .
+          </span>
+        </div>
+        <hr class="hr_forecast">
+
+      <div id="10_hours" class="10_hours_Class">
+          <span id="forecast_10_hours" class="forecast_day_modal_Class">
+            10
+          </span>
+          <span id="forecast_10_hours_uv" class="forecast_uv_modal_Class">
+            UVI 5
+          </span>
+          <span id="forecast_10_hours_temp" class="forecast_temp_modal_Class">
+            23°
+          </span>
+          <span id="forecast_10_hours_icon" class="forecast_10_hours_icon_Class forecast_icon_modal_Class">
+            .
+          </span>
+        </div>
+        <hr class="hr_forecast">
+
+      <div id="11_hours" class="11_hours_Class">
+          <span id="forecast_11_hours" class="forecast_day_modal_Class">
+            11
+          </span>
+          <span id="forecast_11_hours_uv" class="forecast_uv_modal_Class">
+            UVI 5
+          </span>
+          <span id="forecast_11_hours_temp" class="forecast_temp_modal_Class">
+            23°
+          </span>
+          <span id="forecast_11_hours_icon" class="forecast_11_hours_icon_Class forecast_icon_modal_Class">
+            .
+          </span>
+        </div>
+        <hr class="hr_forecast">
+
+      <div id="12_hours" class="12_hours_Class">
+          <span id="forecast_12_hours" class="forecast_day_modal_Class">
+            12
+          </span>
+          <span id="forecast_12_hours_uv" class="forecast_uv_modal_Class">
+            UVI 5
+          </span>
+          <span id="forecast_12_hours_temp" class="forecast_temp_modal_Class">
+            23°
+          </span>
+          <span id="forecast_12_hours_icon" class="forecast_12_hours_icon_Class forecast_icon_modal_Class">
+            .
+          </span>
+        </div>
+        <hr class="hr_forecast">
+
+      <div id="13_hours" class="13_hours_Class">
+          <span id="forecast_13_hours" class="forecast_day_modal_Class">
+            13
+          </span>
+          <span id="forecast_13_hours_uv" class="forecast_uv_modal_Class">
+            UVI 5
+          </span>
+          <span id="forecast_13_hours_temp" class="forecast_temp_modal_Class">
+            23°
+          </span>
+          <span id="forecast_13_hours_icon" class="forecast_13_hours_icon_Class forecast_icon_modal_Class">
+            .
+          </span>
+        </div>
+        <hr class="hr_forecast">
+
+      <div id="14_hours" class="14_hours_Class">
+          <span id="forecast_14_hours" class="forecast_day_modal_Class">
+            14
+          </span>
+          <span id="forecast_14_hours_uv" class="forecast_uv_modal_Class">
+            UVI 5
+          </span>
+          <span id="forecast_14_hours_temp" class="forecast_temp_modal_Class">
+            23°
+          </span>
+          <span id="forecast_14_hours_icon" class="forecast_14_hours_icon_Class forecast_icon_modal_Class">
+            .
+          </span>
+        </div>
+        <hr class="hr_forecast">
+
+      <div id="15_hours" class="15_hours_Class">
+          <span id="forecast_15_hours" class="forecast_day_modal_Class">
+            15
+          </span>
+          <span id="forecast_15_hours_uv" class="forecast_uv_modal_Class">
+            UVI 5
+          </span>
+          <span id="forecast_15_hours_temp" class="forecast_temp_modal_Class">
+            23°
+          </span>
+          <span id="forecast_15_hours_icon" class="forecast_15_hours_icon_Class forecast_icon_modal_Class">
+            .
+          </span>
+        </div>
+        <hr class="hr_forecast">
+
+      <div id="16_hours" class="16_hours_Class">
+          <span id="forecast_16_hours" class="forecast_day_modal_Class">
+            16
+          </span>
+          <span id="forecast_16_hours_uv" class="forecast_uv_modal_Class">
+            UVI 5
+          </span>
+          <span id="forecast_16_hours_temp" class="forecast_temp_modal_Class">
+            23°
+          </span>
+          <span id="forecast_16_hours_icon" class="forecast_16_hours_icon_Class forecast_icon_modal_Class">
+            .
+          </span>
+        </div>
+        <hr class="hr_forecast"> 
+
+      <div id="17_hours" class="17_hours_Class">
+          <span id="forecast_17_hours" class="forecast_day_modal_Class">
+            17
+          </span>
+          <span id="forecast_17_hours_uv" class="forecast_uv_modal_Class">
+            UVI 5
+          </span>
+          <span id="forecast_17_hours_temp" class="forecast_temp_modal_Class">
+            23°
+          </span>
+          <span id="forecast_17_hours_icon" class="forecast_17_hours_icon_Class forecast_icon_modal_Class">
+            .
+          </span>
+        </div>
+        <hr class="hr_forecast">
+
+      <div id="18_hours" class="18_hours_Class">
+          <span id="forecast_18_hours" class="forecast_day_modal_Class">
+            18
+          </span>
+          <span id="forecast_18_hours_uv" class="forecast_uv_modal_Class">
+            UVI 5
+          </span>
+          <span id="forecast_18_hours_temp" class="forecast_temp_modal_Class">
+            23°
+          </span>
+          <span id="forecast_18_hours_icon" class="forecast_18_hours_icon_Class forecast_icon_modal_Class">
+            .
+          </span>
+        </div>
+        <hr class="hr_forecast">
+
+      <div id="19_hours" class="19_hours_Class">
+          <span id="forecast_19_hours" class="forecast_day_modal_Class">
+            19
+          </span>
+          <span id="forecast_19_hours_uv" class="forecast_uv_modal_Class">
+            UVI 5
+          </span>
+          <span id="forecast_19_hours_temp" class="forecast_temp_modal_Class">
+            23°
+          </span>
+          <span id="forecast_19_hours_icon" class="forecast_19_hours_icon_Class forecast_icon_modal_Class">
+            .
+          </span>
+        </div>
+        <hr class="hr_forecast">
+
+      <div id="20_hours" class="20_hours_Class">
+          <span id="forecast_20_hours" class="forecast_day_modal_Class">
+            20
+          </span>
+          <span id="forecast_20_hours_uv" class="forecast_uv_modal_Class">
+            UVI 5
+          </span>
+          <span id="forecast_20_hours_temp" class="forecast_temp_modal_Class">
+            23°
+          </span>
+          <span id="forecast_20_hours_icon" class="forecast_20_hours_icon_Class forecast_icon_modal_Class">
+            .
+          </span>
+        </div>
+        <hr class="hr_forecast">
+
+      <div id="21_hours" class="21_hours_Class">
+          <span id="forecast_21_hours" class="forecast_day_modal_Class">
+            21
+          </span>
+          <span id="forecast_21_hours_uv" class="forecast_uv_modal_Class">
+            UVI 5
+          </span>
+          <span id="forecast_21_hours_temp" class="forecast_temp_modal_Class">
+            23°
+          </span>
+          <span id="forecast_21_hours_icon" class="forecast_21_hours_icon_Class forecast_icon_modal_Class">
+            .
+          </span>
+        </div>
+        <hr class="hr_forecast">
+
+      <div id="22_hours" class="22_hours_Class">
+          <span id="forecast_22_hours" class="forecast_day_modal_Class">
+            22
+          </span>
+          <span id="forecast_22_hours_uv" class="forecast_uv_modal_Class">
+            UVI 5
+          </span>
+          <span id="forecast_22_hours_temp" class="forecast_temp_modal_Class">
+            23°
+          </span>
+          <span id="forecast_22_hours_icon" class="forecast_22_hours_icon_Class forecast_icon_modal_Class">
+            .
+          </span>
+        </div>
+        <hr class="hr_forecast">
+
+      <div id="23_hours" class="23_hours_Class">
+          <span id="forecast_23_hours" class="forecast_day_modal_Class">
+            23
+          </span>
+          <span id="forecast_23_hours_uv" class="forecast_uv_modal_Class">
+            UVI 5
+          </span>
+          <span id="forecast_23_hours_temp" class="forecast_temp_modal_Class">
+            23°
+          </span>
+          <span id="forecast_23_hours_icon" class="forecast_23_hours_icon_Class forecast_icon_modal_Class">
+            .
+          </span>
+        </div>
+        <hr class="hr_forecast">
+
+      <div id="24_hours" class="24_hours_Class">
+          <span id="forecast_24_hours" class="forecast_day_modal_Class">
+            24
+          </span>
+          <span id="forecast_24_hours_uv" class="forecast_uv_modal_Class">
+            UVI 5
+          </span>
+          <span id="forecast_24_hours_temp" class="forecast_temp_modal_Class">
+            23°
+          </span>
+          <span id="forecast_24_hours_icon" class="forecast_24_hours_icon_Class forecast_icon_modal_Class">
+            .
+          </span>
+        </div>
+
+<br>
+<br>
+<br>
+
+    </div>
+  </div>
 
 
+
+
+
+<!-- Next 7 Days Page -->
+  <div id="next7_popup" class="next7_popup_Class modal">
+
+    <div id="title_next7" class="title_uv_group_Class_setting">
+        <div id="title_next7_text" class="title_uv_Class">
+          Next 7 Days
+        </div>
+        <div id="next7_update_date" class="title_subtitle_modal_Class">
+         October 25, 2019
+        </div>
+    </div>
+
+<div class="next7_table_Class">
+
+    <div id="summery_next7_text" class="summery_modal_Class">
+          No precipitation throughout the week, with high temperatures falling to 63°F on Tuesday.
+    </div>
+
+    <div id="one_day" class="one_day_Class">
+        <span id="forecast_10_day" class="forecast_day_modal_Class">
+          1
+        </span>
+        <span id="forecast_10_uv" class="forecast_uv_modal_Class">
+          UVI 5
+        </span>
+        <span id="forecast_10_temp" class="forecast_temp_modal_Class">
+          23°
+        </span>
+        <span id="forecast_10_temp_min" class="forecast_temp_min_modal_Class">
+          17°
+        </span>
+        <span id="forecast_10_icon" class="forecast_1_icon_Class forecast_icon_modal_Class">
+          .
+        </span>
+      </div>
+      <hr class="hr_forecast">
+      <div id="two_day" class="two_day_Class">
+        <span id="forecast_20_day" class="forecast_day_modal_Class">
+          2
+        </span>
+        <span id="forecast_20_uv" class="forecast_uv_modal_Class">
+          UVI 5
+        </span>
+        <span id="forecast_20_temp" class="forecast_temp_modal_Class">
+          23°
+        </span>
+        <span id="forecast_20_temp_min" class="forecast_temp_min_modal_Class">
+          17°
+        </span>
+        <span id="forecast_20_icon" class="forecast_2_icon_Class forecast_icon_modal_Class">
+          .
+        </span>
+      </div>
+      <hr class="hr_forecast">
+    <div id="three_day" class="three_day_Class">
+      <span id="forecast_30_day" class="forecast_day_modal_Class">
+        3
+      </span>
+      <span id="forecast_30_uv" class="forecast_uv_modal_Class">
+        UVI 5
+      </span>
+      <span id="forecast_30_temp" class="forecast_temp_modal_Class">
+        23°
+      </span>
+      <span id="forecast_30_temp_min" class="forecast_temp_min_modal_Class">
+        17°
+      </span>      
+      <span id="forecast_30_icon" class="forecast_3_icon_Class forecast_icon_modal_Class">
+        .
+      c
+    </div>
+      <hr class="hr_forecast">
+    <div id="four_day" class="three_day_Class">
+      <span id="forecast_40_day" class="forecast_day_modal_Class">
+        4
+      </span>
+      <span id="forecast_40_uv" class="forecast_uv_modal_Class">
+        UVI 5
+      </span>
+      <span id="forecast_40_temp" class="forecast_temp_modal_Class">
+        23°
+      </span>
+      <span id="forecast_40_temp_min" class="forecast_temp_min_modal_Class">
+        17°
+      </span>      
+      <span id="forecast_40_icon" class="forecast_4_icon_Class forecast_icon_modal_Class">
+        .
+      c
+    </div>
+      <hr class="hr_forecast">
+    <div id="five_day" class="three_day_Class">
+      <span id="forecast_50_day" class="forecast_day_modal_Class">
+        5
+      </span>
+      <span id="forecast_50_uv" class="forecast_uv_modal_Class">
+        UVI 5
+      </span>
+      <span id="forecast_50_temp" class="forecast_temp_modal_Class">
+        23°
+      </span>
+      <span id="forecast_50_temp_min" class="forecast_temp_min_modal_Class">
+        17°
+      </span>      
+      <span id="forecast_50_icon" class="forecast_5_icon_Class forecast_icon_modal_Class">
+        .
+      c
+    </div>
+      <hr class="hr_forecast">
+    <div id="six_day" class="three_day_Class">
+      <span id="forecast_60_day" class="forecast_day_modal_Class">
+        6
+      </span>
+      <span id="forecast_60_uv" class="forecast_uv_modal_Class">
+        UVI 5
+      </span>
+      <span id="forecast_60_temp" class="forecast_temp_modal_Class">
+        23°
+      </span>
+      <span id="forecast_60_temp_min" class="forecast_temp_min_modal_Class">
+        17°
+      </span>      
+      <span id="forecast_60_icon" class="forecast_6_icon_Class forecast_icon_modal_Class">
+        .
+      c
+    </div>
+      <hr class="hr_forecast">
+    <div id="seven_day" class="three_day_Class">
+      <span id="forecast_70_day" class="forecast_day_modal_Class">
+        7
+      </span>
+      <span id="forecast_70_uv" class="forecast_uv_modal_Class">
+        UVI 5
+      </span>
+      <span id="forecast_70_temp" class="forecast_temp_modal_Class">
+        23°
+      </span>
+      <span id="forecast_70_temp_min" class="forecast_temp_min_modal_Class">
+         17°
+      </span>      
+      <span id="forecast_70_icon" class="forecast_7_icon_Class forecast_icon_modal_Class">
+        .
+      c
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- Next Solar Page -->
+  <div id="solar_popup" class="solar_popup_Class modal">
+
+    <div id="title_solar" class="title_uv_group_Class_setting">
+        <div id="title_solar_text" class="title_uv_Class">
+          Solar Times
+        </div>
+        <div id="solar_now_date" class="title_subtitle_modal_Class">
+          October 25, 2019
+        </div>
+    </div>
+
+
+    <div class="solar_table_Class">
+
+<!--         <div id="solar_Title_A" class="solar_Title_A_Class">
+          <span id="solar_Title_A_name" class="solar_title_name_Class">
+            Sunlight Times
+          </span>
+        </div> -->
+<!--         <div id="solar_10" class="solar_Class" title="Morning astronomical twilight starts">
+          <span id="solar_10_name" class="solar_name_Class">
+            NIGHT ENDS
+          </span>
+          <span id="solar_10_time" class="solar_time_Class">
+            --
+          </span>
+        </div>
+        <hr class="hr_forecast"> -->
+
+        <div id="solar_8" class="solar_Class" title="Morning nautical twilight ends">
+          <span id="solar_8_name" class="solar_name_Class">
+            DAWN
+          </span>
+          <span id="solar_8_time" class="solar_time_Class">
+            --
+          </span>
+        </div>
+        <hr class="hr_forecast">
+
+        <div id="solar_1" class="solar_Class" title="Top edge of the sun appears on the horizon">
+          <span id="solar_1_name" class="solar_name_Class">
+            RISE
+          </span>
+          <span id="solar_1_time" class="solar_time_Class">
+            -:- -
+          </span>
+        </div>    
+        <hr class="hr_forecast">
+
+        <div id="solar_5" class="solar_Class" title="Soft light, best time for photography">
+          <span id="solar_5_name" class="solar_name_Class">
+            GOLDEN HOUR ENDS
+          </span>
+          <span id="solar_5_time" class="solar_time_Class">
+            -:- -
+          </span>
+        </div>
+        <hr class="hr_forecast">
+
+        <div id="solar_3" class="solar_Class" title="Sun is in the highest position">
+          <span id="solar_3_name" class="solar_name_Class">
+            PEAK
+          </span>
+          <span id="solar_3_time" class="solar_time_Class">
+            -:- -
+          </span>
+        </div>
+        <hr class="hr_forecast">
+
+        <div id="solar_6" class="solar_Class" title="Soft light, best time for photography">
+          <span id="solar_6_name" class="solar_name_Class">
+            GOLDEN HOUR STARTS
+          </span>
+          <span id="solar_6_time" class="solar_time_Class">
+            -:- -
+          </span>
+        </div>
+        <hr class="hr_forecast">
+
+        <div id="solar_2" class="solar_Class" title="Sun disappears below the horizon">
+          <span id="solar_2_name" class="solar_name_Class">
+            SET
+          </span>
+          <span id="solar_2_time" class="solar_time_Class">
+            -:- -
+          </span>
+        </div>
+        <hr class="hr_forecast">
+
+        <div id="solar_7" class="solar_Class" title="Evening nautical twilight starts">
+          <span id="solar_7_name" class="solar_name_Class">
+            DUSK
+          </span>
+          <span id="solar_7_time" class="solar_time_Class">
+            --
+          </span>
+        </div>
+        <hr class="hr_forecast">
+
+
+       <!-- 0 <br>
+
+        <div id="solar_Title_B" class="solar_Title_A_Class">
+          <span id="solar_Title_B_name" class="solar_title_name_Class">
+            Sun and Moon Position
+          </span>
+        </div>
+          
+        <hr class="hr_forecast"> -->
+
+        <div id="solar_9" class="solar_Class" title="Dark enough for astronomical observations">
+          <span id="solar_9_name" class="solar_name_Class">
+            NIGHT STARTS
+          </span>
+          <span id="solar_9_time" class="solar_time_Class">
+            --
+          </span>
+        </div>
+        <hr class="hr_forecast">
+
+        <div id="solar_4" class="solar_Class">
+          <span id="solar_4_name" class="solar_name_Class">
+            LENGTH
+          </span>
+          <span id="solar_4_time" class="solar_time_Class">
+            -:-
+          </span>
+        </div>
+
+    </div>
+  </div>
 
 </body>
 </html>

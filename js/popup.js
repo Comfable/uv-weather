@@ -1,12 +1,12 @@
-﻿
-var b = chrome.extension.getBackgroundPage();
-chrome.runtime.sendMessage({ msg: "BackgroundUpdate" });
 
-$(function(){
-  
-window.onload = function() { 
-refreshPopup();
-};
+var b = chrome.extension.getBackgroundPage();
+chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
+
+$(document).ready(function(){
+
+  window.onload = function() { 
+    refreshPopup();
+  };
 
   country = b.country;
 
@@ -38,7 +38,7 @@ refreshPopup();
     else {
         $("#setting_defualt_button_t").prop("checked", true);
         document.getElementById("setting_defualt_button_t").disabled = true;
-      };
+      }
 
     if (setSettingFC == "f") {
         $("#setting_defualt_button_f").prop("checked", true);
@@ -47,146 +47,78 @@ refreshPopup();
     else {
         $("#setting_defualt_button_c").prop("checked", true);
         document.getElementById("setting_defualt_button_c").disabled = true;
-      };
+      }
 
     if (setSettingFC == 'f'){
         ftemp();
       }
     else {
         ctemp(); 
-      };
+      }
 
     return;
       });
     }
     utfc = UTFC(function(value){  
   });
-  
+    
 
-  current_update_icon = b.current_update_icon;
-
-  temperatureF = b.temperatureF;
-  temperatureC = b.temperatureC;
-  temperatureSign = b.temperatureSign;
-
-  accufeelResultCsignTitle = "AccuFeel " + b.accufeelResultCsign;
-  accufeelResultFsignTitle = "AccuFeel " + b.accufeelResultFsign;
-
-  current_tempFsign_max = b.current_tempFsign_max;
-  current_tempFsign_min = b.current_tempFsign_min;
-  current_tempCsign_max = b.current_tempCsign_max;
-  current_tempCsign_min = b.current_tempCsign_min;
-  cityname = b.citys;
-  current_uv = b.current_uv;
-  current_uv_note = b.current_uv_note;
-  uv1 = b.uv1;
-  
-  update_tomorrow_c = b.update_tomorrow_c;
-  update_tomorrow_f = b.update_tomorrow_f;
-
-  forecast_1_day1 = b.forecast_1_day;
-  forecast_2_day1 = b.forecast_2_day;
-  forecast_3_day1 = b.forecast_3_day;
-
-  forecast_1_temp = b.forecast_1_tempF_sign;
-  forecast_2_temp = b.forecast_2_tempF_sign;
-  forecast_3_temp = b.forecast_3_tempF_sign;
-
-  forecast_1_tempC_sign = b.forecast_1_tempC_sign;
-  forecast_2_tempC_sign = b.forecast_2_tempC_sign;
-  forecast_3_tempC_sign = b.forecast_3_tempC_sign;
-
-  forecast_1_uv = b.forecast_1_uv;
-  forecast_2_uv = b.forecast_2_uv;
-  forecast_3_uv = b.forecast_3_uv;
-
-  forecast_1_icon = b.forecast_1_icon;
-  forecast_2_icon = b.forecast_2_icon;
-  forecast_3_icon = b.forecast_3_icon;
-
-  forecast_1_update_icon = b.forecast_1_update_icon;
-  forecast_2_update_icon = b.forecast_2_update_icon;
-  forecast_3_update_icon = b.forecast_3_update_icon;
-
-  isDay = b.isDay;
-  isNight = b.isNight;
-
-  icon = b.icon;
-  summary = b.summary;
-  updateTime = b.updateTime;
-
-  //updateTimeRelative = moment.unix(updateTime).format('h:mm:ss a');
-  updateTimeRelative = "Updated " + moment.unix(updateTime).fromNow();
-
-
-  $('.current_temp_Class').powerTip({ placement: 's' });
+  updateTimeRelative = "Updated " + moment.unix(b.updateTime).fromNow();
+  $('#location').powerTip({ placement: 'e' });
+  $('.current_temp_Class').powerTip({ placement: 'e' });
   $('#current_temp').data('powertip', updateTimeRelative);
-  $('.current_uv_group_Class').powerTip({ placement: 's' });
-  $('#current_uv_group').data('powertip', updateTimeRelative);
-  
+  $('.current_uv_group_Class').powerTip({ placement: 'e' });
+  //$('#current_uv_group').data('powertip', updateTimeRelative);
   $('.icon_uv_Class').powerTip({ placement: 's' });
-
-  $('.forecast_1_temp_Class').powerTip({ placement: 'nw' });
-  $('.forecast_2_temp_Class').powerTip({ placement: 'nw' });
-  $('.forecast_3_temp_Class').powerTip({ placement: 'nw' });
-
-  $('.current_temp_max_Class').powerTip({ placement: 's' });
-  $('.current_temp_min_Class').powerTip({ placement: 's' });
-
-  $('.current_accufeel_Class').powerTip({ placement: 's' });
-
+  $('.forecast_temp_Class').powerTip({ placement: 'w' });
+  $('.current_temp_max_Class').powerTip({ placement: 'e' });
+  $('.current_temp_min_Class').powerTip({ placement: 'e' });
+  $('.current_accufeel_Class').powerTip({ placement: 'e' });
   $('.title_powered_Class').powerTip({placement: 's', mouseOnToPopup: 'true' });
   
 
   function uvIconFunction() {
-    $("#icon_uv_1").css('opacity', '.3');
-    $("#icon_uv_2").css('opacity', '.3');
-    $("#icon_uv_3").css('opacity', '.3');
-    $("#icon_uv_4").css('opacity', '.3');
-    $("#icon_uv_5").css('opacity', '.3');
-    $("#icon_uv_6").css('opacity', '.3');
+      $("#icon_uv_1").css('opacity', '.3');
+      $("#icon_uv_2").css('opacity', '.3');
+      $("#icon_uv_3").css('opacity', '.3');
+      $("#icon_uv_4").css('opacity', '.3');
+      $("#icon_uv_5").css('opacity', '.3');
+      $("#icon_uv_6").css('opacity', '.3');
+  
+  if (b.uv1 == 1) {
+      $("#icon_uv_1").css('opacity', '1');
+    }
+  else if (b.uv1 == 2) {
+      $("#icon_uv_1").css('opacity', '1');
+      $("#icon_uv_2").css('opacity', '1');
+    }
+  else if (b.uv1 >= 3 && b.uv1 <= 5) {
+      $("#icon_uv_1").css('opacity', '1');
+      $("#icon_uv_2").css('opacity', '1');
+      $("#icon_uv_3").css('opacity', '1');
+    }
+  else if (b.uv1 >= 6 && b.uv1 <= 7) {
+      $("#icon_uv_1").css('opacity', '1');
+      $("#icon_uv_2").css('opacity', '1');
+      $("#icon_uv_3").css('opacity', '1');
+      $("#icon_uv_4").css('opacity', '1');
+    }
+  else if (b.uv1 >= 8) {
+      $("#icon_uv_1").css('opacity', '1');
+      $("#icon_uv_2").css('opacity', '1');
+      $("#icon_uv_3").css('opacity', '1');
+      $("#icon_uv_4").css('opacity', '1');
+      $("#icon_uv_5").css('opacity', '1');
+      $("#icon_uv_6").css('opacity', '1');
+    }
+  }
+  uvIconFunction();
 
-    // $(".icon_uv_10").css('display', 'none');
-    // $(".icon_uv_20").css('display', 'none');
-    // $(".icon_uv_30").css('display', 'none');
-    // $(".icon_uv_40").css('display', 'none');
-    // $(".icon_uv_50").css('display', 'none');
-    // $(".icon_uv_60").css('display', 'none');
-    
-    if (uv1 == 1) {
-        $("#icon_uv_1").css('opacity', '1');
-      }
-    else if (uv1 == 2) {
-        $("#icon_uv_1").css('opacity', '1');
-        $("#icon_uv_2").css('opacity', '1');
-      }
-    else if (uv1 >= 3 && uv1 <= 5) {
-        $("#icon_uv_1").css('opacity', '1');
-        $("#icon_uv_2").css('opacity', '1');
-        $("#icon_uv_3").css('opacity', '1');
-      }
-    else if (uv1 >= 6 && uv1 <= 7) {
-        $("#icon_uv_1").css('opacity', '1');
-        $("#icon_uv_2").css('opacity', '1');
-        $("#icon_uv_3").css('opacity', '1');
-        $("#icon_uv_4").css('opacity', '1');
-      }
-    else if (uv1 >= 8) {
-        $("#icon_uv_1").css('opacity', '1');
-        $("#icon_uv_2").css('opacity', '1');
-        $("#icon_uv_3").css('opacity', '1');
-        $("#icon_uv_4").css('opacity', '1');
-        $("#icon_uv_5").css('opacity', '1');
-        $("#icon_uv_6").css('opacity', '1');
-      }
-  };
-   uvIconFunction();
+  $('.current_icon_update').powerTip({ followMouse: 'true' });
+  $('#current_icon_update').data('powertip', b.summary);
 
-$('.current_icon_update').powerTip({ followMouse: 'true' });
-$('#current_icon_update').data('powertip', summary);
-
-function iconRefreshFunction() {
-switch(icon) {
+  function iconRefreshFunction() {
+  switch(b.icon) {
     case 'clear-day':
       $(".current_icon_update").css('background-image', 'url("images/weather_icon/w_sun.svg")');   
       $(".image_background").css('background-image', 'url("images/background/clear-day.jpg")');
@@ -197,7 +129,7 @@ switch(icon) {
       break;
     case 'rain':
       $(".current_icon_update").css('background-image', 'url("images/weather_icon/w_cloud_rain.svg")');
-            if (isDay) {
+            if (b.isDay) {
             $(".image_background").css('background-image', 'url("images/background/rain-day.jpg")');
               }
             else {
@@ -206,7 +138,7 @@ switch(icon) {
       break;
     case 'snow':
       $(".current_icon_update").css('background-image', 'url("images/weather_icon/w_cloud_snow.svg")');
-            if (isDay) {
+            if (b.isDay) {
             $(".image_background").css('background-image', 'url("images/background/snow-day.jpg")');
               }
             else {
@@ -215,7 +147,7 @@ switch(icon) {
       break;
     case 'sleet':
       $(".current_icon_update").css('background-image', 'url("images/weather_icon/w_cloud_snow_alt.svg")');
-            if (isDay) {
+            if (b.isDay) {
             $(".image_background").css('background-image', 'url("images/background/sleet-day.jpg")');
               }
             else {
@@ -224,7 +156,7 @@ switch(icon) {
       break;
     case 'wind':
       $(".current_icon_update").css('background-image', 'url("images/weather_icon/w_wind.svg")');
-            if (isDay) {
+            if (b.isDay) {
             $(".image_background").css('background-image', 'url("images/background/wind-day.jpg")');
               }
             else {
@@ -233,7 +165,7 @@ switch(icon) {
       break;
     case 'fog':
       $(".current_icon_update").css('background-image', 'url("images/weather_icon/w_cloud_fog_alt.svg")');
-            if (isDay) {
+            if (b.isDay) {
             $(".image_background").css('background-image', 'url("images/background/fog-day.jpg")');
               }
             else {
@@ -242,7 +174,7 @@ switch(icon) {
       break;
     case 'cloudy':
       $(".current_icon_update").css('background-image', 'url("images/weather_icon/w_cloud.svg")');
-            if (isDay) {
+            if (b.isDay) {
             $(".image_background").css('background-image', 'url("images/background/cloudy-day.jpg")');
               }
             else {
@@ -263,111 +195,220 @@ switch(icon) {
     break;
   }
 
-};
+}
 
 iconRefreshFunction();
-    
-$('.forecast_1_icon_Class').powerTip({ placement: 'nw' });      
-$('.forecast_2_icon_Class').powerTip({ placement: 'nw' });      
-$('.forecast_3_icon_Class').powerTip({ placement: 'nw' });      
 
+var p;
+for (p = 1; p < 8; p++) {    
+  $('.forecast_'+ p +'_icon_Class').powerTip({ placement: 'nw' });      
+}
 
 var i;
-for (i = 1; i < 4; i++) {
+for (i = 1; i < 8; i++) {
 
-  if (i == 1) {forecast_icon = forecast_1_icon;}
-  else if (i == 2) {forecast_icon = forecast_2_icon;}
-  else {forecast_icon = forecast_3_icon;}
+  if (i == 1) {forecast_icon = b.forecast_1_icon;}
+  else if (i == 2) {forecast_icon = b.forecast_2_icon;}
+  else if (i == 3) {forecast_icon = b.forecast_3_icon;}
+  else if (i == 4) {forecast_icon = b.forecast_4_icon;}
+  else if (i == 5) {forecast_icon = b.forecast_5_icon;}
+  else if (i == 6) {forecast_icon = b.forecast_6_icon;}
+  else if (i == 7) {forecast_icon = b.forecast_7_icon;}
 
-switch(forecast_icon) {
+  switch(forecast_icon) {
     case 'clear-day':
       $('.forecast_'+ i +'_icon_Class').css('background-image', 'url("images/weather_icon/b_sun.svg")');
       $('#forecast_'+ i +'_icon').data('powertip', 'Clear Day');
+      $('#forecast_'+ i*10 +'_icon').data('powertip', 'Clear Day');
       break;
     case 'clear-night':
       $('.forecast_'+ i +'_icon_Class').css('background-image', 'url("images/weather_icon/b_moon.svg")');
       $('#forecast_'+ i +'_icon').data('powertip', 'Clear Night');
+      $('#forecast_'+ i*10 +'_icon').data('powertip', 'Clear Night');
      break;
     case 'rain':
       $('.forecast_'+ i +'_icon_Class').css('background-image', 'url("images/weather_icon/b_cloud_rain.svg")');
       $('#forecast_'+ i +'_icon').data('powertip', 'Rainy');
+      $('#forecast_'+ i*10 +'_icon').data('powertip', 'Rainy');
      break;
      case 'snow':
       $('.forecast_'+ i +'_icon_Class').css('background-image', 'url("images/weather_icon/b_cloud_snow.svg")');
       $('#forecast_'+ i +'_icon').data('powertip', 'Snowy');
+      $('#forecast_'+ i*10 +'_icon').data('powertip', 'Snowy');
      break;
      case 'sleet':
       $('.forecast_'+ i +'_icon_Class').css('background-image', 'url("images/weather_icon/b_cloud_snow_alt.svg")');
       $('#forecast_'+ i +'_icon').data('powertip', 'Sleety');
+      $('#forecast_'+ i*10 +'_icon').data('powertip', 'Sleety');
      break;
      case 'wind':
       $('.forecast_'+ i +'_icon_Class').css('background-image', 'url("images/weather_icon/b_wind.svg")');
       $('#forecast_'+ i +'_icon').data('powertip', 'Windy');
+      $('#forecast_'+ i*10 +'_icon').data('powertip', 'Windy');      
      break;
      case 'fog':
       $('.forecast_'+ i +'_icon_Class').css('background-image', 'url("images/weather_icon/b_cloud_fog_alt.svg")');
       $('#forecast_'+ i +'_icon').data('powertip', 'Foggy');
+      $('#forecast_'+ i*10 +'_icon').data('powertip', 'Foggy');      
      break;
      case 'cloudy':
       $('.forecast_'+ i +'_icon_Class').css('background-image', 'url("images/weather_icon/b_cloud.svg")');
       $('#forecast_'+ i +'_icon').data('powertip', 'Cloudy');
+      $('#forecast_'+ i*10 +'_icon').data('powertip', 'Cloudy');      
      break;
      case 'partly-cloudy-day':
       $('.forecast_'+ i +'_icon_Class').css('background-image', 'url("images/weather_icon/b_cloud_sun.svg")');
       $('#forecast_'+ i +'_icon').data('powertip', 'Partly Cloudy');
+      $('#forecast_'+ i*10 +'_icon').data('powertip', 'Partly Cloudy');      
      break;
      case 'partly-cloudy-night':
       $('.forecast_'+ i +'_icon_Class').css('background-image', 'url("images/weather_icon/b_cloud_moon.svg")');
       $('#forecast_'+ i +'_icon').data('powertip', 'Partly Cloudy');
+      $('#forecast_'+ i*10 +'_icon').data('powertip', 'Partly Cloudy');      
      break;
      default:
       $('.forecast_'+ i +'_icon_Class').css('background-image', 'url("images/b_sun.svg")');
       $('#forecast_'+ i +'_icon').data('powertip', 'Sunny');
+      $('#forecast_'+ i*10 +'_icon').data('powertip', 'Sunny');      
     break;
+    }
   }
-}
+
+  var j;
+  for (i = 1; i < 25; i++) {
+    if (i == 1) {forecast_hours_icon = b.forecast_1_hours_icon;}
+    else if (i == 2) {forecast_hours_icon = b.forecast_2_hours_icon;}
+    else if (i == 3) {forecast_hours_icon = b.forecast_3_hours_icon;}
+    else if (i == 4) {forecast_hours_icon = b.forecast_4_hours_icon;}
+    else if (i == 5) {forecast_hours_icon = b.forecast_5_hours_icon;}
+    else if (i == 6) {forecast_hours_icon = b.forecast_6_hours_icon;}
+    else if (i == 7) {forecast_hours_icon = b.forecast_7_hours_icon;}
+    else if (i == 8) {forecast_hours_icon = b.forecast_8_hours_icon;}
+    else if (i == 9) {forecast_hours_icon = b.forecast_9_hours_icon;}
+    else if (i == 10) {forecast_hours_icon = b.forecast_10_hours_icon;}
+    else if (i == 11) {forecast_hours_icon = b.forecast_11_hours_icon;}
+    else if (i == 12) {forecast_hours_icon = b.forecast_12_hours_icon;}
+    else if (i == 13) {forecast_hours_icon = b.forecast_13_hours_icon;}
+    else if (i == 14) {forecast_hours_icon = b.forecast_14_hours_icon;}
+    else if (i == 15) {forecast_hours_icon = b.forecast_15_hours_icon;}
+    else if (i == 16) {forecast_hours_icon = b.forecast_16_hours_icon;}
+    else if (i == 17) {forecast_hours_icon = b.forecast_17_hours_icon;}
+    else if (i == 18) {forecast_hours_icon = b.forecast_18_hours_icon;}
+    else if (i == 19) {forecast_hours_icon = b.forecast_19_hours_icon;}
+    else if (i == 20) {forecast_hours_icon = b.forecast_20_hours_icon;}
+    else if (i == 21) {forecast_hours_icon = b.forecast_21_hours_icon;}
+    else if (i == 22) {forecast_hours_icon = b.forecast_22_hours_icon;}
+    else if (i == 23) {forecast_hours_icon = b.forecast_23_hours_icon;}
+    else if (i == 24) {forecast_hours_icon = b.forecast_24_hours_icon;}
+
+  switch(forecast_hours_icon) {
+    case 'clear-day':
+      $('.forecast_'+ i +'_hours_icon_Class').css('background-image', 'url("images/weather_icon/b_sun.svg")');
+      break;
+    case 'clear-night':
+      $('.forecast_'+ i +'_hours_icon_Class').css('background-image', 'url("images/weather_icon/b_moon.svg")');
+     break;
+    case 'rain':
+      $('.forecast_'+ i +'_hours_icon_Class').css('background-image', 'url("images/weather_icon/b_cloud_rain.svg")');
+     break;
+     case 'snow':
+      $('.forecast_'+ i +'_hours_icon_Class').css('background-image', 'url("images/weather_icon/b_cloud_snow.svg")');
+     break;
+     case 'sleet':
+      $('.forecast_'+ i +'_hours_icon_Class').css('background-image', 'url("images/weather_icon/b_cloud_snow_alt.svg")');
+     break;
+     case 'wind':
+      $('.forecast_'+ i +'_hours_icon_Class').css('background-image', 'url("images/weather_icon/b_wind.svg")');
+     break;
+     case 'fog':
+      $('.forecast_'+ i +'_hours_icon_Class').css('background-image', 'url("images/weather_icon/b_cloud_fog_alt.svg")');
+     break;
+     case 'cloudy':
+      $('.forecast_'+ i +'_hours_icon_Class').css('background-image', 'url("images/weather_icon/b_cloud.svg")');
+     break;
+     case 'partly-cloudy-day':
+      $('.forecast_'+ i +'_hours_icon_Class').css('background-image', 'url("images/weather_icon/b_cloud_sun.svg")');
+     break;
+     case 'partly-cloudy-night':
+      $('.forecast_'+ i +'_hours_icon_Class').css('background-image', 'url("images/weather_icon/b_cloud_moon.svg")');
+     break;
+     default:
+      $('.forecast_'+ i +'_hours_icon_Class').css('background-image', 'url("images/b_sun.svg")');
+    break;
+    }
+  }
 
 
-  $("#location").html(cityname);
-  $("#current_uv").html(current_uv);
-  $("#current_uv_note").html(current_uv_note);
+  for (i=1;i<4;i++){
+      $(`#forecast_${i}_day`).html(moment.unix(b.result.daily.data[i].time).format('dddd'));
+      $(`#forecast_${i}_uv`).html(b[`forecast_${i}_uv`]);
+  }
 
-  $("#forecast_1_day").html(forecast_1_day1);
-	$("#forecast_1_uv").html(forecast_1_uv); 
- 
-  $("#forecast_2_day").html(forecast_2_day1);
-	$("#forecast_2_uv").html(forecast_2_uv);
+  for(i=1;i<8;i++){
+      $(`#forecast_${i*10}_day`).html(moment.unix(b.result.daily.data[i].time).format('dddd'));
+      $(`#forecast_${i*10}_uv`).html(b[`forecast_${i}_uv`]);
+  }
 
-  $("#forecast_3_day").html(forecast_3_day1);
-  $("#forecast_3_uv").html(forecast_3_uv);
 
+  $("#location").html(b.citys);
+  $("#current_uv").html(b.current_uv);
+  $("#current_uv_note").html(b.current_uv_note);
 
   function ctemp(){
-      $("#current_temp").html(temperatureC);
+      $("#current_temp").html(b.temperatureC);
       $("#temp_sign").html("°C");
-      $("#current_accufeel").html(accufeelResultCsignTitle);
-      $("#current_temp_max").html(current_tempCsign_max);
-      $("#current_temp_min").html(current_tempCsign_min);
-      $("#forecast_tomorrow").html(update_tomorrow_c);
-      $("#forecast_1_temp").html(forecast_1_tempC_sign);
-      $("#forecast_2_temp").html(forecast_2_tempC_sign);
-      $("#forecast_3_temp").html(forecast_3_tempC_sign);      
-    }
+      $("#current_accufeel").html(b.accufeelResultCsignTitle);
+      $("#current_temp_max").html(b.current_tempCsign_max);
+      $("#current_temp_min").html(b.current_tempCsign_min);
+      $("#forecast_tomorrow").html(b.update_tomorrow_c);
+
+
+      for (i=1;i<4;i++){
+          $(`#forecast_${i}_temp`).html(b[`forecast_${i}_tempC_sign`]);
+          $(`#forecast_${i}_temp_min`).html(b[`forecast_${i}_tempC_sign_min`]);
+      }
+
+      for(i=1;i<8;i++){
+          $(`#forecast_${i*10}_temp`).html(b[`forecast_${i}_tempC_sign`]);
+          $(`#forecast_${i*10}_temp_min`).html(b[`forecast_${i}_tempC_sign_min`]);
+      }
+
+      for (i=1;i<25;i++){
+          $(`#forecast_${i}_hours_temp`).html(Math.round(((b.result.hourly.data[i].temperature)-32) * 5/9) + "°");
+      }
+
+      $("#summery_next7_text").html(b.summaryDailyC);
+      $("#summery_next48_text").html(b.summaryHourlyC);
+  }
 
   function ftemp(){
-      $("#current_temp").html(temperatureF);
-      $("#temp_sign").html("°F");
-      $("#current_accufeel").html(accufeelResultFsignTitle);
-      $("#current_temp_max").html(current_tempFsign_max);
-      $("#current_temp_min").html(current_tempFsign_min);
-      $("#forecast_tomorrow").html(update_tomorrow_f);
-      $("#forecast_1_temp").html(forecast_1_temp);
-      $("#forecast_2_temp").html(forecast_2_temp);
-      $("#forecast_3_temp").html(forecast_3_temp);    
+    $("#current_temp").html(b.temperatureF);
+    $("#temp_sign").html("°F");
+    $("#current_accufeel").html(b.accufeelResultFsignTitle);
+    $("#current_temp_max").html(b.current_tempFsign_max);
+    $("#current_temp_min").html(b.current_tempFsign_min);
+    $("#forecast_tomorrow").html(b.update_tomorrow_f);
+
+   for (i=1;i<4;i++){
+        $(`#forecast_${i}_temp`).html(b[`forecast_${i}_tempF_sign`]);
+        $(`#forecast_${i}_temp_min`).html(b[`forecast_${i}_tempF_sign_min`]);
     }
 
+    for(i=1;i<8;i++){
+        $(`#forecast_${i*10}_temp`).html(b[`forecast_${i}_tempF_sign`]);
+        $(`#forecast_${i*10}_temp_min`).html(b[`forecast_${i}_tempF_sign_min`]);
+    }
 
-  if (uv1 == 0 || isNight) {
+    for (i=1;i<25;i++){
+        $(`#forecast_${i}_hours_temp`).html(Math.round(b.result.hourly.data[i].temperature) + "°");
+    }
+
+    $("#summery_next7_text").html(b.summaryDailyF);
+    $("#summery_next48_text").html(b.summaryHourlyF);
+  }
+
+
+  if (b.uv1 == 0 || b.isNight) {
       $("#link_qsun_text").html("Track your vitamin D intake");
    }
   else{
@@ -379,88 +420,179 @@ switch(forecast_icon) {
   $(".title_version_Class").html("Version " + version_manifest);
 
 
-//Click events
-  $("#setting_defualt_button_u").click(function () {  
-    setSettingUT = "u";
-    chrome.storage.sync.set({'setSettingUT': 'u'});
-    chrome.browserAction.setBadgeText({"text": "UV "+ uv1 });
-    chrome.runtime.sendMessage({ msg: "BackgroundUpdate" });
-    document.getElementById("setting_defualt_button_u").disabled = true;
-    document.getElementById("setting_defualt_button_t").disabled = false;
+  //Setting
+  function citySeachLocation() {
+    var placesAutocomplete = places({
+      appId: 'plEMZ6MEDSTZ',
+      apiKey: 'c57e4b68ed855bc62f00b85525364d00',
+      container: document.getElementById('citySearch'),
+      templates: {
+          value: function(suggestion) {
+            return suggestion.name;
+          }
+        }
+      }).configure({
+        type: 'city',
+        language: 'en',
+        hitsPerPage: 5,
+        aroundLatLngViaIP: false,
+      });
+
+    var address = document.getElementById('citySearch');
+    placesAutocomplete.on('change', function(e) {
+       address.textContent = e.suggestion.value;
+       latlong =  '"' + JSON.stringify(e.suggestion.latlng.lat) + ',' + JSON.stringify(e.suggestion.latlng.lng) + '"';
+       city =  JSON.stringify (e.suggestion.name);
+       countryCode =  JSON.stringify (e.suggestion.countryCode);
+       country = (countryCode.split('"'))[1];
+       chrome.storage.local.set({'latlongPopup': latlong});
+       chrome.storage.local.set({'cityPopup': city});
+       chrome.storage.local.set({'countryPopup': country});
+       chrome.storage.local.set({'fromSearch': "locationSearch"});
+       chrome.runtime.sendMessage({ msg: "fromSearchUpdate" });
+       
+
+       setTimeout(function(){
+          chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
+          refreshPopup();
+       }, 750) 
+
+       setTimeout(function(){
+          $.modal.close();
+       }, 1500); 
+
+    });
+
+    placesAutocomplete.on('clear', function() {
+      address.textContent = 'none';
+    });
+
+  }
+  citySeachLocation();
+
+
+  $("#setting_defualt_button_u").click(function(){  
+      setSettingUT = "u";
+      chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
+      chrome.storage.local.set({'setSettingUT': 'u'});
+        if (b.uv1>9) {
+          chrome.browserAction.setBadgeText({"text": "UV"+ b.uv1});
+        }
+        else {
+          chrome.browserAction.setBadgeText({"text": "UV "+ b.uv1});
+        }        
+      document.getElementById("setting_defualt_button_u").disabled = true;
+      document.getElementById("setting_defualt_button_t").disabled = false;
   });
 
-  $("#setting_defualt_button_t").click(function () {  
-    setSettingUT = "t"
-    chrome.runtime.sendMessage({ msg: "BackgroundUpdate" });
-    chrome.storage.sync.set({'setSettingUT': 't'});
-    document.getElementById("setting_defualt_button_t").disabled = true;
-    document.getElementById("setting_defualt_button_u").disabled = false;
+  $("#setting_defualt_button_t").click(function (){  
+      setSettingUT = "t";
+      chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
+      chrome.storage.local.set({'setSettingUT': 't'});
+          if (setSettingFC == "f") {
+              chrome.browserAction.setBadgeText({"text":temperatureF +"°F" });
+            }
+          else {
+            chrome.browserAction.setBadgeText({"text":temperatureC +"°C" });
+          }
+      document.getElementById("setting_defualt_button_t").disabled = true;
+      document.getElementById("setting_defualt_button_u").disabled = false;
   });
 
-  $("#setting_defualt_button_c").click(function() {
+  $("#setting_defualt_button_c").click(function(){
       setSettingFC = "c";
-      chrome.runtime.sendMessage({ msg: "BackgroundUpdate" });
-      chrome.storage.sync.set({'setSettingFC': 'c'});
-     ctemp(); 
-     document.getElementById("setting_defualt_button_c").disabled = true;
-    document.getElementById("setting_defualt_button_f").disabled = false;
+      chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
+      chrome.storage.local.set({'setSettingFC': 'c'});
+      if (setSettingUT == "t") {
+        chrome.browserAction.setBadgeText({"text":temperatureC +"°C" });
+      }
+      ctemp();
+      document.getElementById("setting_defualt_button_c").disabled = true;
+      document.getElementById("setting_defualt_button_f").disabled = false;
    });
 
-  $("#setting_defualt_button_f").click(function() {
+  $("#setting_defualt_button_f").click(function(){
       setSettingFC = "f";
-      chrome.runtime.sendMessage({ msg: "BackgroundUpdate" });
-      chrome.storage.sync.set({'setSettingFC': 'f'});
+      chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
+      chrome.storage.local.set({'setSettingFC': 'f'});
+      if (setSettingUT == "t") {   
+        chrome.browserAction.setBadgeText({"text":temperatureF +"°F" });
+      }      
       ftemp();
       document.getElementById("setting_defualt_button_f").disabled = true;
       document.getElementById("setting_defualt_button_c").disabled = false;
-  });
+   });
 
-function refreshPopup(){
-  setTimeout(function() {
 
-    var b = chrome.extension.getBackgroundPage();
+  //Solar
+  function solarFunction(){
+    $("#solar_now_date").html(moment.unix(b.updateTime + b.offsetUnix).format('MMMM Do YYYY, h:mm A'));
+    $("#solar_1_time").html(moment.unix(b.sunriseTimeSolar + b.offsetUnix).format('h:mm A'));
+    $("#solar_2_time").html(moment.unix(b.sunsetTimeSolar + b.offsetUnix).format('h:mm A'));
+    $("#solar_3_time").html(moment.unix(b.solarNoon + b.offsetUnix).format('h:mm A'));
+    $("#solar_4_time").html(b.dayLength);
+    $("#solar_5_time").html(moment.unix(b.goldenHourEnd + b.offsetUnix).format('h:mm A'));
+    $("#solar_6_time").html(moment.unix(b.goldenHour + b.offsetUnix).format('h:mm A')); 
+    $("#solar_7_time").html(moment.unix(b.dusk + b.offsetUnix).format('h:mm A'));
+    $("#solar_8_time").html(moment.unix(b.dawn + b.offsetUnix).format('h:mm A'));
+    $("#solar_9_time").html(moment.unix(b.nightStarts + b.offsetUnix).format('h:mm A'));
+    $("#solar_10_time").html(moment.unix(b.nightEnds + b.offsetUnix).format('h:mm A'));
+    $('.solar_Class').powerTip({ placement: 'w' });      
+  }
+  solarFunction();
 
-      updateTimeRelative = "Updated " + moment.unix(updateTime).fromNow();
+  // Next 7 Days
+  function next7Function(){
+    $("#next7_update_date").html('Updated at ' + moment.unix(b.updateTime + b.offsetUnix).format('MMM Do, h:mm A'));
+  }
+  next7Function();
+
+  // Next 48 Hours
+  function next48Function(){
+    $("#next48_update_date").html('Updated at ' + moment.unix(b.updateTime + b.offsetUnix).format('MMM Do, h:mm A'));
+    for(i=1;i<25;i++){
+        $(`#forecast_${i}_hours`).html(moment.unix(b.result.hourly.data[i].time + b.offsetUnix).format('h A'));
+        $(`#forecast_${i}_hours_uv`).html(b[`forecast_${i}_hours_uv`]);
+    }
+  }
+  next48Function();
+
+  function refreshPopup(){
+    setTimeout(function(){
+
+      updateTimeRelative = "Updated " + moment.unix(b.updateTime).fromNow();
       $('#current_temp').data('powertip', updateTimeRelative);
-      $('#current_uv_group').data('powertip', updateTimeRelative);
-
+      //$('#current_uv_group').data('powertip', updateTimeRelative);
 
       temperatureF = b.temperatureF;
       temperatureC = b.temperatureC;
-      accufeelResultCsignTitle = "AccuFeel " + b.accufeelResultCsign;
-      accufeelResultFsignTitle = "AccuFeel " + b.accufeelResultFsign;
 
-      if (setSettingFC == "c") {
+      if (setSettingFC == "c"){
         ctemp();
       }
       else{
         ftemp();
-      };
+      }
 
-
+      city = b.city;
       current_uv = b.current_uv;
       current_uv_note = b.current_uv_note;
       uv1 = b.uv1;
+      $("#location").html(b.citys);
       $("#current_uv").html(current_uv);
       $("#current_uv_note").html(current_uv_note);
 
-     summary = b.summary;
-     $('#current_icon_update').data('powertip', summary);
+      $('#current_icon_update').data('powertip', b.summary);
 
      icon = b.icon;
      iconRefreshFunction();
 
      uvIconFunction();
+     solarFunction();
+     next48Function();
+     next7Function();
+    }, 500);
+  }
 
-
-
-  }, 500);
-
-}
 
 });
-
-
-
-
-

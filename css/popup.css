@@ -52,6 +52,21 @@ a.blacklink:visited {color: black; text-decoration: none;}
 a.blacklink:hover {color: black; text-decoration: none;}
 a.blacklink:active {color: black; text-decoration: none;}
 
+/* clears the 'X' from Chrome */
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration { display: none; }
+
+html {
+    overflow: scroll;
+    overflow-x: hidden;
+}
+::-webkit-scrollbar {
+    width: 0px;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}
+
 .image_background_Class {
 	opacity: 0.33;
 	filter: blur(25px);
@@ -82,7 +97,7 @@ a.blacklink:active {color: black; text-decoration: none;}
 }
 .current_temp_group_Class {
 	position: absolute;
-	top: 120px;
+	top: 125px;
 	width: 250px;
 	margin: 0 auto;
 	display: flex;
@@ -101,12 +116,18 @@ a.blacklink:active {color: black; text-decoration: none;}
 	position: relative;
 	margin-top: 5px;
 	margin-bottom: 4px;
+	margin-left: 0px;
 	font-weight: 450;
 	font-size: 25px;
 	color: rgba(255,255,255,1);
 	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.50);
 }
-
+.current_temp_sign_city_Class {
+	display: flex;
+	flex-direction: row;
+	align-items: flex-end;
+	justify-content: center;
+}
 .current_accufeel_Class {
 	position: relative;
 	margin-left: 3px;
@@ -117,12 +138,23 @@ a.blacklink:active {color: black; text-decoration: none;}
 }
 
 .location_Class {
+	position: relative;
+	margin: 0 0 6px 6px;
+	font-weight: 250;
+	font-size: 13px;
+	color: rgba(255,255,255,1);
+	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.50);
+}
+.location_Class_adj {
+	margin: 0 0 6px 6px;
+}
+.next48_Class {
 	position: absolute;
-	top: 187px;
+	top: 360px;
 	width: 250px;
 	margin: 0 auto;
 	font-weight: 250;
-	font-size: 13px;
+	font-size: 14px;
 	color: rgba(255,255,255,1);
 	display: flex;
 	flex-direction: row;
@@ -135,7 +167,7 @@ a.blacklink:active {color: black; text-decoration: none;}
 }
 .current_temp_maxmin_Class {
 	position: absolute;
-	top: 210px;
+	top: 195px;
 	width: 250px;
 	margin: 0 auto;
 	font-weight: normal;
@@ -201,7 +233,7 @@ a.blacklink:active {color: black; text-decoration: none;}
 .group_uv_Class {
 	position: absolute;
 	left: 0px;
-	top: 270px;
+	top: 250px;
 }
 .current_uv_group_Class {
 	position: relative;
@@ -299,7 +331,7 @@ a.blacklink:active {color: black; text-decoration: none;}
 	position: relative;
 	text-align: center;
 	font-weight: 250;
-	font-size: 14px;
+	font-size: 12px;
 	color: rgba(27,41,52,1);
 	width: 310px;
     margin: 0 auto;
@@ -316,9 +348,29 @@ a.blacklink:active {color: black; text-decoration: none;}
 	color: rgba(27,41,52,1);
     margin: 0 auto;
 }
-
 .setting_popup_Class {
 	padding-top: 455px !important;
+}
+.setting_search_text_class{
+	position: relative;
+	text-align: left;
+	font-weight: 250;
+	font-size: 12px;
+	line-height: 20px;
+	color: rgba(27,41,52,1);
+    padding: 30px 30px 0 30px;
+    overflow: hidden;
+    display: block;
+    white-space: normal !important; 	
+}
+.searchBox_Class {
+	position: relative;
+	text-align: left;
+	font-weight: normal;
+	font-size: 12px;
+	color: rgba(27,41,52,1);
+	margin-top: 15px;
+    padding: 0 30px 0 30px;
 }
 .setting_title_badge_Class {
 	position: relative;
@@ -398,7 +450,7 @@ a.blacklink:active {color: black; text-decoration: none;}
   	margin-bottom: 8px;
   	margin-top: 7px;
 }
-.forecast_1_day_Class {
+.forecast_day_Class {
 	position: relative;
 	width: 100px;
 	max-width: 100px;
@@ -408,7 +460,7 @@ a.blacklink:active {color: black; text-decoration: none;}
 	font-size: 16px;
 	color: rgba(27,41,52,1);
 }
-.forecast_1_uv_Class {
+.forecast_uv_Class {
 	position: relative;
 	width: 70px;
 	max-width: 70px;
@@ -419,7 +471,7 @@ a.blacklink:active {color: black; text-decoration: none;}
 	color: rgba(27,41,52,1);
 	padding-left: 10px;
 }
-.forecast_1_temp_Class {
+.forecast_temp_Class {
 	position: relative;
 	width: 30px;
 	max-width: 30px;
@@ -429,7 +481,7 @@ a.blacklink:active {color: black; text-decoration: none;}
 	font-size: 16px;
 	color: rgba(27,41,52,1);
 }
-.forecast_1_icon_Class {
+.forecast_icon_Class {
 	position: relative;
 	color: rgba(0,0,0,0);
 	line-height: 20px;
@@ -442,96 +494,15 @@ a.blacklink:active {color: black; text-decoration: none;}
 	background-size: cover;
 	border: 0px solid transparent;
 }
-.forecast_2_day_Class {
+.forecast_next7_day_Class {
 	position: relative;
 	width: 100px;
 	max-width: 100px;
 	display: inline-block;
 	text-align: left;
 	font-weight: 250;
-	font-size: 16px;
+	font-size: 14px;
 	color: rgba(27,41,52,1);
-}
-.forecast_2_uv_Class {
-	position: relative;
-	width: 70px;
-	max-width: 70px;
-	display: inline-block;
-	text-align: left;
-	font-weight: 250;
-	font-size: 16px;
-	color: rgba(27,41,52,1);
-	padding-left: 10px;
-	transform: matrix(1,0,0,1,0,0);
-}
-.forecast_2_temp_Class {
-	position: relative;
-	width: 30px;
-	max-width: 30px;
-	display: inline-block;
-	text-align: left;
-	font-weight: 250;
-	font-size: 16px;
-	color: rgba(27,41,52,1);
-}
-.forecast_2_icon_Class {
-	position: relative;
-	color: rgba(0,0,0,0);
-	line-height: 20px;
-	width: 18px;
-	max-width: 18px;
-	display: inline-block;
-	background-color: #ffffff;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: cover;
-	border: 0px solid transparent;
-	transform: matrix(1,0,0,1,0,0);
-}
-.forecast_3_day_Class {
-	position: relative;
-	width: 100px;
-	max-width: 100px;
-	display: inline-block;
-	text-align: left;
-	font-weight: 250;
-	font-size: 16px;
-	color: rgba(27,41,52,1);
-}
-.forecast_3_uv_Class {
-	position: relative;
-	width: 70px;
-	max-width: 70px;
-	display: inline-block;
-	text-align: left;
-	font-weight: 250;
-	font-size: 16px;
-	color: rgba(27,41,52,1);
-	padding-left: 10px;
-}
-.forecast_3_temp_Class {
-	position: relative;
-	width: 30px;
-	max-width: 30px;
-	display: inline-block;
-	text-align: left;
-	font-weight: 250;
-	font-size: 16px;
-	color: rgba(27,41,52,1);
-}
-.forecast_3_icon_Class {
-	position: relative;
-	color: rgba(0,0,0,0);
-	line-height: 20px;
-	width: 18px;
-	max-width: 18px;
-	display: inline-block;
-	background-color: #ffffff;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: cover;
-	border: 0px solid red;
-	transform: matrix(1,0,0,1,0,0);
 }
 .link_text_app_Class {
 	position: absolute;
@@ -563,7 +534,7 @@ a.blacklink:active {color: black; text-decoration: none;}
 
 .setting_popup_page_Class {
 	position: absolute;
-	left: 457px;
+	left: 450px;
 	top: 480px;
 	display: flex;
 	flex-direction: row;
@@ -591,6 +562,39 @@ a.blacklink:active {color: black; text-decoration: none;}
 	margin-right: 5px;
 	margin-bottom: 3px;
 }
+
+.solar_popup_page_Class {
+	position: absolute;
+	left: 280px;
+	top: 480px;
+	display: flex;
+	flex-direction: row;
+	align-items: flex-end;
+	justify-content: center;
+}
+.solar_popup_icon_Class {
+	position: relative;
+	width: 20px;
+	max-width: 20px;
+	height: 20px;
+	display: inline-block;
+	background-image: url("/images/sun.svg");
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	vertical-align: center;
+}
+.solar_popup_text_Class {
+	position: relative;
+	text-align: left;
+	font-weight: normal;
+	font-size: 12px;
+	color: rgba(27,41,52,1);
+	margin-right: 5px;
+	margin-bottom: 3px;
+}
+
+
 .blocker {
   position: fixed;
   top: 0; right: 0; bottom: 0; left: 0;
@@ -628,6 +632,11 @@ a.blacklink:active {color: black; text-decoration: none;}
   -o-border-radius: 0px !important;
   -ms-border-radius: 0px !important;
   border-radius: 0px !important;
+  background-color: #ffffff !important;
+}
+.modal_next48 {
+  height: 1150px !important;
+  background-color: #ffffff !important;
 }
 .modal a.close-modal {
   position: absolute;
@@ -656,3 +665,159 @@ a.blacklink:active {color: black; text-decoration: none;}
     display: block;
     white-space: normal !important; 
 }
+.title_subtitle_modal_Class {
+	position: relative;
+	text-align: center;
+	font-weight: 250;
+	font-size: 12px;
+	color: rgba(27,41,52,1);
+	width: 310px;
+    margin: 0 auto;
+    margin-top: 10px;
+}
+.solar_table_Class {
+	position: absolute;
+	left: 30px;
+	right: 30px;
+	top: 170px;
+}
+.solar_Class {
+	position: relative;
+}
+.solar_title_name_Class{
+	font-weight: 600;
+	font-size: 13px;
+	color: rgba(27,41,52,1);
+}
+.hr_forecast {
+  	border-top: .5px black;
+  	margin-bottom: 8px;
+  	margin-top: 7px;
+}
+.solar_name_Class {
+	position: relative;
+	width: 130px;
+	max-width: 130px;
+	display: inline-block;
+	text-align: left;
+	font-weight: 250;
+	font-size: 14px;
+	color: rgba(27,41,52,1);
+}
+.solar_time_Class {
+	position: relative;
+	width: 100px;
+	max-width: 100px;
+	display: inline-block;
+	text-align: right;
+	font-weight: 250;
+	font-size: 14px;
+	color: rgba(27,41,52,1);
+	padding-left: 10px;
+}
+.next7_table_Class {
+	position: absolute;
+	left: 30px;
+	right: 30px;
+	top: 170px;
+}
+.next48_table_Class {
+	position: absolute;
+	left: 50px;
+	right: 50px;
+	top: 170px;
+}
+.forecast_day_modal_Class {
+	position: relative;
+	width: 80px;
+	max-width: 80px;
+	display: inline-block;
+	text-align: left;
+	font-weight: 250;
+	font-size: 14px;
+	color: rgba(27,41,52,1);
+}
+.forecast_uv_modal_Class {
+	position: relative;
+	width: 60px;
+	max-width: 60px;
+	display: inline-block;
+	text-align: left;
+	font-weight: 250;
+	font-size: 14px;
+	color: rgba(27,41,52,1);
+	padding-left: 10px;
+}
+.forecast_temp_modal_Class {
+	position: relative;
+	width: 25px;
+	max-width: 25px;
+	display: inline-block;
+	text-align: left;
+	font-weight: 250;
+	font-size: 14px;
+	color: rgba(27,41,52,1);
+}
+.forecast_temp_min_modal_Class {
+	position: relative;
+	display: inline-block;
+	text-align: left;
+	font-weight: 250;
+	font-size: 14px;
+	color: rgba(27,41,52,1);
+}
+.forecast_icon_modal_Class {
+	position: relative;
+	color: rgba(0,0,0,0);
+	line-height: 18px;
+	width: 16px;
+	max-width: 16px;
+	display: inline-block;
+	background-color: #ffffff;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	border: 0px solid transparent;
+	margin-left: 5px;
+}
+.summery_modal_Class {
+	position: relative;
+	font-weight: 250;
+	font-size: 12px;
+	line-height: 24px;
+	color: rgba(27,41,52,1);
+    margin-bottom: 30px;
+    padding: 0;
+    overflow: hidden;
+    display: block;
+    white-space: normal !important; 
+}
+
+/* Main input wrapper */
+.algolia-places {}
+
+/* The algolia-places input */
+.ap-input, .ap-hint {}
+
+/* The style of the svg icons when the input is on hover */
+.ap-input:hover ~ .ap-input-icon svg {}
+.ap-input:focus ~ .ap-input-icon svg {}
+.ap-input-icon:hover svg {}
+
+/* The dropdown style */
+.ap-dropdown-menu {}
+
+/* The suggestions style */
+.ap-suggestion {}
+
+/* The highlighted names style */
+.ap-suggestion em {}
+
+/* The addresses style */
+.ap-address {}
+
+/* The icons of each suggestions (can be a building or a pin) */
+.ap-suggestion-icon {display: none;}
+
+/* The styles of the Algolia Places input footer */
+.ap-footer {display: none;}
