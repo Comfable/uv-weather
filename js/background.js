@@ -284,7 +284,7 @@ function GetWeatherBackground(icon) {
 
 	 	url_cc = result.photos.photo[0].url_c;
 
-		var ImageNum = Math.floor(Math.random() * 12);
+		var ImageNum = Math.floor(Math.random() * 10);
 				
 		if(result.stat === 'ok' && (typeof result.photos.photo[ImageNum] !== 'undefined'))  {
 				flickrID = result.photos.photo[ImageNum].hasOwnProperty('id') ? result.photos.photo[ImageNum].id : '-';

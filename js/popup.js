@@ -26,13 +26,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     document.querySelector('.image_background').style.backgroundImage = 'url(' + b.url_c + ')';
     if(b.pathalias !== null) {
-        document.querySelector("#link_flickr_text").textContent = '© by ' + b.pathalias + ' on flickr';
+        document.querySelector("#link_flickr_text").textContent = 'Photo by ' + b.pathalias + ' on Flickr';
         document.querySelector("#link_flickr").addEventListener("click", (e) => {
         window.open(url_owner, "_blank");
       })
     }
     else{
-        document.querySelector("#link_flickr_text").textContent = '© by ' + b.ownername + ' on flickr';
+        document.querySelector("#link_flickr_text").textContent = 'Photo by ' + b.ownername + ' on Flickr';
         document.querySelector("#link_flickr").addEventListener("click", (e) => {
         window.open(url_owner, "_blank");
       })
@@ -419,9 +419,9 @@ iconCurrent();
     document.querySelector("#current_report_summary").textContent = b.summaryMinutely;
     document.querySelector("#report_update_date").textContent = dayjs.unix(b.updateTime + b.offsetUnix).format('MMM DD, h:mm A');
     document.querySelector("#current_report_uv").textContent = b.uv1 + " " + b.current_uv_note;
-    document.querySelector("#current_report_wind").textContent = b.windSpeedMPH + " mph (" + b.windSpeedMS10R + " ms)";
+    document.querySelector("#current_report_wind").textContent = b.windSpeedMPH + " mph (" + b.windSpeedMS10R + " m/s)";
     document.querySelector("#current_report_windBearing").textContent = b.windBearing + "° (" + b.windCompass + ")";
-    document.querySelector("#current_report_windGust").textContent = b.windGustMPH + " mph (" + b.windGustMS + " ms)";
+    document.querySelector("#current_report_windGust").textContent = b.windGustMPH + " mph (" + b.windGustMS + " m/s)";
     document.querySelector("#current_report_humidity").textContent = b.humidity + "%";
     document.querySelector("#current_report_visibility").textContent = b.visibility + " mi (" + b.visibilityKM + " km)";
     document.querySelector("#current_report_pressure").textContent = b.pressure + " mb (hPa)";
