@@ -105,7 +105,7 @@ html {
 	width: 130px;
 	height: 130px;
 	transform: matrix(1,0,0,1,0,0);
-	filter: invert(100%) drop-shadow( 1px 1px 1px rgba(0, 0, 0, .5));
+	filter: invert(100%) drop-shadow( 2px 2px 2px rgba(0, 0, 0, .50));
 }
 .current_temp_group_Class {
 	position: absolute;
@@ -122,7 +122,7 @@ html {
 	font-weight: 450;
 	font-size: 55px;
 	color: rgba(255,255,255,1);
-	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.50);
+	text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.50);
 }
 .current_temp_sign_Class {
 	position: relative;
@@ -132,7 +132,7 @@ html {
 	font-weight: 450;
 	font-size: 25px;
 	color: rgba(255,255,255,1);
-	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.50);
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.50);
 }
 .current_temp_sign_city_Class {
 	display: flex;
@@ -140,7 +140,7 @@ html {
 	align-items: flex-end;
 }
 .current_accufeel_Class {
-	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.50);	
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.50);	
 	position: relative;
 	margin-left: 3px;
 	font-weight: 250;
@@ -154,7 +154,7 @@ html {
 	font-weight: 250;
 	font-size: 13px;
 	color: rgba(255,255,255,1);
-	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.50);
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.50);
 }
 .location_Class_adj {
 	margin: 0 0 6px 6px;
@@ -171,10 +171,10 @@ html {
 	flex-direction: row;
 	align-items: flex-end;
 	justify-content: center;
-	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.50);
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.50);
 }
 .current_icon_Class {
-	box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.50);
+	box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.50);
 }
 .current_temp_maxmin_Class {
 	position: absolute;
@@ -188,10 +188,10 @@ html {
 	flex-direction: row;
 	align-items: flex-end;
 	justify-content: center;
-	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.50);
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.50);
 }
 .current_temp_max_Class {
-	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.50);
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.50);
 	position: relative;
 	text-align: left;
 	font-weight: normal;
@@ -200,7 +200,7 @@ html {
 }
 .current_temp_max_icon_Class {
 	font-size: 12px !important;
-	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.50);
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.50);
 	position: relative;
 	text-align: left;
 	font-style: normal;
@@ -209,7 +209,7 @@ html {
 }
 .current_temp_min_icon_Class {
 	font-size: 12px !important;
-	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.50);
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.50);
 	position: relative;
 	text-align: left;
 	font-style: normal;
@@ -217,7 +217,7 @@ html {
 	color: rgba(255,255,255,1);
 }
 .current_temp_min_Class {
-	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.50);
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.50);
 	position: relative;
 	text-align: left;
 	font-weight: normal;
@@ -256,7 +256,7 @@ html {
 	justify-content: center;
 }
 .current_uv_title_Class {
-	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.50);
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.50);
 	text-align: center;
 	font-weight: normal;
 	font-size: 18px;
@@ -264,14 +264,14 @@ html {
 	padding-right: 5px;
 }
 .current_uv_Class {
-	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.50);
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.50);
 	text-align: center;
 	font-weight: normal;
 	font-size: 18px;
 	color: rgba(255,255,255,1);
 }
 .current_uv_note_Class {
-	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.50);
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.50);
 	text-align: center;
 	font-weight: 250;
 	font-size: 12px;
@@ -301,7 +301,7 @@ html {
 	width: 250px;
 	text-align: center;
 	font-weight: 250;
-	font-size: 13px;
+	font-size: 12px;
 	color: #ffffff;
 	margin: 0 auto;
 }

@@ -112,28 +112,28 @@ document.addEventListener("DOMContentLoaded", function(event) {
         resUV2 = document.querySelectorAll('#icon_uv_1, #icon_uv_2, #icon_uv_1_tooltip, #icon_uv_2_tooltip')
         for (var i = 0; i < resUV2.length; i++){
           resUV2[i].style.opacity = "1";
-          resUV2[i].style.filter = "drop-shadow( 1px 1px 1px rgba(0, 0, 0, .5))";
+          resUV2[i].style.filter = "drop-shadow( 2px 2px 2px rgba(0, 0, 0, .5))";
         }       
       }
     else if (b.uv1 >= 3 && b.uv1 <= 5) {
         resUV3 = document.querySelectorAll('#icon_uv_1, #icon_uv_2, #icon_uv_3, #icon_uv_1_tooltip, #icon_uv_2_tooltip, #icon_uv_3_tooltip')
         for (var i = 0; i < resUV3.length; i++){
           resUV3[i].style.opacity = "1";
-          resUV3[i].style.filter = "drop-shadow( 1px 1px 1px rgba(0, 0, 0, .5))";
+          resUV3[i].style.filter = "drop-shadow( 2px 2px 2px rgba(0, 0, 0, .5))";
         }
       }
     else if (b.uv1 >= 6 && b.uv1 <= 7) {
         resUV6 = document.querySelectorAll('#icon_uv_1, #icon_uv_2, #icon_uv_3, #icon_uv_4, #icon_uv_1_tooltip, #icon_uv_2_tooltip, #icon_uv_3_tooltip, #icon_uv_4_tooltip')
         for (var i = 0; i < resUV6.length; i++){
           resUV6[i].style.opacity = "1";
-          resUV6[i].style.filter = "drop-shadow( 1px 1px 1px rgba(0, 0, 0, .5))";
+          resUV6[i].style.filter = "drop-shadow( 2px 2px 2px rgba(0, 0, 0, .5))";
         }
       }
     else if (b.uv1 >= 8) {
         resUV8 = document.querySelectorAll('#icon_uv_1, #icon_uv_2, #icon_uv_3, #icon_uv_4, #icon_uv_5, #icon_uv_6, #icon_uv_1_tooltip, #icon_uv_2_tooltip, #icon_uv_3_tooltip, #icon_uv_4_tooltip, #icon_uv_5_tooltip, #icon_uv_6_tooltip')
         for (var i = 0; i < resUV8.length; i++){
           resUV8[i].style.opacity = "1";
-          resUV8[i].style.filter = "drop-shadow( 1px 1px 1px rgba(0, 0, 0, .5))";
+          resUV8[i].style.filter = "drop-shadow( 2px 2px 2px rgba(0, 0, 0, .5))";
         }
       }
   }
@@ -419,9 +419,9 @@ iconCurrent();
     document.querySelector("#current_report_summary").textContent = b.summaryMinutely;
     document.querySelector("#report_update_date").textContent = dayjs.unix(b.updateTime + b.offsetUnix).format('MMM DD, h:mm A');
     document.querySelector("#current_report_uv").textContent = b.uv1 + " " + b.current_uv_note;
-    document.querySelector("#current_report_wind").textContent = b.windSpeedMPH + " mph (" + b.windSpeedMS10R + " m/s)";
+    document.querySelector("#current_report_wind").textContent = b.windSpeedMPH + " mph (" + b.windSpeedKMH + " km/h)";
     document.querySelector("#current_report_windBearing").textContent = b.windBearing + "° (" + b.windCompass + ")";
-    document.querySelector("#current_report_windGust").textContent = b.windGustMPH + " mph (" + b.windGustMS + " m/s)";
+    document.querySelector("#current_report_windGust").textContent = b.windGustMPH + " mph (" + b.windGustKMH + " km/h)";
     document.querySelector("#current_report_humidity").textContent = b.humidity + "%";
     document.querySelector("#current_report_visibility").textContent = b.visibility + " mi (" + b.visibilityKM + " km)";
     document.querySelector("#current_report_pressure").textContent = b.pressure + " mb (hPa)";
@@ -484,10 +484,10 @@ iconCurrent();
 
   function trackYour() {
     if (b.uv1 == 0 || b.isNight) {
-        document.querySelector("#link_qsun_text").textContent = "Track your vitamin D intake";
+        document.querySelector("#link_qsun_text").textContent = 'UV Weather App for iOS & Android';
      }
     else{
-        document.querySelector("#link_qsun_text").textContent = "Track your sun exposure";
+        document.querySelector("#link_qsun_text").textContent = "UV Weather App for iOS & Android";
       }
   }  
   trackYour();

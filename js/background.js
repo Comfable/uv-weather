@@ -112,10 +112,12 @@ function uvReader(city,latandlong,country) {
 	dewPointC = f2c(dewPointF);
 	pressure = result.currently.hasOwnProperty('pressure') ? Math.round(result.currently.pressure) : '-';
 	windSpeedMPH = Math.round(result.currently.windSpeed); //miles per hour
+	windSpeedKMH = Math.round(windSpeedMPH * 1.609334);
 		windSpeedMS10 = windSpeedMPH * 0.4470389; //meter per second
 		windSpeedMS10R = Math.round(windSpeedMPH * 0.4470389 * 10) / 10;
 		windSpeedMS = windSpeedMS10 * 0.33; // on humun hieght an urban area
 	windGustMPH = Math.round(result.currently.windGust); //miles per hour
+	windGustKMH = Math.round(windGustMPH * 1.609334);
 	windGustMS = Math.round(windGustMPH * 0.4470389 * 10) / 10; //miles per hour
 	weatherEmojiIcon = weatherEmoji(icon);
 
@@ -214,7 +216,7 @@ function GetWeatherBackground(icon) {
 	              }
 	            else {
 	  			var galleryID = '72157711948918142';
-	              }     
+	              }
 	      break;
 	    case 'snow':
 	            if (isDay) {
