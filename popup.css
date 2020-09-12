@@ -297,7 +297,7 @@ html {
 .link_qsun_Class {
 	position: absolute;
 	left: 0px;
-	top: 478px;
+	top: 467px;
 	width: 250px;
 	text-align: center;
 	font-weight: 250;
@@ -1151,4 +1151,16 @@ html {
 
 .report_button_Class:hover {
 	filter: sepia(5%) saturate(652%) hue-rotate(198deg) brightness(117%) contrast(77%);
+}
+
+.link_flickr_Class {
+	position: absolute;
+	left: 5px;
+	top: 511px;
+	width: 150px;
+	text-align: left;
+	font-weight: 250;
+	font-size: 9px;
+	color: #a9a9a9;
+	margin: 0 auto;
 }

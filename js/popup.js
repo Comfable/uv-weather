@@ -13,6 +13,33 @@ document.addEventListener("DOMContentLoaded", function(event) {
     document.querySelector("#setting_currentLocation_text").textContent = data.fullname;
   });
 
+
+
+    function groundFlickr() {
+
+    if(b.flickrID !== '-' && b.pathalias !== null) {
+      url_owner = 'https://www.flickr.com/photos/' + b.pathalias + '/' + b.flickrID;
+    }
+    else {
+      url_owner =  'https://www.flickr.com/photos/' + b.owner + '/' + b.flickrID;
+    }
+
+    document.querySelector('.image_background').style.backgroundImage = 'url(' + b.url_c + ')';
+    if(b.pathalias !== null) {
+        document.querySelector("#link_flickr_text").textContent = '© by ' + b.pathalias + ' on flickr';
+        document.querySelector("#link_flickr").addEventListener("click", (e) => {
+        window.open(url_owner, "_blank");
+      })
+    }
+    else{
+        document.querySelector("#link_flickr_text").textContent = '© by ' + b.ownername + ' on flickr';
+        document.querySelector("#link_flickr").addEventListener("click", (e) => {
+        window.open(url_owner, "_blank");
+      })
+    }
+  };
+
+
   function UTFC (){
     chrome.storage.local.get(['setSettingFC', 'setSettingUT'], function(data) {
     setSettingFC = data.setSettingFC;
@@ -116,14 +143,50 @@ document.addEventListener("DOMContentLoaded", function(event) {
   switch(b.icon) {
     case 'clear-day':
       document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_clear-day.svg")'; //
-      document.querySelector('.image_background').style.backgroundImage = 'url("images/background/clear-day.jpg")';
       break;
     case 'clear-night':
       document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_clear-night.svg")'; //
-      document.querySelector('.image_background').style.backgroundImage = 'url("images/background/clear-night.jpg")';      
       break;
     case 'rain':
       document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_rain.svg")';  //
+      break;
+    case 'snow':
+      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_snow.svg")'; //
+      break;
+    case 'sleet':
+      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_snow.svg")'; //
+      break;
+    case 'wind':
+      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_wind.svg")'; //  
+      break;
+    case 'fog':
+      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_fog.svg")'; //
+      break;
+    case 'cloudy':
+      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_cloudy.svg")'; //
+      break;
+    case 'partly-cloudy-day':
+      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_partly-cloudy-day.svg")'; //
+      break;
+    case 'partly-cloudy-night':
+      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_partly-cloudy-night.svg")'; //
+      break;
+    default:
+      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/a_clear-day.svg")'; //
+    break;
+   }
+  }
+iconCurrent();
+
+   function groundCurrent() {
+  switch(b.icon) {
+    case 'clear-day':
+      document.querySelector('.image_background').style.backgroundImage = 'url("images/background/clear-day.jpg")';
+      break;
+    case 'clear-night':
+      document.querySelector('.image_background').style.backgroundImage = 'url("images/background/clear-night.jpg")';      
+      break;
+    case 'rain':
             if (b.isDay) {
             document.querySelector('.image_background').style.backgroundImage = 'url("images/background/rain-day.jpg")';
               }
@@ -132,7 +195,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
               }     
       break;
     case 'snow':
-      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_snow.svg")'; //
             if (b.isDay) {
             document.querySelector('.image_background').style.backgroundImage = 'url("images/background/snow-day.jpg")';
               }
@@ -141,7 +203,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
               }
       break;
     case 'sleet':
-      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_snow.svg")'; //
             if (b.isDay) {
             document.querySelector('.image_background').style.backgroundImage = 'url("images/background/sleet-day.jpg")';
               }
@@ -150,7 +211,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
               }
       break;
     case 'wind':
-      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_wind.svg")'; //
             if (b.isDay) {
             document.querySelector('.image_background').style.backgroundImage = 'url("images/background/wind-day.jpg")';
               }
@@ -159,7 +219,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
               }     
       break;
     case 'fog':
-      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_fog.svg")'; //
             if (b.isDay) {
             document.querySelector('.image_background').style.backgroundImage = 'url("images/background/fog-day.jpg")';
               }
@@ -168,7 +227,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
               }
       break;
     case 'cloudy':
-      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_cloudy.svg")'; //
             if (b.isDay) {
             document.querySelector('.image_background').style.backgroundImage = 'url("images/background/cloudy-day.jpg")';
               }
@@ -177,20 +235,18 @@ document.addEventListener("DOMContentLoaded", function(event) {
               }
       break;
     case 'partly-cloudy-day':
-      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_partly-cloudy-day.svg")'; //
       document.querySelector('.image_background').style.backgroundImage = 'url("images/background/partly-cloudy-day.jpg")';
       break;
     case 'partly-cloudy-night':
-      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_partly-cloudy-night.svg")'; //
       document.querySelector('.image_background').style.backgroundImage = 'url("images/background/partly-cloudy-night.jpg")';
       break;
     default:
-      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/a_clear-day.svg")'; //
       document.querySelector('.image_background').style.backgroundImage = 'url("images/background/default.png")';
     break;
    }
+   document.querySelector("#link_flickr_text").textContent = '';
   }
-  iconCurrent();
+
 
 
 
@@ -831,12 +887,20 @@ document.querySelector("#image_background").addEventListener("click", (e) => {
 
 
 
-  function refreshPopup(){
-    setTimeout(function(){
+  function refreshPopup() {
+
+      if(b.flickrID == '-') {
+          groundCurrent();
+        }
+      else {
+          groundFlickr();
+        }
+
+    setTimeout(function() {
 
     updateTimeRelative = "Updated " + dayjs.unix(b.updateTime).format("h:mm A");
 
-    if (setSettingFC == "c"){
+    if (setSettingFC == "c") {
       ctemp();
     }
     else{
@@ -848,6 +912,8 @@ document.querySelector("#image_background").addEventListener("click", (e) => {
     document.querySelector("#current_uv_note").textContent = b.current_uv_note;
 
     iconCurrent();
+    
+
     uvRecommendation();
     solarFunction();
     next48Function();

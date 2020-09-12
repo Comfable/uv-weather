@@ -197,6 +197,116 @@ function uvReader(city,latandlong,country) {
 	};
 
 
+
+//flickr ----------------------------------------------------------------------
+function GetWeatherBackground(icon) {
+
+	  switch(icon) {
+	    case 'clear-day':
+	  			var galleryID = '72157711948824252';
+	      break;
+	    case 'clear-night':
+	  			var galleryID = '72157711948534226';
+	      break;
+	    case 'rain':
+	            if (isDay) {
+	  			var galleryID = '72157711948916072';
+	              }
+	            else {
+	  			var galleryID = '72157711948918142';
+	              }     
+	      break;
+	    case 'snow':
+	            if (isDay) {
+	  			var galleryID = '72157711948582321';
+	              }
+	            else {
+	  			var galleryID = '72157711948925407';
+	              }
+	      break;
+	    case 'sleet':
+	            if (isDay) {
+	  			var galleryID = '72157711948578771';
+	              }
+	            else {
+	  			var galleryID = '72157711948921797';
+	              }
+	      break;
+	    case 'wind':
+	            if (isDay) {
+	  			var galleryID = '72157711950448603';
+	              }
+	            else {
+	  			var galleryID = '72157711948587066';
+	              }     
+	      break;
+	    case 'fog':
+	            if (isDay) {
+	  			var galleryID = '72157711948567181';
+	              }
+	            else {
+	  			var galleryID = '72157711950432483';
+	              }
+	      break;
+	    case 'cloudy':
+	            if (isDay) {
+	  			var galleryID = '72157711950426443';
+	              }
+	            else {
+	  			var galleryID = '72157711948906242';
+	              }
+	      break;
+	    case 'partly-cloudy-day':
+	  			var galleryID = '72157711950434293';
+	      break;
+	    case 'partly-cloudy-night':
+	  			var galleryID = '72157711948913902';
+	      break;
+	    default:
+	  			var galleryID = '72157711948824252';
+	    break;
+	   }
+
+
+  var f_url = "https://api.flickr.com/services/rest";
+  var key = '9105bad4b97cbb0f3dab8c9f340dd82f';
+  var f_data = "" +
+    "api_key="  + key +
+    "&format=json" +
+    "&nojsoncallback=1" +
+    "&method=flickr.galleries.getPhotos" +
+    "&gallery_id=" + galleryID +
+    "&extras=owner_name,path_alias,url_c";
+
+	fetch(f_url + "?" + f_data)
+	.then((result) => result.json())
+	 .then(function(result) {
+
+	 	url_cc = result.photos.photo[0].url_c;
+
+		var ImageNum = Math.floor(Math.random() * 12);
+				
+		if(result.stat === 'ok' && (typeof result.photos.photo[ImageNum] !== 'undefined'))  {
+				flickrID = result.photos.photo[ImageNum].hasOwnProperty('id') ? result.photos.photo[ImageNum].id : '-';
+				owner = result.photos.photo[ImageNum].hasOwnProperty('owner') ? result.photos.photo[ImageNum].owner : '-';
+				url_c = result.photos.photo[ImageNum].hasOwnProperty('url_c') ? result.photos.photo[ImageNum].url_c : '-';
+				pathalias = result.photos.photo[ImageNum].hasOwnProperty('pathalias') ? result.photos.photo[ImageNum].pathalias : '-';
+				ownername = result.photos.photo[ImageNum].hasOwnProperty('ownername') ? result.photos.photo[ImageNum].ownername : '-';
+		}
+		else {
+			flickrID = '-';
+		}
+
+	});
+
+
+};
+
+GetWeatherBackground(icon);
+//flickr -------------------------------------------------------------------
+
+
+
 	animatedBadgeInterval = setInterval(function() {animatedBadge(isDay,sunnyDay,cloudy,rainy,snowy); }, 1000 / 30);
 
 
@@ -291,6 +401,7 @@ function uvReader(city,latandlong,country) {
 	else if (uv1 >= 11) {
 		current_uv_note = (" (Extreme)");
 		};
+
 
 
 
@@ -413,6 +524,16 @@ function uvReader(city,latandlong,country) {
 			return;
 	});
 
+
+
+
+
+
+
+
+
+
+
 }						
 	utfc = UTFC(function(value){	
 			});
@@ -460,3 +581,6 @@ chrome.runtime.onInstalled.addListener(function(details) {
         }
     }
 });	
+
+
+
