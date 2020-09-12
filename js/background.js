@@ -3,26 +3,27 @@ const ads = '2589e0786e11ce470e7d98e9153039f4';
 
 chrome.storage.local.get(['verUpdate'], function(data) {
 	verUpdate = data.verUpdate;
+
 	if(verUpdate !== 1 && verUpdate !== 2) {
-		fetch('https://us-central1-swift-district-134123.cloudfunctions.net/gfc-geo')
-	  	.then((resp) => resp.json())
-	  	 .then(function(result) {
-			countryAPI = JSON.stringify(result.country);
-			country = (countryAPI.split('"'))[1];
-			if (country == "ZZ") {
-					country = " "
-				}
-			city = JSON.stringify(result.city);
-			region = (JSON.stringify(result.region).split('"'))[1];
-			latandlong = JSON.stringify(result.cityLatLong);
-			fullname = ((city.split('"'))[1].charAt(0).toUpperCase() + (city.split('"'))[1].slice(1)) + ", " + region.toUpperCase() + ", " + country;
-			chrome.storage.local.set({'city': city});
-			chrome.storage.local.set({'latlong': latandlong});
-			chrome.storage.local.set({'country': country});
-			chrome.storage.local.set({'fullname': fullname});
-			chrome.storage.local.set({'verUpdate': 1});
-			uvReader(city,latandlong,country);
-		})
+			fetch('https://us-central1-swift-district-134123.cloudfunctions.net/gfc-geo')
+		  	.then((resp) => resp.json())
+		  	 .then(function(result) {
+				countryAPI = JSON.stringify(result.country);
+				country = (countryAPI.split('"'))[1];
+				if (country == "ZZ") {
+						country = " "
+					}
+				city = JSON.stringify(result.city);
+				region = (JSON.stringify(result.region).split('"'))[1];
+				latandlong = JSON.stringify(result.cityLatLong);
+				fullname = ((city.split('"'))[1].charAt(0).toUpperCase() + (city.split('"'))[1].slice(1)) + ", " + region.toUpperCase() + ", " + country;
+				chrome.storage.local.set({'city': city});
+				chrome.storage.local.set({'latlong': latandlong});
+				chrome.storage.local.set({'country': country});
+				chrome.storage.local.set({'fullname': fullname});
+				chrome.storage.local.set({'verUpdate': 1});
+				uvReader(city,latandlong,country);
+			})
 	}
 	else{
 		chrome.storage.local.get(['latlong', 'city', 'country'], function(data) {
@@ -35,7 +36,6 @@ chrome.storage.local.get(['verUpdate'], function(data) {
 });
 
 
-//open popup
 chrome.runtime.onMessage.addListener(
 	function(request, sender, sendResponse) {
 		if(request.msg == "backgroundUpdate" && (navigator.onLine)) {
@@ -49,19 +49,6 @@ chrome.runtime.onMessage.addListener(
 	}
 );
 
-//from search
-chrome.runtime.onMessage.addListener(
-	function(request, sender, sendResponse) {
-		if(request.msg == "fromSearchUpdate" && (navigator.onLine)) {
-			chrome.storage.local.get(['latlong', 'city', 'country'], function(data){
-		  		latandlong = data.latlong;
-		 		city = data.city;
-		 		country = data.country;
-		 		uvReader(city,latandlong,country);
-			});
-		}
-	}
-);
 
 //60 min update
 intervalUpdateTime = 1000 * 60 * 60; //miliseconds * seconds * minutes
@@ -213,89 +200,6 @@ function uvReader(city,latandlong,country) {
 			}			else {
 				sunnyDay = true;
 		};
-
-
-
-		function GetWeatherBackground(icon) {
-		  switch(icon) {
-		    case 'clear-day':
-            	if (isDay) {
-		  			galleryID = '72157711948824252';
-		  		}
-		  		else {
-		  			galleryID = '72157711948534226';
-		  		}
-		      break;
-		    case 'clear-night':
-		  			galleryID = '72157711948534226';
-		      break;
-		    case 'rain':
-		            if (isDay) {
-		  			galleryID = '72157711948916072';
-		              }
-		            else {
-		  			galleryID = '72157711948918142';
-		              }
-		      break;
-		    case 'snow':
-		            if (isDay) {
-		  			galleryID = '72157711948582321';
-		              }
-		            else {
-		  			galleryID = '72157711948925407';
-		              }
-		      break;
-		    case 'sleet':
-		            if (isDay) {
-		  			galleryID = '72157711948578771';
-		              }
-		            else {
-		  			galleryID = '72157711948921797';
-		              }
-		      break;
-		    case 'wind':
-		            if (isDay) {
-		  			galleryID = '72157711950448603';
-		              }
-		            else {
-		  			galleryID = '72157711948587066';
-		              }     
-		      break;
-		    case 'fog':
-		            if (isDay) {
-		  			galleryID = '72157711948567181';
-		              }
-		            else {
-		  			galleryID = '72157711950432483';
-		              }
-		      break;
-		    case 'cloudy':
-		            if (isDay) {
-		  			galleryID = '72157711950426443';
-		              }
-		            else {
-		  			galleryID = '72157711948906242';
-		              }
-		      break;
-		    case 'partly-cloudy-day':
-            	if (isDay) {
-		  			galleryID = '72157711950434293';
-		  		}
-		  		else {
-		  			galleryID = '72157711948913902';
-		  		}		  			
-		      break;
-		    case 'partly-cloudy-night':
-		  			galleryID = '72157711948913902';
-		      break;
-		    default:
-		  			galleryID = '72157711948824252';
-		    break;
-		   }
-		};
-
-		GetWeatherBackground(icon);
-
 
 
 		animatedBadgeInterval = setInterval(function() {animatedBadge(isDay,sunnyDay,cloudy,rainy,snowy); }, 1000 / 30);

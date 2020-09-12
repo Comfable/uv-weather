@@ -19,7 +19,81 @@ if(navigator.onLine) {
 
   function groundFlickr() {
 
-    galleryID = b.galleryID;
+    switch(b.icon) {
+      case 'clear-day':
+            if (b.isDay) {
+          galleryID = '72157711948824252';
+        }
+            else {
+          galleryID = '72157711948534226';
+            }
+        break;
+      case 'clear-night':
+          galleryID = '72157711948534226';
+        break;
+      case 'rain':
+              if (b.isDay) {
+          galleryID = '72157711948916072';
+                }
+              else {
+          galleryID = '72157711948918142';
+                }
+        break;
+      case 'snow':
+              if (b.isDay) {
+          galleryID = '72157711948582321';
+                }
+              else {
+          galleryID = '72157711948925407';
+                }
+        break;
+      case 'sleet':
+              if (b.isDay) {
+          galleryID = '72157711948578771';
+                }
+              else {
+          galleryID = '72157711948921797';
+                }
+        break;
+      case 'wind':
+              if (b.isDay) {
+          galleryID = '72157711950448603';
+                }
+              else {
+          galleryID = '72157711948587066';
+                }     
+        break;
+      case 'fog':
+              if (b.isDay) {
+          galleryID = '72157711948567181';
+                }
+              else {
+          galleryID = '72157711950432483';
+                }
+        break;
+      case 'cloudy':
+              if (b.isDay) {
+          galleryID = '72157711950426443';
+                }
+              else {
+          galleryID = '72157711948906242';
+                }
+        break;
+      case 'partly-cloudy-day':
+            if (b.isDay) {
+          galleryID = '72157711950434293';
+        }
+        else {
+          galleryID = '72157711948913902';
+        }           
+        break;
+      case 'partly-cloudy-night':
+          galleryID = '72157711948913902';
+        break;
+      default:
+          galleryID = '72157711948824252';
+      break;
+     }
 
     var f_url = "https://api.flickr.com/services/rest";
     var key = '9105bad4b97cbb0f3dab8c9f340dd82f';
@@ -30,9 +104,6 @@ if(navigator.onLine) {
       "&method=flickr.galleries.getPhotos" +
       "&gallery_id=" + galleryID +
       "&extras=owner_name,path_alias,url_c";
-
-
-
 
 
   new Promise(function(resolve, reject) {
@@ -587,7 +658,7 @@ if(navigator.onLine) {
       data: {
           src: async () => {
             const token = 'pk.eyJ1IjoiY29tZmFibGUiLCJhIjoiY2sybTF6Z3FpMGRkeTNscWxhMnNybnU3cyJ9.VDvM0a0jaMlLMwlqBI8kUw';
-            const query = document.querySelector("#autoComplete").value;
+            const query = (document.querySelector("#autoComplete").value).replace(/[^a-z0-9]/gi,'*');
 
               if (typeof ((b.latandlong.split('"'))[1]) !== 'undefined') {
                 latandlongMapBox = ((b.latandlong.split('"'))[1]).split(',').reverse().join(',');
@@ -705,7 +776,7 @@ if(navigator.onLine) {
           document.querySelector("#search_currentLocation_text").textContent = fullname;
 
           setTimeout(function(){
-            chrome.runtime.sendMessage({ msg: "fromSearchUpdate" });
+            chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
           }, 50);
 
            setTimeout(function(){
@@ -716,6 +787,7 @@ if(navigator.onLine) {
   });
 
   
+
 
 
      
@@ -934,13 +1006,11 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
     closeAllPopup();
     removeClassIcons();
     modalSearch.style.display = "block";
-    var element = document.getElementById("setting_icon_popup_page");
-    element.classList.add("sub_menu_icon_active_Class");
 
-    var currentIcon = document.getElementById("setting_icon_popup_page");
+    var currentIcon = document.getElementById("home_icon_popup_page");
     currentIcon.classList.add("sub_menu_current_icon_Class");
 
-    var currentSubMenu = document.getElementById("sub_menu_setting");
+    var currentSubMenu = document.getElementById("sub_menu_home");
     currentSubMenu.classList.add("sub_menu_current_Class");
   });
 
@@ -1014,6 +1084,41 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
     currentSubMenu.classList.add("sub_menu_current_Class");    
   });
 
+  document.querySelector("#currentLocation_button").addEventListener("click", (e) => {
+      fetch('https://us-central1-swift-district-134123.cloudfunctions.net/gfc-geo')
+        .then((resp) => resp.json())
+         .then(function(result) {
+        countryAPI = JSON.stringify(result.country);
+        country = (countryAPI.split('"'))[1];
+        if (country == "ZZ") {
+            country = " "
+          }
+        city = JSON.stringify(result.city);
+        region = (JSON.stringify(result.region).split('"'))[1];
+        latandlong = JSON.stringify(result.cityLatLong);
+        fullname = ((city.split('"'))[1].charAt(0).toUpperCase() + (city.split('"'))[1].slice(1)) + ", " + region.toUpperCase() + ", " + country;
+        chrome.storage.local.set({'city': city});
+        chrome.storage.local.set({'latlong': latandlong});
+        chrome.storage.local.set({'country': country});
+        chrome.storage.local.set({'fullname': fullname});
+
+        document.querySelector("#search_currentLocation_text").textContent = fullname;
+        setTimeout(function(){
+          chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
+        }, 50);
+      });
+      setTimeout(function() {
+        refreshPopup();
+      }, 1750);
+      document.getElementById("currentLocation_button_searchPage").disabled = true;
+      delayButtonCurrentLocation();      
+  });
+
+function delayButtonCurrentLocation() {
+    setTimeout(function() {
+      document.getElementById("currentLocation_button_searchPage").disabled = false;
+    }, 5000);
+};
 
   function weatherMap() {
     mapboxgl.accessToken = 'pk.eyJ1IjoiY29tZmFibGUiLCJhIjoiY2sybTF6Z3FpMGRkeTNscWxhMnNybnU3cyJ9.VDvM0a0jaMlLMwlqBI8kUw';
@@ -1060,8 +1165,8 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
 
 
   function refreshPopup() {
-
-    chrome.storage.local.get('verUpdate', function(data) {
+  
+    chrome.storage.local.get(['verUpdate'], function(data) {
         if(data.verUpdate == 1) {
             chrome.storage.local.set({'verUpdate': 2});
             groundCurrent();
