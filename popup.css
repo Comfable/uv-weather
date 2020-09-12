@@ -61,23 +61,21 @@ a.blacklink:active {color: black; text-decoration: none;}
 	border: 0px solid transparent;
 }
 .current_icon_update {
-	overflow: visible;
 	position: absolute;
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
-	top: 25px;
-	left: 70px;
+	top: 35px;
+	left: 77.5px;
 	width: 95px;
 	height: 95px;
 	transform: matrix(1,0,0,1,0,0);
 }
 .current_temp_group_Class {
 	position: absolute;
-	top: 110px;
+	top: 120px;
 	width: 250px;
 	margin: 0 auto;
-	margin-left: -10px;
 	display: flex;
 	flex-direction: row;
 	white-space: nowrap;
@@ -95,7 +93,8 @@ a.blacklink:active {color: black; text-decoration: none;}
 }
 .current_temp_sign_Class {
 	position: relative;
-	margin-top: 10px;
+	margin-top: 5px;
+	margin-bottom: 4px;
 	font-family: Helvetica;
 	font-style: normal;
 	font-weight: 450;
@@ -103,16 +102,27 @@ a.blacklink:active {color: black; text-decoration: none;}
 	color: rgba(255,255,255,1);
 	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.50);
 }
-.location_Class {
-	position: absolute;
-	top: 170px;
-	width: 250px;
-	margin: 0 auto;
-	margin-left: -23px;
+
+.current_accufeel_Class {
+	position: relative;
+	margin-left: 3px;
 	font-family: Helvetica;
 	font-style: normal;
 	font-weight: 250;
-	font-size: 14px;
+	font-size: 13px;
+	color: rgba(255,255,255,1);
+	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.50);
+}
+
+.location_Class {
+	position: absolute;
+	top: 187px;
+	width: 250px;
+	margin: 0 auto;
+	font-family: Helvetica;
+	font-style: normal;
+	font-weight: 250;
+	font-size: 13px;
 	color: rgba(255,255,255,1);
 	display: flex;
 	flex-direction: row;
@@ -125,16 +135,18 @@ a.blacklink:active {color: black; text-decoration: none;}
 }
 .current_temp_maxmin_Class {
 	position: absolute;
-	left: 70px;
-	top: 195px;
-	overflow: visible;
-	width: 28px;
-	white-space: nowrap;
-	text-align: left;
+	top: 210px;
+	width: 250px;
+	margin: 0 auto;
+	font-family: Helvetica;
 	font-style: normal;
 	font-weight: normal;
 	font-size: 18px;
 	color: rgba(255,255,255,1);
+	display: flex;
+	flex-direction: row;
+	align-items: flex-end;
+	justify-content: center;
 	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.50);
 }
 .current_temp_max_Class {
@@ -177,7 +189,7 @@ a.blacklink:active {color: black; text-decoration: none;}
 	font-weight: normal;
 	font-size: 18px;
 	color: rgba(255,255,255,1);
-	padding-left: 0px;
+	padding-left: 10px;
 }
 .down_Class {
 	position: absolute;
@@ -200,7 +212,7 @@ a.blacklink:active {color: black; text-decoration: none;}
 .group_uv_Class {
 	position: absolute;
 	left: 0px;
-	top: 250px;
+	top: 270px;
 }
 .current_uv_group_Class {
 	position: relative;
@@ -244,7 +256,6 @@ a.blacklink:active {color: black; text-decoration: none;}
 	width: 15px;
 	max-width: 15px;
 	height: 15px; 
-	opacity: 0.5;
 	margin-right: 2px;
 }
 .link_qsun_Class {
@@ -338,30 +349,7 @@ a.blacklink:active {color: black; text-decoration: none;}
 	color: rgba(27,41,52,1);
     margin: 0 auto;
 }
-.setting_defualt_button_uv_Class {
-	position: absolute;
-	width: 13px;
-	height: 13px;
-	left: 280px;
-	top: 482px;
-	overflow: visible;
-}
-.setting_defualt_button_tempc_Class {
-	position: absolute;
-	width: 13px;
-	height: 13px;
-	left: 375px;
-	top: 482px;
-	overflow: visible;
-}
-.setting_defualt_button_tempf_Class {
-	position: absolute;
-	width: 13px;
-	height: 13px;
-	left: 445px;
-	top: 482px;
-	overflow: visible;
-}
+
 .setting_popup_Class {
 	position: absolute;
 	left: 280px;

@@ -5,10 +5,12 @@
     <title>UV Weather</title>
     <script src="jquery-3.4.1.min.js"></script>
     <link href="/popup.css" media="screen" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="background.js"></script>    
+    <script type="text/javascript" src="background.js"></script>
     <script type="text/javascript" src="popup.js"></script>
+    <script src="accufeel.js"></script>  
+    <script src="moment.min.js"></script>
+    <script src="jquery.powertip.min.js"></script> 
     <script type="text/javascript" src="ga.js"></script>
-    <script src="jquery.powertip.min.js"></script>  
     <link rel="stylesheet" type="text/css" href="/jquery.powertip.css" />
 </head>
 
@@ -25,8 +27,14 @@
 
   <div id="current_temp_group" class="current_temp_group_Class">
     <span id="current_temp" class="current_temp_Class">17</span>
-    <span id="temp_sign" class="current_temp_sign_Class">°C</span>
+
+    <span>
+      <div id="temp_sign" class="current_temp_sign_Class">°C</div>
+      <div id="current_accufeel" class="current_accufeel_Class" title="An Accurate Feels Like Temperature <br> created by Comfable">15°</div>
+    </span>
+
   </div>
+
 
   <div data-type="Text" id="location" class="location_Class">
     <span>city</span>
@@ -66,7 +74,7 @@
       <img id='icon_uv_5' src='images/uv_icon/uv_5_g.svg' class='icon_uv_tip_Class'/> Stay in the shade<br>
       <img id='icon_uv_6' src='images/uv_icon/uv_6_g.svg' class='icon_uv_tip_Class'/> Reduce time in the sun">
       
-      <img id="info_icon" src="images/information.svg" class="icon_uv_all_Class"/>
+      <img id="info_icon" src="images/informationLine.svg" class="icon_uv_all_Class"/>
       <img id="icon_uv_1" src="images/uv_icon/uv_1_g.svg" class="icon_uv_all_Class"/>
       <img id="icon_uv_2" src="images/uv_icon/uv_2_g.svg" class="icon_uv_all_Class"/>
       <img id="icon_uv_3" src="images/uv_icon/uv_3_g.svg" class="icon_uv_all_Class"/>
@@ -161,7 +169,7 @@
 
   <div id="setting_popup" class="setting_popup_Class">
     <div id="setting_temp" class="setting_title_temp_Class">
-        <span style="margin-right: 23px; font-size: 12px;">
+        <span style="margin-right: 24px; font-size: 12px;">
         UNIT
         </span>
         <span id="setting_body_temp" class="setting_body_temp_Class">
@@ -182,7 +190,7 @@
          BADGE
         </span>
         <span id="setting_body_badge" class="setting_body_badge_Class">
-            <label style="margin-right: 10px;">
+            <label style="margin-right: 11px;">
               <input type="radio" id="setting_defualt_button_u" style="vertical-align: middle; margin-top: -2px;" name="radioBadge">
                <span  class="setting_defualt_text_uv_Class"></span>UVI
             </label>
