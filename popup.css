@@ -53,7 +53,7 @@ a.blacklink:active {color: black; text-decoration: none;}
 	height: 526px;
 	left: 0px;
 	top: 0px;
-	background-image: url("images/default.png"); 
+	background-image: url("images/background/default.png"); 
 	background-color: #ffffff;
 	background-position: center;
 	background-repeat: no-repeat;
@@ -131,7 +131,6 @@ a.blacklink:active {color: black; text-decoration: none;}
 	width: 28px;
 	white-space: nowrap;
 	text-align: left;
-	font-family: Helvetica;
 	font-style: normal;
 	font-weight: normal;
 	font-size: 18px;
@@ -143,7 +142,6 @@ a.blacklink:active {color: black; text-decoration: none;}
 	position: relative;
 	white-space: nowrap;
 	text-align: left;
-	font-family: Helvetica;
 	font-style: normal;
 	font-weight: normal;
 	font-size: 18px;
@@ -151,9 +149,23 @@ a.blacklink:active {color: black; text-decoration: none;}
 }
 .current_temp_max_icon_Class {
 	font-size: 12px !important;
+	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.50);
+	position: relative;
+	white-space: nowrap;
+	text-align: left;
+	font-style: normal;
+	font-weight: normal;
+	color: rgba(255,255,255,1);
 }
 .current_temp_min_icon_Class {
 	font-size: 12px !important;
+	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.50);
+	position: relative;
+	white-space: nowrap;
+	text-align: left;
+	font-style: normal;
+	font-weight: normal;
+	color: rgba(255,255,255,1);
 }
 .current_temp_min_Class {
 	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.50);

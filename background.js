@@ -1,4 +1,4 @@
-﻿	//chrome.runtime.onInstalled.addListener(function (){
+	//chrome.runtime.onInstalled.addListener(function (){
 
  		function geoReader(){
 			
@@ -10,9 +10,10 @@
 				success: function (result) {
 				  
 				    var city = JSON.stringify(result.city);
+				    var countryAPI = JSON.stringify(result.country);
 				    var latandlong = JSON.stringify(result.cityLatLong);
 
-					if (city == null || city == undefined || latandlong == null || latandlong == undefined ) {
+					if (city == null || city == undefined || city == "?" || latandlong == null || latandlong == undefined || countryAPI == undefined || countryAPI == null || countryAPI == "?") {
         				var city = "Totonto";
 						var latandlong = '"43.653226,-79.383184"';
     				}
@@ -31,7 +32,7 @@
 							success: function (result) {
 							   	
 							   	
-							    
+							   	country = (countryAPI.split('"'))[1];
 							    citys = ( "in " + (city.split('"'))[1].charAt(0).toUpperCase() + (city.split('"'))[1].slice(1));					
 							    cloudCover = result.currently.cloudCover;
 							    icon = result.currently.icon;
@@ -297,24 +298,33 @@
 								    setSettingFC = data.setSettingFC;
 								    setSettingUT = data.setSettingUT;
 								   
+
 								    if (typeof setSettingFC === 'undefined') {
-								 	 setSettingFC = "f";
-								 	}
+								    	if (country == "US") {
+										 	 setSettingFC = "f";
+										 	} else {
+										 	 setSettingFC = "c";
+										 }
+									}
 
 								 	if (typeof setSettingUT === 'undefined') {
-								 	 setSettingUT = "t";
-										tempf ();
+									 	 setSettingUT = "t";
+								    	if (country == "US") {
+										 	 tempf ();
+										 } else {
+										 	 tempc ();
+										 }
 									 }
 									else {
-									if (setSettingUT == "t") {
-										if (setSettingFC == "f") {
-											tempf ();}
+										if (setSettingUT == "t") {
+											if (setSettingFC == "f") {
+												tempf ();}
+												else {
+													tempc ();}
+												}
 										else {
-											tempc ();}
-										}
-									else {
-										uvi ();
-										};
+											uvi ();
+											};
 									}
 
 								 return;

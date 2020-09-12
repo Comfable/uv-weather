@@ -4,15 +4,23 @@ var background = chrome.extension.getBackgroundPage();
 $(function(){
 
   chrome.browserAction.setTitle({title: "Live UV & Weather Forecast"});
-  
+
+  country = background.country;
+
   function UTFC (){
     chrome.storage.sync.get(['setSettingFC', 'setSettingUT'], function(data) {
     setSettingFC = data.setSettingFC;
     setSettingUT = data.setSettingUT;
-  
+
+
     if (typeof setSettingFC === 'undefined') {
-        setSettingFC = "f";
-        chrome.storage.sync.set({'setSettingFC': 'f'});
+         if (country == "US") {
+             setSettingFC = "f";
+             chrome.storage.sync.set({'setSettingFC': 'f'});
+         } else {
+            setSettingFC = "c";
+            chrome.storage.sync.set({'setSettingFC': 'c'});
+         }
       }
 
     if (typeof setSettingUT === 'undefined') {
@@ -51,6 +59,7 @@ $(function(){
     utfc = UTFC(function(value){  
   });
   
+
   current_update_icon = background.current_update_icon;
 
   temperatureF = background.temperatureF;
@@ -444,7 +453,7 @@ switch(forecast_3_icon) {
 
 
   function ctemp(){
-   $("#current_temp").html(temperatureC);
+      $("#current_temp").html(temperatureC);
       $("#temp_sign").html("°C");
       $("#current_temp_max").html(current_tempCsign_max);
       $("#current_temp_min").html(current_tempCsign_min);
