@@ -424,19 +424,19 @@
 									
 									updateTimeRelativeBadge = moment.unix(updateTime).format('h:mm:ss A');
 								if (setSettingUT == "u" && setSettingFC == "f") {
-									toolTipBadge = temperatureF + "° " + iconTitle + "\n" + "AccuFeel " + accufeelResultFsign + "\n" + "UV " + uv1  + " " + "(max ~" + uvMax + " at " + uvMaxTime + ")" + "\n" + "Updated at " + updateTimeRelativeBadge;
+									toolTipBadge = temperatureF + "° " + iconTitle + "\n" + accufeelResultFsign + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
 									chrome.browserAction.setTitle({title: toolTipBadge});
 									}
 								else if (setSettingUT == "u" && setSettingFC == "c") {
-									toolTipBadge = temperatureC + "° " + iconTitle + "\n" + "AccuFeel " + accufeelResultCsign + "\n" + "UV " + uv1  + " " + "(max ~" + uvMax + " at " + uvMaxTime + ")" + "\n" + "Updated at " + updateTimeRelativeBadge;
+									toolTipBadge = temperatureC + "° " + iconTitle + "\n" + accufeelResultCsign + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
 									chrome.browserAction.setTitle({title: toolTipBadge});
 									}
 								else if (setSettingUT == "t" && setSettingFC == "f") {
-									toolTipBadge = temperatureF + "° " + iconTitle + "\n" + "AccuFeel " + accufeelResultFsign + "\n" + "UV " + uv1  + " " + "(max ~" + uvMax + " at " + uvMaxTime + ")" + "\n" + "Updated at " + updateTimeRelativeBadge;
+									toolTipBadge = temperatureF + "° " + iconTitle + "\n" + accufeelResultFsign + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
 									chrome.browserAction.setTitle({title: toolTipBadge});
 									}
 								else if (setSettingUT == "t" && setSettingFC == "c") {
-									toolTipBadge = temperatureC + "° " + iconTitle + "\n" + "AccuFeel " + accufeelResultCsign + "\n" + "UV " + uv1  + " " + "(max ~" + uvMax + " at " + uvMaxTime + ")" + "\n" + "Updated at " + updateTimeRelativeBadge;
+									toolTipBadge = temperatureC + "° " + iconTitle + "\n" + accufeelResultCsign + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
 									chrome.browserAction.setTitle({title: toolTipBadge});
 									};
 
