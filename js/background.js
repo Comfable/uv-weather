@@ -92,6 +92,7 @@ function uvReader(city,latandlong,country) {
 		lat = (latlong.split(','))[0];
 		lon = (latlong.split(','))[1];
 
+
 		//return new Promise((resolve, reject) => {
 			var url = 'https://api.darksky.net/forecast/c6f8f1ec6de2f17011eb59c6a0e4db7a/' + latlong + '?solar';
 

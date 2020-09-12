@@ -1,11 +1,10 @@
    {
     "name": "UV Weather",
-    "version": "1.0.23",
+    "version": "1.0.24",
     "description": "The best way to check the UV Index & weather forecast right in your browser.",
-    "permissions": [ "activeTab","geolocation","storage" ],
-    "content_scripts": [ {"matches": ["https://qsun.co/*", "https://api.mapbox.com/geocoding/v5/mapbox.places/*", "https://www.google-analytics.com/analytics.js", "https://us-central1-swift-district-134123.cloudfunctions.net/*", "https://api.darksky.net/forecast/*"], "js": ["/library/dayjs.min.js", "/library/util.js", "/library/suncalc.js", "/library/jquery-3.4.1.min.js", "/library/jquery.powertip.min.js", "/library/accufeel.min.js", "/library/jquery.modal.min.js"]}],
+    "permissions": [ "https://api.darksky.net/", "activeTab", "geolocation","storage" ],
     "background": {
-    "scripts": ["/library/dayjs.min.js", "/library/util.js", "/library/jquery-3.4.1.min.js", "/js/background.js", "/library/accufeel.min.js", "/library/suncalc.js"],
+    "scripts": ["/library/dayjs.min.js", "/library/util.js", "/library/jquery-3.4.1.min.js", "/js/background.js", "/library/accufeel.min.js", "/library/suncalc.js", "/library/jquery.powertip.min.js", "/library/jquery.modal.min.js"],
     "persistent":true
     },
     "content_security_policy":"script-src 'self' https://www.google-analytics.com; object-src 'self'",
