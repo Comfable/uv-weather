@@ -14,29 +14,95 @@ document.addEventListener("DOMContentLoaded", function(event) {
   });
 
 
+    
 
     function groundFlickr() {
 
-    if(b.flickrID !== '-' && b.pathalias !== null) {
-      url_owner = 'https://www.flickr.com/photos/' + b.pathalias + '/' + b.flickrID;
-    }
-    else {
-      url_owner =  'https://www.flickr.com/photos/' + b.owner + '/' + b.flickrID;
-    }
+    galleryID = b.galleryID;
 
-    document.querySelector('.image_background').style.backgroundImage = 'url(' + b.url_c + ')';
-    if(b.pathalias !== null) {
-        document.querySelector("#link_flickr_text").textContent = 'Photo by ' + b.pathalias + ' on Flickr';
-        document.querySelector("#link_flickr").addEventListener("click", (e) => {
-        window.open(url_owner, "_blank");
-      })
-    }
-    else{
-        document.querySelector("#link_flickr_text").textContent = 'Photo by ' + b.ownername + ' on Flickr';
-        document.querySelector("#link_flickr").addEventListener("click", (e) => {
-        window.open(url_owner, "_blank");
-      })
-    }
+    var f_url = "https://api.flickr.com/services/rest";
+    var key = '9105bad4b97cbb0f3dab8c9f340dd82f';
+    var f_data = "" +
+      "api_key="  + key +
+      "&format=json" +
+      "&nojsoncallback=1" +
+      "&method=flickr.galleries.getPhotos" +
+      "&gallery_id=" + galleryID +
+      "&extras=owner_name,path_alias,url_c";
+
+
+
+
+
+  new Promise(function(resolve, reject) {
+      var timeout = setTimeout(function() {
+          reject(new Error('Request timed out'));
+      }, 800);
+
+
+    fetch(f_url + "?" + f_data)
+    .then(function(result) {
+        clearTimeout(timeout);
+        if (result && result.status == 200) return result.json();
+        else reject(new Error('Response error'));
+    })
+     .then(function(result) {
+          resolve();
+          var ImageNum = Math.floor(Math.random() * 10);
+              
+          if(result.stat === 'ok' && (typeof result.photos.photo[ImageNum] !== 'undefined'))  {
+              flickrID = result.photos.photo[ImageNum].hasOwnProperty('id') ? result.photos.photo[ImageNum].id : '-';
+              owner = result.photos.photo[ImageNum].hasOwnProperty('owner') ? result.photos.photo[ImageNum].owner : '-';
+              url_c = result.photos.photo[ImageNum].hasOwnProperty('url_c') ? result.photos.photo[ImageNum].url_c : '-';
+              pathalias = result.photos.photo[ImageNum].hasOwnProperty('pathalias') ? result.photos.photo[ImageNum].pathalias : '-';
+              ownername = result.photos.photo[ImageNum].hasOwnProperty('ownername') ? result.photos.photo[ImageNum].ownername : '-';
+          }
+          else {
+            flickrID = '-';
+          }
+
+          if(flickrID !== '-' && pathalias !== null) {
+            url_owner = 'https://www.flickr.com/photos/' + pathalias + '/' + flickrID;
+          }
+          else {
+            url_owner =  'https://www.flickr.com/photos/' + owner + '/' + flickrID;
+          }
+
+
+    })
+     .catch(function(error){
+        reject(error);
+        groundCurrent();
+     });
+
+
+
+  })
+  .then(function() {
+      document.querySelector('.image_background_Class').style.backgroundImage = 'url(' + url_c + ')';
+      setTimeout(function() {
+        document.querySelector('.image_background_Class').style.filter = 'brightness(60%)';
+      }, 250);
+
+      if(pathalias !== null) {
+          document.querySelector("#link_flickr_text").textContent = 'Photo by ' + pathalias + ' on Flickr';
+          document.querySelector("#link_flickr").addEventListener("click", (e) => {
+          window.open(url_owner, "_blank");
+        })
+      }
+      else{
+          document.querySelector("#link_flickr_text").textContent = 'Photo by ' + ownername + ' on Flickr';
+          document.querySelector("#link_flickr").addEventListener("click", (e) => {
+          window.open(url_owner, "_blank");
+        })
+      }
+  })
+  .catch(function(err) {
+        groundCurrent();
+  });
+
+
+
   };
 
 
@@ -142,37 +208,37 @@ document.addEventListener("DOMContentLoaded", function(event) {
   function iconCurrent() {
   switch(b.icon) {
     case 'clear-day':
-      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_clear-day.svg")'; //
+      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_clear-day.svg")';
       break;
     case 'clear-night':
-      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_clear-night.svg")'; //
+      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_clear-night.svg")';
       break;
     case 'rain':
-      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_rain.svg")';  //
+      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_rain.svg")';
       break;
     case 'snow':
-      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_snow.svg")'; //
+      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_snow.svg")';
       break;
     case 'sleet':
-      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_snow.svg")'; //
+      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_snow.svg")';
       break;
     case 'wind':
-      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_wind.svg")'; //  
+      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_wind.svg")';  
       break;
     case 'fog':
-      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_fog.svg")'; //
+      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_fog.svg")';
       break;
     case 'cloudy':
-      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_cloudy.svg")'; //
+      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_cloudy.svg")';
       break;
     case 'partly-cloudy-day':
-      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_partly-cloudy-day.svg")'; //
+      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_partly-cloudy-day.svg")';
       break;
     case 'partly-cloudy-night':
-      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_partly-cloudy-night.svg")'; //
+      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_partly-cloudy-night.svg")';
       break;
     default:
-      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/a_clear-day.svg")'; //
+      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/a_clear-day.svg")';
     break;
    }
   }
@@ -181,70 +247,71 @@ iconCurrent();
    function groundCurrent() {
   switch(b.icon) {
     case 'clear-day':
-      document.querySelector('.image_background').style.backgroundImage = 'url("images/background/clear-day.jpg")';
+      document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/clear-day.jpg")';
       break;
     case 'clear-night':
-      document.querySelector('.image_background').style.backgroundImage = 'url("images/background/clear-night.jpg")';      
+      document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/clear-night.jpg")';      
       break;
     case 'rain':
             if (b.isDay) {
-            document.querySelector('.image_background').style.backgroundImage = 'url("images/background/rain-day.jpg")';
+            document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/rain-day.jpg")';
               }
             else {
-            document.querySelector('.image_background').style.backgroundImage = 'url("images/background/rain-night.jpg")';
+            document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/rain-night.jpg")';
               }     
       break;
     case 'snow':
             if (b.isDay) {
-            document.querySelector('.image_background').style.backgroundImage = 'url("images/background/snow-day.jpg")';
+            document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/snow-day.jpg")';
               }
             else {
-            document.querySelector('.image_background').style.backgroundImage = 'url("images/background/snow-night.jpg")';
+            document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/snow-night.jpg")';
               }
       break;
     case 'sleet':
             if (b.isDay) {
-            document.querySelector('.image_background').style.backgroundImage = 'url("images/background/sleet-day.jpg")';
+            document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/sleet-day.jpg")';
               }
             else {
-            document.querySelector('.image_background').style.backgroundImage = 'url("images/background/sleet-night.jpg")';
+            document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/sleet-night.jpg")';
               }
       break;
     case 'wind':
             if (b.isDay) {
-            document.querySelector('.image_background').style.backgroundImage = 'url("images/background/wind-day.jpg")';
+            document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/wind-day.jpg")';
               }
             else {
-            document.querySelector('.image_background').style.backgroundImage = 'url("images/background/wind-night.jpg")';
+            document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/wind-night.jpg")';
               }     
       break;
     case 'fog':
             if (b.isDay) {
-            document.querySelector('.image_background').style.backgroundImage = 'url("images/background/fog-day.jpg")';
+            document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/fog-day.jpg")';
               }
             else {
-            document.querySelector('.image_background').style.backgroundImage = 'url("images/background/fog-night.jpg")';
+            document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/fog-night.jpg")';
               }
       break;
     case 'cloudy':
             if (b.isDay) {
-            document.querySelector('.image_background').style.backgroundImage = 'url("images/background/cloudy-day.jpg")';
+            document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/cloudy-day.jpg")';
               }
             else {
-              document.querySelector(".image_background").style.backgroundImage = 'url("images/background/cloudy-night.jpg")';
+              document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/cloudy-night.jpg")';
               }
       break;
     case 'partly-cloudy-day':
-      document.querySelector('.image_background').style.backgroundImage = 'url("images/background/partly-cloudy-day.jpg")';
+      document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/partly-cloudy-day.jpg")';
       break;
     case 'partly-cloudy-night':
-      document.querySelector('.image_background').style.backgroundImage = 'url("images/background/partly-cloudy-night.jpg")';
+      document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/partly-cloudy-night.jpg")';
       break;
     default:
-      document.querySelector('.image_background').style.backgroundImage = 'url("images/background/default.png")';
+      document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/default.png")';
     break;
    }
-   document.querySelector("#link_flickr_text").textContent = '';
+    document.querySelector("#link_flickr_text").textContent = '';
+    document.querySelector('.image_background_Class').style.filter = 'brightness(60%)';
   }
 
 
@@ -482,7 +549,7 @@ iconCurrent();
   }
   next48Function();
 
-  function trackYour() {
+  function trackSunExposure() {
     if (b.uv1 == 0 || b.isNight) {
         document.querySelector("#link_qsun_text").textContent = 'UV Weather App for iOS & Android';
      }
@@ -490,12 +557,10 @@ iconCurrent();
         document.querySelector("#link_qsun_text").textContent = "UV Weather App for iOS & Android";
       }
   }  
-  trackYour();
+  trackSunExposure();
 
   version_manifest = chrome.runtime.getManifest().version;
-  //document.querySelector("#title_version").textContent = "Version " + version_manifest;
   document.querySelector("#title_version_setting").textContent = "Version " + version_manifest;
-  //document.querySelector("#title_version_info").textContent = "Version " + version_manifest;
 
 
 
@@ -503,11 +568,8 @@ iconCurrent();
   const autoCompletejs = new autoComplete({
       data: {
           src: async () => {
-            // API key token
             const token = 'pk.eyJ1IjoiY29tZmFibGUiLCJhIjoiY2sybTF6Z3FpMGRkeTNscWxhMnNybnU3cyJ9.VDvM0a0jaMlLMwlqBI8kUw';
-            // User search query
             const query = document.querySelector("#autoComplete").value;
-            // Fetch External Data Source
 
               if (typeof ((b.latandlong.split('"'))[1]) !== 'undefined') {
                 latandlongMapBox = ((b.latandlong.split('"'))[1]).split(',').reverse().join(',');
@@ -519,9 +581,7 @@ iconCurrent();
           if (query !== '') {
             const source = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?types=place&proximity=${latandlongMapBox}&limit=7&autocomplete=true&language=en,de,fr,nl,it,ja,ar,es,zh,sv,ko&access_token=${token}`);
 
-            // Format data into JSON
             const data = await source.json();
-            // Return Fetched data
             return data.features;
           }
           },
@@ -529,8 +589,8 @@ iconCurrent();
           cache: false
       },
 
-      threshold: 1,   // Min. Chars length to start Engine 
-      debounce: 300,  // Post duration for engine to start
+      threshold: 1, 
+      debounce: 300,
       searchEngine: "strict",
       highlight: true,
       maxResults: 7,
@@ -636,11 +696,6 @@ iconCurrent();
               refreshPopup();
            }, 1050); 
 
-           // setTimeout(function(){
-           //    modalSetting.style.display = "none";
-           // }, 1750); 
-
-
       }
   });
 
@@ -718,7 +773,7 @@ function closeAllPopup() {
     modal48hours.style.display = "none";
     modal7days.style.display = "none";
     modalSolar.style.display = "none";
-    modalCurrent.style.display = "none";
+    modalCurrent.style.display = "none";   
   }; 
 
 function removeClassIcons() {
@@ -757,7 +812,27 @@ var modalInfo = document.getElementById("info_popup");
 var modal7days = document.getElementById("next7_popup");
 var modal48hours = document.getElementById("next48_popup");
 var location = document.getElementById("location");
+
+var mapInner = document.getElementById("mapWeather");
+var mapTitle = document.getElementById("map_popup_title");
+
 var modalCurrent = document.getElementById("currentReport_popup");
+
+document.querySelector("#map_popup_page").addEventListener("click", (e) => {
+    removeClassIcons();
+    setTimeout(function(){
+      document.getElementById("map_popup_close").style.visibility = "visible";
+    }, 300);
+    mapTitle.style.visibility = "visible";
+    mapInner.style.visibility = "visible";
+    weatherMap();
+
+    var currentIcon = document.getElementById("home_icon_popup_page");
+    currentIcon.classList.add("sub_menu_current_icon_Class");
+
+    var currentSubMenu = document.getElementById("sub_menu_home");
+    currentSubMenu.classList.add("sub_menu_current_Class");
+  });
 
 document.querySelector("#setting_popup_page").addEventListener("click", (e) => {
     closeAllPopup();
@@ -771,7 +846,7 @@ document.querySelector("#setting_popup_page").addEventListener("click", (e) => {
 
     var currentSubMenu = document.getElementById("sub_menu_setting");
     currentSubMenu.classList.add("sub_menu_current_Class");
-});
+  });
 
 document.querySelector("#solar_popup_page").addEventListener("click", (e) => { 
     closeAllPopup();
@@ -798,7 +873,7 @@ document.querySelector("#home_popup_page").addEventListener("click", (e) => {
 
     var currentSubMenu = document.getElementById("sub_menu_home");
     currentSubMenu.classList.add("sub_menu_current_Class");
-});
+  });
 
 document.querySelector("#next7_day").addEventListener("click", (e) => { 
     closeAllPopup();
@@ -868,6 +943,22 @@ document.querySelector("#report_popup_close").addEventListener("click", (e) => {
     currentSubMenu.classList.add("sub_menu_current_Class");    
   });
 
+document.querySelector("#map_popup_close").addEventListener("click", (e) => {
+    document.getElementById("map_popup_close").style.transition = "all 0s";
+    document.getElementById("map_popup_close").style.visibility = "hidden";
+    mapTitle.style.visibility = "hidden";
+    mapInner.style.visibility = "hidden";
+    closeAllPopup();
+    removeClassIcons();
+    var element = document.getElementById("home_icon_popup_page");
+    element.classList.add("sub_menu_icon_active_Class");
+
+    var currentIcon = document.getElementById("home_icon_popup_page");
+    currentIcon.classList.add("sub_menu_current_icon_Class");
+
+    var currentSubMenu = document.getElementById("sub_menu_home");
+    currentSubMenu.classList.add("sub_menu_current_Class");    
+  });
 
 document.querySelector("#image_background").addEventListener("click", (e) => {
     closeAllPopup();
@@ -884,43 +975,76 @@ document.querySelector("#image_background").addEventListener("click", (e) => {
   });
 
 
+  function weatherMap() {
+    mapboxgl.accessToken = 'pk.eyJ1IjoiY29tZmFibGUiLCJhIjoiY2sybTF6Z3FpMGRkeTNscWxhMnNybnU3cyJ9.VDvM0a0jaMlLMwlqBI8kUw';
+    if (typeof ((b.latandlong.split('"'))[1]) !== 'undefined') {
+      latandlongMapBox = ((b.latandlong.split('"'))[1]).split(',').reverse().join(',');
+      latandlongMapBox = JSON.parse("[" + latandlongMapBox + "]");
+    }
+    else {
+      latandlongMapBox = [-79.3832,43.6532];
+    } 
+   
+    var mapWeather = new mapboxgl.Map({
+        container: 'mapWeather',
+        style: 'mapbox://styles/mapbox/light-v10',
+        center: latandlongMapBox,
+        minZoom: 2,
+        maxZoom: 7,
+        zoom: 2
+    });
 
+    mapWeather.on('load', function(){
+      mapWeather.addLayer({
+        "id": "simple-tiles",
+        "type": "raster",
+        "paint" : {
+            "raster-opacity" : 0.3,
+            "raster-saturation" : 0.15,
+            "raster-contrast" : 0,
+            "raster-resampling" : 'nearest',
+            "raster-hue-rotate": 350,
+            "raster-fade-duration" : 500       
+          },
+        "source": {
+          "type": "raster",
+          "tiles": ["https://tile.openweathermap.org/map/precipitation/{z}/{x}/{y}.png?appid=c33b87de15e56ce0b4a4a0fef54d8ecd"],
+          "tileSize": 256
+        },
+        "minzoom": 1,
+        "maxzoom": 8
+      });
+    });
+    document.querySelector("#map_popup_title").textContent = 'PRECIPITATION FORECAST | UV WEATHER | ' + dayjs.unix(b.updateTime + b.offsetUnix).format('MMMM DD, YYYY h:mm A');
+  }; 
 
 
   function refreshPopup() {
 
-      if(b.flickrID == '-') {
-          groundCurrent();
-        }
-      else {
-          groundFlickr();
-        }
+    groundFlickr();
 
     setTimeout(function() {
+      updateTimeRelative = "Updated " + dayjs.unix(b.updateTime).format("h:mm A");
 
-    updateTimeRelative = "Updated " + dayjs.unix(b.updateTime).format("h:mm A");
+      if (setSettingFC == "c") {
+          ctemp();
+        }
+        else{
+           ftemp();
+        }
 
-    if (setSettingFC == "c") {
-      ctemp();
-    }
-    else{
-       ftemp();
-    }
+      document.querySelector("#location").textContent = b.citys;
+      document.querySelector("#current_uv").textContent = b.uv1;
+      document.querySelector("#current_uv_note").textContent = b.current_uv_note;
 
-    document.querySelector("#location").textContent = b.citys;
-    document.querySelector("#current_uv").textContent = b.uv1;
-    document.querySelector("#current_uv_note").textContent = b.current_uv_note;
-
-    iconCurrent();
-    
-
-    uvRecommendation();
-    solarFunction();
-    next48Function();
-    next7Function();
-    reportFunction();
-    trackYour();
-
+      iconCurrent();
+      
+      uvRecommendation();
+      solarFunction();
+      next48Function();
+      next7Function();
+      reportFunction();
+      trackSunExposure();
     }, 250);
   }
 

@@ -111,14 +111,14 @@ function uvReader(city,latandlong,country) {
 	dewPointF = Math.round(result.currently.dewPoint);
 	dewPointC = f2c(dewPointF);
 	pressure = result.currently.hasOwnProperty('pressure') ? Math.round(result.currently.pressure) : '-';
-	windSpeedMPH = Math.round(result.currently.windSpeed); //miles per hour
+	windSpeedMPH = Math.round(result.currently.windSpeed);
 	windSpeedKMH = Math.round(windSpeedMPH * 1.609334);
-		windSpeedMS10 = windSpeedMPH * 0.4470389; //meter per second
+		windSpeedMS10 = windSpeedMPH * 0.4470389;
 		windSpeedMS10R = Math.round(windSpeedMPH * 0.4470389 * 10) / 10;
 		windSpeedMS = windSpeedMS10 * 0.33; // on humun hieght an urban area
-	windGustMPH = Math.round(result.currently.windGust); //miles per hour
+	windGustMPH = Math.round(result.currently.windGust);
 	windGustKMH = Math.round(windGustMPH * 1.609334);
-	windGustMS = Math.round(windGustMPH * 0.4470389 * 10) / 10; //miles per hour
+	windGustMS = Math.round(windGustMPH * 0.4470389 * 10) / 10;
 	weatherEmojiIcon = weatherEmoji(icon);
 
 		if (result.currently.windSpeed > 0) {
@@ -205,102 +205,69 @@ function GetWeatherBackground(icon) {
 
 	  switch(icon) {
 	    case 'clear-day':
-	  			var galleryID = '72157711948824252';
+	  			galleryID = '72157711948824252';
 	      break;
 	    case 'clear-night':
-	  			var galleryID = '72157711948534226';
+	  			galleryID = '72157711948534226';
 	      break;
 	    case 'rain':
 	            if (isDay) {
-	  			var galleryID = '72157711948916072';
+	  			galleryID = '72157711948916072';
 	              }
 	            else {
-	  			var galleryID = '72157711948918142';
+	  			galleryID = '72157711948918142';
 	              }
 	      break;
 	    case 'snow':
 	            if (isDay) {
-	  			var galleryID = '72157711948582321';
+	  			galleryID = '72157711948582321';
 	              }
 	            else {
-	  			var galleryID = '72157711948925407';
+	  			galleryID = '72157711948925407';
 	              }
 	      break;
 	    case 'sleet':
 	            if (isDay) {
-	  			var galleryID = '72157711948578771';
+	  			galleryID = '72157711948578771';
 	              }
 	            else {
-	  			var galleryID = '72157711948921797';
+	  			galleryID = '72157711948921797';
 	              }
 	      break;
 	    case 'wind':
 	            if (isDay) {
-	  			var galleryID = '72157711950448603';
+	  			galleryID = '72157711950448603';
 	              }
 	            else {
-	  			var galleryID = '72157711948587066';
+	  			galleryID = '72157711948587066';
 	              }     
 	      break;
 	    case 'fog':
 	            if (isDay) {
-	  			var galleryID = '72157711948567181';
+	  			galleryID = '72157711948567181';
 	              }
 	            else {
-	  			var galleryID = '72157711950432483';
+	  			galleryID = '72157711950432483';
 	              }
 	      break;
 	    case 'cloudy':
 	            if (isDay) {
-	  			var galleryID = '72157711950426443';
+	  			galleryID = '72157711950426443';
 	              }
 	            else {
-	  			var galleryID = '72157711948906242';
+	  			galleryID = '72157711948906242';
 	              }
 	      break;
 	    case 'partly-cloudy-day':
-	  			var galleryID = '72157711950434293';
+	  			galleryID = '72157711950434293';
 	      break;
 	    case 'partly-cloudy-night':
-	  			var galleryID = '72157711948913902';
+	  			galleryID = '72157711948913902';
 	      break;
 	    default:
-	  			var galleryID = '72157711948824252';
+	  			galleryID = '72157711948824252';
 	    break;
 	   }
-
-
-  var f_url = "https://api.flickr.com/services/rest";
-  var key = '9105bad4b97cbb0f3dab8c9f340dd82f';
-  var f_data = "" +
-    "api_key="  + key +
-    "&format=json" +
-    "&nojsoncallback=1" +
-    "&method=flickr.galleries.getPhotos" +
-    "&gallery_id=" + galleryID +
-    "&extras=owner_name,path_alias,url_c";
-
-	fetch(f_url + "?" + f_data)
-	.then((result) => result.json())
-	 .then(function(result) {
-
-	 	url_cc = result.photos.photo[0].url_c;
-
-		var ImageNum = Math.floor(Math.random() * 10);
-				
-		if(result.stat === 'ok' && (typeof result.photos.photo[ImageNum] !== 'undefined'))  {
-				flickrID = result.photos.photo[ImageNum].hasOwnProperty('id') ? result.photos.photo[ImageNum].id : '-';
-				owner = result.photos.photo[ImageNum].hasOwnProperty('owner') ? result.photos.photo[ImageNum].owner : '-';
-				url_c = result.photos.photo[ImageNum].hasOwnProperty('url_c') ? result.photos.photo[ImageNum].url_c : '-';
-				pathalias = result.photos.photo[ImageNum].hasOwnProperty('pathalias') ? result.photos.photo[ImageNum].pathalias : '-';
-				ownername = result.photos.photo[ImageNum].hasOwnProperty('ownername') ? result.photos.photo[ImageNum].ownername : '-';
-		}
-		else {
-			flickrID = '-';
-		}
-
-	});
-
 
 };
 
@@ -347,7 +314,6 @@ GetWeatherBackground(icon);
 		solarNoon = timesSolar.solarNoon;
 		goldenHourEnd = timesSolar.goldenHourEnd;
 		goldenHour = timesSolar.goldenHour;
-		//dayLength = moment.utc(dayjs.unix(sunsetTimeSolar).diff(dayjs.unix(sunriseTimeSolar))).format("HH:mm") + " HH:MM";
 		totalSeconds  = dayjs(dayjs.unix(sunsetTimeSolar)).diff(dayjs(dayjs.unix(sunriseTimeSolar)), 'second');
 		totalHours = Math.floor(totalSeconds/(60*60));
 		totalSeconds = totalSeconds - (totalHours*60*60);
@@ -553,7 +519,7 @@ GetWeatherBackground(icon);
 	
 
 
-intervalUpdateTime = 1000 * 60 * 30; //miliseconds * seconds * minutes
+intervalUpdateTime = 1000 * 60 * 60; //miliseconds * seconds * minutes
 var intervalUpdateTimes = window.setInterval(_ => {
 	uvReader(city,latandlong,country)
 	}, intervalUpdateTime);

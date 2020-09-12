@@ -52,12 +52,6 @@ a.blacklink:visited {color: black; text-decoration: none;}
 a.blacklink:hover {color: black; text-decoration: none;}
 a.blacklink:active {color: black; text-decoration: none;}
 
-/* clears the 'X' from Chrome */
-/*input[type="search"]::-webkit-search-decoration,
-input[type="search"]::-webkit-search-cancel-button,
-input[type="search"]::-webkit-search-results-button,
-input[type="search"]::-webkit-search-results-decoration { display: none; }*/
-
 input[type="search"]::-webkit-search-cancel-button {
 
   /* Remove default */
@@ -82,19 +76,22 @@ html {
     background: transparent;  /* Make scrollbar invisible */
 }
 
-.image_background {
+
+.image_background_Class {
 	position: absolute;
 	width: 250px;
 	height: 526px;
 	left: 0px;
 	top: 0px;
-	background-image: url("/images/background/default.png"); 
-	background-color: #ffffff;
+	filter: brightness(20%);
+	background-color: #2a2a2a;
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
 	border: 0px solid transparent;
+	transition: all .8s ease;
 }
+
 .current_icon_update {
 	position: absolute;
 	background-position: center;
@@ -532,14 +529,8 @@ html {
 	max-width: 16px;
 	height: 16px;
 	margin-top: 5px; 
-	display: inline-block;
-	background-image: url("/images/crown.svg");
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: cover;
-	vertical-align: center;
+	transition: all 5s ease-in-out;
 }
-
 
 
 
@@ -642,7 +633,7 @@ html {
 	position: absolute;
 	left: 30px;
 	right: 30px;
-	top: 140px;
+	top: 155px;
 }
 .forecast_day_modal_Class {
 	position: relative;
@@ -827,7 +818,7 @@ html {
 .modal_next48 {
   height: 456px;
   overflow: auto;
-  position: relative;
+  position: absolute;
   width: 310px;
   left: 250px;
   top: 0px;
@@ -855,6 +846,7 @@ html {
   background-repeat: no-repeat;
   background-size: cover;
   cursor: pointer;
+  z-index: 10500;
 }
 .setting_unit_badge_Class {
 	position: absolute;
@@ -1014,13 +1006,13 @@ html {
 	position: relative;
 	width: 220px;
 	max-width: 220px;
-	margin: 25px 30px 0 30px;
+	margin: 46px 30px 0 30px;
 }
 
 .modal_report {
   height: 456px;
   overflow: auto;
-  position: relative;
+  position: absolute;
   width: 310px;
   left: 250px;
   top: 0px;
@@ -1122,7 +1114,6 @@ html {
 .sub_menu_icon_Class {
 	width: 20px;
 	height: 20px;
-	/*filter: opacity(50%) drop-shadow( 1px 1px 1px rgba(0, 0, 0, .4));*/
 	filter: opacity(70%);
 }
 
@@ -1163,4 +1154,81 @@ html {
 	font-size: 9px;
 	color: #a9a9a9;
 	margin: 0 auto;
+}
+
+.icon_eart_Class {
+	width: 12px;
+	height: 12px; 
+	margin-left: 4px;
+	margin-bottom: 12px;
+	filter: invert(100%) drop-shadow( 2px 2px 2px rgba(0, 0, 0, .50));
+}
+
+.modal_map {
+  	position: absolute;	
+	left: 0px;
+  	top: 0px;
+	bottom: 0px; 
+	width: 100%;
+	height: 526px;
+
+}
+
+.map_Class { 
+	left: 0px;
+  	top: 0px;
+	bottom: 0px; 
+	width: 100%;
+	height: 526px;
+	z-index: 10300;
+	visibility: hidden;
+}
+
+.modal_map_close {
+  	position: absolute;
+ 	top: 15.5px;
+  	left: 15.5px;
+  	display: block;
+  	width: 30px;
+  	height: 30px;
+  	background-image: url("/images/left-arrow.svg");
+  	filter: drop-shadow( 2px 2px 2px rgba(0, 0, 0, .50));
+  	background-position: center;
+  	background-repeat: no-repeat;
+  	background-size: cover;
+  	cursor: pointer;
+  	z-index: 10500;
+  	visibility: hidden;
+}
+
+.modal_map_title {
+  	position: absolute;
+ 	top: 500px;
+  	left: 15.5px;
+  	display: block;
+  	filter: drop-shadow( 2px 2px 2px rgba(0, 0, 0, .50));
+  	z-index: 10500;
+	text-align: left;
+	font-weight: 250;
+	font-size: 12px;
+	color: #000000;
+	visibility: hidden;	
+}
+
+.mapboxgl-ctrl-logo {
+    width: 0px !important;
+    height: 0px !important;
+    margin: 0 0 -3px -3px;
+    display: hidden !important;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.mapboxgl-ctrl-top-left, .mapboxgl-ctrl-top-right, .mapboxgl-ctrl-bottom-left, .mapboxgl-ctrl-bottom-right {
+    position: absolute;
+    pointer-events: none;
+    z-index: 2;
+    display: hidden !important;
+    width: 0px !important;
+    height: 0px !important;
 }

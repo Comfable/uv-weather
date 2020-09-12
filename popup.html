@@ -13,17 +13,26 @@
   <link rel="stylesheet" href="/popup.css" media="screen" />
   <script async src="/library/ga.js"></script>
   <script src="/library/autoComplete.min.js"></script>
+
+  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.js'></script>
+  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.css' rel='stylesheet' />
+
 </head>
 
 <body>
   
-  <aside id="image_background" class="image_background" style="width: 250px; height: 526px; left: 0px; top: 0px; background-repeat: no-repeat; background-position: top; background-color: #ffffff; border: 0px solid transparent; filter: brightness(60%);"></aside>
+<!-- aside -->
+  <aside id="image_background" class="image_background_Class"></aside>
   <div id="current_icon_update" class="current_icon_update"></div>
   <div id="current_temp_group" class="current_temp_group_Class"> <span id="current_temp" class="current_temp_Class">17</span>
     <span>
       <div id="temp_sign_city" class="current_temp_sign_city_Class">
         <span id="temp_sign" class="current_temp_sign_Class">°C</span>
     <span style="margin-bottom: 6px;"><a id="location" class="location_Class whitelink">city</a></span>
+    <a span id="map_popup_page" >
+      <img src="images/earth.svg" class="icon_eart_Class"/>
+    </a>
+    </span>
   </div>
 
 <span id="current_accufeel_info" class="current_accufeel_Class tooltip">
@@ -108,7 +117,7 @@
   </div>
   <div id="link_qsun" class="link_qsun_Class">
     <a target='_blank' href="https://qsun.co/app?utm_source=uvweather&utm_medium=extension&utm_campaign=UV%20Weather" class="whitelink"> 
-      <span id="link_award_app" class="link_award_app_Class">
+      <img id="link_award_app" src="images/crown.svg" class="link_award_app_Class" />
       </span>
       <span id="link_qsun_text" class="link_qsun_text_Class">
       <span >Track your sun exposure</span>
@@ -118,15 +127,13 @@
 
   <div id="link_flickr" class="link_flickr_Class">
     <a target='_blank' class="whitelink"> 
-      <span id="link_flickr_text" class="link_flickr_text_Class"> © by flickr on flickr
+      <span id="link_flickr_text" class="link_flickr_text_Class">
       </span>
     </a>
   </div>
 
 
   </div>
-
-
 
 
 
@@ -766,6 +773,12 @@
     </div>
 
 
+    <!-- Map Page -->
+    <div id="map_popup">
+          <div id="map_popup_close" class="modal_map_close"></div>
+          <div id='mapWeather' class='map_Class'></div>
+          <span id="map_popup_title" class="modal_map_title">DAILY PRECIPITATION | UV WEATHER</span>
+    </div>
 
 
     <!-- Report Page -->
