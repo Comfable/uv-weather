@@ -3,20 +3,21 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>UV Weather</title>
-    <script src="/library/util.js"></script>
-    <script src="/library/accufeel.min.js"></script> 
-    <script src="/library/suncalc.js"></script>
+    <script defer src="/library/util.js"></script>
+    <script defer src="/library/accufeel.min.js"></script> 
+    <script defer src="/library/suncalc.js"></script>
     <script src="/library/jquery-3.4.1.min.js"></script>
-    <link href="/css/popup.css" media="screen" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="/js/background.js"></script>
-    <script type="text/javascript" src="/js/popup.js"></script>
-    <script src="/library/moment.min.js"></script>
-    <script src="/library/jquery.powertip.min.js"></script> 
-    <script type="text/javascript" src="/library/ga.js"></script>
-    <link rel="stylesheet" type="text/css" href="/css/jquery.powertip.css" />
-    <script type="text/javascript" src="/library/jquery.modal.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="/css/jquery.modal.css" />
-    <script type="text/javascript" src="/library/places.min.js"></script>
+    <link rel="stylesheet" href="/css/popup.css" media="screen"/>
+    <script defer src="/js/background.js"></script>
+    <script defer src="/js/popup.js"></script>
+    <script async src="/library/moment.min.js"></script>
+    <script defer src="/library/jquery.powertip.min.js"></script> 
+    <script async src="/library/ga.js"></script>
+    <link rel="stylesheet" href="/css/jquery.powertip.css" />
+    <script async src="/library/jquery.modal.min.js"></script>
+    <link rel="stylesheet" href="/css/jquery.modal.css" />
+    <script src="/library/jquery.easy-autocomplete.min.js"></script>
+    <link rel="stylesheet" href="/css/easy-autocomplete.css">
 </head>
 
 
@@ -211,11 +212,13 @@
            By default, UV Weather uses your current location. However, you can select a different location.
         </div>
         
+
         <div id="searchBox" class="searchBox_Class">
-          <input type="search" id="citySearch" class="form-control" placeholder="Enter your city or town"/>
-        </div> 
+          <input type="search" id="citySearch" placeholder="Enter your city or town"/>
+        </div>      
 
     </div>
+
 
     <div id="setting_temp" class="setting_title_temp_Class">
         <span style="margin-right: 24px; font-size: 12px;">

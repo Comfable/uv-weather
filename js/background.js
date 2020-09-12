@@ -286,7 +286,7 @@ function uvReader(city,latandlong,country) {
 	};
 
 
-	animatedBadgeInterval = setInterval(function() {animatedBadge(isDay,sunnyDay,cloudy,rainy); }, 1000 / 30);
+	//animatedBadgeInterval = setInterval(function() {animatedBadge(isDay,sunnyDay,cloudy,rainy); }, 1000 / 30);
 
 
 	function accufeelCalc() {
@@ -436,7 +436,7 @@ function uvReader(city,latandlong,country) {
    		
 
 		if (typeof setSettingFC === 'undefined') {
-			if (country == "US" || country == "us") {
+			if (country == "US" || country == "us" || country == "United States of America") {
 				setSettingFC = "f";
 				chrome.storage.local.set({'setSettingFC': 'f'});
 				} else {
@@ -448,7 +448,7 @@ function uvReader(city,latandlong,country) {
 		if (typeof setSettingUT === 'undefined') {
 			setSettingUT = "t";
 			chrome.storage.local.set({'setSettingUT': 't'});
-			if (country == "US" || country == "us") {
+			if (country == "US" || country == "us" || country == "United States of America") {
 				tempf ();
 				} else {
 					tempc ();
@@ -490,11 +490,10 @@ function uvReader(city,latandlong,country) {
 	utfc = UTFC(function(value){	
 			});
 
-
-	setTimeout(function(){
-		clearInterval(animatedBadgeInterval);   
-		}, 500);
-	setTimeout(badgeBackgroundImage, 550)
+	// setTimeout(function(){
+	// 	clearInterval(animatedBadgeInterval);   
+	// 	}, 500);
+	// setTimeout(badgeBackgroundImage, 550)
 
 }, //---- uvReader success 
 

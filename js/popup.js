@@ -2,6 +2,7 @@
 var b = chrome.extension.getBackgroundPage();
 chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
 
+
 $(document).ready(function(){
 
   window.onload = function() { 
@@ -9,6 +10,8 @@ $(document).ready(function(){
   };
 
   country = b.country;
+
+ 
 
   function UTFC (){
     chrome.storage.local.get(['setSettingFC', 'setSettingUT'], function(data) {
@@ -373,56 +376,205 @@ for (i = 1; i < 8; i++) {
   version_manifest = manifest.version;
   $(".title_version_Class").html("Version " + version_manifest);
 
+  var options = {
 
-  //Setting
-  function citySeachLocation() {
-    var placesAutocomplete = places({
-      appId: 'plEMZ6MEDSTZ',
-      apiKey: 'c57e4b68ed855bc62f00b85525364d00',
-      container: document.getElementById('citySearch'),
-      templates: {
-          value: function(suggestion) {
-            return suggestion.name;
-          }
+    url: function(phrase, latandlongMapBox) {
+      if (typeof ((b.latandlong.split('"'))[1]) !== 'undefined') {
+        latandlongMapBox = ((b.latandlong.split('"'))[1]).split(',').reverse().join(',');
+      }
+      else {
+        latandlongMapBox = "-79.3832,43.6532";
+      } 
+        if (phrase !== "") {
+            return "https://api.mapbox.com/geocoding/v5/mapbox.places/" + phrase + ".json?types=place&proximity=" + latandlongMapBox + "&limit=5&autocomplete=true&language=en,de,fr,nl,it,ja,ar,es,zh,sv,ko&access_token=pk.eyJ1IjoiY29tZmFibGUiLCJhIjoiY2sybTF6Z3FpMGRkeTNscWxhMnNybnU3cyJ9.VDvM0a0jaMlLMwlqBI8kUw";
+          } else {
+            return "https://api.mapbox.com/geocoding/v5/mapbox.places/" + "Toronto" + ".json?types=place&proximity=-79.3832,43.6532&limit=5&autocomplete=true&language=en,de,fr,nl,it,ja,ar,es,zh,sv,ko&access_token=pk.eyJ1IjoiY29tZmFibGUiLCJhIjoiY2sybTF6Z3FpMGRkeTNscWxhMnNybnU3cyJ9.VDvM0a0jaMlLMwlqBI8kUw";
         }
-      }).configure({
-        type: 'city',
-        language: 'en',
-        hitsPerPage: 5,
-        aroundLatLngViaIP: false,
-      });
+      },
 
-    var address = document.getElementById('citySearch');
-    placesAutocomplete.on('change', function(e) {
-       address.textContent = e.suggestion.value;
-       latlong =  '"' + JSON.stringify(e.suggestion.latlng.lat) + ',' + JSON.stringify(e.suggestion.latlng.lng) + '"';
-       city =  JSON.stringify (e.suggestion.name);
-       countryCode =  JSON.stringify (e.suggestion.countryCode);
-       country = (countryCode.split('"'))[1];
-       chrome.storage.local.set({'latlongPopup': latlong});
-       chrome.storage.local.set({'cityPopup': city});
-       chrome.storage.local.set({'countryPopup': country});
-       chrome.storage.local.set({'fromSearch': "locationSearch"});
-       chrome.runtime.sendMessage({ msg: "fromSearchUpdate" });
+    getValue: function(element) {
+      if (typeof ((element.place_name_en).split(',').splice(0,2).join(',')) !== 'undefined') {
+        cityProvince = (element.place_name_en).split(',').splice(0,2).join(',');
+          if (typeof (element.context[0].short_code) !== 'undefined') {
+            countryShort = (element.context[0].short_code).split('-').splice(0,1).join('');
+            countryShort = countryShort.toUpperCase();
+            cityCountry = cityProvince + ', ' + countryShort;
+          }
+          else {
+            cityCountry = cityProvince;
+          }
+      }
+      else {
+        cityCountry = "Toronto, Ontario, CA";
+      }      
+      return cityCountry;
+    },
+
+    ajaxSettings: {
+      dataType: "json",
+      method: "GET",
+      data: {
+        dataType: "json"
+      }
+    },
+    listLocation: "features",
+    preparePostData: function(data) {
+      data.phrase = $("#citySearch").val();
+      return data;
+    },
+
+      list: {
+        showAnimation: {
+          type: "fade", //normal|slide|fade
+          time: 400,
+          callback: function() {}
+        },
+        hideAnimation: {
+          type: "normal", //normal|slide|fade
+          time: 400,
+          callback: function() {}
+        },
+        maxNumberOfElements: 5,
+        match: {
+          enabled: true
+        },
+
+
+        onChooseEvent: function() {
+          var cityFull = $("#citySearch").getSelectedItemData().text;
+
+          var lat = $("#citySearch").getSelectedItemData().geometry.coordinates[1];
+          var lng = $("#citySearch").getSelectedItemData().geometry.coordinates[0];
+          var countryCode = $("#citySearch").getSelectedItemData().place_name;
+          countryFull = (countryCode.split(','))[2];
+       
+          city =  '"' + cityFull + '"'
+          latlong =  '"' + lat + ',' + lng + '"';
+
+          chrome.storage.local.set({'latlongPopup': latlong});
+          chrome.storage.local.set({'cityPopup': city});
+          chrome.storage.local.set({'countryPopup': country});
+          chrome.storage.local.set({'fromSearch': "locationSearch"});
+          chrome.runtime.sendMessage({ msg: "fromSearchUpdate" });
+           
+           setTimeout(function(){
+              refreshPopup();
+           }, 750) 
+
+           setTimeout(function(){
+              $.modal.close();
+           }, 1500); 
+
+        },
+
+
+  },
+    adjustWidth: false,
+    requestDelay: 400,
+    theme: "square"
+  }
+  $("#citySearch").easyAutocomplete(options);
+
+
+
+// let citySeachLocation = (query) => {
+// $.ajax({
+
+//           url:'https://api.mapbox.com/geocoding/v5/mapbox.places/'+ query +'.json?types=place&proximity=-79.3832,43.6532&limit=5&autocomplete=true&language=en,de,fr,nl,it,ja,ar,es,zh,sv,ko&access_token=pk.eyJ1IjoiY29tZmFibGUiLCJhIjoiY2sybTF6Z3FpMGRkeTNscWxhMnNybnU3cyJ9.VDvM0a0jaMlLMwlqBI8kUw',
+//           method: 'GET',
+//           dataType: 'json',
+//           data: {
+//               query: query
+//           },
+//           success: function (data) {
+//           lat = data.features[0].geometry.coordinates[1];
+//           lng = data.features[0].geometry.coordinates[0];
+//           latlong =  '"' + lat + ',' + lng + '"';
+
+//           cityFull = data.features[0].text;
+//           city =  '"' + cityFull + '"';
+
+//           countryCode = data.features[0].place_name;
+//           countryFull = (countryCode.split(','))[2];
+//           chrome.storage.local.set({'latlongPopup': latlong});
+//           chrome.storage.local.set({'cityPopup': city});
+//           chrome.storage.local.set({'countryPopup': country});
+//           chrome.storage.local.set({'fromSearch': "locationSearch"});
+//           chrome.runtime.sendMessage({ msg: "fromSearchUpdate" });
+           
+//            setTimeout(function(){
+//               chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
+//               refreshPopup();
+//            }, 750) 
+
+//            // setTimeout(function(){
+//            //    $.modal.close();
+//            // }, 1500); 
+
+//           },
+//           error: function (err) {
+//             console.log('Error calling mapbox API', JSON.stringify(err));
+//           }
+//         });
+              
+//       }
+
+//     document.getElementById('citySearch').addEventListener('keyup',function(event){
+//       citySeachLocation(event.target.value)
+//     })
+
+
+
+
+  // function citySeachLocation() {
+  //   var placesAutocomplete = places({
+  //     appId: 'plEMZ6MEDSTZ',
+  //     apiKey: 'c57e4b68ed855bc62f00b85525364d00',
+  //     container: document.getElementById('citySearch'),
+  //     templates: {
+  //         value: function(suggestion) {
+  //           return suggestion.name;
+  //         }
+  //       }
+  //     }).configure({
+  //       type: 'city',
+  //       language: 'en',
+  //       hitsPerPage: 5,
+  //       aroundLatLngViaIP: false,
+  //     });
+
+  //   var address = document.getElementById('citySearch');
+  //   placesAutocomplete.on('change', function(e) {
+  //      address.textContent = e.suggestion.value;
+  //      latlong =  '"' + JSON.stringify(e.suggestion.latlng.lat) + ',' + JSON.stringify(e.suggestion.latlng.lng) + '"';
+  //      city =  JSON.stringify (e.suggestion.name);
+  //      countryCode =  JSON.stringify (e.suggestion.countryCode);
+  //      country = (countryCode.split('"'))[1];
+  //      chrome.storage.local.set({'latlongPopup': latlong});
+  //      chrome.storage.local.set({'cityPopup': city});
+  //      chrome.storage.local.set({'countryPopup': country});
+  //      chrome.storage.local.set({'fromSearch': "locationSearch"});
+  //      chrome.runtime.sendMessage({ msg: "fromSearchUpdate" });
        
 
-       setTimeout(function(){
-          chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
-          refreshPopup();
-       }, 750) 
+  //      setTimeout(function(){
+  //         chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
+  //         refreshPopup();
+  //      }, 750) 
 
-       setTimeout(function(){
-          $.modal.close();
-       }, 1500); 
+  //      setTimeout(function(){
+  //         $.modal.close();
+  //      }, 1500); 
 
-    });
+  //   });
 
-    placesAutocomplete.on('clear', function() {
-      address.textContent = 'none';
-    });
+  //   placesAutocomplete.on('clear', function() {
+  //     address.textContent = 'none';
+  //   });
 
-  }
-  citySeachLocation();
+  // }
+  // citySeachLocation();
+
 
 
   $("#setting_defualt_button_u").click(function(){  
@@ -526,7 +678,7 @@ for (i = 1; i < 8; i++) {
     }
 
     $("#location").html(b.citys);
-    $("#current_uv").html(b.current_uv);
+    $("#current_uv").html(b.uv1);
     $("#current_uv_note").html(b.current_uv_note);
 
     $('#current_icon_update').data('powertip', b.summary);
@@ -537,7 +689,7 @@ for (i = 1; i < 8; i++) {
     solarFunction();
     next48Function();
     next7Function();
-    }, 500);
+    }, 250);
   }
 
 
