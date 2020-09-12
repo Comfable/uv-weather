@@ -7,11 +7,94 @@
 }
 :root {
 	--web-view-ids: UV_Weather;
+	--font-color: #424242;
+    --bg-color: #fff;
+    --bg-color-hr: -webkit-gradient(linear, 0 0, 100% 0, from(white), to(white), color-stop(25%, #cfcfcf), color-stop(75%, #cfcfcf));
+    --icon-color: invert(29%) sepia(32%) saturate(4%) hue-rotate(318deg) brightness(94%) contrast(94%);
+    --bg-color-autosearch: #efefef;
 }
 * {
 	margin: 0;
 	padding: 0;
 }
+
+/*@media (prefers-color-scheme: dark) {
+}*/
+
+
+[data-theme="dark"] {
+    --font-color: #e9e9e9;
+    --bg-color: #111111;
+    --bg-color-hr: -webkit-gradient(linear, 0 0, 100% 0, from(black), to(black), color-stop(25%, #8a8b8c), color-stop(75%, #8a8b8c));
+    --icon-color: invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%) contrast(103%);
+    --bg-color-autosearch: #737373;
+}
+
+
+
+/*slider switch css */
+.theme-switch-wrapper {
+  display: flex;
+  align-items: center;
+  
+  em {
+    margin-left: 10px;
+    font-size: 1rem;
+  }
+}
+.theme-switch {
+  display: inline-block;
+  height: 25px;
+  position: relative;
+  width: 50px;
+  margin-left: 60px;
+}
+
+.theme-switch input {
+  display:none;
+}
+
+.slider {
+  background-color: #ccc;
+  bottom: 0;
+  cursor: pointer;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: .4s;
+}
+
+.slider:before {
+  background-color: #fff;
+  bottom: 2px;
+  content: "";
+  height: 21px;
+  left: 2px;
+  position: absolute;
+  transition: .4s;
+  width: 21px;
+}
+
+input:checked + .slider {
+  background-color: #FF662B;
+}
+
+input:checked + .slider:before {
+  transform: translateX(25px);
+}
+
+.slider.round {
+  border-radius: 21px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+
+
+
 
 
 @font-face {
@@ -23,8 +106,8 @@ body {
 	background: #E5E5E5;
 	width: 560px;
 	height: 526px;
-	font-weight: 250!important;
-	background-color: rgba(255,255,255,1);
+	font-weight: 250 !important;
+	background-color: var(--bg-color);
 	border: 0px solid transparent;
 	margin: 0;
 	padding: 0;
@@ -39,6 +122,7 @@ body {
 	-webkit-user-select: none;  /* Chrome all / Safari all */
   	user-select: none;
   	font-family: Helvetica;
+  	color: var(--font-color);
 }
 a:hover {
   cursor: pointer;
@@ -48,10 +132,26 @@ a.whitelink:link {color: white; text-decoration: none;}
 a.whitelink:visited {color: white; text-decoration: none;}
 a.whitelink:hover {color: white; text-decoration: none;}
 a.whitelink:active {color: white; text-decoration: none;}
-a.blacklink:link {color: black; text-decoration: none;}
-a.blacklink:visited {color: black; text-decoration: none;}
-a.blacklink:hover {color: black; text-decoration: none;}
-a.blacklink:active {color: black; text-decoration: none;}
+a.blacklink:link {
+	background-color: var(--bg-color);
+	color: var(--font-color);
+	text-decoration: none;
+}
+a.blacklink:visited {
+	background-color: var(--bg-color);
+	color: var(--font-color);
+	text-decoration: none;
+}
+a.blacklink:hover {
+	background-color: var(--bg-color);
+	color: var(--font-color);
+	text-decoration: none;
+}
+a.blacklink:active {
+	background-color: var(--bg-color);
+	color: var(--font-color);
+	text-decoration: none;
+}
 
 input[type="search"]::-webkit-search-cancel-button {
 
@@ -76,6 +176,163 @@ html {
     width: 0px;  /* Remove scrollbar space */
     background: transparent;  /* Make scrollbar invisible */
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.header {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    position: fixed;
+    z-index: 10;
+}
+
+#sidebarMenu {
+    height: 526px;
+    position: fixed;
+    right: 0;
+    width: 310px;
+    margin-top: 0px;
+    transform: translateX(560px);
+    transition: transform 0ms ease-in-out;
+    z-index: 10100;
+   	background-color: var(--bg-color);
+}
+.sidebarMenuInner{
+    margin:45px 0 0 0;
+    padding:0;
+}
+.sidebarMenuInner li{
+    list-style: none;
+    color: var(--font-color);
+    text-transform: uppercase;
+    font-weight: normal;
+    padding: 15px 0px 15px 0;
+    margin: 0 30px 0 30px;
+.sidebarMenuInner li s}
+pan{
+    display: block;
+    font-size: 14px;
+    color: var(--font-color);
+}
+.sidebarMenuInner :hover{
+    color: #FF662B;
+}
+
+.sidebarMenuInner li a{
+    color: var(--icon-color);
+    text-transform: uppercase;
+    font-weight: normal;
+    cursor: pointer;
+    text-decoration: none;
+}
+input[type="checkbox"]:checked ~ #sidebarMenu {
+    transform: translateX(0);
+}
+
+input[type=checkbox] {
+    transition: all 0.3s;
+    box-sizing: border-box;
+    display: none;
+}
+.sidebarIconToggle {
+    transition: all 0.3s;
+    box-sizing: border-box;
+    cursor: pointer;
+    position: absolute;
+    z-index: 11000;
+    top: 22px;
+    left: 526px;
+    width: 22px;
+    height: 22px !important;
+    border: solid 0px red;
+}
+.spinner {
+    transition: all 0.3s;
+    box-sizing: border-box;
+    position: absolute;
+    height: 2px;
+    width: 100%;
+    background-color: var(--font-color);
+}
+.horizontal {
+    transition: all 0.3s;
+    box-sizing: border-box;
+    position: relative;
+    float: left;
+    margin-top: 3px;
+}
+.diagonal.part-1 {
+    position: relative;
+    transition: all 0.3s;
+    box-sizing: border-box;
+    float: left;
+}
+.diagonal.part-2 {
+    transition: all 0.3s;
+    box-sizing: border-box;
+    position: relative;
+    float: left;
+    margin-top: 3px;
+}
+input[type=checkbox]:checked ~ .sidebarIconToggle > .horizontal {
+    transition: all 0.3s;
+    box-sizing: border-box;
+    opacity: 0;
+}
+input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-1 {
+    transition: all 0.3s;
+    box-sizing: border-box;
+    transform: rotate(135deg);
+    margin-top: 8px;
+}
+input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
+    transition: all 0.3s;
+    box-sizing: border-box;
+    transform: rotate(-135deg);
+    margin-top: -7px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 .image_background_Class {
@@ -332,7 +589,7 @@ html {
 .title_uv_group_Class {
 	position: absolute;
 	left: 325px;
-	top: 80px;
+	top: 67px;
 	display: flex;
     flex-direction: row;
     align-items: center;
@@ -347,21 +604,18 @@ html {
 	position: relative;
 	text-align: left;
 	font-size: 15px;
-	color: rgba(27,41,52,1);
 }
 .title_powered_Class {
 	position: relative;
 	text-align: left;
 	font-weight: 250;
 	font-size: 9px;
-	color: rgba(27,41,52,1);
 }
 .title_version_Class {
 	position: relative;
 	text-align: left;
 	font-weight: 250;
 	font-size: 9px;
-	color: rgba(27,41,52,1);
 	margin-top: 2px;
 }
 
@@ -375,7 +629,6 @@ html {
 	text-align: center;
 	font-weight: 250;
 	font-size: 14px;
-	color: rgba(27,41,52,1);
     margin: 0 auto;
 }
 .setting_popup_Class {
@@ -388,7 +641,6 @@ html {
 	font-weight: 250;
 	font-size: 12px;
 	line-height: 20px;
-	color: rgba(27,41,52,1);
     padding: 30px 30px 0 30px;
     overflow: hidden;
     display: block;
@@ -403,46 +655,39 @@ html {
 	position: relative;
 	text-align: left;
 	font-weight: normal;
-	color: rgba(27,41,52,1);
 	margin-top: 15px;
 }
 .setting_body_badge_Class {
 	position: relative;
 	text-align: left;
 	font-weight: normal;
-	color: rgba(27,41,52,1);
 }
 .setting_title_temp_Class {
 	position: relative;
 	text-align: left;
 	font-weight: normal;
-	color: rgba(27,41,52,1);
 }
 .setting_body_temp_Class {
 	position: relative;
 	text-align: left;
 	font-weight: normal;
-	color: rgba(27,41,52,1);
 }
 .setting_defualt_text_uv_Class {
 	position: relative;
 	text-align: left;
 	font-weight: normal;
-	color: rgba(27,41,52,1);
 }
 .setting_defualt_text_tempc_Class {
 	position: relative;
 	text-align: left;
 	font-weight: normal;
 	font-size: 12px;
-	color: rgba(27,41,52,1);
 }
 .setting_defualt_text_tempf_Class {
 	position: relative;
 	text-align: left;
 	font-weight: normal;
 	font-size: 12px;
-	color: rgba(27,41,52,1);
 }
 .icon_link_app_Class {
 	transform: rotate(-90deg);
@@ -468,9 +713,19 @@ html {
 	position: relative;
 }
 .hr_forecast {
-  	border-top: .5px black;
+    height: 1px;
+    border: 0;
+    background: var(--bg-color-hr); 
+    width: 116% !important;
+    margin-left: -9% !important;
   	margin-bottom: 8px;
   	margin-top: 7px;
+}
+.hr_forecast_menu {
+    height: 1px;
+    border: 0;
+    background: var(--bg-color-hr); 
+    width: 100% !important;
 }
 .forecast_day_Class {
 	position: relative;
@@ -480,7 +735,6 @@ html {
 	text-align: left;
 	font-weight: 250;
 	font-size: 16px;
-	color: rgba(27,41,52,1);
 }
 .forecast_uv_Class {
 	position: relative;
@@ -490,7 +744,6 @@ html {
 	text-align: left;
 	font-weight: 250;
 	font-size: 16px;
-	color: rgba(27,41,52,1);
 	padding-left: 10px;
 }
 .forecast_temp_Class {
@@ -501,7 +754,6 @@ html {
 	text-align: right;
 	font-weight: 250;
 	font-size: 16px;
-	color: rgba(27,41,52,1);
 	padding-right: 10px;
 }
 .forecast_icon_Class {
@@ -511,11 +763,11 @@ html {
 	width: 18px;
 	max-width: 18px;
 	display: inline-block;
-	background-color: #ffffff;
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
 	border: 0px solid transparent;
+	filter: var(--icon-color);
 }
 
 .link_text_app_Class {
@@ -568,7 +820,12 @@ html {
 .title_uv_group_Class_setting {
 	position: absolute;
 	left: 0px;
-	top: 70px;
+	top: 30px;
+}
+.title_uv_group_Class_report {
+	position: absolute;
+	left: 0px;
+	top: 67px;
 }
 .aboutUs_Class {
 	position: relative;
@@ -576,7 +833,6 @@ html {
 	font-weight: 250;
 	font-size: 12px;
 	line-height: 20px;
-	color: rgba(27,41,52,1);
     padding: 30px 30px 0 30px;
     overflow: hidden;
     display: block;
@@ -587,16 +843,15 @@ html {
 	text-align: center;
 	font-weight: 250;
 	font-size: 12px;
-	color: rgba(27,41,52,1);
-	width: 310px;
-    margin: 0 auto;
+	width: 250px;
+    margin: 0 30px 0 30px;
     margin-top: 10px;
 }
 .solar_table_Class {
 	position: absolute;
 	left: 30px;
 	right: 30px;
-	top: 160px;
+	top: 130px;
 }
 .solar_Class {
 	position: relative;
@@ -604,7 +859,6 @@ html {
 .solar_title_name_Class{
 	font-weight: 600;
 	font-size: 13px;
-	color: rgba(27,41,52,1);
 }
 .hr_forecast {
   	border-top: .5px black;
@@ -619,7 +873,6 @@ html {
 	text-align: left;
 	font-weight: 250;
 	font-size: 14px;
-	color: rgba(27,41,52,1);
 }
 .solar_time_Class {
 	position: relative;
@@ -629,20 +882,19 @@ html {
 	text-align: right;
 	font-weight: 250;
 	font-size: 14px;
-	color: rgba(27,41,52,1);
 	padding-left: 10px;
 }
 .next7_table_Class {
 	position: absolute;
 	left: 30px;
 	right: 30px;
-	top: 140px;
+	top: 110px;
 }
 .next48_table_Class {
 	position: absolute;
 	left: 30px;
 	right: 30px;
-	top: 140px;
+	top: 110px;
 }
 .forecast_day_modal_Class {
 	position: relative;
@@ -652,7 +904,6 @@ html {
 	text-align: left;
 	font-weight: 250;
 	font-size: 14px;
-	color: rgba(27,41,52,1);
 }
 .forecast_uv_modal_Class {
 	position: relative;
@@ -662,7 +913,6 @@ html {
 	text-align: left;
 	font-weight: 250;
 	font-size: 14px;
-	color: rgba(27,41,52,1);
 	padding-left: 5px;
 }
 .forecast_temp_modal_Class {
@@ -673,7 +923,6 @@ html {
 	text-align: right;
 	font-weight: 250;
 	font-size: 14px;
-	color: rgba(27,41,52,1);
 	padding-right: 2px;
 }
 .forecast_temp_min_modal_Class {
@@ -684,7 +933,6 @@ html {
 	text-align: right;
 	font-weight: 250;
 	font-size: 14px;
-	color: rgba(27,41,52,1);
 	padding-right: 15px;
 }
 .forecast_icon_modal_Class {
@@ -694,19 +942,18 @@ html {
 	width: 16px;
 	max-width: 16px;
 	display: inline-block;
-	background-color: #ffffff;
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
 	border: 0px solid transparent;
 	margin-left: 5px;
+	filter: var(--icon-color);
 }
 .summery_modal_Class {
 	position: relative;
 	font-weight: 250;
 	font-size: 12px;
 	line-height: 24px;
-	color: rgba(27,41,52,1);
     margin-bottom: 30px;
     padding: 0;
     overflow: hidden;
@@ -717,12 +964,11 @@ html {
 
 .text_setting_Class {
 	position: absolute;
-	top: 135px;
+	top: 105px;
 	text-align: left;
 	font-weight: 250;
 	font-size: 12px;
 	line-height: 20px;
-	color: rgba(27,41,52,1);
     padding: 10px 30px 0 30px;
     overflow: hidden;
     display: block;
@@ -735,7 +981,6 @@ html {
 	font-weight: 550;
 	font-size: 16px;
 	line-height: 20px;
-	color: rgba(27,41,52,1);
     padding: 25px 30px 0 30px;
     overflow: hidden;
     display: block;
@@ -743,12 +988,11 @@ html {
 }
 .rateUs_text_Class {
 	position: absolute;
-	top: 320px;
+	top: 290px;
 	text-align: center;
 	font-weight: 250;
 	font-size: 12px;
 	line-height: 20px;
-	color: rgba(27,41,52,1);
     padding: 10px 30px 0 30px;
     overflow: hidden;
     display: block;
@@ -766,6 +1010,7 @@ html {
 	background-size: cover;
 	vertical-align: center;
     margin-top: 5px;
+    filter: var(--icon-color);
 }
 .supportUs_text_Class {
 	position: relative;
@@ -773,7 +1018,6 @@ html {
 	font-weight: 250;
 	font-size: 12px;
 	line-height: 20px;
-	color: rgba(27,41,52,1);
     padding: 5px 10px 0 10px;
     overflow: hidden;
     display: block;
@@ -791,7 +1035,7 @@ html {
  text-align: left;
  padding: 10px;
  border-radius: 3px;
- z-index: 10500;
+ z-index: 15000;
  opacity: 0;
  transition: opacity .6s;
  font-size: 12px;
@@ -805,10 +1049,12 @@ html {
  bottom: -50%;
  margin-left: 0;
  left: 0;
+ z-index: 15000; 
  }
  .tooltip-left {
  top: -5px;
- right: 128%;
+ right: 128%; 
+ z-index: 15000;
  }
  .tooltip-bottom {
  top: 125%;
@@ -816,18 +1062,20 @@ html {
  margin-top: 0 !important;
  padding-bottom: 10 !important;
  padding-top: 10px !important;
+ z-index: 15000;
  }
  .tooltip-right {
  top: -50%;
  left: 115%;
+ z-index: 15000;
  }
 
 .modal {
   position: absolute;
   width: 310px;
-  height: 456px;
+  height: 426px;
   left: 250px;
-  top: 0px;
+  top: 37px;
   max-width: 310px;
   display: none;
   vertical-align: right;
@@ -837,26 +1085,47 @@ html {
   -o-border-radius: 0px !important;
   -ms-border-radius: 0px !important;
   border-radius: 0px !important;
-  background-color: #ffffff;
+  background-color: var(--bg-color);
+  color: var(--font-color);
   z-index: 1000;
 }
+.modal_search {
+    position: absolute;
+    width: 310px;
+    height: 426px;
+    left: 250px;
+    top: 0;
+    max-width: 310px;
+    display: none;
+    vertical-align: right;
+    width: 100%;
+    -webkit-border-radius: 0px !important;
+    -moz-border-radius: 0px !important;
+    -o-border-radius: 0px !important;
+    -ms-border-radius: 0px !important;
+    border-radius: 0px !important;
+	background-color: var(--bg-color);
+	color: var(--font-color);
+    z-index: 12000;
+}
 .modal_next48 {
-  height: 456px;
-  overflow: auto;
-  position: absolute;
-  width: 310px;
-  left: 250px;
-  top: 0px;
-  max-width: 310px;
-  display: none;
-  vertical-align: right;
-  -webkit-border-radius: 0px !important;
-  -moz-border-radius: 0px !important;
-  -o-border-radius: 0px !important;
-  -ms-border-radius: 0px !important;
-  border-radius: 0px !important;
-  background-color: #ffffff;
-  z-index: 1100;
+	height: 412px;
+	overflow: auto;
+	position: absolute;
+	width: 310px;
+	left: 250px;
+	top: 37px;
+	max-width: 310px;
+	display: none;
+	vertical-align: right;
+	-webkit-border-radius: 0px !important;
+	-moz-border-radius: 0px !important;
+	-o-border-radius: 0px !important;
+	-ms-border-radius: 0px !important;
+	border-radius: 0px !important;
+	background-color: var(--bg-color);
+	color: var(--font-color);
+	 z-index: 1100;
 }
 .modal_close {
   position: absolute;
@@ -872,11 +1141,12 @@ html {
   background-size: cover;
   cursor: pointer;
   z-index: 10500;
+  filter: var(--icon-color);
 }
 .setting_unit_badge_Class {
 	position: absolute;
 	left: 30px;
-	top: 200px;
+	top: 170px;
   	font-size: 11px;
 }
 
@@ -895,7 +1165,6 @@ html {
   position: relative;
   text-align: left;
   font-size: 12px;
-  color: rgba(27,41,52,1);
   border: 1px solid #ccc;
   border-radius: 3px;
   color: #7f8c8d;
@@ -921,8 +1190,9 @@ html {
   transition: all 0.1s ease-in-out;
   -webkit-transition: all -webkit-transform 0.1s ease;
   overflow: hidden;
-  background-color: #ffffff;
-  width: 250px;  
+  width: 250px;
+  background-color: var(--bg-color);
+  color: var(--font-color);
 }
 
 .autoComplete_result {
@@ -931,10 +1201,10 @@ html {
   border: 0.05rem solid #e3e3e3;
   list-style: none;
   text-align: left;
-  color: rgb(123, 123, 123);
   transition: all 0.1s ease-in-out;
-  background-color: #fff;
   overflow: hidden;
+  background-color: var(--bg-color);
+  color: var(--font-color);
 }
 
 .autoComplete_result::selection {
@@ -949,13 +1219,13 @@ html {
 
 .autoComplete_result:hover {
   cursor: pointer;
-  background-color: #efefef;
+  background-color: var(--bg-color-autosearch);
   overflow: hidden;
 }
 
 .autoComplete_result:focus {
   outline: none;
-  background-color: #efefef;
+  background-color: var(--bg-color-autosearch);
   overflow: hidden;
 }
 
@@ -974,18 +1244,18 @@ html {
 
 .autoComplete_selected {
   cursor: pointer;
-  background-color: #efefef;
+  background-color: var(--bg-color-autosearch);
   overflow: hidden;
 }
 
 .no_result {
     margin: .15rem auto;
     padding: 0.6rem;
-    border: 0.05rem solid #e3e3e3;
     list-style: none;
     text-align: left;
     transition: all 0.1s ease-in-out;
-    background-color: #fff;
+	background-color: var(--bg-color);
+	color: var(--font-color);
     outline: none;
     white-space: normal;
   	line-height: 150%;
@@ -1040,7 +1310,6 @@ html {
 	text-align: left;
 	font-weight: 250;
 	font-size: 14px;
-	color: rgba(27,41,52,1);
 }
 .current_report_value_Class {
 	position: relative;
@@ -1049,7 +1318,6 @@ html {
 	text-align: left;
 	font-weight: 250;
 	font-size: 14px;
-	color: rgba(27,41,52,1);
 	padding-left: 5px;
 }
 .report_model_Class {
@@ -1057,28 +1325,29 @@ html {
 }
 .report_table_Class {
 	position: relative;
-	width: 220px;
-	max-width: 220px;
+	width: 250px;
+	max-width: 250px;
 	margin: 23px 30px 0 30px;
 }
 
 .modal_report {
-  height: 456px;
-  overflow: auto;
-  position: absolute;
-  width: 310px;
-  left: 250px;
-  top: 0px;
-  max-width: 310px;
-  display: none;
-  vertical-align: right;
-  -webkit-border-radius: 0px !important;
-  -moz-border-radius: 0px !important;
-  -o-border-radius: 0px !important;
-  -ms-border-radius: 0px !important;
-  border-radius: 0px !important;
-  background-color: #ffffff;
-  z-index: 1200;
+  	height: 450px;
+  	overflow: auto;
+  	position: absolute;
+  	width: 310px;
+  	left: 250px;
+  	top: 0px;
+  	max-width: 310px;
+  	display: none;
+  	vertical-align: right;
+  	-webkit-border-radius: 0px !important;
+  	-moz-border-radius: 0px !important;
+  	-o-border-radius: 0px !important;
+  	-ms-border-radius: 0px !important;
+  	border-radius: 0px !important;
+	background-color: var(--bg-color);
+	color: var(--font-color);
+  	z-index: 12000;
 }
 
 .setting_currentLocation_title_class{
@@ -1100,7 +1369,6 @@ html {
 	text-align: left;
 	font-weight: 250;
 	font-size: 13px;
-	color: rgba(27,41,52,1);
 	margin-right: 10px;
 	margin-left: 0;
 	padding-left: 0;
@@ -1113,7 +1381,6 @@ html {
 	text-align: left;
 	font-weight: 250;
 	font-size: 14px;
-	color: rgba(27,41,52,1);
 	padding-left: 25px;
 }
 
@@ -1162,6 +1429,7 @@ html {
 	width: 20px;
 	height: 20px;
 	filter: opacity(70%);
+	filter: var(--icon-color);
 }
 
 .sub_menu_current_Class {
@@ -1176,15 +1444,14 @@ html {
 .sub_menu_text_Class {
 	font-weight: 250;
 	font-size: 9px;
-	color: rgba(27,41,52,1);
 }
 
 .sub_menu_icon_Class:hover {
-	filter: invert(48%) sepia(52%) saturate(2544%) hue-rotate(342deg) brightness(101%) contrast(101%);
+	filter: invert(48%) sepia(52%) saturate(2544%) hue-rotate(342deg) brightness(101%) contrast(101%) !important;
 }
 
 .sub_menu_icon_active_Class {
-	filter: invert(48%) sepia(52%) saturate(2544%) hue-rotate(342deg) brightness(101%) contrast(101%);
+	filter: invert(48%) sepia(52%) saturate(2544%) hue-rotate(342deg) brightness(101%) contrast(101%) !important;
 }
 
 .report_button_Class:hover {
@@ -1226,27 +1493,25 @@ html {
   	position: absolute;	
 	left: 0px;
   	top: 0px;
-	bottom: 0px; 
 	width: 100%;
 	height: 526px;
 
 }
 
 .map_Class { 
+  	position: absolute;
 	left: 0px;
   	top: 0px;
-	bottom: 0px; 
 	width: 100%;
 	height: 526px;
-	z-index: 10300;
+	z-index: 12000;
 	visibility: hidden;
 }
 
 .modal_map_close {
   	position: absolute;
- 	top: 15.5px;
+  	top: 15.5px;
   	left: 15.5px;
-  	display: block;
   	width: 30px;
   	height: 30px;
   	background-image: url("/images/left-arrow.svg");
@@ -1255,7 +1520,7 @@ html {
   	background-repeat: no-repeat;
   	background-size: cover;
   	cursor: pointer;
-  	z-index: 10500;
+  	z-index: 13500;
   	visibility: hidden;
 }
 
@@ -1265,7 +1530,7 @@ html {
   	left: 15.5px;
   	display: block;
   	filter: drop-shadow( 2px 2px 2px rgba(0, 0, 0, .50));
-  	z-index: 10500;
+  	z-index: 13500;
 	text-align: left;
 	font-weight: 250;
 	font-size: 12px;
@@ -1424,8 +1689,8 @@ html {
 
 .search_home_Class {
 	position: absolute;
-	left: 530px;
-  	top: 15px;
+	left: 500px;
+  	top: 20px;
 }
 
 .menu_home_Class {
@@ -1438,13 +1703,13 @@ html {
 	position: relative;
 	text-align: center;
 	font-size: 16px;
-	color: rgba(27,41,52,1);
 	font-weight: 500!important;
 }
 .top_menu_icon_Class {
 	width: 17px;
 	height: 17px;
 	filter: opacity(50%);
+	filter: var(--icon-color);
 }
 .top_menu_icon_Class:hover {
 	filter: invert(48%) sepia(52%) saturate(2544%) hue-rotate(342deg) brightness(101%) contrast(101%);
@@ -1456,7 +1721,6 @@ html {
 	font-weight: 250;
 	font-size: 12px;
 	line-height: 20px;
-	color: rgba(27,41,52,1);
     display: block;
 }
 .currentLocation_button_Class {
@@ -1472,10 +1736,10 @@ html {
 	justify-content: center;
 }
  .button_current_location_Class {
-  background-color: rgba(27,41,52,0);
+  background-color: var(--bg-color);
+  color: var(--font-color);
   border: solid 1px #ccc;
   border-radius: 3px;
-  color: black;
   width: 250px;
   padding: 10px 30px;
   text-align: center;
@@ -1488,7 +1752,8 @@ html {
 
 .button_current_location_Class:hover { 
 	outline:1 !important; 
-	filter: invert(48%) sepia(52%) saturate(2544%) hue-rotate(342deg) brightness(101%) contrast(101%);
+	color: #FF662B;
+	border: solid 1px #FF662B;
 }
 
 .search_currentLocation_text_class {
@@ -1504,7 +1769,6 @@ html {
 	font-weight: 250;
 	font-size: 12px;
 	line-height: 20px;
-	color: rgba(27,41,52,1);
     padding: 0 auto;
     display: block;
     font-size: 10px;

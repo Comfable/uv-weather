@@ -4,6 +4,49 @@ chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
 document.addEventListener("DOMContentLoaded", function(event) {
 
 
+
+
+const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
+
+chrome.storage.local.get('theme', function(data) {
+    const currentTheme = data.theme;
+
+      if (currentTheme) {
+          document.documentElement.setAttribute('data-theme', currentTheme);
+        
+          if (currentTheme === 'dark') {
+              toggleSwitch.checked = true;
+          }
+      }
+
+      function switchTheme(e) {
+          if (e.target.checked) {
+              document.documentElement.setAttribute('data-theme', 'dark');
+              chrome.storage.local.set({'theme': 'dark'});
+              document.getElementById("checkbox").disabled = true;
+              delayButtonDarkmode();
+          }
+          else {
+              document.documentElement.setAttribute('data-theme', 'light');
+              chrome.storage.local.set({'theme': 'light'});
+              document.getElementById("checkbox").disabled = true;
+              delayButtonDarkmode();
+          }    
+      }
+
+      toggleSwitch.addEventListener('change', switchTheme, false);
+  });
+
+  
+
+  function delayButtonDarkmode() {
+      setTimeout(function() {
+      document.getElementById("checkbox").disabled = false;
+    }, 1500);
+  };
+
+
+
 if(navigator.onLine) {
 
   window.onload = function() { 
@@ -906,9 +949,27 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
 
   var modalCurrent = document.getElementById("currentReport_popup");
 
+  // document.querySelector("#sidebar_darkmode").addEventListener("click", (e) => {
+  //   //document.getElementById("openSidebarMenu").checked = false;
+  //   var element = document.body;
+  //   element.classList.toggle("darkmode_style");
+
+  //   var sidebar_darkmode = document.getElementById("sidebar_darkmode");
+
+  //     if(sidebar_darkmode.innerHTML === "ENABLE NIGHT MODE") {
+  //       sidebar_darkmode.innerHTML = "DISABLE NIGHT MODE";
+  //       chrome.storage.local.set({'darkmode': 0});
+  //     } else 
+  //       {
+  //       sidebar_darkmode.innerHTML = "ENABLE NIGHT MODE";
+  //       chrome.storage.local.set({'darkmode': 1});
+  //     }      
+  // });
+
   document.querySelector("#map_popup_page").addEventListener("click", (e) => {
+    closeAllPopup();
     removeClassIcons();
-    setTimeout(function(){
+    setTimeout(function() {
       document.getElementById("map_popup_close").style.visibility = "visible";
     }, 300);
     mapTitle.style.visibility = "visible";
@@ -934,7 +995,35 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
     currentSubMenu.classList.add("sub_menu_current_Class");    
   });
 
+  document.querySelector("#sidebar_search").addEventListener("click", (e) => {
+    document.getElementById("openSidebarMenu").checked = false;
+    closeAllPopup();
+    removeClassIcons();
+    modalSearch.style.display = "block";
+
+    var currentIcon = document.getElementById("home_icon_popup_page");
+    currentIcon.classList.add("sub_menu_current_icon_Class");
+
+    var currentSubMenu = document.getElementById("sub_menu_home");
+    currentSubMenu.classList.add("sub_menu_current_Class");    
+  });
+
   document.querySelector("#setting_popup_page").addEventListener("click", (e) => {
+    closeAllPopup();
+    removeClassIcons();    
+    modalSetting.style.display = "block";
+    var element = document.getElementById("setting_icon_popup_page");
+    element.classList.add("sub_menu_icon_active_Class");
+
+    var currentIcon = document.getElementById("setting_icon_popup_page");
+    currentIcon.classList.add("sub_menu_current_icon_Class");
+
+    var currentSubMenu = document.getElementById("sub_menu_setting");
+    currentSubMenu.classList.add("sub_menu_current_Class");
+  });
+
+  document.querySelector("#sidebar_setting").addEventListener("click", (e) => {
+    document.getElementById("openSidebarMenu").checked = false;
     closeAllPopup();
     removeClassIcons();    
     modalSetting.style.display = "block";
@@ -1004,27 +1093,29 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
   });
 
   document.querySelector("#location").addEventListener("click", (e) => { 
-    closeAllPopup();
-    removeClassIcons();
-    modalSearch.style.display = "block";
+    document.getElementById("openSidebarMenu").checked = false;
+      closeAllPopup();
+      removeClassIcons();
+      modalSearch.style.display = "block";
 
-    var currentIcon = document.getElementById("home_icon_popup_page");
-    currentIcon.classList.add("sub_menu_current_icon_Class");
+      var currentIcon = document.getElementById("home_icon_popup_page");
+      currentIcon.classList.add("sub_menu_current_icon_Class");
 
-    var currentSubMenu = document.getElementById("sub_menu_home");
-    currentSubMenu.classList.add("sub_menu_current_Class");
+      var currentSubMenu = document.getElementById("sub_menu_home");
+      currentSubMenu.classList.add("sub_menu_current_Class");
   });
 
   document.querySelector("#report_button").addEventListener("click", (e) => {
-    closeAllPopup();
-    removeClassIcons();
-    modalCurrent.style.display = "block";
+    document.getElementById("openSidebarMenu").checked = false;
+        closeAllPopup();
+        removeClassIcons();
+        modalCurrent.style.display = "block";
 
-    var currentIcon = document.getElementById("home_icon_popup_page");
-    currentIcon.classList.add("sub_menu_current_icon_Class");
+        var currentIcon = document.getElementById("home_icon_popup_page");
+        currentIcon.classList.add("sub_menu_current_icon_Class");
 
-    var currentSubMenu = document.getElementById("sub_menu_home");
-    currentSubMenu.classList.add("sub_menu_current_Class");
+        var currentSubMenu = document.getElementById("sub_menu_home");
+        currentSubMenu.classList.add("sub_menu_current_Class");
   });
 
 
@@ -1072,6 +1163,7 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
   });
 
   document.querySelector("#image_background").addEventListener("click", (e) => {
+    document.getElementById("openSidebarMenu").checked = false;
     closeAllPopup();
     removeClassIcons();
 

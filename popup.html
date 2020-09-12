@@ -32,6 +32,48 @@
 
 <!-- aside -->
   <aside id="image_background" class="image_background_Class"></aside>
+
+
+<div class="header"></div>
+  <input type="checkbox" class="openSidebarMenu" id="openSidebarMenu">
+    <label for="openSidebarMenu" class="sidebarIconToggle">
+      <div class="spinner diagonal part-1"></div>
+      <div class="spinner horizontal"></div>
+      <div class="spinner diagonal part-2"></div>
+    </label>
+  </input>
+
+  <div id="sidebarMenu">
+    <ul class="sidebarMenuInner">
+      <a id="sidebar_search" class="whitelink"><li>Search Location</li></a>
+            
+        <hr class="hr_forecast_menu">
+
+      <li>
+          <div class="theme-switch-wrapper">
+              <sp>Enable Dark Mode</sp>
+               <label class="theme-switch" for="checkbox">
+                <input type="checkbox" id="checkbox" />
+                <div class="slider round"></div>
+              </label>
+          </div>
+      </li>
+
+        <hr class="hr_forecast_menu">
+
+      <a id="sidebar_setting" class="whitelink"><li>Setting</li></a>
+        <hr class="hr_forecast_menu">
+      <a href="https://uvweather.net/faq/" target="_blank" class="whitelink"><li>Help Center</li></a>
+        <hr class="hr_forecast_menu">
+      <a href="https://uvweather.net/request-a-feature" target="_blank" class="whitelink"><li>Request a Feature</li></a>
+        <hr class="hr_forecast_menu">
+      <a href="https://chrome.google.com/webstore/detail/uv-weather/ngeokhpbgoadbpdpnplcminbjhdecjeb" target="_blank" class="whitelink"><li>Write a Review</li></a>
+        <hr class="hr_forecast_menu">
+      <a href="https://uvweather.net/about/" target="_blank" class="whitelink"><li>About Us</li></a>
+    </ul>
+  </div>
+
+
   <div id="current_icon_update" class="current_icon_update"></div>
   <div id="current_temp_group" class="current_temp_group_Class"> <span id="current_temp" class="current_temp_Class">17</span>
     <span>
@@ -56,6 +98,7 @@
   <div>
     <div id="report_button" class="report_button_Class" href="#currentReport_popup"> 
       <button class="button_current_report_Class">Full Report</button>
+      <input type="checkbox" name="openSidebarMenu" class="openSidebarMenu" id="openSidebarMenu"></input>
     </div>
 
   </div>
@@ -175,14 +218,9 @@
     </a>
   </div>
 
-<!--   <div class="menu_home_Class"> 
-    <a id="menu_popup_page" class="menu_popup_page_Class blacklink">
-      <img src="images/menu.svg" class="top_menu_icon_Class" />
-    </a>
-  </div> -->
-
     <div id="forecast_tomorrow" class="forecast_tomorrow_Class"> <span>Forecast Tomorrow</span>
     </div>
+
 
 
     <div id="title_uv" class="title_uv_group_Class">
@@ -192,15 +230,12 @@
         <span>
           <span id="title_uv" class="title_uv_Class">UV Weather</span>
           <a target='_blank' href="https://qsun.co/?utm_source=uvweather&utm_medium=extension&utm_campaign=UV%20Weather" class="blacklink"> 
-              <a target='_blank' href="https://qsun.co/?utm_source=uvweather&utm_medium=extension&utm_campaign=UV%20Weather" class="blacklink"> 
                 <div id="title_powered" class="title_powered_Class">powered by QSun<sup>®</sup></div>
-              </a>
           </a>  
           <div id="title_version_home" class="title_version_Class">Version 1.0.10</div>
         </span>
 
     </div>
-
 
 
     <div id="forecast" class="forecast_Class">
@@ -264,7 +299,7 @@
     <div id="main_menu2" class="main_menu_culumn_Class">
 
         <span id="sub_menu_next7" class="sub_menu_culumn_Class">
-          <a id="next7_day" class="blacklink" href="#next7_popup"> 
+          <a id="next7_day" class="blacklink"> 
           <div>
             <img src="images/menu/calendar.svg" id="next7_icon_popup_page" class="sub_menu_icon_Class" />
             </div>
@@ -274,7 +309,7 @@
         </span>
 
         <span id="sub_menu_next48" class="sub_menu_culumn_Class">
-          <a id="next48" class="blacklink" href="#next48_popup">
+          <a id="next48" class="blacklink">
           <div>
             <img src="images/menu/clock.svg" id="next48_icon_popup_page" class="sub_menu_icon_Class" />
             </div>
@@ -319,7 +354,7 @@
 
 
     <!-- Search Page -->
-      <div id="search_popup" class="modal">
+      <div id="search_popup" class="modal_search">
         <div id="search_popup_close" class="modal_close"></div>
         <div id="searchBox" class="searchBox_Class">
 
@@ -803,7 +838,7 @@
     <!-- Report Page -->
     <div id="currentReport_popup" class="modal_report">
           <div id="report_popup_close" class="modal_close"></div>
-      <div id="title_report" class="title_uv_group_Class_setting">
+      <div id="title_report" class="title_uv_group_Class_report">
             <div id="title_report_text" class="title_page_Class">Current</div>
             <div id="report_update_date" class="title_subtitle_modal_Class"></div>
             <div id="current_report_summary" class="title_subtitle_modal_Class">-</div>
