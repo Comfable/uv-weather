@@ -37,9 +37,9 @@
   </span>
   </div>
   <div>
-    <a id="next48" class="next48_Class whitelink" href="#next48_popup"> 
-      <span>Next 24 Hours</span>
-    </a>
+    <div id="report_button" class="report_button_Class" href="#currentReport_popup"> 
+      <button class="button_current_report_Class">Full Report</button>
+    </div>
   </div>
   <div id="current_temp_maxmin_group" class="current_temp_maxmin_Class"> 
     <span id="current_temp_max_group" class="current_temp_max_Class tooltip">
@@ -173,7 +173,7 @@
     <hr class="hr_forecast">
   <div id="next7_day" class="next7_day_Class">
     <span><a id="forecast_next7_day" class="forecast_next7_day_Class blacklink" href="#next7_popup">
-      7 Days Forecast →
+      Hourly & Daily Forecasts →
     </a></span>
       </div>
     </div>
@@ -222,8 +222,8 @@
         <div id="setting_search_text" class="setting_search_text_class">By default, UV Weather uses your current location. However, you can select a different location.
           <br>
           <br>
-          <div id="setting_currentLocation_title" class="setting_currentLocation_title_class"><b>Current Location</b></div>
-          <div id="setting_currentLocation_text" class="setting_currentLocation_text_class">-</div>
+          <div id="setting_currentLocation_title" class="setting_currentLocation_title_class">Current Location:<b></div>
+          <div id="setting_currentLocation_text" class="setting_currentLocation_text_class"><b>-<b></div>
         </div>
       </div>
 
@@ -602,6 +602,135 @@
         <br>
       </div>
     </div>
+
+
+
+
+    <!-- Report Page -->
+    <div id="currentReport_popup" class="modal">
+          <div id="report_popup_close" class="modal_close"></div>
+          <div id="title_report" class="title_uv_group_Class_setting">
+            <div id="title_report_text" class="title_uv_Class">Current</div>
+            <div id="report_update_date" class="title_subtitle_modal_Class">October 25, 2019</div>
+            <div id="current_report_summary" class="title_subtitle_modal_Class">-</div>
+          </div>
+
+      <div class="report_table_Class">
+
+          <div id="report_1" class="report_model_Class"> 
+            <span id="current_report_title_1" class="current_report_title_Class">
+              Temperature
+            </span>
+              <span id="current_report_temp" class="current_report_value_Class">
+              value
+            </span>
+          </div>
+
+        <hr class="hr_forecast">
+
+          <div id="report_2" class="report_model_Class"> 
+            <span id="current_report_title_2" class="current_report_title_Class">
+              AccuFeel
+            </span>
+              <span id="current_report_accufeel" class="current_report_value_Class">
+              value
+            </span>
+          </div>
+
+        <hr class="hr_forecast">
+
+          <div id="report_3" class="report_model_Class"> 
+            <span id="current_report_title_3" class="current_report_title_Class">
+              UV Index
+            </span>
+              <span id="current_report_uv" class="current_report_value_Class">
+              value
+            </span>
+          </div>
+
+        <hr class="hr_forecast">
+
+          <div id="report_4" class="report_model_Class"> 
+            <span id="current_report_title_4" class="current_report_title_Class">
+              Wind Speed
+            </span>
+              <span id="current_report_wind" class="current_report_value_Class">
+              value
+            </span>
+          </div>
+
+        <hr class="hr_forecast"> 
+
+          <div id="report_5" class="report_model_Class"> 
+            <span id="current_report_title_5" class="current_report_title_Class">
+              Humidity
+            </span>
+              <span id="current_report_humidity" class="current_report_value_Class">
+              value
+            </span>
+          </div>
+
+        <hr class="hr_forecast">
+
+          <div id="report_6" class="report_model_Class"> 
+            <span id="current_report_title_6" class="current_report_title_Class">
+              Dew Point
+            </span>
+              <span id="current_report_dewPoint" class="current_report_value_Class">
+              value
+            </span>
+          </div>
+
+        <hr class="hr_forecast">  
+
+          <div id="report_7" class="report_model_Class"> 
+            <span id="current_report_title_7" class="current_report_title_Class">
+              Visibility
+            </span>
+              <span id="current_report_visibility" class="current_report_value_Class">
+              value
+            </span>
+          </div>
+
+        <hr class="hr_forecast"> 
+
+          <div id="report_8" class="report_model_Class"> 
+            <span id="current_report_title_8" class="current_report_title_Class">
+              Pressure
+            </span>
+              <span id="current_report_pressure" class="current_report_value_Class">
+              value
+            </span>
+          </div>
+
+        <hr class="hr_forecast"> 
+
+          <div id="report_8" class="report_model_Class"> 
+            <span id="current_report_title_8" class="current_report_title_Class">
+              Cloud Cover
+            </span>
+              <span id="current_report_cloud" class="current_report_value_Class">
+              value
+            </span>
+          </div>
+
+        <hr class="hr_forecast"> 
+
+          <div id="report_8" class="report_model_Class"> 
+            <span id="current_report_title_8" class="current_report_title_Class">
+              Ozone
+            </span>
+              <span id="current_report_ozone" class="current_report_value_Class">
+              value
+            </span>
+          </div>          
+      </div>
+
+    </div>
+
+
+
+
     <!-- Next 7 Days Page -->
     <div id="next7_popup" class="modal">
       <div id="next7_popup_close" class="modal_close"></div>
@@ -729,6 +858,11 @@
       c
     </div>
 
+    <span>
+      <a id="next48" class="next48_Class blacklink" href="#next48_popup">
+      Next 24 Hours → </a>
+    </span>
+
   </div>
 
 </div>
@@ -752,7 +886,7 @@
 
         <div id="solar_8" class="solar_Class">
             <span id="solar_8_name" class="solar_name_Class tooltip">
-              DAWN
+              Dawn
             <span class="tooltiptext tooltip-top">Morning nautical twilight ends</span>
           </span>
           <span id="solar_8_time" class="solar_time_Class">
@@ -762,7 +896,7 @@
         <hr class="hr_forecast">
         <div id="solar_1" class="solar_Class"> 
             <span id="solar_1_name" class="solar_name_Class tooltip">
-              RISE
+              Rise
             <span class="tooltiptext tooltip-top">Top edge of the sun appears on the horizon</span>
           </span>  
           <span id="solar_1_time" class="solar_time_Class">
@@ -772,7 +906,7 @@
         <hr class="hr_forecast">
         <div id="solar_5" class="solar_Class"> 
             <span id="solar_5_name" class="solar_name_Class tooltip">
-              GOLDEN HOUR ENDS
+              Golden Hour Ends
             <span class="tooltiptext tooltip-top">Soft light, best time for photography</span>
           </span>           
           <span id="solar_5_time" class="solar_time_Class">
@@ -782,7 +916,7 @@
         <hr class="hr_forecast">
         <div id="solar_3" class="solar_Class"> 
             <span id="solar_3_name" class="solar_name_Class tooltip">
-              PEAK
+              Peak
              <span class="tooltiptext tooltip-top">Sun is in the highest position</span>
           </span>
           <span id="solar_3_time" class="solar_time_Class">
@@ -792,7 +926,7 @@
         <hr class="hr_forecast">
         <div id="solar_6" class="solar_Class"> 
             <span id="solar_6_name" class="solar_name_Class tooltip">
-              GOLDEN HOUR STARTS
+              Golden Hour Starts
             <span class="tooltiptext tooltip-top">Soft light, best time for photography</span>
           </span>
           <span id="solar_6_time" class="solar_time_Class">
@@ -802,7 +936,7 @@
         <hr class="hr_forecast">
         <div id="solar_2" class="solar_Class"> 
             <span id="solar_2_name" class="solar_name_Class tooltip">
-              SET
+              Set
             <span class="tooltiptext tooltip-top">Sun disappears below the horizon</span>
           </span>
           <span id="solar_2_time" class="solar_time_Class">
@@ -812,7 +946,7 @@
         <hr class="hr_forecast">
         <div id="solar_7" class="solar_Class"> 
           <span id="solar_7_name" class="solar_name_Class tooltip">
-            DUSK
+            Dusk
             <span class="tooltiptext tooltip-top">Evening nautical twilight starts</span>
           </span>
           <span id="solar_7_time" class="solar_time_Class">
@@ -822,7 +956,7 @@
         <hr class="hr_forecast">
         <div id="solar_9" class="solar_Class"> 
           <span id="solar_9_name" class="solar_name_Class tooltip">
-            NIGHT STARTS
+            Night Starts
             <span class="tooltiptext tooltip-top">Dark enough for astronomical observations</span>
           </span>
           <span id="solar_9_time" class="solar_time_Class">
@@ -832,7 +966,7 @@
         <hr class="hr_forecast">
         <div id="solar_4" class="solar_Class"> 
           <span id="solar_4_name" class="solar_name_Class">
-            LENGTH
+            Length
           </span>
           <span id="solar_4_time" class="solar_time_Class">
             -:-
@@ -877,6 +1011,7 @@
         </div>
 
     </div>
+
 
 
 </body>

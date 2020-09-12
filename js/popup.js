@@ -195,9 +195,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 
   function ctemp(){
+      document.querySelector("#current_report_dewPoint").textContent = b.dewPointC + "°";
       document.querySelector("#current_temp").textContent = b.temperatureC;
+      document.querySelector("#current_report_temp").textContent = b.temperatureC + "°";
       document.querySelector("#temp_sign").textContent = "°C"
       document.querySelector("#current_accufeel").textContent = "AccuFeel " + b.accufeelResultC + "°";
+      document.querySelector("#current_report_accufeel").textContent = b.accufeelResultC + "°";
       document.querySelector("#current_temp_max").textContent = b.current_tempC_max + "°";
       document.querySelector("#current_temp_min").textContent = b.current_tempC_min + "°";
       document.querySelector("#forecast_tomorrow").textContent = b.update_tomorrow_c;
@@ -220,9 +223,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
   }
 
   function ftemp(){
+    document.querySelector("#current_report_dewPoint").textContent = b.dewPointF + "°";
     document.querySelector("#current_temp").textContent = b.temperatureF;
+    document.querySelector("#current_report_temp").textContent = b.temperatureF + "°";
     document.querySelector("#temp_sign").textContent = "°F"
     document.querySelector("#current_accufeel").textContent = "AccuFeel " + b.accufeelResultF + "°";
+    document.querySelector("#current_report_accufeel").textContent = b.accufeelResultF + "°";    
     document.querySelector("#current_temp_max").textContent = b.current_tempF_max + "°";
     document.querySelector("#current_temp_min").textContent = b.current_tempF_min + "°";
     document.querySelector("#forecast_tomorrow").textContent = b.update_tomorrow_f;
@@ -351,6 +357,20 @@ document.addEventListener("DOMContentLoaded", function(event) {
   }
   next7Function();
 
+
+ function reportFunction() {
+    document.querySelector("#title_report_text").textContent = b.citys;
+    document.querySelector("#current_report_summary").textContent = b.summary;
+    document.querySelector("#report_update_date").textContent = dayjs.unix(b.updateTime + b.offsetUnix).format('MMM DD, h:mm A');
+    document.querySelector("#current_report_uv").textContent = b.uv1 + " " + b.current_uv_note;
+    document.querySelector("#current_report_wind").textContent = Math.round(b.windSpeedMPH) + " MPH";
+    document.querySelector("#current_report_humidity").textContent = b.humidity + "%";
+    document.querySelector("#current_report_visibility").textContent = b.visibility + " MI";
+    document.querySelector("#current_report_pressure").textContent = b.pressure + " MB";
+    document.querySelector("#current_report_cloud").textContent = Math.round(b.cloudCover * 100) + "%";
+    document.querySelector("#current_report_ozone").textContent = b.ozone + " DU";
+  }
+  reportFunction();
 
   function next48Function() {
     document.querySelector("#next48_update_date").textContent = 'Updated at ' + dayjs.unix(b.updateTime + b.offsetUnix).format('MMM DD, h:mm A');
@@ -634,6 +654,7 @@ var modalInfo = document.getElementById("info_popup");
 var modal7days = document.getElementById("next7_popup");
 var modal48hours = document.getElementById("next48_popup");
 var location = document.getElementById("location");
+var modalCurrent = document.getElementById("currentReport_popup");
 
 document.querySelector("#setting_popup_page").addEventListener("click", (e) => { 
     modalSetting.style.display = "block";
@@ -655,13 +676,19 @@ document.querySelector("#next7_day").addEventListener("click", (e) => {
     modalBlocker.style.display = "block";
   });
 
-document.querySelector("#next48").addEventListener("click", (e) => { 
+document.querySelector("#next48").addEventListener("click", (e) => {
+    modal7days.style.display = "none";
     modal48hours.style.display = "block";
     modalBlocker.style.display = "block";
   });
 
 document.querySelector("#location").addEventListener("click", (e) => { 
     modalSetting.style.display = "block";
+    modalBlocker.style.display = "block";
+  });
+
+document.querySelector("#report_button").addEventListener("click", (e) => { 
+    modalCurrent.style.display = "block";
     modalBlocker.style.display = "block";
   });
 
@@ -690,6 +717,11 @@ document.querySelector("#info_popup_close").addEventListener("click", (e) => {
     modalBlocker.style.display = "none";
   });
 
+document.querySelector("#report_popup_close").addEventListener("click", (e) => {
+    modalCurrent.style.display = "none";
+    modalBlocker.style.display = "none";
+  });
+
 
 document.querySelector("#setting_popup_modalBlocker").addEventListener("click", (e) => {
     modalSetting.style.display = "none";
@@ -697,6 +729,7 @@ document.querySelector("#setting_popup_modalBlocker").addEventListener("click", 
     modal7days.style.display = "none";
     modalSolar.style.display = "none";
     modalInfo.style.display = "none";
+    modalCurrent.style.display = "none";
     modalBlocker.style.display = "none";
   });
 
@@ -723,6 +756,7 @@ document.querySelector("#setting_popup_modalBlocker").addEventListener("click", 
     solarFunction();
     next48Function();
     next7Function();
+    reportFunction();
     trackYour();
 
     }, 250);

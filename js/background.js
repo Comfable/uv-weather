@@ -108,12 +108,15 @@ function uvReader(city,latandlong,country) {
 	temperatureF =  Math.round(result.currently.temperature);
 	temperatureC =  f2c(temperatureF);
 	humidity = 100 * (result.currently.humidity);
-	dewPoint = Math.round(result.currently.dewPoint);
-	pressure = result.currently.pressure;
+	dewPointF = Math.round(result.currently.dewPoint);
+	dewPointC = f2c(dewPointF);
+	pressure = Math.round(result.currently.pressure);
 	windSpeedMPH = result.currently.windSpeed; //miles per hour
 		windSpeedMS10 = windSpeedMPH * 0.4470389; //meter per second
 		windSpeedMS = windSpeedMS10 * 0.33; // on humun hieght an urban area
-	cloudCover = result.currently.cloudCover;
+	visibility = Math.round(result.currently.visibility);
+	ozone = Math.round(result.currently.ozone);
+
 	summary = result.currently.summary;
 	summaryHourlyF = result.hourly.summary;
 	summaryDailyF = result.daily.summary;
@@ -262,6 +265,7 @@ function uvReader(city,latandlong,country) {
 		if (isDay && sunnyDay){
 			chrome.browserAction.setBadgeBackgroundColor({color: '#fc923b'});
 			chrome.browserAction.setIcon({path : { "128": "images/sun-128.png"}})
+			console.log("*********** 1 ")
 			}
 		else if (isDay && cloudy){
 			chrome.browserAction.setBadgeBackgroundColor({color: '#549dd0'});

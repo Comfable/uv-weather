@@ -159,9 +159,9 @@ html {
 .location_Class_adj {
 	margin: 0 0 6px 6px;
 }
-.next48_Class {
+.report_button_Class {
 	position: absolute;
-	top: 360px;
+	top: 348px;
 	width: 250px;
 	margin: 0 auto;
 	font-weight: 250;
@@ -1077,3 +1077,63 @@ html {
     background-color: #fff;
     outline: none;
   }
+
+ .button_current_report_Class {
+  background-color: rgba(27,41,52,0);
+  border: solid 1px white;
+  border-radius: 20px;
+  color: white;
+  padding: 10px 30px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  margin: 4px 2px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.button_current_report_Class:focus { outline:0 !important; }
+
+.next48_Class {
+	position: absolute;
+	left: 0px;
+	top: 312px;
+	width: 100px;
+	max-width: 100px;
+	display: inline-block;
+	text-align: left;
+	font-weight: 250;
+	font-size: 14px;
+	color: rgba(27,41,52,1);
+}
+.current_report_title_Class {
+	position: relative;
+	width: 180px;
+	max-width: 180px;
+	display: inline-block;
+	text-align: left;
+	font-weight: 250;
+	font-size: 14px;
+	color: rgba(27,41,52,1);
+}
+.current_report_value_Class {
+	position: relative;
+	width: 100px;
+	max-width: 100px;
+	display: inline-block;
+	text-align: left;
+	font-weight: 250;
+	font-size: 14px;
+	color: rgba(27,41,52,1);
+	padding-left: 5px;
+}
+.report_model_Class {
+	position: relative;
+}
+.report_table_Class {
+	position: absolute;
+	left: 30px;
+	right: 30px;
+	top: 180px;
+}
