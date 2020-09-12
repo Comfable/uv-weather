@@ -3,15 +3,17 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>UV Weather</title>
-    <script src="accufeel.min.js"></script>  
-    <script src="jquery-3.4.1.min.js"></script>
-    <link href="/popup.css" media="screen" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="background.js"></script>
-    <script type="text/javascript" src="popup.js"></script>
-    <script src="moment.min.js"></script>
-    <script src="jquery.powertip.min.js"></script> 
-    <script type="text/javascript" src="ga.js"></script>
-    <link rel="stylesheet" type="text/css" href="/jquery.powertip.css" />
+    <script src="/library/accufeel.min.js"></script>  
+    <script src="/library/jquery-3.4.1.min.js"></script>
+    <link href="/css/popup.css" media="screen" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="/js/background.js"></script>
+    <script type="text/javascript" src="/js/popup.js"></script>
+    <script src="/library/moment.min.js"></script>
+    <script src="/library/jquery.powertip.min.js"></script> 
+    <script type="text/javascript" src="/library/ga.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/jquery.powertip.css" />
+    <script type="text/javascript" src="/library/jquery.modal.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/jquery.modal.css" />
 </head>
 
 
@@ -66,17 +68,17 @@
       <span id="current_uv_note" class="current_uv_note_Class">(-)</span>
     </div>
 
-    <div id="icon_uv" class="icon_uv_Class"  title="<b>Recommended Sun Protection</b><br><br>
-      <img id='icon_uv_2' src='images/uv_icon/uv_2_g.svg' class='icon_uv_tip_Class'/> Apply sunscreen<br>
-      <img id='icon_uv_1' src='images/uv_icon/uv_1_g.svg' class='icon_uv_tip_Class'/> Wear UV blocking sunglasses<br>
-      <img id='icon_uv_3' src='images/uv_icon/uv_3_g.svg' class='icon_uv_tip_Class'/> Wear a hat<br>
-      <img id='icon_uv_4' src='images/uv_icon/uv_4_g.svg' class='icon_uv_tip_Class'/> Wear sunprotective clothing<br>
-      <img id='icon_uv_5' src='images/uv_icon/uv_5_g.svg' class='icon_uv_tip_Class'/> Stay in the shade<br>
-      <img id='icon_uv_6' src='images/uv_icon/uv_6_g.svg' class='icon_uv_tip_Class'/> Reduce time in the sun">
+    <div id="icon_uv" class="icon_uv_Class" title="<b>Recommended Sun Protection</b><br><br>
+      <img id='icon_uv_10' src='images/uv_icon/uv_1_g.svg' class='icon_uv_tip_Class'/> Apply sunscreen<br>
+      <img id='icon_uv_20' src='images/uv_icon/uv_2_g.svg' class='icon_uv_tip_Class'/> Wear UV blocking sunglasses<br>
+      <img id='icon_uv_30' src='images/uv_icon/uv_3_g.svg' class='icon_uv_tip_Class'/> Wear a hat<br>
+      <img id='icon_uv_40' src='images/uv_icon/uv_4_g.svg' class='icon_uv_tip_Class'/> Wear sunprotective clothing<br>
+      <img id='icon_uv_50' src='images/uv_icon/uv_5_g.svg' class='icon_uv_tip_Class'/> Stay in the shade<br>
+      <img id='icon_uv_60' src='images/uv_icon/uv_6_g.svg' class='icon_uv_tip_Class'/> Reduce time in the sun">
       
       <img id="info_icon" src="images/informationLine.svg" class="icon_uv_all_Class"/>
-      <img id="icon_uv_2" src="images/uv_icon/uv_2_g.svg" class="icon_uv_all_Class"/>
       <img id="icon_uv_1" src="images/uv_icon/uv_1_g.svg" class="icon_uv_all_Class"/>
+      <img id="icon_uv_2" src="images/uv_icon/uv_2_g.svg" class="icon_uv_all_Class"/>
       <img id="icon_uv_3" src="images/uv_icon/uv_3_g.svg" class="icon_uv_all_Class"/>
       <img id="icon_uv_4" src="images/uv_icon/uv_4_g.svg" class="icon_uv_all_Class"/>
       <img id="icon_uv_5" src="images/uv_icon/uv_5_g.svg" class="icon_uv_all_Class"/>
@@ -112,10 +114,10 @@
       UV Weather
     </div>
     <div id="title_powered" class="title_powered_Class" title="Find out more on <br> offical <a target='_blank' href='https://qsun.co' class='whitelink'> QSun website</a>">
-      powered by QSun<sup>©</sup>
+      powered by QSun<sup>®</sup>
     </div>
     <div id="title_version" class="title_version_Class">
-      Version 1.00
+      Version 1.0.10
     </div>
   </div>
 
@@ -166,6 +168,7 @@
     </span>
   </div>
 </div>
+
 
   <div id="setting_popup" class="setting_popup_Class">
     <div id="setting_temp" class="setting_title_temp_Class">

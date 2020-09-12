@@ -9,27 +9,30 @@
 				  
 				    var city = JSON.stringify(result.city);
 				    var countryAPI = JSON.stringify(result.country);
+				    var region = JSON.stringify(result.region);
 				    var latandlong = JSON.stringify(result.cityLatLong);
-
 					if (city == null || city == undefined || city == "?" || latandlong == null || latandlong == undefined || countryAPI == undefined || countryAPI == null || countryAPI == "?") {
-        				var city = "Totonto";
+        				var city = '"totonto"';
 						var latandlong = '"43.653226,-79.383184"';
     				}
     				else {
-						//var latandlong = '"-33.8686,151.2094"'; //Sydney
-						//var latandlong = '"52.5233,13.4138"'; //Berlin
-						//var latandlong = '"37.8267,-122.4233"'; //LA
-						//var latandlong = '"-22.935,-43.5182"'; //Rio
-						//var latandlong = '"28.7095,77.184"'; //Delhi
-						//var latandlong = '"35.6751,139.3933"'; //Tokyo
-						//var latandlong = '"35.5407,51.5103"'; //Tehran
-						//var latandlong = '"34.5,69.4167"'; //Kabul
-						//var latandlong = '"34.6385,108.4026"'; //Shaanxi, China
-						//var latandlong = '"25.6193,85.1064"'; //Patna, India
-						//var latandlong = '"23.7104,90.4074"'; //Dhaka
-						//var latandlong = '"21.3919,95.7911"'; //Mandalay
-						//var latandlong = '"-33.5829,19.7606"'; //Cape Town
+						//var latandlong = '"-33.8686,151.2094"'; var city = '"Sydney"';
+						//var latandlong = '"52.5233,13.4138"'; var city = '"Berlin"';
+						//var latandlong = '"37.8267,-122.4233"'; var city = '"LA"';
+						//var latandlong = '"-22.935,-43.5182"'; var city = '"Rio"';
+						//var latandlong = '"28.7095,77.184"'; var city = '"Delhi"';
+						//var latandlong = '"35.6751,139.3933"'; var city = '"Tokyo"';
+						//var latandlong = '"35.5407,51.5103"'; var city = '"Tehran"';
+						//var latandlong = '"34.5,69.4167"'; var city = '"Kabul"';
+						//var latandlong = '"34.6385,108.4026"'; var city = '"Shaanxi"';
+						//var latandlong = '"25.6193,85.1064"'; var city = '"Patna"';
+						//var latandlong = '"23.7104,90.4074"'; var city = '"Dhaka"';
+						//var latandlong = '"21.3919,95.7911"'; var city = '"Mandalay"';
+						//var latandlong = '"-33.5829,19.7606"'; var city = '"Cape Town"';
+
 						var latlong = (latandlong.split('"'))[1];
+						var lat = (latlong.split(','))[0];
+						var lon = (latlong.split(','))[1];
 					}
 
 
@@ -42,49 +45,9 @@
 							url: url,
 							success: function (result) {
 							 
-
-					// -------------------------------------------------------------------------
-					var context=document.createElement('canvas').getContext('2d');
-					var start = new Date();
-					var lines = 16,
-					cW = 40,
-					cH = 40;
-
-					var animatedBadgeInterval = setInterval(function() {
-						var rotation = parseInt(((new Date() - start) / 1000) * lines) / lines;
-						context.save();
-						 context.clearRect(0, 0, cW, cH);
-						context.translate(cW / 2, cH / 2);
-						context.rotate(Math.PI * 2 * rotation);
-						for (var i = 0; i < lines; i++) {
-							context.beginPath();
-							context.rotate(Math.PI * 2 / lines);
-							context.moveTo(cW / 10, 0);
-							context.lineTo(cW / 4, 0);
-							context.lineWidth = cW / 30;
-							if (isDay && sunnyDay) {
-								context.strokeStyle = 'rgba(254, 102, 1,' + i / lines + ')';
-							}
-								else if (isDay && (cloudy || rainy)) {
-								context.strokeStyle = 'rgba(31, 97, 143,' + i / lines + ')';
-							}
-								else {
-								    	context.strokeStyle = 'rgba(0, 0, 0,' + i / lines + ')';
-							}
-								    context.stroke();
-						}
-
-						var imageData = context.getImageData(10, 10, 19, 19);
-						chrome.browserAction.setIcon({
-							imageData: imageData
-						});
-
-						context.restore();
-						}, 1000 / 30);
-					// -------------------------------------------------------------------------
-
-
 							   	country = (countryAPI.split('"'))[1];
+							   	//region = (region.split('"'))[1].toUpperCase();
+
 							    cityName = (city.split('"'))[1].charAt(0).toUpperCase() + (city.split('"'))[1].slice(1);
 							    citys = ( "in " + cityName);										
 							    cloudCover = result.currently.cloudCover;
@@ -149,7 +112,7 @@
 
 							    uvMax = Math.round(result.daily.data[0].uvIndex);
 							    uvMaxTimeUnix = result.daily.data[0].uvIndexTime;
-								uvMaxTime = moment.unix(uvMaxTimeUnix).format('h:mm A');
+								//uvMaxTime = moment.unix(uvMaxTimeUnix).format('h:mm A');
 
 							    sunriseTime = result.daily.data[0].sunriseTime;
 							    sunsetTime = result.daily.data[0].sunsetTime;
@@ -212,6 +175,76 @@
 							    forecast_3_uv = ( "UVI " + Math.round ((result.daily.data[3].uvIndex) * cloudAdj_daily_3));
 
 
+  								 isDay = false;
+							     isNight = false;
+							     cloudy = false;
+							     sunnyDay = false;
+							     rainy = false;
+
+							     if (currentTime > sunriseTime && currentTime < sunsetTime) {
+							     	isDay = true;							     	
+							     }
+							     else {
+							     	isNight = true;							     	
+							     };
+
+							     if (icon === "cloudy" || icon === "partly-cloudy-day" || icon === "partly-cloudy-night"){
+							     	cloudy = true;							
+							     }
+							     else if (icon=== "rain" || icon=== "snow" || icon=== "sleet"){
+							     	rainy = true; 
+							     }
+							     else {
+							     	sunnyDay = true;
+							     };
+
+
+
+
+								// -------------------------------------------------------------------------
+								var context=document.createElement('canvas').getContext('2d');
+								var start = new Date();
+								var lines = 16,
+								cW = 40,
+								cH = 40;
+
+								var animatedBadgeInterval = setInterval(function() {
+									var rotation = parseInt(((new Date() - start) / 1000) * lines) / lines;
+									context.save();
+									 context.clearRect(0, 0, cW, cH);
+									context.translate(cW / 2, cH / 2);
+									context.rotate(Math.PI * 2 * rotation);
+									for (var i = 0; i < lines; i++) {
+										context.beginPath();
+										context.rotate(Math.PI * 2 / lines);
+										context.moveTo(cW / 10, 0);
+										context.lineTo(cW / 4, 0);
+										context.lineWidth = cW / 30;
+										if (isDay && sunnyDay) {
+											context.strokeStyle = 'rgba(254, 102, 1,' + i / lines + ')';
+										}
+											else if (isDay && (cloudy || rainy)) {
+											context.strokeStyle = 'rgba(31, 97, 143,' + i / lines + ')';
+										}
+											else {
+											    	context.strokeStyle = 'rgba(0, 0, 0,' + i / lines + ')';
+										}
+											    context.stroke();
+									}
+
+									var imageData = context.getImageData(10, 10, 19, 19);
+									chrome.browserAction.setIcon({
+										imageData: imageData
+									});
+
+									context.restore();
+									}, 1000 / 30);
+								// -------------------------------------------------------------------------
+
+
+
+
+
 							    if (icon == 'clear-day' || icon == 'clear-night') {iconTitle = 'Clear'}
 							    else if  (icon == 'rain') {iconTitle = 'Rainy'}
 							    else if (icon == 'snow') {iconTitle = 'Snowy'}
@@ -241,63 +274,59 @@
 						    };
 
 
-								function update_tomorrow_is() {
-
+								function update_tomorrow_is_f() {
 								    temp_difference = (parseInt(Math.round(result.daily.data[1].temperatureMax)) - parseInt(Math.round(result.daily.data[0].temperatureMax)));
-								    if(temp_difference > 12.6) {
-								      update_tomorrow = 'Tomorrow is much warmer than today.'; 
+
+								    if(temp_difference >= 2.4) {
+								      update_tomorrow_is_f = 'Tomorrow ' + Math.round(temp_difference)  + "°"+ ' warmer than today.'; 
 								    }
-								    else if(temp_difference >= 5.4) {
-								      update_tomorrow = 'Tomorrow is warmer than today.'; 
-								    }
-								    else if(temp_difference > -5.4 && temp_difference < 5.4) {
+								    else if(temp_difference > -2.4 && temp_difference < 2.4) {
 								      if(Math.round(result.daily.data[1].temperatureMax) >= 64) {
-								      update_tomorrow = 'Tomorrow is as warm as today.'; 
+								      update_tomorrow_is_f = 'Tomorrow is as warm as today.'; 
 								      }
 								      else {
-								      update_tomorrow = 'Tomorrow is as cool as today.'; 
+								      update_tomorrow_is_f = 'Tomorrow is as cool as today.'; 
 								      }
 								    }
-								    else if(temp_difference > -12.6 && temp_difference <= -5.4) {
-								      update_tomorrow = 'Tomorrow is cooler than today.'; 
+								    else if(temp_difference <= -2.4) {
+								      update_tomorrow_is_f = 'Tomorrow ' + Math.round(temp_difference)*-1 + "°"+' cooler than today.';  
 								    }
-								    else if(temp_difference <= -12.6) {
-								      update_tomorrow = 'Tomorrow is much cooler than today.'; 
-								    }
-								    else {
+								   else {
 								    }
 
-									return (update_tomorrow);
+									return (update_tomorrow_is_f);
 								};
+								update_tomorrow_f = update_tomorrow_is_f();
 
-								update_tomorrow = update_tomorrow_is();
+
+								function update_tomorrow_is_c() {
+								    temp_difference = (parseInt(Math.round(result.daily.data[1].temperatureMax)) - parseInt(Math.round(result.daily.data[0].temperatureMax)));
+
+								    if(temp_difference >= 2.4) {
+								      update_tomorrow_is_c = 'Tomorrow ' + Math.round(temp_difference *5/9)  + "°"+ ' warmer than today.'; 
+								    }
+								    else if(temp_difference > -2.4 && temp_difference < 2.4) {
+								      if(Math.round(result.daily.data[1].temperatureMax) >= 64) {
+								      update_tomorrow_is_c = 'Tomorrow is as warm as today.'; 
+								      }
+								      else {
+								      update_tomorrow_is_c = 'Tomorrow is as cool as today.'; 
+								      }
+								    }
+								    else if(temp_difference <= -2.4) {
+								      update_tomorrow_is_c = 'Tomorrow ' + Math.round(temp_difference *-5/9) + "°"+' cooler than today.';  
+								    }
+								   else {
+								    }
+
+									return (update_tomorrow_is_c);
+								};
+								update_tomorrow_c = update_tomorrow_is_c();
+
 
 								forecast_1_day = moment.unix(forecast_1_days).format('dddd');												 
 								forecast_2_day = moment.unix(forecast_2_days).format('dddd');												 
 								forecast_3_day = moment.unix(forecast_3_days).format('dddd');												 
-
-							     isDay = false;
-							     isNight = false;
-							     cloudy = false;
-							     sunnyDay = false;
-							     rainy = false;
-
-							     if (currentTime > sunriseTime && currentTime < sunsetTime) {
-							     	isDay = true;							     	
-							     }
-							     else {
-							     	isNight = true;							     	
-							     };
-
-							     if (icon === "cloudy" || icon === "partly-cloudy-day" || icon === "partly-cloudy-night"){
-							     	cloudy = true;							
-							     }
-							     else if (icon=== "rain" || icon=== "snow" || icon=== "sleet"){
-							     	rainy = true; 
-							     }
-							     else {
-							     	sunnyDay = true;
-							     };
 
 
 								    if (icon === "rain" || icon === "sleet" || icon === "snow")
@@ -450,6 +479,111 @@
 			                		clearInterval(animatedBadgeInterval);   
 			            		}, 500);
 		            			setTimeout(badgeBackgroundImage, 550);
+
+
+//flickr ----------------------------------------------------------------------
+// function GetWeatherBackground(lat, lon, callback_success, callback_error) {
+
+//     var min_taken_date = new Date();
+//     min_taken_date.setDate(min_taken_date.getDate() - 30);
+//     var mm = min_taken_date.getMonth() + 1; // getMonth() is zero-based
+//     var dd = min_taken_date.getDate();
+
+//   var llrad = .5;
+//   var min_lon = lon - llrad; if (min_lon < -180) { min_lon = -min_lon + 180; }
+//   var max_lon = lon + llrad; if (max_lon > 180) { max_lon = -max_lon + 180; }
+//   var min_lat = lat - llrad; if (min_lat < -90) { min_lat = -min_lat - 90; }
+//   var max_lat = lat + llrad; if (max_lat > 90) { max_lat = 180 - max_lat; }
+
+//   var bbox = min_lon + "," + min_lat + "," + max_lon + "," + max_lat;
+
+//   var f_url = "https://api.flickr.com/services/rest";
+//   var f_data = "" +
+//     "api_key=9105bad4b97cbb0f3dab8c9f340dd82f" +
+//     "&format=json" +
+//     "&nojsoncallback=1" +
+//     "&method=flickr.photos.search" +
+//     //"&method=flickr.galleries.getPhotos" +
+//     "&lat=" + lat + "&lon=" + lon + "&radius=32" + "&accuracy=6" + //1 world - 16 street
+//     "&tag_mode=all&tags=-portrait,-people,-face,-fun,-live,-painting,-human,-animal,-food,-flower,-plants,-children,-bird,-restaurant,-football,-car,-pet,-concert,-war,-flowers" +
+//     //"&tag_mode=any&tags=weather,cloudy,rainy,sunny,snowy,rainy,fog" +
+//     "&geo_context=2" + //2 outdoor
+//     //"&group_id=608026" +
+//     //"&gallery_id=72157711396174196" +
+//     "&has_geo=1" +
+//     "&is_getty=true" +
+//     //"&in_gallery=true" +
+//     "&safe_search=1" +
+//     "&license=0,1,2,3,4,5,6,7,8,9,10" +
+//     "&extras=url_o,tags,date_upload,date_taken,owner_name,machine_tags,views,license,geo_context" +
+//         //"&min_taken_date=" + [min_taken_date.getFullYear(), ((mm < 120) ? "0" : "") + mm, dd].join('-') +
+//         "&media=photos" +
+//         "&views=5000" +
+//         "&dimension_search_mode=min" +
+//         "&height=2160" +
+//         "&width=3840" + 
+//         "&sort=interestingness-desc" +
+//         "&orientation=landscape";
+//         //"&styles=minimalism";
+
+//     console.log("get images from: " + f_url + "?" + f_data + "...");
+
+//     // get from flickr
+//   $.ajax({
+//     type: "POST",
+//         url: f_url,
+//         data: f_data,
+//         success: function (result) {
+//             var photos = $(result).find("photo");
+//       if (photos.length > 0) {
+//         var random = Math.floor(Math.random() * photos.length);
+//                 var photo = $(photos).eq(random);
+//                 var photo_url = $(photo).attr("url_o");
+//                 var owner = $(photo).attr("owner");
+//                 var photoid = $(photo).attr("id");
+//                 var title = $(photo).attr("title");
+//         var url = "https://www.flickr.com/photos/" + owner + "/" + photoid + "/";
+
+//         if (photo_url != "") {
+//           if (callback_success != undefined) {
+//             callback_success({ success: true, url: photo_url, imageurl: url, title: title });
+//           }
+//         } else {
+//           if (callback_success != undefined) {
+//             callback_success({ success: false, url: "", imageurl: "", title: "" });
+//           }
+//         }
+//             }
+//             else {
+//                 if (callback_success != undefined) {
+//                     callback_success({ success: false, url: "", imageurl: "", title: "" });
+//                 }
+//             }
+//         },
+//         error: function (jqXHR, textStatus) {
+//             if (callback_error != undefined) {
+//                 callback_error({ success: false, url: "", imageurl: "", title: "" });
+//             }
+//         }
+//     });
+// };
+
+// GetWeatherBackground(lat,lon,
+//         function (result) {
+//           if (result.success) {
+//             url = result.url;
+//             console.log(url);
+//           } else {
+//             console.log("NA");         
+//              }
+//         },
+//         function () {
+//             url = result.url;
+//             console.log(url);
+//         }
+// );
+//flickr ----------------------------------------------------------------------
+
 
 
 							},

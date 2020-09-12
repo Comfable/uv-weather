@@ -81,7 +81,8 @@ refreshPopup();
   current_uv_note = b.current_uv_note;
   uv1 = b.uv1;
   
-  update_tomorrow = b.update_tomorrow;
+  update_tomorrow_c = b.update_tomorrow_c;
+  update_tomorrow_f = b.update_tomorrow_f;
 
   forecast_1_day1 = b.forecast_1_day;
   forecast_2_day1 = b.forecast_2_day;
@@ -145,9 +146,15 @@ refreshPopup();
     $("#icon_uv_5").css('opacity', '.3');
     $("#icon_uv_6").css('opacity', '.3');
 
+    // $(".icon_uv_10").css('display', 'none');
+    // $(".icon_uv_20").css('display', 'none');
+    // $(".icon_uv_30").css('display', 'none');
+    // $(".icon_uv_40").css('display', 'none');
+    // $(".icon_uv_50").css('display', 'none');
+    // $(".icon_uv_60").css('display', 'none');
     
     if (uv1 == 1) {
-        $("#icon_uv_2").css('opacity', '1');
+        $("#icon_uv_1").css('opacity', '1');
       }
     else if (uv1 == 2) {
         $("#icon_uv_1").css('opacity', '1');
@@ -325,8 +332,6 @@ switch(forecast_icon) {
   $("#current_uv").html(current_uv);
   $("#current_uv_note").html(current_uv_note);
 
-  $("#forecast_tomorrow").html(update_tomorrow);
-
   $("#forecast_1_day").html(forecast_1_day1);
 	$("#forecast_1_uv").html(forecast_1_uv); 
  
@@ -343,6 +348,7 @@ switch(forecast_icon) {
       $("#current_accufeel").html(accufeelResultCsignTitle);
       $("#current_temp_max").html(current_tempCsign_max);
       $("#current_temp_min").html(current_tempCsign_min);
+      $("#forecast_tomorrow").html(update_tomorrow_c);
       $("#forecast_1_temp").html(forecast_1_tempC_sign);
       $("#forecast_2_temp").html(forecast_2_tempC_sign);
       $("#forecast_3_temp").html(forecast_3_tempC_sign);      
@@ -354,6 +360,7 @@ switch(forecast_icon) {
       $("#current_accufeel").html(accufeelResultFsignTitle);
       $("#current_temp_max").html(current_tempFsign_max);
       $("#current_temp_min").html(current_tempFsign_min);
+      $("#forecast_tomorrow").html(update_tomorrow_f);
       $("#forecast_1_temp").html(forecast_1_temp);
       $("#forecast_2_temp").html(forecast_2_temp);
       $("#forecast_3_temp").html(forecast_3_temp);    
@@ -415,7 +422,6 @@ function refreshPopup(){
 
     var b = chrome.extension.getBackgroundPage();
 
-
       updateTimeRelative = "Updated " + moment.unix(updateTime).fromNow();
       $('#current_temp').data('powertip', updateTimeRelative);
       $('#current_uv_group').data('powertip', updateTimeRelative);
@@ -455,3 +461,8 @@ function refreshPopup(){
 }
 
 });
+
+
+
+
+
