@@ -94,8 +94,7 @@ function uvReader(city,latandlong,country) {
 
 
 		//return new Promise((resolve, reject) => {
-			var url = 'https://api.darksky.net/forecast/c6f8f1ec6de2f17011eb59c6a0e4db7a/' + latlong + '?solar';
-
+			var url = 'https://uv-weather.herokuapp.com/https://api.darksky.net/forecast/c6f8f1ec6de2f17011eb59c6a0e4db7a/' + latlong + '?solar';
 			$.ajax({
 				type: "GET",
 				dataType: "json",
