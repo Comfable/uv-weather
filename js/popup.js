@@ -504,31 +504,9 @@ if(navigator.onLine) {
     }
     utfc = UTFC(function(value){  
           });
-  
-      if(typeof b.country !== 'undefined' && b.country !== 'undefined' && b.country !== ' ') {
-            url_flags = 'https://www.countryflags.io/' + b.country + '/flat/64.png';
-            var img = new Image();
-            img.src = url_flags;
-            img.addEventListener("load", function(){
-                if(this.naturalWidth != 0) {
-                  document.querySelector('.countryflagsClass').style.backgroundImage = 'url(' + url_flags + ')';
-                }
-                else{
-                  document.querySelector('.countryflagsClass').style.backgroundImage = 'url("images/heart.svg")';
-                }
-            });
-      }
-      else{
-          document.querySelector('.countryflagsClass').style.backgroundImage = 'url("images/heart.svg")';
-      }
-
-  document.querySelector("#location").textContent = b.citys;
-  document.querySelector("#current_uv").textContent = b.uv1;
-  document.querySelector("#current_uv_note").textContent = b.current_uv_note;
 
 
   function uvRecommendation() {
-
     resUV0 = document.querySelectorAll('#icon_uv_1, #icon_uv_2, #icon_uv_3, #icon_uv_4, #icon_uv_5, #icon_uv_6, #icon_uv_1_tooltip, #icon_uv_2_tooltip, #icon_uv_3_tooltip, #icon_uv_4_tooltip, #icon_uv_5_tooltip, #icon_uv_6_tooltip')
     for (var i = 0; i < resUV0.length; i++){
       resUV0[i].style.opacity = ".3";
@@ -567,7 +545,7 @@ if(navigator.onLine) {
         }
       }
   }
-  uvRecommendation();
+  //uvRecommendation();
 
   function iconCurrent_animated() {
   switch(b.iconBadge) {
@@ -942,9 +920,9 @@ if(navigator.onLine) {
       }
     });
   }
-  if(b.result) {
-    refresh24h12h();
-  }
+  // if(b.result) {
+  //   refresh24h12h();
+  // }
 
   chrome.storage.local.get('IntervalUpdate', function(data) {
     if(data.IntervalUpdate == "120") {
@@ -1048,9 +1026,9 @@ if(navigator.onLine) {
     }
 
   }
-    if(b.result) {
-      next7Function();
-      }
+    // if(b.result) {
+    //   next7Function();
+    //   }
 
   function reportFunction() {
     document.querySelector("#title_report_text").textContent = b.citys;
@@ -1066,7 +1044,7 @@ if(navigator.onLine) {
     document.querySelector("#current_report_ozone").textContent = b.ozone + " du";
     document.querySelector("#current_report_precipitation").textContent =  b.precipProbability + "%";
   }
-  reportFunction();
+  //reportFunction();
 
   function next48Function() {
     var i;
@@ -1109,9 +1087,9 @@ if(navigator.onLine) {
       }
     }
   }
-  if(b.result) {
-    next48Function();
-    }
+  // if(b.result) {
+  //   next48Function();
+  //   }
 
   function trackSunExposure() {
     if(b.uv1 == 0 || b.isNight) {
@@ -1121,7 +1099,7 @@ if(navigator.onLine) {
         document.querySelector("#link_qsun_text").textContent = "UV Weather App for iOS & Android";
       }
   }  
-  trackSunExposure();
+  //trackSunExposure();
 
   version_manifest = chrome.runtime.getManifest().version;
   document.querySelector("#title_version_home").textContent = "Version " + version_manifest;
@@ -1207,25 +1185,25 @@ if(navigator.onLine) {
       chrome.storage.local.get('setSettingFC', function(data) {
       if(data.setSettingFC !== 'c') {
 
-	      setSettingFC = "c";
-	      chrome.storage.local.set({'setSettingFC': 'c'});
-	      if(setSettingUT == "t") {
-	      chrome.storage.local.get(['whiteIcon','badgeSize'], function(data) {
-	        var currentWhiteIcon = data.whiteIcon;
-	        var currentBadgeSize = data.badgeSize;
-	          if(currentBadgeSize == 1) {
-	            setTimeout(function(){
-	              largBadgeNumber(b.temperatureCbadge, currentWhiteIcon)
-	            }, 550);
-	          }
-	          else{
-	            chrome.browserAction.setBadgeText({"text":b.temperatureCbadge +"°C" });
-	          }
-	       });
-	      }
-	      ctemp();
+        setSettingFC = "c";
+        chrome.storage.local.set({'setSettingFC': 'c'});
+        if(setSettingUT == "t") {
+        chrome.storage.local.get(['whiteIcon','badgeSize'], function(data) {
+          var currentWhiteIcon = data.whiteIcon;
+          var currentBadgeSize = data.badgeSize;
+            if(currentBadgeSize == 1) {
+              setTimeout(function(){
+                largBadgeNumber(b.temperatureCbadge, currentWhiteIcon)
+              }, 550);
+            }
+            else{
+              chrome.browserAction.setBadgeText({"text":b.temperatureCbadge +"°C" });
+            }
+         });
+        }
+        ctemp();
 
-  	}
+    }
 
    });
    });
@@ -1236,25 +1214,25 @@ document.querySelector("#setting_defualt_button_f_all").addEventListener("click"
       chrome.storage.local.get('setSettingFC', function(data) {
       if(data.setSettingFC !== 'f') {
 
-	      setSettingFC = "f";
-	      chrome.storage.local.set({'setSettingFC': 'f'});
-	      if(setSettingUT == "t") {   
-	      chrome.storage.local.get(['whiteIcon','badgeSize'], function(data) {
-	        var currentWhiteIcon = data.whiteIcon;
-	        var currentBadgeSize = data.badgeSize;
-	          if(currentBadgeSize == 1) {
-	            setTimeout(function(){
-	              largBadgeNumber(b.temperatureFbadge, currentWhiteIcon)
-	            }, 550);
-	          }
-	          else{
-	            chrome.browserAction.setBadgeText({"text":b.temperatureFbadge +"°F" });
-	          }
-	       });
-	      }      
-	      ftemp();
+        setSettingFC = "f";
+        chrome.storage.local.set({'setSettingFC': 'f'});
+        if(setSettingUT == "t") {   
+        chrome.storage.local.get(['whiteIcon','badgeSize'], function(data) {
+          var currentWhiteIcon = data.whiteIcon;
+          var currentBadgeSize = data.badgeSize;
+            if(currentBadgeSize == 1) {
+              setTimeout(function(){
+                largBadgeNumber(b.temperatureFbadge, currentWhiteIcon)
+              }, 550);
+            }
+            else{
+              chrome.browserAction.setBadgeText({"text":b.temperatureFbadge +"°F" });
+            }
+         });
+        }      
+        ftemp();
 
-  	}
+    }
 
    });
    });
@@ -1669,7 +1647,7 @@ document.querySelector("#setting_defualt_button_f_all").addEventListener("click"
     });
      
     map.addControl(geocoder);
-	map.addControl(new mapboxgl.NavigationControl());
+  map.addControl(new mapboxgl.NavigationControl());
 
     map.on('load', function() {
       map.addSource('single-point', {
@@ -1725,28 +1703,12 @@ document.querySelector("#setting_defualt_button_f_all").addEventListener("click"
                     else {
                       countryFull = ((result.features[0].place_name).split(','))[1];
                     }
-               
-                    if(result.hasOwnProperty('features')) {
-                      if(result.features[0].context.hasOwnProperty('0')) {
-                        if(result.features[0].context[0].hasOwnProperty('short_code')) {
-                          country = (result.features[0].context[0].short_code).substring(0, 2);;
-                          }
-                          else if(result.features[0].context.hasOwnProperty('1')) {
-                            if(result.features[0].context[1].hasOwnProperty('short_code')) {
-                              country = (result.features[0].context[1].short_code).substring(0, 2);;
-                            }
-                            else if(result.features[0].context.hasOwnProperty('2')) {
-                              if(result.features[0].context[2].hasOwnProperty('short_code')) {
-                                country = (result.features[0].context[2].short_code).substring(0, 2);;
-                              }
-                              else if(result.features[0].context.hasOwnProperty('3')) {
-                                if(result.features[0].context[3].hasOwnProperty('short_code')) {
-                                  country = (result.features[0].context[3].short_code).substring(0, 2);;
-                                }
-                           }
-                          }
-                        }
-                      }
+
+                    for(var i = 0; i <= result.features[0].context.length; i++) {
+                          if(result.features[0].context[i].hasOwnProperty('short_code')) {
+                          country = (result.features[0].context[i].short_code).substring(0, 2);
+                          break;
+                        }                    
                     }
 
                     chrome.storage.local.set({'fullname': fullname});
@@ -1798,28 +1760,12 @@ document.querySelector("#setting_defualt_button_f_all").addEventListener("click"
           else {
             countryFull = ((ev.result.place_name).split(','))[1];
           }
-
-          if(ev.result.hasOwnProperty('context')) {
-            if(ev.result.context.hasOwnProperty('0')) {
-              if(ev.result.context[0].hasOwnProperty('short_code')) {
-                country = (ev.result.context[0].short_code).substring(0, 2);;
-              }
-                else if(ev.result.context.hasOwnProperty('1')) {
-                  if(ev.result.context[1].hasOwnProperty('short_code')) {
-                    country = (ev.result.context[1].short_code).substring(0, 2);;
-                  }
-                  else if(ev.result.context.hasOwnProperty('2')) {
-                    if(ev.result.context[2].hasOwnProperty('short_code')) {
-                      country = (ev.result.context[2].short_code).substring(0, 2);;
-                    }
-                    else if(ev.result.context.hasOwnProperty('3')) {
-                      if(ev.result.context[3].hasOwnProperty('short_code')) {
-                        country = (ev.result.context[3].short_code).substring(0, 2);;
-                      }
-                  }
-              }
-             }
-            }
+          
+          for(var i = 0; i <= ev.result.context.length; i++) {
+                if(ev.result.context[i].hasOwnProperty('short_code')) {
+                country = (ev.result.context[i].short_code).substring(0, 2);
+                break;
+              }                    
           }
 
           chrome.storage.local.set({'fullname': fullname});
@@ -1886,7 +1832,7 @@ document.querySelector("#setting_defualt_button_f_all").addEventListener("click"
         container: 'mapWeather',
         style: weathermapStyle,
         center: latandlongMapBox,
-        minZoom: 2,
+        minZoom: 1,
         maxZoom: 7,
         zoom: 2
     });
@@ -1920,23 +1866,23 @@ document.querySelector("#setting_defualt_button_f_all").addEventListener("click"
 
   document.querySelector("#F_sign").addEventListener("click", (e) => { 
       chrome.storage.local.get('setSettingFC', function(data) {
-      	if(data.setSettingFC !== 'f') {
-      		ftemp();
-      		setSettingFC = "f";
-      		chrome.storage.local.set({'setSettingFC': 'f'});
+        if(data.setSettingFC !== 'f') {
+          ftemp();
+          setSettingFC = "f";
+          chrome.storage.local.set({'setSettingFC': 'f'});
         }
-  	  });
+      });
   });
 
 
   document.querySelector("#C_sign").addEventListener("click", (e) => { 
-  	  chrome.storage.local.get('setSettingFC', function(data) {
-      	if(data.setSettingFC !== 'c') {
-      		ctemp();
-      		setSettingFC = "c";
-      		chrome.storage.local.set({'setSettingFC': 'c'});
+      chrome.storage.local.get('setSettingFC', function(data) {
+        if(data.setSettingFC !== 'c') {
+          ctemp();
+          setSettingFC = "c";
+          chrome.storage.local.set({'setSettingFC': 'c'});
         }
-  	  });
+      });
   });
 
 
@@ -2093,17 +2039,16 @@ document.querySelector("#setting_defualt_button_f_all").addEventListener("click"
       document.querySelector("#current_uv_note").textContent = b.current_uv_note;
       
       if(typeof country !== 'undefined' && country !== 'undefined' && country !== ' ') {
+            country = (country.trim()).substring(0, 2);
             url_flags = 'https://www.countryflags.io/' + country + '/flat/64.png';
             var img = new Image();
             img.src = url_flags;
-            img.addEventListener("load", function(){
-                if(this.naturalWidth != 0) {
-                  document.querySelector('.countryflagsClass').style.backgroundImage = 'url(' + url_flags + ')';
-                }
-                else{
+            img.addEventListener("error", function(){
                   document.querySelector('.countryflagsClass').style.backgroundImage = 'url("images/heart.svg")';
-                }
             });
+            img.addEventListener("load", function(){
+                  document.querySelector('.countryflagsClass').style.backgroundImage = 'url(' + url_flags + ')';
+            });            
       }
       else{
           document.querySelector('.countryflagsClass').style.backgroundImage = 'url("images/heart.svg")';

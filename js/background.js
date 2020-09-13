@@ -31,7 +31,7 @@ chrome.storage.local.get(['verUpdate'], function(data) {
 					chrome.storage.local.set({'country': 'CA'});
 					chrome.storage.local.set({'fullname': 'Toronto, ONTARIO, CA'});
 					chrome.storage.local.set({'verUpdate': 1});
-						popupPage(city,latandlong,country);
+					popupPage(city,latandlong,country);
 				}
 			})
 	}
@@ -500,7 +500,7 @@ function badgeTemp(city,latandlong,country) {
 	lat = (latlong.split(','))[0];
 	lng = (latlong.split(','))[1];
 
-	fetch('https://api.openweathermap.org/data/2.5/weather?lat='+ lat + '&lon=' + lng + '&appid=c33b87de15e56ce0b4a4a0fef54d8ecd')
+	fetch('https://api.openweathermap.org/data/2.5/weather?lat='+ lat + '&lon=' + lng + '&appid=a080c7a5e8cbf016d7fa32f33f975880')
 	.then((resp) => resp.json())
 	.then(function(resultBadge) {
 		window.resultBadge = resultBadge;
@@ -536,7 +536,7 @@ function popupPage(city,latandlong,country) {
 	lat = (latlong.split(','))[0];
 	lng = (latlong.split(','))[1];
 
-		fetch('https://api.openweathermap.org/data/2.5/weather?lat='+ lat + '&lon=' + lng + '&appid=c33b87de15e56ce0b4a4a0fef54d8ecd')
+		fetch('https://api.openweathermap.org/data/2.5/weather?lat='+ lat + '&lon=' + lng + '&appid=a080c7a5e8cbf016d7fa32f33f975880')
 		.then((resp) => resp.json())
 		.then(function(resultBadge) {
 			window.resultBadge = resultBadge;
@@ -552,7 +552,7 @@ function popupPage(city,latandlong,country) {
 
 			solarNighDay(timeZoneBadge,lat,lng);
 			iconBadgeConvert(descriptionBadge,summaryBadge);
-
+			
 				//popupPage
 				const ads = '3dfc8ba9095bfa87462f459fc85238c6';	
 				fetch('https://uv-weather.herokuapp.com/https://api.darksky.net/forecast/' + ads +'/' + latlong + '?solar')
