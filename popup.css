@@ -450,13 +450,13 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 .current_temp_Class {
 	position: relative;
 	font-weight: 450;
-	font-size: 55px;
+	font-size: 50px;
 	color: rgba(255,255,255,1);
 	text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.50);
 }
 .current_temp_sign_Class {
 	position: relative;
-	margin-top: 5px;
+	margin-top: 7px;
 	margin-bottom: 4px;
 	margin-left: 0px;
 	font-weight: 450;
@@ -472,17 +472,17 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 .current_accufeel_Class {
 	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.50);	
 	position: relative;
-	margin-left: 3px;
+	margin-left: 15px;
 	font-weight: 250;
-	font-size: 13px;
+	font-size: 12px;
 	color: rgba(255,255,255,1);
 	text-align: left;
 }
 .location_Class {
 	position: relative;
-	margin: 0 0 6px 6px;
+	margin: 0 0 6px 30px;
 	font-weight: 250;
-	font-size: 13px;
+	font-size: 12px;
 	color: rgba(255,255,255,1);
 	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.50);
 }
@@ -2057,8 +2057,73 @@ input[type=radio]:checked ~ label{
 .card {
   position: absolute;
   top: 310px;
-  left: 250px;
-  width: 310px;
+  left: 280px;
+  width: 290px;
   height: 140px;
-  overflow: hidden;
+  overflow: scroll;
+}
+
+
+.google-button {
+  height: 40px;
+  border-width: 0;
+  background: white;
+  color: #737373;
+  border-radius: 5px;
+  white-space: nowrap;
+  box-shadow: 1px 1px 0px 1px rgba(0,0,0,0.05);
+  transition-property: background-color, box-shadow;
+  transition-duration: 150ms;
+  transition-timing-function: ease-in-out;
+  padding: 0;
+  
+  &:focus,
+  &:hover {
+    box-shadow: 1px 4px 5px 1px rgba(0,0,0,0.1);
+  }
+  
+  &:active {
+    background-color: #e5e5e5;
+    box-shadow: none;
+    transition-duration: 10ms;
+  }
+}
+    
+.google-button__icon {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 8px 0 8px 8px;
+  width: 18px;
+  height: 18px;
+  box-sizing: border-box;
+}
+
+.google-button__text {
+  vertical-align: middle;
+  padding: 0 24px;
+  font-size: 14px;
+  font-weight: bold;
+  font-family: 'Roboto',arial,sans-serif;
+}
+
+.F_C_Class {
+	position: relative;
+	z-index: 100 !important;
+	color: rgba(255,255,255,1);
+	font-weight: 450;
+	font-size: 15px;
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.50);
+	margin-top: 10px;
+	margin-left: 2px;
+	padding-right: 10px;
+}
+
+.F_sign_Class {
+	display: block;
+	cursor: pointer;
+}
+
+.C_sign_Class {
+	display: block;
+	cursor: pointer;
 }

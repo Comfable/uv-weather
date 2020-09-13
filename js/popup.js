@@ -3,6 +3,94 @@ chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
 
 document.addEventListener("DOMContentLoaded", function(event) {
 
+
+
+// var config = {
+//   apiKey: 'AIzaSyAlT79n3EKrs_UHHsYla31GSD0cMt3uVW8',
+//   databaseURL: 'https://uv-weather.firebaseio.com',
+//   storageBucket: 'uv-weather.appspot.com'
+// };
+// firebase.initializeApp(config);
+
+// function initApp() {
+//   // Listen for auth state changes.
+//   // [START authstatelistener]
+//   firebase.auth().onAuthStateChanged(function(user) {
+//     if (user) {
+//       // User is signed in.
+//       var displayName = user.displayName;
+//       var email = user.email;
+//       var emailVerified = user.emailVerified;
+//       var photoURL = user.photoURL;
+//       var isAnonymous = user.isAnonymous;
+//       var uid = user.uid;
+//       var providerData = user.providerData;
+//       // [START_EXCLUDE]
+//       document.getElementById('quickstart-button').textContent = 'Sign out';
+//       document.getElementById('quickstart-sign-in-status').textContent = 'Signed in';
+//       document.getElementById('quickstart-account-details').textContent = JSON.stringify(user, null, '  ');
+//       // [END_EXCLUDE]
+//     } else {
+//       // Let's try to get a Google auth token programmatically.
+//       // [START_EXCLUDE]
+//       document.getElementById('quickstart-button').textContent = 'Sign in with Google';
+//       document.getElementById('quickstart-sign-in-status').textContent = 'Signed out';
+//       document.getElementById('quickstart-account-details').textContent = 'null';
+//       // [END_EXCLUDE]
+//     }
+//     document.getElementById('quickstart-button').disabled = false;
+//   });
+//   // [END authstatelistener]
+
+//   document.getElementById('quickstart-button').addEventListener('click', startSignIn, false);
+// }
+
+// /**
+//  * Start the auth flow and authorizes to Firebase.
+//  * @param{boolean} interactive True if the OAuth flow should request with an interactive mode.
+//  */
+// function startAuth(interactive) {
+//   // Request an OAuth token from the Chrome Identity API.
+//   chrome.identity.getAuthToken({interactive: !!interactive}, function(token) {
+//     if (chrome.runtime.lastError && !interactive) {
+//       console.log('It was not possible to get a token programmatically.');
+//     } else if(chrome.runtime.lastError) {
+//       console.error(chrome.runtime.lastError);
+//     } else if (token) {
+//       // Authorize Firebase with the OAuth Access Token.
+//       var credential = firebase.auth.GoogleAuthProvider.credential(null, token);
+//       firebase.auth().signInWithCredential(credential).catch(function(error) {
+//         // The OAuth token might have been invalidated. Lets' remove it from cache.
+//         if (error.code === 'auth/invalid-credential') {
+//           chrome.identity.removeCachedAuthToken({token: token}, function() {
+//             startAuth(interactive);
+//           });
+//         }
+//       });
+//     } else {
+//       console.error('The OAuth Token was null');
+//     }
+//   });
+// }
+
+// /**
+//  * Starts the sign-in process.
+//  */
+// function startSignIn() {
+//   document.getElementById('quickstart-button').disabled = true;
+//   if (firebase.auth().currentUser) {
+//     firebase.auth().signOut();
+//   } else {
+//     startAuth(true);
+//   }
+// }
+
+// window.onload = function() {
+//   initApp();
+// };
+
+
+
 const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
 
 mapStyleLight = 'mapbox://styles/comfable/ck540l8q22n1n1cpb2uceu4we';
@@ -186,9 +274,9 @@ chrome.storage.local.get(['theme', 'autoDark'], function(data) {
 
 if(navigator.onLine) {
 
-  window.onload = function() { 
+  //window.onload = function() { 
     refreshPopup();
-  };
+  //};
 
   country = b.country;
 
@@ -588,7 +676,6 @@ if(navigator.onLine) {
       document.querySelector("#current_report_dewPoint").textContent = b.dewPointC + "° C";
       document.querySelector("#current_temp").textContent = b.temperatureC;
       document.querySelector("#current_report_temp").textContent = b.temperatureC + "° C";
-      document.querySelector("#temp_sign").textContent = "°C"
       document.querySelector("#current_accufeel").textContent = "AccuFeel " + b.accufeelResultC + "°";
       document.querySelector("#current_report_accufeel").textContent = b.accufeelResultC + "° C";
       document.querySelector("#current_temp_max").textContent = b.current_tempC_max + "°";
@@ -610,13 +697,30 @@ if(navigator.onLine) {
 
       document.querySelector("#summery_next7_text").textContent = b.summaryDailyC;
       document.querySelector("#summery_next48_text").textContent = b.summaryHourlyC;
+
+      document.getElementById("setting_defualt_button_c").disabled = true;
+      document.getElementById("setting_defualt_button_f").disabled = false;
+      document.getElementById("setting_defualt_button_c").checked = true;      
+
+      F_sign_elementStyle.filter = 'opacity(65%)';
+      C_sign_elementStyle.filter = 'opacity(100%)';
+      C_sign_elementStyle.position = 'absolute';
+      C_sign_elementStyle.top = '0px';
+      F_sign_elementStyle.position = 'absolute';
+      F_sign_elementStyle.top = '22px';
+      C_sign_elementStyle.fontSize = '20px';
+      F_sign_elementStyle.fontSize = '15px';
+
+      if(setSettingUT == "t") {
+        chrome.browserAction.setBadgeText({"text":b.temperatureC +"°C" });
+      }      
   }
+
 
   function ftemp(){
     document.querySelector("#current_report_dewPoint").textContent = b.dewPointF + "° F";
     document.querySelector("#current_temp").textContent = b.temperatureF;
     document.querySelector("#current_report_temp").textContent = b.temperatureF + "° F";
-    document.querySelector("#temp_sign").textContent = "°F"
     document.querySelector("#current_accufeel").textContent = "AccuFeel " + b.accufeelResultF + "°";
     document.querySelector("#current_report_accufeel").textContent = b.accufeelResultF + "° F";    
     document.querySelector("#current_temp_max").textContent = b.current_tempF_max + "°";
@@ -637,6 +741,23 @@ if(navigator.onLine) {
     }
     document.querySelector("#summery_next7_text").textContent = b.summaryDailyF;
     document.querySelector("#summery_next48_text").textContent = b.summaryHourlyF;
+    
+    document.getElementById("setting_defualt_button_f").disabled = true;
+    document.getElementById("setting_defualt_button_c").disabled = false;
+    document.getElementById("setting_defualt_button_f").checked = true;      
+
+    C_sign_elementStyle.filter = 'opacity(65%)';
+    F_sign_elementStyle.filter = 'opacity(100%)';
+    F_sign_elementStyle.position = 'absolute';
+    F_sign_elementStyle.top = '0px';
+    C_sign_elementStyle.position = 'absolute';
+    C_sign_elementStyle.top = '22px';
+    F_sign_elementStyle.fontSize = '20px';
+    C_sign_elementStyle.fontSize = '15px';
+
+    if(setSettingUT == "t") {
+      chrome.browserAction.setBadgeText({"text":b.temperatureF +"°F" });
+    }    
   }
 
   
@@ -875,8 +996,6 @@ if(navigator.onLine) {
         chrome.browserAction.setBadgeText({"text":b.temperatureC +"°C" });
       }
       ctemp();
-      document.getElementById("setting_defualt_button_c").disabled = true;
-      document.getElementById("setting_defualt_button_f").disabled = false;
    });
 
 document.querySelector("#setting_defualt_button_f").addEventListener("click", (e) => { 
@@ -886,8 +1005,6 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
         chrome.browserAction.setBadgeText({"text":b.temperatureF +"°F" });
       }      
       ftemp();
-      document.getElementById("setting_defualt_button_f").disabled = true;
-      document.getElementById("setting_defualt_button_c").disabled = false;
    });
 
 
@@ -957,6 +1074,7 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
   var modalCurrent = document.getElementById("currentReport_popup");
   var modalSearch = document.getElementById("search_popup");
 
+  var F_C_display = document.getElementById("F_C");
 
   document.querySelector("#map_popup_page").addEventListener("click", (e) => {
     closeAllPopup();
@@ -986,11 +1104,11 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
     modalSearch.style.display = "block";
     setTimeout(function() {
       document.getElementById("search_popup_close").style.visibility = 'visible';
+      searchTitle.style.visibility = "visible";
+      searchInner.style.visibility = "visible";
+      searchOnMap.style.visibility = "visible";
+      searchMap(mapStyle);
     }, 300);
-    searchTitle.style.visibility = "visible";
-    searchInner.style.visibility = "visible";
-    searchOnMap.style.visibility = "visible";
-    searchMap(mapStyle);
 
     var currentIcon = document.getElementById("home_icon_popup_page");
     currentIcon.classList.add("sub_menu_current_icon_Class");
@@ -1006,10 +1124,10 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
       modalSearch.style.display = "block";
       setTimeout(function() {
         document.getElementById("search_popup_close").style.visibility = "visible";
+        searchTitle.style.visibility = "visible";
+        searchInner.style.visibility = "visible";
+        searchOnMap.style.visibility = "visible";
       }, 300);
-      searchTitle.style.visibility = "visible";
-      searchInner.style.visibility = "visible";
-      searchOnMap.style.visibility = "visible";
       searchMap(mapStyle);
 
       var currentIcon = document.getElementById("home_icon_popup_page");
@@ -1026,10 +1144,10 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
     modalSearch.style.display = "block";
     setTimeout(function() {
       document.getElementById("search_popup_close").style.visibility = "visible";
-    }, 300);
-    searchTitle.style.visibility = "visible";
-    searchInner.style.visibility = "visible";
-    searchOnMap.style.visibility = "visible";
+      searchTitle.style.visibility = "visible";
+      searchInner.style.visibility = "visible";
+      searchOnMap.style.visibility = "visible";
+    }, 300);    
     searchMap(mapStyle);
 
     var currentIcon = document.getElementById("home_icon_popup_page");
@@ -1457,9 +1575,24 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
   }; 
 
 
+  var C_sign_elementStyle = document.getElementById('C_sign').style;
+  var F_sign_elementStyle = document.getElementById('F_sign').style;
+
+  document.querySelector("#F_sign").addEventListener("click", (e) => { 
+      setSettingFC = "f";
+      chrome.storage.local.set({'setSettingFC': 'f'});
+      ftemp();
+  });
 
 
-
+  document.querySelector("#C_sign").addEventListener("click", (e) => { 
+      setSettingFC = "c";
+      chrome.storage.local.set({'setSettingFC': 'c'});
+      // document.getElementById("setting_defualt_button_c").checked = true;     
+      // document.getElementById("setting_defualt_button_c").disabled = true;
+      // document.getElementById("setting_defualt_button_f").disabled = false;
+      ctemp();
+  });
 
 
 

@@ -20,6 +20,10 @@
     <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N9SQMMN" height="0" width="0" style="display:none;visibility:hidden"></iframe>
   </noscript>
 
+  <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-analytics.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-firestore.js"></script>  
 </head>
 
 <body>
@@ -79,21 +83,35 @@
         <hr class="hr_forecast_menu">
       <a href="https://chrome.google.com/webstore/detail/uv-weather/ngeokhpbgoadbpdpnplcminbjhdecjeb/reviews" target="_blank" class="whitelink"><li>Write a Review</li></a>
         <hr class="hr_forecast_menu">
-      <a href="https://uvweather.net/about/" target="_blank" class="whitelink"><li>About Us</li></a>
+      <a href="https://uvweather.net/about/" target="_blank" class="whitelink"><li>About Us</li></a>      
+        <hr class="hr_forecast_menu">
+      <a href="https://uvweather.net/releases/" target="_blank" class="whitelink"><li>What’s new in UV Weather</li></a>        
     </ul>
   </div>
 
 
   <div id="current_icon_update" class="current_icon_update"></div>
-  <div id="current_temp_group" class="current_temp_group_Class"> <span id="current_temp" class="current_temp_Class">17</span>
+
+  <div id="current_temp_group" class="current_temp_group_Class"> 
+    <span id="current_temp" class="current_temp_Class">17</span>
+    <span id="current_temp_sign" class="current_temp_sign_Class">°</span>
+    
     <span>
+
+        <div id="F_C" class="F_C_Class">
+          <div id="F_sign" class="F_sign_Class">F</div>
+          <div id="C_sign" class="C_sign_Class">C</div>
+        </div>
+
       <div id="temp_sign_city" class="current_temp_sign_city_Class">
-        <span id="temp_sign" class="current_temp_sign_Class">°C</span>
+
     <span style="margin-bottom: 6px;"><a id="location" class="location_Class whitelink">city</a></span>
     <a span id="map_popup_page" >
       <img src="images/earth.svg" class="icon_eart_Class"/>
     </a>
     </span>
+
+
   </div>
 
 <span id="current_accufeel_info" class="current_accufeel_Class tooltip">
@@ -242,27 +260,18 @@
 
 <div class="card">
 
-    <div id="line-chart"></div>
+<!--   <div class="quickstart-user-details-container">
+    <button id="quickstart-button">Sign-in with Google</button>
+    <p>
+      Firebase sign-in status: <span id="quickstart-sign-in-status">Unknown</span>
+      <div>Firebase auth <code>currentUser</code> object value:</div>
+      <pre><code id="quickstart-account-details">null</code></pre>
+    </p>
+  </div> -->
+
+    <!-- <div id="line-chart"></div> -->
 
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
