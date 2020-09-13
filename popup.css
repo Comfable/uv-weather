@@ -27,7 +27,26 @@
     --bg-color-autosearch: #737373;
 }
 
+.preloader {
+  align-items: center;
+  background: #2C3E50;
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  left: 0;
+  position: fixed;
+  top: 0;
+  transition: opacity 0.3s linear;
+  width: 100%;
+  z-index: 99999;
+  opacity: 1;
+  transform: opacity 1s linear;
+}
 
+.preloader.loaded{
+  opacity: 0;
+  pointer-events: none;
+}
 
 /*slider switch css */
 .theme-switch-wrapper {
@@ -322,7 +341,7 @@ input[type=checkbox] {
     box-sizing: border-box;
     cursor: pointer;
     position: absolute;
-    z-index: 11000;
+    z-index: 9950;
     top: 22px;
     left: 526px;
     width: 22px;

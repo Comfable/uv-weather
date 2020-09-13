@@ -1,4 +1,16 @@
-var b = chrome.extension.getBackgroundPage();
+const preloader = document.querySelector('.preloader');
+const fadeEffect = setInterval(() => {
+  if (!preloader.style.opacity) {
+    return preloader.style.opacity = 1;
+  }
+  if (preloader.style.opacity > 0) {
+    return preloader.style.opacity -= 0.1;
+  } else {
+    clearInterval(fadeEffect);
+  }
+}, 100);
+
+const b = chrome.extension.getBackgroundPage();
 document.addEventListener("DOMContentLoaded", function(event) {
 
 const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
@@ -34,7 +46,7 @@ chrome.storage.local.get(['theme', 'autoDark'], function(data) {
           if(autoDarkTheme == '1' && b.isNight) {
               darkDisplay();
           }
-          else if(autoDarkTheme == '1' && b.isDayBadge) {
+          else if(autoDarkTheme == '1' && b.isDay) {
               lightDisplay();    
           }
           else if(currentTheme === 'dark') {
@@ -192,14 +204,14 @@ chrome.storage.local.get(['theme', 'autoDark'], function(data) {
         chrome.storage.local.set({'whiteIcon': '1'});
         document.getElementById("checkbox_whiteIcon").checked = true;
         document.getElementById("checkbox_whiteIcon").disabled = true;
-        chrome.runtime.sendMessage({ msg: "badgeUpdate" });
-        delayButtonWhiteIcon();
+          chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
+          delayButtonWhiteIcon();
       }
       else {
         chrome.storage.local.set({'whiteIcon': '0'});
         document.getElementById("checkbox_whiteIcon").checked = false;
         document.getElementById("checkbox_whiteIcon").disabled = true;
-        chrome.runtime.sendMessage({ msg: "badgeUpdate" });
+        chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
         delayButtonWhiteIcon();
       }    
     }
@@ -288,7 +300,7 @@ if(navigator.onLine) {
 
     switch(b.iconBadge) {
       case 'clear-day':
-            if (b.isDayBadge) {
+            if (b.isDay) {
           galleryID = '72157711948824252';
         }
             else {
@@ -299,7 +311,7 @@ if(navigator.onLine) {
           galleryID = '72157711948534226';
         break;
       case 'rain':
-              if (b.isDayBadge) {
+              if (b.isDay) {
           galleryID = '72157711948916072';
                 }
               else {
@@ -307,7 +319,7 @@ if(navigator.onLine) {
                 }
         break;
       case 'snow':
-              if (b.isDayBadge) {
+              if (b.isDay) {
           galleryID = '72157711948582321';
                 }
               else {
@@ -315,7 +327,7 @@ if(navigator.onLine) {
                 }
         break;
       case 'sleet':
-              if (b.isDayBadge) {
+              if (b.isDay) {
           galleryID = '72157711948578771';
                 }
               else {
@@ -323,7 +335,7 @@ if(navigator.onLine) {
                 }
         break;
       case 'wind':
-              if (b.isDayBadge) {
+              if (b.isDay) {
           galleryID = '72157711950448603';
                 }
               else {
@@ -331,7 +343,7 @@ if(navigator.onLine) {
                 }     
         break;
       case 'fog':
-              if (b.isDayBadge) {
+              if (b.isDay) {
           galleryID = '72157711948567181';
                 }
               else {
@@ -339,7 +351,7 @@ if(navigator.onLine) {
                 }
         break;
       case 'cloudy':
-              if (b.isDayBadge) {
+              if (b.isDay) {
           galleryID = '72157711950426443';
                 }
               else {
@@ -347,7 +359,7 @@ if(navigator.onLine) {
                 }
         break;
       case 'partly-cloudy-day':
-            if (b.isDayBadge) {
+            if (b.isDay) {
           galleryID = '72157711950434293';
         }
         else {
@@ -493,7 +505,7 @@ if(navigator.onLine) {
     utfc = UTFC(function(value){  
           });
   
-      if(typeof b.country !== 'undefined' || b.country !== ' ') {
+      if(typeof b.country !== 'undefined' && b.country !== 'undefined' && b.country !== ' ') {
             url_flags = 'https://www.countryflags.io/' + b.country + '/flat/64.png';
             var img = new Image();
             img.src = url_flags;
@@ -560,7 +572,7 @@ if(navigator.onLine) {
   function iconCurrent_animated() {
   switch(b.iconBadge) {
     case 'clear-day':
-      if(b.isDayBadge) {
+      if(b.isDay) {
       document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_clear-day.svg")';
         }
         else {
@@ -589,7 +601,7 @@ if(navigator.onLine) {
       document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_cloudy.svg")';
       break;
     case 'partly-cloudy-day':
-      if(b.isDayBadge) {
+      if(b.isDay) {
       document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_partly-cloudy-day.svg")';
         }
         else {
@@ -648,7 +660,7 @@ if(navigator.onLine) {
   function groundCurrent() {
   switch(b.iconBadge) {
     case 'clear-day':
-            if (b.isDayBadge) {
+            if (b.isDay) {
       document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/clear-day.jpg")';
               }
             else {
@@ -659,7 +671,7 @@ if(navigator.onLine) {
       document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/clear-night.jpg")';      
       break;
     case 'rain':
-            if(b.isDayBadge) {
+            if(b.isDay) {
             document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/rain-day.jpg")';
               }
             else {
@@ -667,7 +679,7 @@ if(navigator.onLine) {
               }     
       break;
     case 'snow':
-            if(b.isDayBadge) {
+            if(b.isDay) {
             document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/snow-day.jpg")';
               }
             else {
@@ -675,7 +687,7 @@ if(navigator.onLine) {
               }
       break;
     case 'sleet':
-            if(b.isDayBadge) {
+            if(b.isDay) {
             document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/sleet-day.jpg")';
               }
             else {
@@ -683,7 +695,7 @@ if(navigator.onLine) {
               }
       break;
     case 'wind':
-            if(b.isDayBadge) {
+            if(b.isDay) {
             document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/wind-day.jpg")';
               }
             else {
@@ -691,7 +703,7 @@ if(navigator.onLine) {
               }     
       break;
     case 'fog':
-            if(b.isDayBadge) {
+            if(b.isDay) {
             document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/fog-day.jpg")';
               }
             else {
@@ -699,7 +711,7 @@ if(navigator.onLine) {
               }
       break;
     case 'cloudy':
-            if(b.isDayBadge) {
+            if(b.isDay) {
             document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/cloudy-day.jpg")';
               }
             else {
@@ -707,7 +719,7 @@ if(navigator.onLine) {
               }
       break;
     case 'partly-cloudy-day':
-            if(b.isDayBadge) {
+            if(b.isDay) {
       document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/partly-cloudy-day.jpg")';
               }
             else {
@@ -1746,24 +1758,20 @@ document.querySelector("#setting_defualt_button_f_all").addEventListener("click"
                       chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
                     }, 50);
 
-                   setTimeout(function(){
-                      chrome.runtime.sendMessage({ msg: "badgeUpdate" });
-                    }, 1050);
-
                     setTimeout(function(){
                         refreshPopup();
                         chrome.storage.local.get('autoDark', function(data) {
                         var autoDarkTheme = data.autoDark;
-                          if(autoDarkTheme == '1' && b.isNightBadge) {
+                          if(autoDarkTheme == '1' && b.isNight) {
                               darkDisplay();
                               map.setStyle(mapStyleDark);
                           }
-                           else if(autoDarkTheme == '1' && b.isDayBadge) {
+                           else if(autoDarkTheme == '1' && b.isDay) {
                               lightDisplay();
                               map.setStyle(mapStyleLight);
                           }
                         });
-                     }, 1550); 
+                     }, 1350); 
 
                 }
               }
@@ -1823,10 +1831,6 @@ document.querySelector("#setting_defualt_button_f_all").addEventListener("click"
             chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
           }, 50);
 
-          setTimeout(function(){
-            chrome.runtime.sendMessage({ msg: "badgeUpdate" });
-          }, 1050);
-
            setTimeout(function(){
               refreshPopup();
 
@@ -1836,13 +1840,13 @@ document.querySelector("#setting_defualt_button_f_all").addEventListener("click"
                     darkDisplay();
                     map.setStyle(mapStyleDark);
                 }
-                else if(autoDarkTheme == '1' && b.isDayBadge) {
+                else if(autoDarkTheme == '1' && b.isDay) {
                     lightDisplay();
                     map.setStyle(mapStyleLight);
                 }
               });
 
-           }, 1550);
+           }, 1350);
 
           map.flyTo({
             center: [lng,lat],
@@ -1979,7 +1983,7 @@ document.querySelector("#setting_defualt_button_f_all").addEventListener("click"
       setTimeout(function() {
       document.querySelector("#setting_defualt_button_12h_all").style.pointerEvents = "auto";
       document.querySelector("#setting_defualt_button_24h_all").style.pointerEvents = "auto";
-    }, 2000);
+    }, 1500);
   };
 
 
@@ -2001,14 +2005,14 @@ document.querySelector("#setting_defualt_button_f_all").addEventListener("click"
           chrome.storage.local.set({'badgeSize': '1'});
           document.getElementById("checkbox_largIcon").checked = true;
           document.getElementById("checkbox_largIcon").disabled = true;
-          chrome.runtime.sendMessage({ msg: "badgeUpdate" });
+          chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
           delayButtonBadgeSize();
         }
         else {
           chrome.storage.local.set({'badgeSize': '0'});
           document.getElementById("checkbox_largIcon").checked = false;
           document.getElementById("checkbox_largIcon").disabled = true;
-          chrome.runtime.sendMessage({ msg: "badgeUpdate" });
+          chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
           delayButtonBadgeSize();
         }    
       }
@@ -2058,7 +2062,7 @@ document.querySelector("#setting_defualt_button_f_all").addEventListener("click"
         document.querySelector("#setting_defualt_button_60_all").style.pointerEvents = "auto";
         document.querySelector("#setting_defualt_button_90_all").style.pointerEvents = "auto";
         document.querySelector("#setting_defualt_button_120_all").style.pointerEvents = "auto";
-    }, 2000);
+    }, 1500);
   };
 
 
@@ -2088,7 +2092,7 @@ document.querySelector("#setting_defualt_button_f_all").addEventListener("click"
       document.querySelector("#current_uv").textContent = b.uv1;
       document.querySelector("#current_uv_note").textContent = b.current_uv_note;
       
-      if(typeof country !== 'undefined' || country !== ' ') {
+      if(typeof country !== 'undefined' && country !== 'undefined' && country !== ' ') {
             url_flags = 'https://www.countryflags.io/' + country + '/flat/64.png';
             var img = new Image();
             img.src = url_flags;
@@ -2134,3 +2138,5 @@ else {
 
 
 });
+
+window.addEventListener('load',  () => fadeEffect);

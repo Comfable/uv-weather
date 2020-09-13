@@ -1,5 +1,3 @@
-var uv1;
-var updateTimeoutActive;
 chrome.storage.local.get(['verUpdate'], function(data) {
 	verUpdate = data.verUpdate;
 
@@ -23,9 +21,6 @@ chrome.storage.local.get(['verUpdate'], function(data) {
 					chrome.storage.local.set({'fullname': fullname});
 					chrome.storage.local.set({'verUpdate': 1});					
 						uvReader(city,latandlong,country);
-						setTimeout(function() {
-							badgeReader(city,latandlong,country,uv1);
-						}, 500);
 				}
 				else{
 					city = '"Toronto"';
@@ -37,29 +32,16 @@ chrome.storage.local.get(['verUpdate'], function(data) {
 					chrome.storage.local.set({'fullname': 'Toronto, ONTARIO, CA'});
 					chrome.storage.local.set({'verUpdate': 1});
 						uvReader(city,latandlong,country);
-						setTimeout(function() {
-							badgeReader(city,latandlong,country,uv1);
-						}, 500);
 				}
 			})
 	}
 	else{
 
-			chrome.storage.local.get(['latlong', 'city', 'country', 'updateTimeoutActive'], function(data) { //update the extension and refresh the popup
-				updateTimeoutActiveData = data.updateTimeoutActive;
-				if(typeof updateTimeoutActiveData == 'undefined' || updateTimeoutActiveData == '0') {
-
+			chrome.storage.local.get(['latlong', 'city', 'country'], function(data) { //update the extension and refresh the popup
 		  			latandlong = data.latlong;
 		 			city = data.city;
 		 			country = data.country;
-						uvReader(city,latandlong,country);
-						setTimeout(function() {
-							badgeReader(city,latandlong,country,uv1);
-	    				}, 500);
-						chrome.storage.local.set({'updateTimeoutActive': '1'});
-
-	    		}
-
+					uvReader(city,latandlong,country);
 			});
 	
 	}
@@ -89,11 +71,12 @@ chrome.runtime.onMessage.addListener(
 				latandlong = data.latlong;
 		 		city = data.city;
 		 		country = data.country;
-				badgeReader(city,latandlong,country,uv1);
+				badgeTemp(city,latandlong,country);
 			});
 		}
 	}
 );
+
 
 chrome.runtime.onMessage.addListener(
 	function(request, sender, sendResponse) {
@@ -102,10 +85,6 @@ chrome.runtime.onMessage.addListener(
 		}
 	}
 );
-
-var updateTimeoutActiveInterval = window.setInterval(_ => {
-		chrome.storage.local.set({'updateTimeoutActive': '0'});
-}, 55000);
 
 function intervalUpdateFunction() {
 	chrome.storage.local.get(['IntervalUpdate', ''], function(data) {
@@ -118,20 +97,16 @@ function intervalUpdateFunction() {
 
 		var intervalUpdateTimes = window.setInterval(_ => {
 			if(navigator.onLine) {
-				chrome.storage.local.get(['latlong', 'city', 'country'], function(data){
+				chrome.storage.local.get(['latlong', 'city', 'country', 'setSettingUT'], function(data){
 					latandlong = data.latlong;
 					city = data.city;
 					country = data.country;
-					if(setSettingUT == 'u') {
-						uvReader(city,latandlong,country);
-						setTimeout(function() {
-							badgeReader(city,latandlong,country,uv1);
-    					}, 500);
+					if(data.setSettingUT == 'u') {
+							uvReader(city,latandlong,country);
 					}
 					else {
-							badgeReader(city,latandlong,country,uv1);
+							badgeTemp(city,latandlong,country);
 					}
-					
 				});
 			}
 		}, intervalUpdateTime);
@@ -140,13 +115,21 @@ function intervalUpdateFunction() {
 intervalUpdateFunction();
 
 
-//badgeReader----------------------------------------------------------------------------------
-function badgeReader(city,latandlong,country,uv1) {
-	cityBadge = city.split('"')[1];
-	regionBadge = country;
+
+function badgeTemp(city,latandlong,country) {
+	country = country;
+	cityName = (city.split('"'))[1].charAt(0).toUpperCase() + (city.split('"'))[1].slice(1);
+	if(cityName && cityName.length > 15) {
+		citys = cityName.substr(0,15)
+	}
+	else {
+		citys = cityName
+	}
+
 	latlong = (latandlong.split('"'))[1];
 	lat = (latlong.split(','))[0];
 	lng = (latlong.split(','))[1];
+
 	fetch('https://api.openweathermap.org/data/2.5/weather?lat='+ lat + '&lon=' + lng + '&appid=c33b87de15e56ce0b4a4a0fef54d8ecd')
 	.then((resp) => resp.json())
 	.then(function(resultBadge) {
@@ -161,44 +144,63 @@ function badgeReader(city,latandlong,country,uv1) {
 		timeZoneBadge = resultBadge.timezone;
 		cloudCoverBadge = resultBadge.clouds.all;
 
-		isDayBadge = false;
-		isNightBadge = false;
+		isDay = false;
+		isNight = false;
 		cloudyBadge = false;
 		sunnyDayBadge = false;
 		rainyBadge = false;
 		snowyBadge = false;
 
-		systemTimeBadge = new Date();
-		systemTimeUnixBadge = Math.round((systemTimeBadge).getTime() / 1000);
-		DeviceTimeDifferenceFromGMTBadge = systemTimeBadge.getTimezoneOffset() / 60;
-		offsetTimeBadge = DeviceTimeDifferenceFromGMTBadge + timeZoneBadge/3600;
-		offsetUnixBadge = offsetTimeBadge * 3600;
+		//Solar Times --------------------------------------------------------------------------------------------------------------
+			systemTime = new Date();
+			systemTimeUnix = Math.round((systemTime).getTime() / 1000);
+			DeviceTimeDifferenceFromGMT = systemTime.getTimezoneOffset() / 60;
+		offsetTime = DeviceTimeDifferenceFromGMT + timeZoneBadge/3600;
+			offsetUnix = offsetTime * 3600;
+		localTimeUnix = Math.round(systemTimeUnix + offsetUnix);
 
-		localTimeUnixBadge = Math.round(systemTimeUnixBadge + offsetUnixBadge);
-		timesSolarBadge = SunCalc.getTimes(localTimeUnixBadge, lat, lng);	
-			dawnBadge = timesSolarBadge.dawn;
-			duskBadge = timesSolarBadge.dusk;
+		timesSolar = SunCalc.getTimes(localTimeUnix, lat, lng);
+			sunriseTimeSolar = timesSolar.sunrise;
+			sunsetTimeSolar = timesSolar.sunset;
+			solarNoon = timesSolar.solarNoon;
+			goldenHourEnd = timesSolar.goldenHourEnd;
+			goldenHour = timesSolar.goldenHour;
+			totalSeconds  = dayjs(dayjs.unix(sunsetTimeSolar)).diff(dayjs(dayjs.unix(sunriseTimeSolar)), 'second');
+			totalHours = Math.floor(totalSeconds/(60*60));
+			totalSeconds = totalSeconds - (totalHours*60*60);
+			totalMinutes = Math.ceil(totalSeconds/60);
+			if(totalHours<10) {totalHours = "0"+totalHours};
+			if(totalMinutes<10) {totalMinutes = "0"+totalMinutes};
+			dayLength =  totalHours + ":" + totalMinutes + " HH:MM";
+			
+			dawn = timesSolar.dawn;
+			dusk = timesSolar.dusk;
+			nightStarts = timesSolar.night;
+			nightEnds = timesSolar.nightEnd;
 
 
-			localTimeUnixBadgeDD = dayjs.unix(systemTimeUnixBadge + offsetUnixBadge).format('DD');
-			dawnBadgeBadgeDD = dayjs.unix(dawnBadge + offsetUnixBadge).format('DD');
+			localTimeUnixDD = dayjs.unix(systemTimeUnix + offsetUnix).format('DD');
+			localTimeUnixHH = dayjs.unix(systemTimeUnix + offsetUnix).format('HH');
 
-			localTimeUnixBadge = dayjs.unix(systemTimeUnixBadge + offsetUnixBadge);
-			if(localTimeUnixBadgeDD !== dawnBadgeBadgeDD) {
-				dawnDayjsBadge = dayjs.unix(dawnBadge + offsetUnixBadge - 86400);
-				duskDayjsBadge = dayjs.unix(duskBadge + offsetUnixBadge - 86400);
+			dawnDD = dayjs.unix(dawn + offsetUnix).format('DD');
+
+			localTimeUnix = dayjs.unix(systemTimeUnix + offsetUnix);
+			if(localTimeUnixDD !== dawnDD) {
+				dawnDayjs = dayjs.unix(dawn + offsetUnix - 86400);
+				duskDayjs = dayjs.unix(dusk + offsetUnix - 86400);
 			}
 			else{
-				dawnDayjsBadge = dayjs.unix(dawnBadge + offsetUnixBadge);
-				duskDayjsBadge = dayjs.unix(duskBadge + offsetUnixBadge);
+				dawnDayjs = dayjs.unix(dawn + offsetUnix);
+				duskDayjs = dayjs.unix(dusk + offsetUnix);
 			}
 
-			if(localTimeUnixBadge >= dawnDayjsBadge && localTimeUnixBadge <= duskDayjsBadge) {
-			   	isDayBadge = true;	
+			if(localTimeUnix >= dawnDayjs && localTimeUnix <= duskDayjs) {
+			   	isDay = true;	
 			} 
 			else {
-			    isNightBadge = true;	
+			    isNight = true;	
 			}
+
 
 		if(descriptionBadge === "overcast clouds" || descriptionBadge === "broken clouds") {
 				iconBadge = 'cloudy';							
@@ -218,16 +220,16 @@ function badgeReader(city,latandlong,country,uv1) {
 		else if(descriptionBadge === "Sleet") {
 				iconBadge = 'sleet'; 
 			}
-		else if((descriptionBadge === "few clouds" || descriptionBadge === "scattered clouds") && isDayBadge) {
+		else if((descriptionBadge === "few clouds" || descriptionBadge === "scattered clouds") && isDay) {
 				iconBadge = 'partly-cloudy-day'; 
 			}
-		else if((descriptionBadge === "few clouds" || descriptionBadge === "scattered clouds") && isNightBadge) {
+		else if((descriptionBadge === "few clouds" || descriptionBadge === "scattered clouds") && isNight) {
 				iconBadge = 'partly-cloudy-night'; 
 			}
-		else if(summaryBadge === "Clear" && isNightBadge) {
+		else if(summaryBadge === "Clear" && isNight) {
 				iconBadge = 'clear-night'; 
 			}
-		else if(summaryBadge === "Clear" && isDayBadge) {
+		else if(summaryBadge === "Clear" && isDay) {
 				iconBadge = 'clear-day'; 
 		}
 
@@ -244,8 +246,17 @@ function badgeReader(city,latandlong,country,uv1) {
 				sunnyDayBadge  = true;
 		};
 
+		badgeReader();	
 
-		animatedBadgeInterval = setInterval(function() {animatedBadge(isDayBadge,sunnyDayBadge,cloudyBadge,rainyBadge,snowyBadge); }, 1000 / 30);
+	});	
+
+};
+
+
+
+//badgeReader----------------------------------------------------------------------------------
+function badgeReader() {
+		animatedBadgeInterval = setInterval(function() {animatedBadge(isDay,sunnyDayBadge,cloudyBadge,rainyBadge,snowyBadge); }, 1000 / 30);
 		setTimeout(function(){
 			clearInterval(animatedBadgeInterval);   
 		}, 485);
@@ -273,28 +284,28 @@ function badgeReader(city,latandlong,country,uv1) {
 		currentWhiteIcon = 0;
 		function badgeBackgroundImage(currentWhiteIcon) {
 			
-			if(isDayBadge && sunnyDayBadge && temperatureFbadge >= 50 && currentWhiteIcon == 0) {
+			if(isDay && sunnyDayBadge && temperatureFbadge >= 50 && currentWhiteIcon == 0) {
 				chrome.browserAction.setIcon({path : { "128": "images/badge/sun-128.png"}})
 				}
-			else if(isDayBadge && sunnyDayBadge && temperatureFbadge < 50 && currentWhiteIcon == 0) {
+			else if(isDay && sunnyDayBadge && temperatureFbadge < 50 && currentWhiteIcon == 0) {
 				chrome.browserAction.setIcon({path : { "128": "images/badge/sun-cold-128.png"}})
 				}
-			else if(isDayBadge && cloudyBadge && currentWhiteIcon == 0) {
+			else if(isDay && cloudyBadge && currentWhiteIcon == 0) {
 				chrome.browserAction.setIcon({path : { "128": "images/badge/cloud-day-128.png"}});
 				}
-			else if(isNightBadge && cloudyBadge && currentWhiteIcon == 0) {
+			else if(isNight && cloudyBadge && currentWhiteIcon == 0) {
 				chrome.browserAction.setIcon({path : { "128": "images/badge/cloud-night-128.png"}});							     		
 				}
-			else if(isDayBadge && rainyBadge && currentWhiteIcon == 0) {
+			else if(isDay && rainyBadge && currentWhiteIcon == 0) {
 				chrome.browserAction.setIcon({path : { "128": "images/badge/rain-day-128.png"}});
 				}
-			else if(isNightBadge && rainyBadge && currentWhiteIcon == 0) {
+			else if(isNight && rainyBadge && currentWhiteIcon == 0) {
 				chrome.browserAction.setIcon({path : { "128": "images/badge/rain-night-128.png"}});
 				}
-			else if(isDayBadge && snowyBadge && currentWhiteIcon == 0) {
+			else if(isDay && snowyBadge && currentWhiteIcon == 0) {
 				chrome.browserAction.setIcon({path : { "128": "images/badge/snow-day-128.png"}});
 				}
-			else if(isNightBadge && snowyBadge && currentWhiteIcon == 0) {
+			else if(isNight && snowyBadge && currentWhiteIcon == 0) {
 				chrome.browserAction.setIcon({path : { "128": "images/badge/snow-night-128.png"}});
 				}
 			else if(currentWhiteIcon == 0) {
@@ -302,28 +313,28 @@ function badgeReader(city,latandlong,country,uv1) {
 			}
 
 
-			else if(isDayBadge && sunnyDayBadge && temperatureFbadge >= 50 && currentWhiteIcon == 1) {
+			else if(isDay && sunnyDayBadge && temperatureFbadge >= 50 && currentWhiteIcon == 1) {
 				chrome.browserAction.setIcon({path : { "128": "images/badge/sun-dark-128.png"}})
 				}
-			else if(isDayBadge && sunnyDayBadge && temperatureFbadge < 50 && currentWhiteIcon == 1) {
+			else if(isDay && sunnyDayBadge && temperatureFbadge < 50 && currentWhiteIcon == 1) {
 				chrome.browserAction.setIcon({path : { "128": "images/badge/sun-dark-128.png"}})
 				}	
-			else if(isDayBadge && cloudyBadge && currentWhiteIcon == 1) {
+			else if(isDay && cloudyBadge && currentWhiteIcon == 1) {
 				chrome.browserAction.setIcon({path : { "128": "images/badge/cloud-dark-128.png"}});
 				}
-			else if(isNightBadge && cloudyBadge && currentWhiteIcon == 1) {
+			else if(isNight && cloudyBadge && currentWhiteIcon == 1) {
 				chrome.browserAction.setIcon({path : { "128": "images/badge/cloud-dark-128.png"}});							     		
 				}
-			else if(isDayBadge && rainyBadge && currentWhiteIcon == 1) {
+			else if(isDay && rainyBadge && currentWhiteIcon == 1) {
 				chrome.browserAction.setIcon({path : { "128": "images/badge/rain-dark-128.png"}});
 				}
-			else if(isNightBadge && rainyBadge && currentWhiteIcon == 1) {
+			else if(isNight && rainyBadge && currentWhiteIcon == 1) {
 				chrome.browserAction.setIcon({path : { "128": "images/badge/rain-dark-128.png"}});
 				}
-			else if(isDayBadge && snowyBadge && currentWhiteIcon == 1) {
+			else if(isDay && snowyBadge && currentWhiteIcon == 1) {
 				chrome.browserAction.setIcon({path : { "128": "images/badge/snow-dark-128.png"}});
 				}
-			else if(isNightBadge && snowyBadge && currentWhiteIcon == 1) {
+			else if(isNight && snowyBadge && currentWhiteIcon == 1) {
 				chrome.browserAction.setIcon({path : { "128": "images/badge/snow-dark-128.png"}});
 				}	
 			else if(currentWhiteIcon == 1) {
@@ -332,28 +343,28 @@ function badgeReader(city,latandlong,country,uv1) {
 		}
 
 		function badgeBackgroundColor() {
-			if(isDayBadge && sunnyDayBadge && temperatureFbadge >= 50) {
+			if(isDay && sunnyDayBadge && temperatureFbadge >= 50) {
 				chrome.browserAction.setBadgeBackgroundColor({color: '#fc923b'});
 				}
-			else if(isDayBadge && sunnyDayBadge && temperatureFbadge < 50) {
+			else if(isDay && sunnyDayBadge && temperatureFbadge < 50) {
 				chrome.browserAction.setBadgeBackgroundColor({color: '#f8bd90'});
 				}			
-			else if(isDayBadge && cloudyBadge && currentWhiteIcon == 0) {
+			else if(isDay && cloudyBadge && currentWhiteIcon == 0) {
 				chrome.browserAction.setBadgeBackgroundColor({color: '#549dd0'});
 				}
-			else if(isNightBadge && cloudyBadge && currentWhiteIcon == 0) {
+			else if(isNight && cloudyBadge && currentWhiteIcon == 0) {
 				chrome.browserAction.setBadgeBackgroundColor({color: '#000000'});
 				}
-			else if(isDayBadge && rainyBadge && currentWhiteIcon == 0) {
+			else if(isDay && rainyBadge && currentWhiteIcon == 0) {
 				chrome.browserAction.setBadgeBackgroundColor({color: '#549dd0'});
 				}
-			else if(isNightBadge && rainyBadge && currentWhiteIcon == 0) {
+			else if(isNight && rainyBadge && currentWhiteIcon == 0) {
 				chrome.browserAction.setBadgeBackgroundColor({color: '#000000'});
 				}
-			else if(isDayBadge && snowyBadge && currentWhiteIcon == 0) {
+			else if(isDay && snowyBadge && currentWhiteIcon == 0) {
 				chrome.browserAction.setBadgeBackgroundColor({color: '#549dd0'});
 				}
-			else if(isNightBadge && snowyBadge && currentWhiteIcon == 0) {
+			else if(isNight && snowyBadge && currentWhiteIcon == 0) {
 				chrome.browserAction.setBadgeBackgroundColor({color: '#000000'});
 				}			
 			else if(currentWhiteIcon == 0) {
@@ -411,7 +422,6 @@ function badgeReader(city,latandlong,country,uv1) {
 			});
 		};
 
-
 		function uvi() {
 			chrome.storage.local.get(['whiteIcon','badgeSize'], function(data) {
 			  var currentWhiteIcon = data.whiteIcon;
@@ -441,8 +451,6 @@ function badgeReader(city,latandlong,country,uv1) {
 			});
 
 		}
-
-
 
 		function UTFC() {
 		
@@ -500,19 +508,19 @@ function badgeReader(city,latandlong,country,uv1) {
 					
 
 					if(setSettingUT == "u" && setSettingFC == "f") {
-						toolTipBadge = temperatureFbadge + "° " + capital_letter(descriptionBadge) + " - " + cityBadge + "\n" + "Updated at " + updateTimeRelativeBadge;
+						toolTipBadge = temperatureFbadge + "° " + capital_letter(descriptionBadge) + " - " + citys + "\n" + "Updated at " + updateTimeRelativeBadge;
 						chrome.browserAction.setTitle({title: toolTipBadge});
 						}
 					else if(setSettingUT == "u" && setSettingFC == "c") {
-						toolTipBadge = temperatureCbadge + "° " + capital_letter(descriptionBadge) + " - " + cityBadge  + "\n" + "Updated at " + updateTimeRelativeBadge;
+						toolTipBadge = temperatureCbadge + "° " + capital_letter(descriptionBadge) + " - " + citys  + "\n" + "Updated at " + updateTimeRelativeBadge;
 						chrome.browserAction.setTitle({title: toolTipBadge});
 						}
 					else if(setSettingUT == "t" && setSettingFC == "f") {
-						toolTipBadge = temperatureFbadge + "° " + capital_letter(descriptionBadge) + " - " + cityBadge  + "\n" + "Updated at " +updateTimeRelativeBadge;
+						toolTipBadge = temperatureFbadge + "° " + capital_letter(descriptionBadge) + " - " + citys  + "\n" + "Updated at " +updateTimeRelativeBadge;
 						chrome.browserAction.setTitle({title: toolTipBadge});
 						}
 					else if(setSettingUT == "t" && setSettingFC == "c") {
-						toolTipBadge = temperatureCbadge + "° " + capital_letter(descriptionBadge) + " - " + cityBadge + "\n"  + "Updated at " + updateTimeRelativeBadge;
+						toolTipBadge = temperatureCbadge + "° " + capital_letter(descriptionBadge) + " - " + citys + "\n"  + "Updated at " + updateTimeRelativeBadge;
 						chrome.browserAction.setTitle({title: toolTipBadge});
 						};						
 					return;
@@ -529,8 +537,6 @@ function badgeReader(city,latandlong,country,uv1) {
 				});
 		}
 
-//---result
-	});
 };
 
 
@@ -551,174 +557,256 @@ function uvReader(city,latandlong,country) {
 	lat = (latlong.split(','))[0];
 	lng = (latlong.split(','))[1];
 
-	const ads = '3dfc8ba9095bfa87462f459fc85238c6';	
-	fetch('https://uv-weather.herokuapp.com/https://api.darksky.net/forecast/' + ads +'/' + latlong + '?solar')
+	fetch('https://api.openweathermap.org/data/2.5/uvi?lat='+ lat + '&lon=' + lng + '&appid=c33b87de15e56ce0b4a4a0fef54d8ecd')
 	.then((resp) => resp.json())
-	.then(function(result) {				
-		window.result = result;
-		isDay = false;
-		isNight = false;
-		cloudy = false;
-		sunnyDay = false;
-		rainy = false;
-		snowy = false;
+	.then(function(resultBadgeUV) {
+		window.resultBadgeUV = resultBadgeUV;
+		uvCurrentlyAPI = resultBadgeUV.value;
+		uvBadgeDate = resultBadgeUV.date;
+		uvBadgeDateISO = resultBadgeUV.date_iso
 
-		cloudCover = Math.round(result.currently.cloudCover * 100);
-		icon = result.currently.icon;
-		updateTime = result.currently.time;
+		fetch('https://api.openweathermap.org/data/2.5/weather?lat='+ lat + '&lon=' + lng + '&appid=c33b87de15e56ce0b4a4a0fef54d8ecd')
+		.then((resp) => resp.json())
+		.then(function(resultBadge) {
+			window.resultBadge = resultBadge;
+			temperatureCbadge = Math.round((resultBadge.main.temp) - 273.15);
+			temperatureFbadge = Math.round((1.8*temperatureCbadge) + 32);
+			if(temperatureCbadge == '-0') {temperatureCbadge = 0};
+			if(temperatureFbadge == '-0') {temperatureFbadge = 0};
+			summaryBadge = resultBadge.weather[0].main;
+			descriptionBadge = resultBadge.weather[0].description;
+			updateTimeBadge = resultBadge.dt;
+			timeZoneBadge = resultBadge.timezone;
+			cloudCoverBadge = resultBadge.clouds.all;
 
-		temperatureF =  Math.round(result.currently.temperature);
-		temperatureC =  f2c(temperatureF);
-		humidity = Math.round(100 * (result.currently.humidity));
-		dewPointF = Math.round(result.currently.dewPoint);
-		dewPointC = f2c(dewPointF);
-		pressure = result.currently.hasOwnProperty('pressure') ? Math.round(result.currently.pressure) : '-';
-		windSpeedMPH = Math.round(result.currently.windSpeed);
-		windSpeedKMH = Math.round(windSpeedMPH * 1.609334);
-			windSpeedMS10 = windSpeedMPH * 0.4470389;
-			windSpeedMS10R = Math.round(windSpeedMPH * 0.4470389 * 10) / 10;
-			windSpeedMS = windSpeedMS10 * 0.33; // on humun hieght an urban area
-		windGustMPH = Math.round(result.currently.windGust);
-		windGustKMH = Math.round(windGustMPH * 1.609334);
-		windGustMS = Math.round(windGustMPH * 0.4470389 * 10) / 10;
+				isDay = false;
+				isNight = false;
+				cloudyBadge = false;
+				sunnyDayBadge = false;
+				rainyBadge = false;
+				snowyBadge = false;
 
-		ghiSolarClearSki = result.hourly.data[0].hasOwnProperty('solar') ? result.hourly.data[0].solar.ghi : '-'; //GHI = DHI + DNI * cos (θ)
+				//Solar Times --------------------------------------------------------------------------------------------------------------
+					systemTime = new Date();
+					systemTimeUnix = Math.round((systemTime).getTime() / 1000);
+					DeviceTimeDifferenceFromGMT = systemTime.getTimezoneOffset() / 60;
+				offsetTime = DeviceTimeDifferenceFromGMT + timeZoneBadge/3600;
+					offsetUnix = offsetTime * 3600;
+				localTimeUnix = Math.round(systemTimeUnix + offsetUnix);
 
-			if(result.currently.windSpeed > 0) {
-				windBearing = Math.round(result.currently.windBearing); //true north at 0° and progressing clockwise
-				windCompass = degToCompass(result.currently.windBearing);
-			}
-			else {
-				windBearing = "-";
-				windCompass = "-";
-			}
-
-			visibility = result.currently.hasOwnProperty('visibility') ? Math.round(result.currently.visibility *10)/10 : '-';
-			visibilityKM = result.currently.hasOwnProperty('visibility') ? Math.round(result.currently.visibility * 1.60934 *10)/10 : '-';
-
-			if(visibility >= 10) {
-				visibility = "+10";
-				visibilityKM = "+16";
-			}
-
-		ozone = result.currently.hasOwnProperty('ozone') ? Math.round(result.currently.ozone) : '-';
-		precipProbability = result.currently.hasOwnProperty('precipProbability') ? Math.round(result.currently.precipProbability * 100) : '-';
-
-		summary = result.currently.hasOwnProperty('summary') ? result.currently.summary : '-'
-
-		if(result.hasOwnProperty('minutely')) {
-			if(result.minutely.hasOwnProperty('summary')) {
-				summaryMinutely = result.minutely.summary;
-			}
-		}
-		else {
-			summaryMinutely = result.currently.hasOwnProperty('summary') ? result.currently.summary : '-'
-		}
-
-		summaryHourlyF = result.hourly.hasOwnProperty('summary') ? result.hourly.summary : '-'
-		summaryDailyF = result.daily.hasOwnProperty('summary') ? result.daily.summary : '-'
-
-		summaryHourlyC = summaryUnitConvertor(result.hourly.summary);
-
-		summaryDailyC = summaryUnitConvertor(result.daily.summary);
-
-		current_tempF_max = Math.round(result.daily.data[0].temperatureMax);
-		current_tempF_min = Math.round(result.daily.data[0].temperatureMin);							   
-
-		current_tempC_max = f2c(current_tempF_max);
-		current_tempC_min = f2c(current_tempF_min);
-
-		uvCurrently = result.currently.hasOwnProperty('uvIndex') ? result.currently.uvIndex : '-'
-
-		forecast_0_tempF = Math.round(result.daily.data[0].temperatureMax);
-		forecast_1_tempF = Math.round(result.daily.data[1].temperatureMax);
+				timesSolar = SunCalc.getTimes(localTimeUnix, lat, lng);
+					sunriseTimeSolar = timesSolar.sunrise;
+					sunsetTimeSolar = timesSolar.sunset;
+					solarNoon = timesSolar.solarNoon;
+					goldenHourEnd = timesSolar.goldenHourEnd;
+					goldenHour = timesSolar.goldenHour;
+					totalSeconds  = dayjs(dayjs.unix(sunsetTimeSolar)).diff(dayjs(dayjs.unix(sunriseTimeSolar)), 'second');
+					totalHours = Math.floor(totalSeconds/(60*60));
+					totalSeconds = totalSeconds - (totalHours*60*60);
+					totalMinutes = Math.ceil(totalSeconds/60);
+					if(totalHours<10) {totalHours = "0"+totalHours};
+					if(totalMinutes<10) {totalMinutes = "0"+totalMinutes};
+					dayLength =  totalHours + ":" + totalMinutes + " HH:MM";
+					
+					dawn = timesSolar.dawn;
+					dusk = timesSolar.dusk;
+					nightStarts = timesSolar.night;
+					nightEnds = timesSolar.nightEnd;
 
 
-		//Solar Times --------------------------------------------------------------------------------------------------------------
-			systemTime = new Date();
-			systemTimeUnix = Math.round((systemTime).getTime() / 1000);
-			DeviceTimeDifferenceFromGMT = systemTime.getTimezoneOffset() / 60;
-		offsetTime = DeviceTimeDifferenceFromGMT + result.offset;
-			offsetUnix = offsetTime * 3600;
-		localTimeUnix = Math.round(systemTimeUnix + offsetUnix);
-		
-		timesSolar = SunCalc.getTimes(localTimeUnix, lat, lng);
-			sunriseTimeSolar = timesSolar.sunrise;
-			sunsetTimeSolar = timesSolar.sunset;
-			solarNoon = timesSolar.solarNoon;
-			goldenHourEnd = timesSolar.goldenHourEnd;
-			goldenHour = timesSolar.goldenHour;
-			totalSeconds  = dayjs(dayjs.unix(sunsetTimeSolar)).diff(dayjs(dayjs.unix(sunriseTimeSolar)), 'second');
-			totalHours = Math.floor(totalSeconds/(60*60));
-			totalSeconds = totalSeconds - (totalHours*60*60);
-			totalMinutes = Math.ceil(totalSeconds/60);
-			if(totalHours<10) {totalHours = "0"+totalHours};
-			if(totalMinutes<10) {totalMinutes = "0"+totalMinutes};
-			dayLength =  totalHours + ":" + totalMinutes + " HH:MM";
-			
-			dawn = timesSolar.dawn;
-			dusk = timesSolar.dusk;
-			nightStarts = timesSolar.night;
-			nightEnds = timesSolar.nightEnd;
+					localTimeUnixDD = dayjs.unix(systemTimeUnix + offsetUnix).format('DD');
+					localTimeUnixHH = dayjs.unix(systemTimeUnix + offsetUnix).format('HH');
+
+					dawnDD = dayjs.unix(dawn + offsetUnix).format('DD');
+
+					localTimeUnix = dayjs.unix(systemTimeUnix + offsetUnix);
+					if(localTimeUnixDD !== dawnDD) {
+						dawnDayjs = dayjs.unix(dawn + offsetUnix - 86400);
+						duskDayjs = dayjs.unix(dusk + offsetUnix - 86400);
+					}
+					else{
+						dawnDayjs = dayjs.unix(dawn + offsetUnix);
+						duskDayjs = dayjs.unix(dusk + offsetUnix);
+					}
+
+					if(localTimeUnix >= dawnDayjs && localTimeUnix <= duskDayjs) {
+					   	isDay = true;	
+					} 
+					else {
+					    isNight = true;	
+					}
 
 
-			localTimeUnixDD = dayjs.unix(systemTimeUnix + offsetUnix).format('DD');
-			dawnDD = dayjs.unix(dawn + offsetUnix).format('DD');
-
-			localTimeUnix = dayjs.unix(systemTimeUnix + offsetUnix);
-			if(localTimeUnixDD !== dawnDD) {
-				dawnDayjs = dayjs.unix(dawn + offsetUnix - 86400);
-				duskDayjs = dayjs.unix(dusk + offsetUnix - 86400);
-			}
-			else{
-				dawnDayjs = dayjs.unix(dawn + offsetUnix);
-				duskDayjs = dayjs.unix(dusk + offsetUnix);
+			if(descriptionBadge === "overcast clouds" || descriptionBadge === "broken clouds") {
+					iconBadge = 'cloudy';							
+				}
+			else if(summaryBadge === "Ash" || summaryBadge === "Sand" || summaryBadge === "Fog" || summaryBadge === "Dust" || summaryBadge === "Haze" || summaryBadge === "Smoke" || summaryBadge === "Mist") {
+					iconBadge = 'fog';							
+				}
+			else if(summaryBadge === "Rain" || summaryBadge === "Thunderstorm" || summaryBadge === "Drizzle") {
+					iconBadge = 'rain'; 
+				}
+			else if(summaryBadge === "Snow") {
+					iconBadge = 'snow'; 
+				}
+			else if(summaryBadge === "Squall" || summaryBadge === "Tornado") {
+					iconBadge = 'wind'; 
+				}
+			else if(descriptionBadge === "Sleet") {
+					iconBadge = 'sleet'; 
+				}
+			else if((descriptionBadge === "few clouds" || descriptionBadge === "scattered clouds") && isDay) {
+					iconBadge = 'partly-cloudy-day'; 
+				}
+			else if((descriptionBadge === "few clouds" || descriptionBadge === "scattered clouds") && isNight) {
+					iconBadge = 'partly-cloudy-night'; 
+				}
+			else if(summaryBadge === "Clear" && isNight) {
+					iconBadge = 'clear-night'; 
+				}
+			else if(summaryBadge === "Clear" && isDay) {
+					iconBadge = 'clear-day'; 
 			}
 
-			if(localTimeUnix >= dawnDayjs && localTimeUnix <= duskDayjs) {
-			   	isDay = true;	
-			} 
-			else {
-			    isNight = true;	
-			}
 
-		update_tomorrow_is_f(forecast_1_tempF,forecast_0_tempF);
-		update_tomorrow_is_c(forecast_1_tempF,forecast_0_tempF);
-
-		if(icon === "rain" || icon === "sleet" || icon === "snow")
-			{cloudAdj = 0.31;}
-		else if(cloudCover < 20)
-			{cloudAdj = 1;}
-		else if(cloudCover >= 20 && cloudCover < 70)
-			{cloudAdj = 0.89;}
-		else if(cloudCover >= 70 && cloudCover < 90)
-			{cloudAdj = 0.73;}
-		else if(cloudCover >= 90)
-			{cloudAdj = 0.31;}
-		else {cloudAdj = 1;}
-
-		uv1 = Math.round(uvCurrently * cloudAdj);
-
-		if(isNight) {
-			current_uv_note = (" (night)");
-			}
-		else if(uv1 >= 0 && uv1 <= 2) {
-			current_uv_note = (" (Low)");
-			}
-		else if(uv1 >= 3 && uv1 <= 5) {
-			current_uv_note = (" (Moderate)");
-			}
-		else if(uv1 >= 6 && uv1 <= 7) {
-			current_uv_note = (" (High)");
-			}
-		else if(uv1 >= 8 && uv1 <= 10) {
-			current_uv_note = (" (Very High)");
-			}
-		else if(uv1 >= 11) {
-			current_uv_note = (" (Extreme)");
+			if(iconBadge === "cloudy" || iconBadge === "partly-cloudy-day" || iconBadge === "partly-cloudy-night") {
+					cloudyBadge  = true;							
+				}
+					else if (iconBadge === "rain"){
+					rainyBadge  = true; 
+				}
+					else if (iconBadge === "snow" || iconBadge === "sleet"){
+					snowyBadge  = true; 
+				}	else {
+					sunnyDayBadge  = true;
 			};
-		  	
+
+
+				//uvReader
+				const ads = '3dfc8ba9095bfa87462f459fc85238c6';	
+				fetch('https://uv-weather.herokuapp.com/https://api.darksky.net/forecast/' + ads +'/' + latlong + '?solar')
+				.then((resp) => resp.json())
+				.then(function(result) {				
+					window.result = result;
+
+					updateTime = result.currently.time;
+
+					temperatureF =  Math.round(result.currently.temperature);
+					temperatureC =  f2c(temperatureF);
+					humidity = Math.round(100 * (result.currently.humidity));
+					dewPointF = Math.round(result.currently.dewPoint);
+					dewPointC = f2c(dewPointF);
+					pressure = result.currently.hasOwnProperty('pressure') ? Math.round(result.currently.pressure) : '-';
+					windSpeedMPH = Math.round(result.currently.windSpeed);
+					windSpeedKMH = Math.round(windSpeedMPH * 1.609334);
+						windSpeedMS10 = windSpeedMPH * 0.4470389;
+						windSpeedMS10R = Math.round(windSpeedMPH * 0.4470389 * 10) / 10;
+						windSpeedMS = windSpeedMS10 * 0.33; // on humun hieght an urban area
+					windGustMPH = Math.round(result.currently.windGust);
+					windGustKMH = Math.round(windGustMPH * 1.609334);
+					windGustMS = Math.round(windGustMPH * 0.4470389 * 10) / 10;
+
+					ghiSolarClearSki = result.hourly.data[0].hasOwnProperty('solar') ? result.hourly.data[0].solar.ghi : '-'; //GHI = DHI + DNI * cos (θ)
+
+						if(result.currently.windSpeed > 0) {
+							windBearing = Math.round(result.currently.windBearing); //true north at 0° and progressing clockwise
+							windCompass = degToCompass(result.currently.windBearing);
+						}
+						else {
+							windBearing = "-";
+							windCompass = "-";
+						}
+
+						visibility = result.currently.hasOwnProperty('visibility') ? Math.round(result.currently.visibility *10)/10 : '-';
+						visibilityKM = result.currently.hasOwnProperty('visibility') ? Math.round(result.currently.visibility * 1.60934 *10)/10 : '-';
+
+						if(visibility >= 10) {
+							visibility = "+10";
+							visibilityKM = "+16";
+						}
+
+					ozone = result.currently.hasOwnProperty('ozone') ? Math.round(result.currently.ozone) : '-';
+					precipProbability = result.currently.hasOwnProperty('precipProbability') ? Math.round(result.currently.precipProbability * 100) : '-';
+
+					summary = result.currently.hasOwnProperty('summary') ? result.currently.summary : '-'
+
+					if(result.hasOwnProperty('minutely')) {
+						if(result.minutely.hasOwnProperty('summary')) {
+							summaryMinutely = result.minutely.summary;
+						}
+					}
+					else {
+						summaryMinutely = result.currently.hasOwnProperty('summary') ? result.currently.summary : '-'
+					}
+
+					summaryHourlyF = result.hourly.hasOwnProperty('summary') ? result.hourly.summary : '-'
+					summaryDailyF = result.daily.hasOwnProperty('summary') ? result.daily.summary : '-'
+
+					summaryHourlyC = summaryUnitConvertor(result.hourly.summary);
+
+					summaryDailyC = summaryUnitConvertor(result.daily.summary);
+
+					current_tempF_max = Math.round(result.daily.data[0].temperatureMax);
+					current_tempF_min = Math.round(result.daily.data[0].temperatureMin);							   
+
+					current_tempC_max = f2c(current_tempF_max);
+					current_tempC_min = f2c(current_tempF_min);
+
+					//uvCurrently = result.currently.hasOwnProperty('uvIndex') ? result.currently.uvIndex : '-'
+
+					forecast_0_tempF = Math.round(result.daily.data[0].temperatureMax);
+					forecast_1_tempF = Math.round(result.daily.data[1].temperatureMax);
+
+					update_tomorrow_is_f(forecast_1_tempF,forecast_0_tempF);
+					update_tomorrow_is_c(forecast_1_tempF,forecast_0_tempF);
+
+					if(iconBadge === "rain" || iconBadge === "sleet" || iconBadge === "snow")
+						{cloudAdj = 0.31;}
+					else if(cloudCoverBadge < 20)
+						{cloudAdj = 1;}
+					else if(cloudCoverBadge >= 20 && cloudCoverBadge < 70)
+						{cloudAdj = 0.89;}
+					else if(cloudCoverBadge >= 70 && cloudCoverBadge < 90)
+						{cloudAdj = 0.73;}
+					else if(cloudCoverBadge >= 90)
+						{cloudAdj = 0.31;}
+					else {cloudAdj = 1;}
+
+					uvCurrently = -1*uvCurrentlyAPI * Math.pow((Math.abs(12-localTimeUnixHH) /(totalHours/2)),2) + uvCurrentlyAPI;
+					if(isNight) {
+						uvCurrently = 0;
+					}
+
+					uv1 = Math.floor(uvCurrently * cloudAdj);
+
+					if(isNight) {
+						current_uv_note = (" (night)");
+						}
+					else if(uv1 >= 0 && uv1 <= 2) {
+						current_uv_note = (" (Low)");
+						}
+					else if(uv1 >= 3 && uv1 <= 5) {
+						current_uv_note = (" (Moderate)");
+						}
+					else if(uv1 >= 6 && uv1 <= 7) {
+						current_uv_note = (" (High)");
+						}
+					else if(uv1 >= 8 && uv1 <= 10) {
+						current_uv_note = (" (Very High)");
+						}
+					else if(uv1 >= 11) {
+						current_uv_note = (" (Extreme)");
+						};
+
+					badgeReader();
+
+				})
+				//uvReader
+		})
 	})
+
+
+
 };
 
 
