@@ -12,6 +12,199 @@ function capital_letter(str) {
     return str.join(" ");
 };
 
+function solarNighDay(timeZoneBadge,lat,lng) {
+	isDay = false;
+	isNight = false;
+	cloudyBadge = false;
+	sunnyDayBadge = false;
+	rainyBadge = false;
+	snowyBadge = false;
+
+	//Solar Times --------------------------------------------------------------------------------------------------------------
+		systemTime = new Date();
+		systemTimeUnix = Math.round((systemTime).getTime() / 1000);
+		DeviceTimeDifferenceFromGMT = systemTime.getTimezoneOffset() / 60;
+	offsetTime = DeviceTimeDifferenceFromGMT + timeZoneBadge/3600;
+		offsetUnix = offsetTime * 3600;
+	localTimeUnix = Math.round(systemTimeUnix + offsetUnix);
+
+	timesSolar = SunCalc.getTimes(localTimeUnix, lat, lng);
+		sunriseTimeSolar = timesSolar.sunrise;
+		sunsetTimeSolar = timesSolar.sunset;
+		solarNoon = timesSolar.solarNoon;
+		goldenHourEnd = timesSolar.goldenHourEnd;
+		goldenHour = timesSolar.goldenHour;
+		totalSeconds  = dayjs(dayjs.unix(sunsetTimeSolar)).diff(dayjs(dayjs.unix(sunriseTimeSolar)), 'second');
+		totalHours = Math.floor(totalSeconds/(60*60));
+		totalSeconds = totalSeconds - (totalHours*60*60);
+		totalMinutes = Math.ceil(totalSeconds/60);
+		if(totalHours<10) {totalHours = "0"+totalHours};
+		if(totalMinutes<10) {totalMinutes = "0"+totalMinutes};
+		dayLength =  totalHours + ":" + totalMinutes + " HH:MM";
+		
+		dawn = timesSolar.dawn;
+		dusk = timesSolar.dusk;
+		nightStarts = timesSolar.night;
+		nightEnds = timesSolar.nightEnd;
+
+
+		localTimeUnixDD = dayjs.unix(systemTimeUnix + offsetUnix).format('DD');
+		localTimeUnixHH = dayjs.unix(systemTimeUnix + offsetUnix).format('HH');
+
+		dawnDD = dayjs.unix(dawn + offsetUnix).format('DD');
+
+		localTimeUnix = dayjs.unix(systemTimeUnix + offsetUnix);
+		if(localTimeUnixDD !== dawnDD) {
+			dawnDayjs = dayjs.unix(dawn + offsetUnix - 86400);
+			duskDayjs = dayjs.unix(dusk + offsetUnix - 86400);
+		}
+		else{
+			dawnDayjs = dayjs.unix(dawn + offsetUnix);
+			duskDayjs = dayjs.unix(dusk + offsetUnix);
+		}
+
+		if(localTimeUnix >= dawnDayjs && localTimeUnix <= duskDayjs) {
+		   	isDay = true;	
+		} 
+		else {
+		    isNight = true;	
+		}
+};
+
+function iconBadgeConvert(descriptionBadge,summaryBadge) {
+	if(descriptionBadge === "overcast clouds" || descriptionBadge === "broken clouds") {
+		iconBadge = 'cloudy';							
+	}
+	else if(summaryBadge === "Ash" || summaryBadge === "Sand" || summaryBadge === "Fog" || summaryBadge === "Dust" || summaryBadge === "Haze" || summaryBadge === "Smoke" || summaryBadge === "Mist") {
+		iconBadge = 'fog';							
+	}
+	else if(summaryBadge === "Rain" || summaryBadge === "Thunderstorm" || summaryBadge === "Drizzle") {
+		iconBadge = 'rain'; 
+	}
+	else if(summaryBadge === "Snow") {
+		iconBadge = 'snow'; 
+	}
+	else if(summaryBadge === "Squall" || summaryBadge === "Tornado") {
+		iconBadge = 'wind'; 
+	}
+	else if(descriptionBadge === "Sleet") {
+		iconBadge = 'sleet'; 
+	}
+	else if((descriptionBadge === "few clouds" || descriptionBadge === "scattered clouds") && isDay) {
+		iconBadge = 'partly-cloudy-day'; 
+	}
+	else if((descriptionBadge === "few clouds" || descriptionBadge === "scattered clouds") && isNight) {
+		iconBadge = 'partly-cloudy-night'; 
+	}
+	else if(summaryBadge === "Clear" && isNight) {
+		iconBadge = 'clear-night'; 
+	}
+	else if(summaryBadge === "Clear" && isDay) {
+		iconBadge = 'clear-day'; 
+	}
+
+
+	if(iconBadge === "cloudy" || iconBadge === "partly-cloudy-day" || iconBadge === "partly-cloudy-night") {
+		cloudyBadge  = true;							
+	}
+		else if (iconBadge === "rain"){
+		rainyBadge  = true; 
+	}
+		else if (iconBadge === "snow" || iconBadge === "sleet"){
+		snowyBadge  = true; 
+	}	else {
+		sunnyDayBadge  = true;
+	};
+};
+
+function badgeBackgroundImage() {
+	if(isDay && sunnyDayBadge && temperatureFbadge >= 50 && currentWhiteIcon == 0) {
+		chrome.browserAction.setIcon({path : { "128": "images/badge/sun-128.png"}})
+		}
+	else if(isDay && sunnyDayBadge && temperatureFbadge < 50 && currentWhiteIcon == 0) {
+		chrome.browserAction.setIcon({path : { "128": "images/badge/sun-cold-128.png"}})
+		}
+	else if(isDay && cloudyBadge && currentWhiteIcon == 0) {
+		chrome.browserAction.setIcon({path : { "128": "images/badge/cloud-day-128.png"}});
+		}
+	else if(isNight && cloudyBadge && currentWhiteIcon == 0) {
+		chrome.browserAction.setIcon({path : { "128": "images/badge/cloud-night-128.png"}});							     		
+		}
+	else if(isDay && rainyBadge && currentWhiteIcon == 0) {
+		chrome.browserAction.setIcon({path : { "128": "images/badge/rain-day-128.png"}});
+		}
+	else if(isNight && rainyBadge && currentWhiteIcon == 0) {
+		chrome.browserAction.setIcon({path : { "128": "images/badge/rain-night-128.png"}});
+		}
+	else if(isDay && snowyBadge && currentWhiteIcon == 0) {
+		chrome.browserAction.setIcon({path : { "128": "images/badge/snow-day-128.png"}});
+		}
+	else if(isNight && snowyBadge && currentWhiteIcon == 0) {
+		chrome.browserAction.setIcon({path : { "128": "images/badge/snow-night-128.png"}});
+		}
+	else if(currentWhiteIcon == 0) {
+		chrome.browserAction.setIcon({path : { "128": "images/badge/moon-128.png"}});
+	}
+
+	else if(isDay && sunnyDayBadge && temperatureFbadge >= 50 && currentWhiteIcon == 1) {
+		chrome.browserAction.setIcon({path : { "128": "images/badge/sun-dark-128.png"}})
+		}
+	else if(isDay && sunnyDayBadge && temperatureFbadge < 50 && currentWhiteIcon == 1) {
+		chrome.browserAction.setIcon({path : { "128": "images/badge/sun-dark-128.png"}})
+		}	
+	else if(isDay && cloudyBadge && currentWhiteIcon == 1) {
+		chrome.browserAction.setIcon({path : { "128": "images/badge/cloud-dark-128.png"}});
+		}
+	else if(isNight && cloudyBadge && currentWhiteIcon == 1) {
+		chrome.browserAction.setIcon({path : { "128": "images/badge/cloud-dark-128.png"}});							     		
+		}
+	else if(isDay && rainyBadge && currentWhiteIcon == 1) {
+		chrome.browserAction.setIcon({path : { "128": "images/badge/rain-dark-128.png"}});
+		}
+	else if(isNight && rainyBadge && currentWhiteIcon == 1) {
+		chrome.browserAction.setIcon({path : { "128": "images/badge/rain-dark-128.png"}});
+		}
+	else if(isDay && snowyBadge && currentWhiteIcon == 1) {
+		chrome.browserAction.setIcon({path : { "128": "images/badge/snow-dark-128.png"}});
+		}
+	else if(isNight && snowyBadge && currentWhiteIcon == 1) {
+		chrome.browserAction.setIcon({path : { "128": "images/badge/snow-dark-128.png"}});
+		}	
+	else if(currentWhiteIcon == 1) {
+		chrome.browserAction.setIcon({path : { "128": "images/badge/moon-dark-128.png"}});
+	}
+};
+
+function badgeBackgroundColor(currentWhiteIcon) {
+	if(isDay && sunnyDayBadge && temperatureFbadge >= 50) {
+		chrome.browserAction.setBadgeBackgroundColor({color: '#fc923b'});
+		}
+	else if(isDay && sunnyDayBadge && temperatureFbadge < 50) {
+		chrome.browserAction.setBadgeBackgroundColor({color: '#f8bd90'});
+		}			
+	else if(isDay && cloudyBadge && currentWhiteIcon == 0) {
+		chrome.browserAction.setBadgeBackgroundColor({color: '#549dd0'});
+		}
+	else if(isNight && cloudyBadge && currentWhiteIcon == 0) {
+		chrome.browserAction.setBadgeBackgroundColor({color: '#000000'});
+		}
+	else if(isDay && rainyBadge && currentWhiteIcon == 0) {
+		chrome.browserAction.setBadgeBackgroundColor({color: '#549dd0'});
+		}
+	else if(isNight && rainyBadge && currentWhiteIcon == 0) {
+		chrome.browserAction.setBadgeBackgroundColor({color: '#000000'});
+		}
+	else if(isDay && snowyBadge && currentWhiteIcon == 0) {
+		chrome.browserAction.setBadgeBackgroundColor({color: '#549dd0'});
+		}
+	else if(isNight && snowyBadge && currentWhiteIcon == 0) {
+		chrome.browserAction.setBadgeBackgroundColor({color: '#000000'});
+		}			
+	else if(currentWhiteIcon == 0) {
+		chrome.browserAction.setBadgeBackgroundColor({color: '#000000'});
+	}
+};
+
 
 function animatedBadge(isDayBadge,sunnyDayBadge,cloudyBadge,rainyBadge,snowyBadge) {
 	var rotation = parseInt(((new Date() - start) / 1000) * lines) / lines;
@@ -67,7 +260,7 @@ function largBadgeNumber(displayNumber, lightBadge) {
     chrome.browserAction.setBadgeText({
       text: ''
     });
-}
+};
 
 function f2c(TempF) {
 	var TempC = Math.round((Number(TempF) - 32) / 1.8);
