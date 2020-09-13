@@ -7,28 +7,48 @@ chrome.storage.local.get(['verUpdate'], function(data) {
 			fetch('https://ipinfo.io/?token=6d819142de4288')
 		  	.then((resp) => resp.json())
 		  	 .then(function(result) {
-				countryAPI = JSON.stringify(result.country);
-				country = (countryAPI.split('"'))[1];
-				if(country == "ZZ") {
-						country = " "
-					}
-				city = JSON.stringify(result.city);
-				region = (JSON.stringify(result.region).split('"'))[1];
-				latandlong = JSON.stringify(result.loc);
-				fullname = ((city.split('"'))[1].charAt(0).toUpperCase() + (city.split('"'))[1].slice(1)) + ", " + region.toUpperCase() + ", " + country;
-				chrome.storage.local.set({'city': city});
-				chrome.storage.local.set({'latlong': latandlong});
-				chrome.storage.local.set({'country': country});
-				chrome.storage.local.set({'fullname': fullname});
-				chrome.storage.local.set({'verUpdate': 1});
-					uvReader(city,latandlong,country);
-					setTimeout(function() {
-						badgeReader(city,latandlong,country,uv1);
-					}, 500);
+		  	 	if(result) {
+					countryAPI = JSON.stringify(result.country);
+					country = (countryAPI.split('"'))[1];
+					if(country == "ZZ") {
+							country = " "
+						}
+					city = JSON.stringify(result.city);
+					region = (JSON.stringify(result.region).split('"'))[1];
+					latandlong = JSON.stringify(result.loc);
+					fullname = ((city.split('"'))[1].charAt(0).toUpperCase() + (city.split('"'))[1].slice(1)) + ", " + region.toUpperCase() + ", " + country;
+					chrome.storage.local.set({'city': city});
+					chrome.storage.local.set({'latlong': latandlong});
+					chrome.storage.local.set({'country': country});
+					chrome.storage.local.set({'fullname': fullname});
+					chrome.storage.local.set({'verUpdate': 1});					
+						uvReader(city,latandlong,country);
+						setTimeout(function() {
+							badgeReader(city,latandlong,country,uv1);
+						}, 500);
+				}
+				else{
+					city = '"Toronto"';
+					latandlong = '"43.6629,-79.3987"';
+					country = 'CA';											
+					chrome.storage.local.set({'city': '"Toronto"'});
+					chrome.storage.local.set({'latlong': '"43.6629,-79.3987"'});
+					chrome.storage.local.set({'country': 'CA'});
+					chrome.storage.local.set({'fullname': 'Toronto, ONTARIO, CA'});
+					chrome.storage.local.set({'verUpdate': 1});
+						uvReader(city,latandlong,country);
+						setTimeout(function() {
+							badgeReader(city,latandlong,country,uv1);
+						}, 500);
+				}
 			})
 	}
 	else{
-		chrome.storage.local.get(['latlong', 'city', 'country'], function(data) { //update the extension and refresh the popup
+
+
+		if(typeof updateTimeoutActive == 'undefined' || updateTimeoutActive == 0) {
+
+			chrome.storage.local.get(['latlong', 'city', 'country'], function(data) { //update the extension and refresh the popup
 	  		latandlong = data.latlong;
 	 		city = data.city;
 	 		country = data.country;
@@ -36,7 +56,17 @@ chrome.storage.local.get(['verUpdate'], function(data) {
 					setTimeout(function() {
 						badgeReader(city,latandlong,country,uv1);
     				}, 500);
-		});
+					updateTimeoutActive = 1;	
+    				updateTimeout();
+				});
+		}	
+
+	  		function updateTimeout() {
+		      		setTimeout(function() {
+		      		updateTimeoutActive = 0;
+		    		}, 10000);
+		  	};
+
 	}
 });
 
@@ -127,12 +157,9 @@ function badgeReader(city,latandlong,country,uv1) {
 		if(temperatureFbadge == -0) {temperatureFbadge = 0};
 		summaryBadge = resultBadge.weather[0].main;
 		descriptionBadge = resultBadge.weather[0].description;
-		sunriseTimeBadge = resultBadge.sys.sunrise;
-		sunsetTimeBadge = resultBadge.sys.sunset;
 		updateTimeBadge = resultBadge.dt;
 		timeZoneBadge = resultBadge.timezone;
 		cloudCoverBadge = resultBadge.clouds.all;
-
 
 		isDayBadge = false;
 		isNightBadge = false;
@@ -146,10 +173,12 @@ function badgeReader(city,latandlong,country,uv1) {
 		DeviceTimeDifferenceFromGMTBadge = systemTimeBadge.getTimezoneOffset() / 60;
 		offsetTimeBadge = DeviceTimeDifferenceFromGMTBadge + timeZoneBadge/3600;
 		offsetUnixBadge = offsetTimeBadge * 3600;
+
 		localTimeUnixBadge = Math.round(systemTimeUnixBadge + offsetUnixBadge);
 		timesSolarBadge = SunCalc.getTimes(localTimeUnixBadge, lat, lng);	
 			dawnBadge = timesSolarBadge.dawn;
 			duskBadge = timesSolarBadge.dusk;
+
 
 			localTimeUnixBadgeDD = dayjs.unix(systemTimeUnixBadge + offsetUnixBadge).format('DD');
 			dawnBadgeBadgeDD = dayjs.unix(dawnBadge + offsetUnixBadge).format('DD');
@@ -216,7 +245,29 @@ function badgeReader(city,latandlong,country,uv1) {
 		};
 
 
-					animatedBadgeInterval = setInterval(function() {animatedBadge(isDayBadge,sunnyDayBadge,cloudyBadge,rainyBadge,snowyBadge); }, 1000 / 30);
+		animatedBadgeInterval = setInterval(function() {animatedBadge(isDayBadge,sunnyDayBadge,cloudyBadge,rainyBadge,snowyBadge); }, 1000 / 30);
+		setTimeout(function(){
+			clearInterval(animatedBadgeInterval);   
+		}, 300);
+
+
+		chrome.storage.local.get('whiteIcon', function(data) {
+		  var currentWhiteIcon = data.whiteIcon;
+		  if((window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) && (typeof currentWhiteIcon == 'undefined') || currentWhiteIcon == 'undefined') {
+		  	var currentWhiteIcon = 0;
+		  }
+		  else if((window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) && (typeof currentWhiteIcon == 'undefined') || currentWhiteIcon == 'undefined') {
+		  	var currentWhiteIcon = 1;
+		  	chrome.storage.local.set({'whiteIcon': '1'});
+		  }
+		  else if((window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) && currentWhiteIcon == 0) {
+		  	var currentWhiteIcon = 0;
+		  } 
+		  else if((window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) && currentWhiteIcon == 1) {
+		  	var currentWhiteIcon = 1;
+		  	chrome.storage.local.set({'whiteIcon': '1'});
+		  }
+		});
 
 
 		currentWhiteIcon = 0;
@@ -476,35 +527,12 @@ function badgeReader(city,latandlong,country,uv1) {
 		if(navigator.onLine) {						
 			utfc = UTFC(function(value){	
 				});
-
-			chrome.storage.local.get('whiteIcon', function(data) {
-			  var currentWhiteIcon = data.whiteIcon;
-			  if((window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) && (typeof currentWhiteIcon == 'undefined') || currentWhiteIcon == 'undefined') {
-			  	var currentWhiteIcon = 0;
-			  }
-			  else if((window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) && (typeof currentWhiteIcon == 'undefined') || currentWhiteIcon == 'undefined') {
-			  	var currentWhiteIcon = 1;
-			  	chrome.storage.local.set({'whiteIcon': '1'});
-			  }
-			  else if((window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) && currentWhiteIcon == 0) {
-			  	var currentWhiteIcon = 0;
-			  } 
-			  else if((window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) && currentWhiteIcon == 1) {
-			  	var currentWhiteIcon = 1;
-			  	chrome.storage.local.set({'whiteIcon': '1'});
-			  }
-
-
-			});
-
 		}
 
-					setTimeout(function(){
-						clearInterval(animatedBadgeInterval);   
-					}, 500);
 //---result
 	});
 };
+
 
 
 //uvReader----------------------------------------------------------------------------------
@@ -555,7 +583,6 @@ function uvReader(city,latandlong,country) {
 		windGustMPH = Math.round(result.currently.windGust);
 		windGustKMH = Math.round(windGustMPH * 1.609334);
 		windGustMS = Math.round(windGustMPH * 0.4470389 * 10) / 10;
-		weatherEmojiIcon = weatherEmoji(icon);
 
 		ghiSolarClearSki = result.hourly.data[0].hasOwnProperty('solar') ? result.hourly.data[0].solar.ghi : '-'; //GHI = DHI + DNI * cos (θ)
 
@@ -610,10 +637,7 @@ function uvReader(city,latandlong,country) {
 			} 
 		if(temperatureF < current_tempF_min) {
 		temperatureF = current_tempF_min
-			} 
-
-		sunriseTime = result.daily.data[0].sunriseTime;
-		sunsetTime = result.daily.data[0].sunsetTime;
+			}
 
 		forecast_0_tempF = Math.round(result.daily.data[0].temperatureMax);
 		forecast_1_tempF = Math.round(result.daily.data[1].temperatureMax);
@@ -667,13 +691,9 @@ function uvReader(city,latandlong,country) {
 			    isNight = true;	
 			}
 
-		iconTitleWeather(icon);
-
 		update_tomorrow_is_f(forecast_1_tempF,forecast_0_tempF);
-
 		update_tomorrow_is_c(forecast_1_tempF,forecast_0_tempF);
 
-		
 		if(icon === "rain" || icon === "sleet" || icon === "snow")
 			{cloudAdj = 0.31;}
 		else if(cloudCover < 20)
@@ -711,15 +731,11 @@ function uvReader(city,latandlong,country) {
 };
 
 
-/* Check whether new version is installed */
 chrome.runtime.onInstalled.addListener(function(details) {
-    /* other 'reason's include 'update' */
     if(details.reason == "install" && (navigator.onLine)) {
-        /* If first install, set uninstall URL */
         var uninstallWebAddress = 'https://uvweather.net/goodbye/';
         var installWebAddress = 'https://uvweather.net/welcome/';
         chrome.tabs.create({ url: installWebAddress });
-        /* If Chrome version supports it... */
         if(chrome.runtime.setUninstallURL) {
         	chrome.storage.local.clear();
             chrome.runtime.setUninstallURL(uninstallWebAddress);

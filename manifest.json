@@ -1,10 +1,10 @@
    {
     "name": "UV Weather",
-    "version": "1.0.70",
+    "version": "1.0.71",
     "description": "Live Weather for Real Life",
     "permissions": [ "activeTab","storage"],
     "background": {
-    "scripts": ["/library/dayjs.min.js", "/library/util.js", "/js/background.js", "/library/accufeel.min.js", "/library/suncalc.min.js"],
+    "scripts": ["/library/suncalc.min.js", "/library/dayjs.min.js", "/library/util.js", "/js/background.js", "/library/accufeel.min.js"],
     "persistent":true
     },
     "content_security_policy":"script-src 'self' https://www.gstatic.com https://www.google-analytics.com https://www.googletagmanager.com https://api.tiles.mapbox.com https://api.mapbox.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; object-src 'self'",

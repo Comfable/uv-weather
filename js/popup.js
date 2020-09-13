@@ -65,11 +65,24 @@ chrome.storage.local.get(['theme', 'autoDark'], function(data) {
  
   document.querySelector("#setting_defualt_theme_d_all").addEventListener("click", (e) => {
     darkDisplay();
+      document.querySelector("#setting_defualt_theme_d_all").style.pointerEvents = "none";
+      document.querySelector("#setting_defualt_theme_l_all").style.pointerEvents = "none";
+      delayButtonDarkmodeSetting();
   });
 
   document.querySelector("#setting_defualt_theme_l_all").addEventListener("click", (e) => {
     lightDisplay();
+      document.querySelector("#setting_defualt_theme_d_all").style.pointerEvents = "none";
+      document.querySelector("#setting_defualt_theme_l_all").style.pointerEvents = "none";
+      delayButtonDarkmodeSetting();   
   });
+
+  function delayButtonDarkmodeSetting() {
+      setTimeout(function() {
+      document.querySelector("#setting_defualt_theme_d_all").style.pointerEvents = "auto";
+      document.querySelector("#setting_defualt_theme_l_all").style.pointerEvents = "auto"
+    }, 1000);
+  };
 
 
   const toggleSwitchAutoDark = document.querySelector('.theme-switch_setting_auto_dark input[type="checkbox"]');
@@ -880,21 +893,12 @@ if(navigator.onLine) {
 
   chrome.storage.local.get('IntervalUpdate', function(data) {
     if(data.IntervalUpdate == "120") {
-      document.getElementById("setting_defualt_button_60").disabled = false;
-      document.getElementById("setting_defualt_button_90").disabled = false;
-      document.getElementById("setting_defualt_button_120").disabled = true;
       document.getElementById("setting_defualt_button_120").checked = true;
     } 
     else if(data.IntervalUpdate == "90") {
-      document.getElementById("setting_defualt_button_120").disabled = false;
-      document.getElementById("setting_defualt_button_60").disabled = false;
-      document.getElementById("setting_defualt_button_90").disabled = true;
       document.getElementById("setting_defualt_button_90").checked = true;
     }
     else if(data.IntervalUpdate == "60") {
-      document.getElementById("setting_defualt_button_120").disabled = false;
-      document.getElementById("setting_defualt_button_90").disabled = false;
-      document.getElementById("setting_defualt_button_60").disabled = true;
       document.getElementById("setting_defualt_button_60").checked = true;
     }
   })
@@ -1864,20 +1868,28 @@ document.querySelector("#setting_defualt_button_f_all").addEventListener("click"
 
   document.querySelector("#setting_defualt_button_12h_all").addEventListener("click", (e) => {
       chrome.storage.local.set({'TimeFormat': '12h'});
-      document.getElementById("setting_defualt_button_12h").disabled = true;
-      document.getElementById("setting_defualt_button_24h").disabled = false;
+      document.querySelector("#setting_defualt_button_12h_all").style.pointerEvents = "none";
+      document.querySelector("#setting_defualt_button_24h_all").style.pointerEvents = "none";
       document.getElementById("setting_defualt_button_12h").checked = true;
       refreshPopup();
+      delayButton12h24h();
   });
 
   document.querySelector("#setting_defualt_button_24h_all").addEventListener("click", (e) => {
       chrome.storage.local.set({'TimeFormat': '24h'});
-      document.getElementById("setting_defualt_button_24h").disabled = true;
-      document.getElementById("setting_defualt_button_12h").disabled = false;
+      document.querySelector("#setting_defualt_button_12h_all").style.pointerEvents = "none";
+      document.querySelector("#setting_defualt_button_24h_all").style.pointerEvents = "none";
       document.getElementById("setting_defualt_button_24h").checked = true;
       refreshPopup();
+      delayButton12h24h();
   });
 
+  function delayButton12h24h() {
+      setTimeout(function() {
+      document.querySelector("#setting_defualt_button_12h_all").style.pointerEvents = "auto";
+      document.querySelector("#setting_defualt_button_24h_all").style.pointerEvents = "auto";
+    }, 2000);
+  };
 
 
   const toggleSwitchBadgeSize = document.querySelector('.badge_size_switch_setting input[type="checkbox"]');
@@ -1921,32 +1933,42 @@ document.querySelector("#setting_defualt_button_f_all").addEventListener("click"
 
   document.querySelector("#setting_defualt_button_60_all").addEventListener("click", (e) => { 
       chrome.storage.local.set({'IntervalUpdate': '60'});
-      document.getElementById("setting_defualt_button_120").disabled = false;
-      document.getElementById("setting_defualt_button_90").disabled = false;
-      document.getElementById("setting_defualt_button_60").disabled = true;
-      document.getElementById("setting_defualt_button_60").checked = true;
       chrome.runtime.sendMessage({ msg: "intervalUpdateMessage" });
+      document.querySelector("#setting_defualt_button_60_all").style.pointerEvents = "none";
+      document.querySelector("#setting_defualt_button_90_all").style.pointerEvents = "none";
+      document.querySelector("#setting_defualt_button_120_all").style.pointerEvents = "none";
+      document.getElementById("setting_defualt_button_60").checked = true;
       setTimeout(function() {
         window.open("https://uvweather.net/donate");
       }, 1000);
+      delayButtonIntervalUpdate();
     })
   document.querySelector("#setting_defualt_button_90_all").addEventListener("click", (e) => { 
       chrome.storage.local.set({'IntervalUpdate': '90'});
-      document.getElementById("setting_defualt_button_120").disabled = false;
-      document.getElementById("setting_defualt_button_60").disabled = false;
-      document.getElementById("setting_defualt_button_90").disabled = true;
-      document.getElementById("setting_defualt_button_90").checked = true;
       chrome.runtime.sendMessage({ msg: "intervalUpdateMessage" });
+      document.querySelector("#setting_defualt_button_60_all").style.pointerEvents = "none";
+      document.querySelector("#setting_defualt_button_90_all").style.pointerEvents = "none";
+      document.querySelector("#setting_defualt_button_120_all").style.pointerEvents = "none";
+      document.getElementById("setting_defualt_button_90").checked = true;
+      delayButtonIntervalUpdate();
     })
   document.querySelector("#setting_defualt_button_120_all").addEventListener("click", (e) => { 
       chrome.storage.local.set({'IntervalUpdate': '120'});
-      document.getElementById("setting_defualt_button_60").disabled = false;
-      document.getElementById("setting_defualt_button_90").disabled = false;
-      document.getElementById("setting_defualt_button_120").disabled = true;
+      chrome.runtime.sendMessage({ msg: "intervalUpdateMessage" });      
+      document.querySelector("#setting_defualt_button_60_all").style.pointerEvents = "none";
+      document.querySelector("#setting_defualt_button_90_all").style.pointerEvents = "none";
+      document.querySelector("#setting_defualt_button_120_all").style.pointerEvents = "none";
       document.getElementById("setting_defualt_button_120").checked = true;
-      chrome.runtime.sendMessage({ msg: "intervalUpdateMessage" });
+      delayButtonIntervalUpdate();
     })
 
+  function delayButtonIntervalUpdate() {
+      setTimeout(function() {
+        document.querySelector("#setting_defualt_button_60_all").style.pointerEvents = "auto";
+        document.querySelector("#setting_defualt_button_90_all").style.pointerEvents = "auto";
+        document.querySelector("#setting_defualt_button_120_all").style.pointerEvents = "auto";
+    }, 2000);
+  };
 
   function refreshPopup() {
     setTimeout(function() {

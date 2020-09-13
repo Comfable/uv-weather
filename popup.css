@@ -1952,10 +1952,15 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 }
 
 .setting_title_section_badge_Class {
+	font-size: 12px !important;
 	margin-bottom: 10px;
 }
-
 .setting_title_section_general_Class {
+	font-size: 12px !important;
+	margin-bottom: 10px;
+}
+.setting_title_section_theme_Class {
+	font-size: 12px !important;
 	margin-bottom: 10px;
 }
 
@@ -1965,9 +1970,7 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 	top: 330px;
 }
 
-.setting_title_section_theme_Class {
-	margin-bottom: 10px;
-}
+
 
 .setting_section_badge_color_Class {
 	position: relative;
