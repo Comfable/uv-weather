@@ -35,6 +35,29 @@ function animatedBadge(isDay,sunnyDay,cloudy,rainy,Snowy) {
 	context.restore();
 };
 
+function largBadgeNumber(displayNumber, lightBadge) {
+    var ctx = document.createElement('canvas').getContext('2d');
+    ctx.font = 'bold 18px Helvetica';
+
+    if(lightBadge == 1) {
+      ctx.fillStyle = 'rgb(255, 255, 255, 1)';
+    } else {
+      ctx.fillStyle = 'rgb(0, 0, 0, 0.8)';
+    }
+
+    ctx.textBaseline = 'top';
+    ctx.textAlign = 'center';
+    ctx.fillText(displayNumber, 9.5, 1, 19);
+    chrome.browserAction.setIcon({
+      imageData: ctx.getImageData(0, 0, 19, 19)
+    });
+
+	ctx.restore();
+	
+    chrome.browserAction.setBadgeText({
+      text: ''
+    });
+}
 
 function f2c(TempF) {
 	var TempC = Math.round((Number(TempF) - 32) / 1.8);

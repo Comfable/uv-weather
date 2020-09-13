@@ -637,7 +637,18 @@ if(navigator.onLine) {
       F_sign_elementStyle.fontSize = '15px';
 
       if(setSettingUT == "t") {
-        chrome.browserAction.setBadgeText({"text":b.temperatureC +"°C" });
+        chrome.storage.local.get(['whiteIcon','badgeSize'], function(data) {
+          var currentWhiteIcon = data.whiteIcon;
+          var currentBadgeSize = data.badgeSize;
+            if(currentBadgeSize == 1) {
+              setTimeout(function(){
+                largBadgeNumber(b.temperatureC, currentWhiteIcon)
+              }, 550);
+            }
+            else{
+              chrome.browserAction.setBadgeText({"text":b.temperatureC +"°C" });
+            }
+         });
       }      
   }
 
@@ -681,7 +692,18 @@ if(navigator.onLine) {
     C_sign_elementStyle.fontSize = '15px';
 
     if(setSettingUT == "t") {
-      chrome.browserAction.setBadgeText({"text":b.temperatureF +"°F" });
+      chrome.storage.local.get(['whiteIcon','badgeSize'], function(data) {
+        var currentWhiteIcon = data.whiteIcon;
+        var currentBadgeSize = data.badgeSize;
+          if(currentBadgeSize == 1) {
+            setTimeout(function(){
+              largBadgeNumber(b.temperatureF, currentWhiteIcon)
+            }, 550);
+          }
+          else{
+            chrome.browserAction.setBadgeText({"text":b.temperatureF +"°F" });
+          }
+       });
     }    
   }
 
@@ -932,10 +954,32 @@ if(navigator.onLine) {
       setSettingUT = "u";
       chrome.storage.local.set({'setSettingUT': 'u'});
         if(b.uv1>9) {
-          chrome.browserAction.setBadgeText({"text": "UV"+ b.uv1});
+                chrome.storage.local.get(['whiteIcon','badgeSize'], function(data) {
+                var currentWhiteIcon = data.whiteIcon;
+                var currentBadgeSize = data.badgeSize;
+                  if(currentBadgeSize == 1) {
+                    setTimeout(function(){
+                      largBadgeNumber(b.uv1, currentWhiteIcon)
+                    }, 550);
+                  }
+                  else{
+                    chrome.browserAction.setBadgeText({"text": "UV"+ b.uv1});
+                  }
+               });
         }
         else {
-          chrome.browserAction.setBadgeText({"text": "UV "+ b.uv1});
+                chrome.storage.local.get(['whiteIcon','badgeSize'], function(data) {
+                var currentWhiteIcon = data.whiteIcon;
+                var currentBadgeSize = data.badgeSize;
+                  if(currentBadgeSize == 1) {
+                    setTimeout(function(){
+                      largBadgeNumber(b.uv1, currentWhiteIcon)
+                    }, 550);
+                  }
+                  else{
+                    chrome.browserAction.setBadgeText({"text": "UV "+ b.uv1});
+                  }
+               });
         }        
       document.getElementById("setting_defualt_button_u").disabled = true;
       document.getElementById("setting_defualt_button_t").disabled = false;
@@ -945,10 +989,32 @@ if(navigator.onLine) {
       setSettingUT = "t";
       chrome.storage.local.set({'setSettingUT': 't'});
           if (setSettingFC == "f") {
-              chrome.browserAction.setBadgeText({"text":b.temperatureF +"°F" });
+                  chrome.storage.local.get(['whiteIcon','badgeSize'], function(data) {
+                    var currentWhiteIcon = data.whiteIcon;
+                    var currentBadgeSize = data.badgeSize;
+                      if(currentBadgeSize == 1) {
+                        setTimeout(function(){
+                          largBadgeNumber(b.temperatureF, currentWhiteIcon)
+                        }, 550);
+                      }
+                      else{
+                        chrome.browserAction.setBadgeText({"text":b.temperatureF +"°F" });
+                      }
+                   });
             }
           else {
-            chrome.browserAction.setBadgeText({"text":b.temperatureC +"°C" });
+                  chrome.storage.local.get(['whiteIcon','badgeSize'], function(data) {
+                    var currentWhiteIcon = data.whiteIcon;
+                    var currentBadgeSize = data.badgeSize;
+                      if(currentBadgeSize == 1) {
+                        setTimeout(function(){
+                          largBadgeNumber(b.temperatureC, currentWhiteIcon)
+                        }, 550);
+                      }
+                      else{
+                        chrome.browserAction.setBadgeText({"text":b.temperatureC +"°C" });
+                      }
+                   });
           }
       document.getElementById("setting_defualt_button_t").disabled = true;
       document.getElementById("setting_defualt_button_u").disabled = false;
@@ -957,7 +1023,18 @@ if(navigator.onLine) {
       setSettingFC = "c";
       chrome.storage.local.set({'setSettingFC': 'c'});
       if(setSettingUT == "t") {
-        chrome.browserAction.setBadgeText({"text":b.temperatureC +"°C" });
+      chrome.storage.local.get(['whiteIcon','badgeSize'], function(data) {
+        var currentWhiteIcon = data.whiteIcon;
+        var currentBadgeSize = data.badgeSize;
+          if(currentBadgeSize == 1) {
+            setTimeout(function(){
+              largBadgeNumber(b.temperatureC, currentWhiteIcon)
+            }, 550);
+          }
+          else{
+            chrome.browserAction.setBadgeText({"text":b.temperatureF +"°C" });
+          }
+       });
       }
       ctemp();
    });
@@ -966,7 +1043,18 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
       setSettingFC = "f";
       chrome.storage.local.set({'setSettingFC': 'f'});
       if(setSettingUT == "t") {   
-        chrome.browserAction.setBadgeText({"text":b.temperatureF +"°F" });
+      chrome.storage.local.get(['whiteIcon','badgeSize'], function(data) {
+        var currentWhiteIcon = data.whiteIcon;
+        var currentBadgeSize = data.badgeSize;
+          if(currentBadgeSize == 1) {
+            setTimeout(function(){
+              largBadgeNumber(b.temperatureF, currentWhiteIcon)
+            }, 550);
+          }
+          else{
+            chrome.browserAction.setBadgeText({"text":b.temperatureF +"°F" });
+          }
+       });
       }      
       ftemp();
    });
@@ -1606,10 +1694,6 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
 
 
 
-
-
-
-
   document.querySelector("#setting_defualt_button_12h").addEventListener("click", (e) => {
       chrome.storage.local.set({'TimeFormat': '12h'});
       document.getElementById("setting_defualt_button_12h").disabled = true;
@@ -1628,8 +1712,34 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
 
 
 
+  const toggleSwitchBadgeSize = document.querySelector('.badge_size_switch_setting input[type="checkbox"]');
+  chrome.storage.local.get('badgeSize', function(data) {
+      if(data.badgeSize) {
+          if(data.badgeSize === '1') {
+              toggleSwitchBadgeSize.checked = true;
+              chrome.storage.local.set({'badgeSize': '1'});
+          }
+          else {
+              toggleSwitchBadgeSize.checked = false;
+              chrome.storage.local.set({'badgeSize': '0'});
+          }
+      }
 
+      function switchBadgeSize(e) {
+        if(e.target.checked) {
+          chrome.storage.local.set({'badgeSize': '1'});
+          document.getElementById("checkbox_largIcon").checked = true;
+          chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
+        }
+        else {
+          chrome.storage.local.set({'badgeSize': '0'});
+          document.getElementById("checkbox_largIcon").checked = false;
+          chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
+        }    
+      }
+      toggleSwitchBadgeSize.addEventListener('change', switchBadgeSize, false);
 
+  });
 
 
 
@@ -1655,7 +1765,14 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
       });
 
     setTimeout(function() {
-      updateTimeRelative = "Updated " + dayjs.unix(b.updateTime).format("h:mm A");
+      chrome.storage.local.get('TimeFormat', function(data) {
+        if(data.TimeFormat == "24h") {            
+          updateTimeRelative = "Updated " + dayjs.unix(b.updateTime).format("HH:mm");
+        }
+        else{
+          updateTimeRelative = "Updated " + dayjs.unix(b.updateTime).format("h:mm A");
+        }
+      });
 
     chrome.storage.local.get('setSettingFC', function(data) {
         if(data.setSettingFC == "c") {

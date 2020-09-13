@@ -41,7 +41,7 @@
 }
 .theme-switch {
   display: inline-block;
-  height: 25px;
+  height: 13px;
   position: relative;
   width: 50px;
   margin-left: 30px;
@@ -1948,19 +1948,19 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 .setting_title_section_badge_Class {
 	position: absolute;
 	left: 25px;
-	top: 60px;
+	top: 50px;
 	margin-bottom: 10px;
 }
 .setting_title_section_theme_Class {
 	position: absolute;
 	left: 25px;
-	top: 140px;
+	top: 160px;
 	margin-bottom: 10px;
 }
 .setting_section_badge_color_Class {
 	position: absolute;
 	left: 25px;
-	top: 200px;
+	top: 220px;
   	margin-right: 25px !important;
   	padding-right: 25px !important;
 }
@@ -1968,7 +1968,7 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 .setting_section_auto_dark_Class {
 	position: absolute;
 	left: 25px;
-	top: 235px;
+	top: 250px;
 }
 .setting_section_title_auto_dark_Class {
   	margin-right: 35px !important;
@@ -2195,8 +2195,8 @@ ul li label{
   position: relative;
   font-weight: 300;
   font-size: 13px;
-  padding: 5px 0 5px 50px;
-  margin: 0px auto 55px 0px;
+  padding: 5px 0 17px 50px;
+  margin: 0px auto 0px 0px;
   z-index: 9;
   cursor: pointer;
   -webkit-transition: all 0.25s linear;
@@ -2250,4 +2250,33 @@ input[type=radio]:checked ~ .check::before{
 
 input[type=radio]:checked ~ label{
   color: #F06522;
+}
+
+.setting_section_badge_size_Class {
+	position: absolute;
+	left: 25px;
+	top: 107px;
+  	margin-right: 25px !important;
+  	padding-right: 25px !important;
+}
+
+.badge_size_switch_setting {
+  display: inline-block;
+  height: 25px;
+  position: relative;
+  width: 50px;
+  margin-left: 15px;
+  margin-top: -10px !important;
+}
+
+.badge_size_switch_setting input {
+  display:none;
+}
+
+.setting_section_badge_Class {
+  margin-top: 70px !important;
+}
+
+.setting_section_theme_Class {
+  margin-top: 180px !important;
 }

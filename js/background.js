@@ -64,7 +64,6 @@ var intervalUpdateTimes = window.setInterval(_ => {
 
 //uvReader----------------------------------------------------------------------------------
 function uvReader(city,latandlong,country) {
-
 	country = country;
 
 	cityName = (city.split('"'))[1].charAt(0).toUpperCase() + (city.split('"'))[1].slice(1);
@@ -375,51 +374,78 @@ function uvReader(city,latandlong,country) {
 
 
 		function tempc() {
-			chrome.browserAction.setBadgeText({"text":temperatureC +"°C" });
 			
-			chrome.storage.local.get('whiteIcon', function(data) {
+			chrome.storage.local.get(['whiteIcon','badgeSize'], function(data) {
 			  var currentWhiteIcon = data.whiteIcon;
+			  var currentBadgeSize = data.badgeSize;
 			  if(currentWhiteIcon == 0 || (typeof currentWhiteIcon == 'undefined') || currentWhiteIcon == 'undefined') {
 			  	var currentWhiteIcon = 0;
 			  } else{
 			  	var currentWhiteIcon = 1;
 			  }
-				badgeBackgroundImage(currentWhiteIcon);
+			  	if(currentBadgeSize == 1) {
+				  	setTimeout(function(){
+				  		largBadgeNumber(temperatureC, currentWhiteIcon)
+					}, 550);
+				  }
+				  else{
+					chrome.browserAction.setBadgeText({"text":temperatureC +"°C" });
+					setTimeout(function(){
+						badgeBackgroundImage(currentWhiteIcon);
+					}, 550);   
+				  }
 			});
 
 		}
 									 
 		function tempf() {
-			chrome.browserAction.setBadgeText({"text":temperatureF +"°F" });
-
-			chrome.storage.local.get('whiteIcon', function(data) {
+			chrome.storage.local.get(['whiteIcon','badgeSize'], function(data) {
 			  var currentWhiteIcon = data.whiteIcon;
+			  var currentBadgeSize = data.badgeSize;
 			  if(currentWhiteIcon == 0 || (typeof currentWhiteIcon == 'undefined') || currentWhiteIcon == 'undefined') {
 			  	var currentWhiteIcon = 0;
 			  } else{
 			  	var currentWhiteIcon = 1;
 			  }
-				badgeBackgroundImage(currentWhiteIcon);
+			  	if(currentBadgeSize == 1) {
+				  	setTimeout(function(){
+				  		largBadgeNumber(temperatureF, currentWhiteIcon)
+					}, 550);
+				  }
+				  else{
+				  	chrome.browserAction.setBadgeText({"text":temperatureF +"°F" });
+					setTimeout(function(){
+						badgeBackgroundImage(currentWhiteIcon);
+					}, 550);   
+				  }
 			});
-
 		}
 
 		function uvi() {
-			if(uv1>9) {
-	          chrome.browserAction.setBadgeText({"text": "UV"+ uv1});
-	        }
-	        else {
-	          chrome.browserAction.setBadgeText({"text": "UV "+ uv1});
-	        }
-
-			chrome.storage.local.get('whiteIcon', function(data) {
+			chrome.storage.local.get(['whiteIcon','badgeSize'], function(data) {
 			  var currentWhiteIcon = data.whiteIcon;
+			  var currentBadgeSize = data.badgeSize;
 			  if(currentWhiteIcon == 0 || (typeof currentWhiteIcon == 'undefined') || currentWhiteIcon == 'undefined') {
 			  	var currentWhiteIcon = 0;
 			  } else{
 			  	var currentWhiteIcon = 1;
 			  }
-				badgeBackgroundImage(currentWhiteIcon);
+			  	if(currentBadgeSize == 1) {
+				  	setTimeout(function(){
+				  		largBadgeNumber(uv1, currentWhiteIcon)
+					}, 550);
+				  }
+				  else{
+				  	if(uv1>9) {
+			          chrome.browserAction.setBadgeText({"text": "UV"+ uv1});
+			        }
+			        else {
+			          chrome.browserAction.setBadgeText({"text": "UV "+ uv1});
+			        }
+			        setTimeout(function(){
+						badgeBackgroundImage(currentWhiteIcon);
+					}, 550);
+				  }
 			});
 
 		}
@@ -469,29 +495,42 @@ function uvReader(city,latandlong,country) {
 					uvi ();
 				};
 			}
-										
-				updateTimeRelativeBadge = dayjs.unix(updateTime + offsetUnix).format('h:mm A');
-				if(setSettingUT == "u" && setSettingFC == "f") {
-					toolTipBadge = temperatureF + "° " + summary + "\n" + accufeelResultF + "° " + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
-					chrome.browserAction.setTitle({title: toolTipBadge});
+				
+				chrome.storage.local.get('TimeFormat', function(data) {
+    				if(data.TimeFormat == "24h") {						
+						updateTimeRelativeBadge = dayjs.unix(updateTime + offsetUnix).format('HH:mm');
 					}
-				else if(setSettingUT == "u" && setSettingFC == "c") {
-					toolTipBadge = temperatureC + "° " + summary + "\n" + accufeelResultC + "° " + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
-					chrome.browserAction.setTitle({title: toolTipBadge});
+					else{
+						updateTimeRelativeBadge = dayjs.unix(updateTime + offsetUnix).format('h:mm A');
 					}
-				else if(setSettingUT == "t" && setSettingFC == "f") {
-					toolTipBadge = temperatureF + "° " + summary + "\n" + accufeelResultF + "° " + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
-					chrome.browserAction.setTitle({title: toolTipBadge});
-					}
-				else if(setSettingUT == "t" && setSettingFC == "c") {
-					toolTipBadge = temperatureC + "° " + summary + "\n" + accufeelResultC + "° " + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
-					chrome.browserAction.setTitle({title: toolTipBadge});
-					};
-				return;
+					
+					if(setSettingUT == "u" && setSettingFC == "f") {
+						toolTipBadge = temperatureF + "° " + summary + "\n" + accufeelResultF + "° " + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
+						chrome.browserAction.setTitle({title: toolTipBadge});
+						}
+					else if(setSettingUT == "u" && setSettingFC == "c") {
+						toolTipBadge = temperatureC + "° " + summary + "\n" + accufeelResultC + "° " + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
+						chrome.browserAction.setTitle({title: toolTipBadge});
+						}
+					else if(setSettingUT == "t" && setSettingFC == "f") {
+						toolTipBadge = temperatureF + "° " + summary + "\n" + accufeelResultF + "° " + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
+						chrome.browserAction.setTitle({title: toolTipBadge});
+						}
+					else if(setSettingUT == "t" && setSettingFC == "c") {
+						toolTipBadge = temperatureC + "° " + summary + "\n" + accufeelResultC + "° " + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
+						chrome.browserAction.setTitle({title: toolTipBadge});
+						};
+					return;
+
+				});
+
 			});
 
 		}
 		
+
+
+
 		if(navigator.onLine) {						
 			utfc = UTFC(function(value){	
 				});
@@ -499,6 +538,7 @@ function uvReader(city,latandlong,country) {
 			setTimeout(function(){
 				clearInterval(animatedBadgeInterval);   
 				}, 500);
+
 
 
 			chrome.storage.local.get('whiteIcon', function(data) {
@@ -518,10 +558,34 @@ function uvReader(city,latandlong,country) {
 			  	chrome.storage.local.set({'whiteIcon': '1'});
 			  }
 
-			setTimeout(function(){
-				badgeBackgroundImage(currentWhiteIcon);   
-				}, 550);
+
+
+			// chrome.storage.local.get(['whiteIcon','badgeSize'], function(data) {
+			//   var currentWhiteIcon = data.whiteIcon;
+			//   var currentBadgeSize = data.badgeSize;
+			//   if(currentWhiteIcon == 0 || (typeof currentWhiteIcon == 'undefined') || currentWhiteIcon == 'undefined') {
+			//   	var currentWhiteIcon = 0;
+			//   } else{
+			//   	var currentWhiteIcon = 1;
+			//   }
+			//   	if(currentBadgeSize == 1) {
+
+
+			// 	  }
+			// 	  else{
+					// setTimeout(function(){
+					// 	badgeBackgroundImage(currentWhiteIcon);   
+					// }, 550);
+			// 	  }
+			// });
+
+
+
 			});
+
+
+
+
 
 		}
 
