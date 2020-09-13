@@ -427,18 +427,25 @@ function uvReader(city,latandlong,country) {
 
 		function UTFC() {
 		
-			chrome.storage.local.get(['setSettingFC', 'setSettingUT'], function(data) {
+			chrome.storage.local.get(['setSettingFC', 'setSettingUT', 'timeFormat'], function(data) {
 			setSettingFC = data.setSettingFC;
 			setSettingUT = data.setSettingUT;
 	   		
 
 			if(typeof setSettingFC === 'undefined') {
 				if (country == "US" || country == "us" || country == "United States of America") {
-					setSettingFC = "f";
-					chrome.storage.local.set({'setSettingFC': 'f'});
+						setSettingFC = "f";
+						chrome.storage.local.set({'setSettingFC': 'f'});
+						chrome.storage.local.set({'TimeFormat': '12h'});
 					} else {
-					setSettingFC = "c";
-					chrome.storage.local.set({'setSettingFC': 'c'});
+						setSettingFC = "c";
+						chrome.storage.local.set({'setSettingFC': 'c'});
+					if (country == "CA" || country == "ca" || country == "Canada") {
+						chrome.storage.local.set({'TimeFormat': '12h'});
+					}
+					else {
+						chrome.storage.local.set({'TimeFormat': '24h'});
+					}
 				}
 			}
 

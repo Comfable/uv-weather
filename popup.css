@@ -1931,85 +1931,12 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 	transition: all 2s ease-out;
 }
 
-ul li{
-  color: var(--font-color);
-  display: flex;
-  position: relative;
-  float: left;
-}
-
-ul li input[type=radio]{
-  position: absolute;
-  visibility: hidden;
-}
-
-ul li label{
-  display: inline-block;
-  position: relative;
-  font-weight: 300;
-  font-size: 13px;
-  padding: 5px 0 5px 50px;
-  margin: 0px auto 55px 0px;
-  z-index: 9;
-  cursor: pointer;
-  -webkit-transition: all 0.25s linear;
-}
-
-ul li:hover label{
-	color: var(--font-color);
-}
-
-ul li .check{
-  display: inline-block;
-  position: absolute;
-  border: 3px solid;
-  border-color: var(--font-color);
-  border-radius: 100%;
-  height: 15px;
-  width: 15px;
-  top: 1px;
-  left: 25px;
-  z-index: 5;
-  transition: border .25s linear;
-  -webkit-transition: border .25s linear;
-}
-
-ul li:hover .check {
-  border: 3px solid;
-  border-color: var(--font-color);
-}
-
-ul li .check::before {
-  display: inline-block;
-  position: absolute;
-  content: '';
-  border-radius: 100%;
-  height: 9px;
-  width: 9px;
-  top: 3px;
-  left: 3px;
-  margin: auto;
-  transition: background 0.25s linear;
-  -webkit-transition: background 0.25s linear;
-}
-
-input[type=radio]:checked ~ .check {
-  border: 3px solid #F06522;
-}
-
-input[type=radio]:checked ~ .check::before{
-  background: #F06522;
-}
-
-input[type=radio]:checked ~ label{
-  color: #F06522;
-}
-
 .setting_unit_badge_Class {
 	position: absolute;
 	left: 0px;
 	top: 130px;
   	font-size: 12px;
+	width: 310px;
 }
 
 .setting_title_section_unit_Class {
@@ -2216,7 +2143,7 @@ i {
 	cursor: pointer;
 }
 
-.icon_colse_box_Class {
+.icon_close_box_Class {
 	position: absolute;
 	left: 519px;
 	top: 316px;
@@ -2242,4 +2169,85 @@ i {
 	padding-right: 20px;
 	margin-top: -2px;
 	filter: var(--icon-color);
+}
+
+.setting_title_section_time_Class {
+	position: absolute;
+	left: 153px;
+	top: -20px;
+	margin-bottom: 10px;
+}
+
+ul li{
+  color: var(--font-color);
+  display: flex;
+  position: relative;
+  float: left;
+}
+
+ul li input[type=radio]{
+  position: absolute;
+  visibility: hidden;
+}
+
+ul li label{
+  display: inline-block;
+  position: relative;
+  font-weight: 300;
+  font-size: 13px;
+  padding: 5px 0 5px 50px;
+  margin: 0px auto 55px 0px;
+  z-index: 9;
+  cursor: pointer;
+  -webkit-transition: all 0.25s linear;
+}
+
+ul li:hover label{
+	color: var(--font-color);
+}
+
+ul li .check{
+  display: inline-block;
+  position: absolute;
+  border: 3px solid;
+  border-color: var(--font-color);
+  border-radius: 100%;
+  height: 15px;
+  width: 15px;
+  top: 1px;
+  left: 25px;
+  z-index: 5;
+  transition: border .25s linear;
+  -webkit-transition: border .25s linear;
+}
+
+ul li:hover .check {
+  border: 3px solid;
+  border-color: var(--font-color);
+}
+
+ul li .check::before {
+  display: inline-block;
+  position: absolute;
+  content: '';
+  border-radius: 100%;
+  height: 9px;
+  width: 9px;
+  top: 3px;
+  left: 3px;
+  margin: auto;
+  transition: background 0.25s linear;
+  -webkit-transition: background 0.25s linear;
+}
+
+input[type=radio]:checked ~ .check {
+  border: 3px solid #F06522;
+}
+
+input[type=radio]:checked ~ .check::before{
+  background: #F06522;
+}
+
+input[type=radio]:checked ~ label{
+  color: #F06522;
 }
