@@ -147,14 +147,14 @@ function badgeReader(city,latandlong,country,uv1) {
 	latlong = (latandlong.split('"'))[1];
 	lat = (latlong.split(','))[0];
 	lng = (latlong.split(','))[1];
-	fetch('https://uv-weather.herokuapp.com/https://api.openweathermap.org/data/2.5/weather?lat='+ lat + '&lon=' + lng + '&appid=c33b87de15e56ce0b4a4a0fef54d8ecd')
+	fetch('https://api.openweathermap.org/data/2.5/weather?lat='+ lat + '&lon=' + lng + '&appid=c33b87de15e56ce0b4a4a0fef54d8ecd')
 	.then((resp) => resp.json())
 	.then(function(resultBadge) {
 		window.resultBadge = resultBadge;
 		temperatureCbadge = Math.round((resultBadge.main.temp) - 273.15);
 		temperatureFbadge = Math.round((1.8*temperatureCbadge) + 32);
-		if(temperatureCbadge == -0) {temperatureCbadge = 0};
-		if(temperatureFbadge == -0) {temperatureFbadge = 0};
+		if(temperatureCbadge == '-0') {temperatureCbadge = 0};
+		if(temperatureFbadge == '-0') {temperatureFbadge = 0};
 		summaryBadge = resultBadge.weather[0].main;
 		descriptionBadge = resultBadge.weather[0].description;
 		updateTimeBadge = resultBadge.dt;
@@ -248,7 +248,7 @@ function badgeReader(city,latandlong,country,uv1) {
 		animatedBadgeInterval = setInterval(function() {animatedBadge(isDayBadge,sunnyDayBadge,cloudyBadge,rainyBadge,snowyBadge); }, 1000 / 30);
 		setTimeout(function(){
 			clearInterval(animatedBadgeInterval);   
-		}, 300);
+		}, 485);
 
 
 		chrome.storage.local.get('whiteIcon', function(data) {
@@ -552,12 +552,11 @@ function uvReader(city,latandlong,country) {
 	lat = (latlong.split(','))[0];
 	lng = (latlong.split(','))[1];
 
-	const ads = '2589e0786e11ce470e7d98e9153039f4';	
+	const ads = '3dfc8ba9095bfa87462f459fc85238c6';	
 	fetch('https://uv-weather.herokuapp.com/https://api.darksky.net/forecast/' + ads +'/' + latlong + '?solar')
 	.then((resp) => resp.json())
 	.then(function(result) {				
 		window.result = result;
-
 		isDay = false;
 		isNight = false;
 		cloudy = false;
@@ -631,13 +630,6 @@ function uvReader(city,latandlong,country) {
 		current_tempC_min = f2c(current_tempF_min);
 
 		uvCurrently = result.currently.hasOwnProperty('uvIndex') ? result.currently.uvIndex : '-'
-
-		if(temperatureF > current_tempF_max) {
-			temperatureF = current_tempF_max
-			} 
-		if(temperatureF < current_tempF_min) {
-		temperatureF = current_tempF_min
-			}
 
 		forecast_0_tempF = Math.round(result.daily.data[0].temperatureMax);
 		forecast_1_tempF = Math.round(result.daily.data[1].temperatureMax);
