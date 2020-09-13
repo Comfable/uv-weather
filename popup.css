@@ -1516,8 +1516,9 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 	text-align: left;
 	font-weight: 250;
 	font-size: 12px;
-	color: #000000;
+	color: var(--font-color);
 	visibility: hidden;	
+	backdrop-filter: blur(1px);
 }
 
 .mapboxgl-ctrl-logo {
@@ -1895,7 +1896,8 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 
 .click_on_map_Class {
   	position: absolute;
- 	top: 18px;
+ 	top: 50px;
+ 	padding-top: 8px;
   	left: 250px;
   	display: block;
   	z-index: 15000;
@@ -1908,7 +1910,7 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 	width: 250px;
 	line-height: 24px;
 	visibility: hidden;
-	backdrop-filter: blur(3px);
+	backdrop-filter: blur(1px);
 }
 
 .mapboxgl-ctrl-top-right .mapboxgl-ctrl {

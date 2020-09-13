@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
 
-mapStyle = 'mapbox://styles/mapbox/outdoors-v11';
+mapStyle = 'mapbox://styles/comfable/ck53bat1517jo1ck5jh1kp02m';
 weathermapStyle = 'mapbox://styles/mapbox/light-v10';
 
 chrome.storage.local.get(['theme', 'autoDark'], function(data) {
@@ -137,8 +137,8 @@ chrome.storage.local.get(['theme', 'autoDark'], function(data) {
 
   function darkDisplay() {
     document.documentElement.setAttribute('data-theme', 'dark');
-    mapStyle = 'mapbox://styles/mapbox/dark-v10';
-    weathermapStyle = 'mapbox://styles/mapbox/dark-v10';
+    mapStyle = 'mapbox://styles/comfable/ck53akus306vq1cn1vqcqmlbt';
+    weathermapStyle = 'mapbox://styles/comfable/ck53akus306vq1cn1vqcqmlbt';
     document.getElementById("setting_defualt_theme_d").checked = true;
     document.getElementById("checkbox").checked = true;
     chrome.storage.local.set({'theme': 'dark'});
@@ -146,7 +146,7 @@ chrome.storage.local.get(['theme', 'autoDark'], function(data) {
 
   function lightDisplay() {
     document.documentElement.setAttribute('data-theme', 'light');
-    mapStyle = 'mapbox://styles/mapbox/outdoors-v11';
+    mapStyle = 'mapbox://styles/comfable/ck53bat1517jo1ck5jh1kp02m';
     weathermapStyle = 'mapbox://styles/mapbox/light-v10';
     document.getElementById("setting_defualt_theme_l").checked = true;
     document.getElementById("checkbox").checked = false;
@@ -1242,16 +1242,19 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
       flyTo: true,
       essential: true,
       types: 'place, locality, postcode',
-      limit: 7,
+      limit: 8,
       placeholder: 'Enter the city or ZIP code',
       proximity: {
         longitude: center.lng,
         latitude: center.lat
       } 
     });
-    //document.getElementById('geocoderID').appendChild(geocoder.onAdd(map)); 
-    map.addControl(geocoder);
-    map.addControl(new mapboxgl.NavigationControl());
+     
+    if (document.getElementById('geocoderID').children.length === 0){
+      document.getElementById('geocoderID').appendChild(geocoder.onAdd(map));
+    }
+    //var nav = new mapboxgl.NavigationControl();
+    //map.addControl(nav, 'bottom-right');
 
     map.on('load', function() {
       map.addSource('single-point', {
