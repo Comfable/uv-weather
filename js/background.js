@@ -19,7 +19,8 @@ chrome.storage.local.get(['verUpdate'], function(data) {
 					chrome.storage.local.set({'latlong': latandlong});
 					chrome.storage.local.set({'country': country});
 					chrome.storage.local.set({'fullname': fullname});
-					chrome.storage.local.set({'verUpdate': 1});					
+					chrome.storage.local.set({'verUpdate': 1});
+					chrome.storage.local.set({'firstTimePopup': 0});					
 					badgeUV(city,latandlong,country);
 				}
 				else{
@@ -31,6 +32,7 @@ chrome.storage.local.get(['verUpdate'], function(data) {
 					chrome.storage.local.set({'country': 'CA'});
 					chrome.storage.local.set({'fullname': 'Toronto, ONTARIO, CA'});
 					chrome.storage.local.set({'verUpdate': 1});
+					chrome.storage.local.set({'firstTimePopup': 0});					
 					badgeUV(city,latandlong,country);
 				}
 			})

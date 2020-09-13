@@ -1910,7 +1910,7 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 }
 
 .mapboxgl-ctrl-top-right .mapboxgl-ctrl {
-    margin: 72px 10px 0 0 !important;
+    margin: 10px 10px 0 0 !important;
     float: right;
 }
 
@@ -2574,21 +2574,48 @@ ul li {
     background-color: #444;
 }
 
-.toastify {
-    padding: 12px 20px;
+
+.locationToast {
+    padding: 10px 10px 10px 10px;
+    margin-right: 50px;
+    margin-top: -5px;
     color: #ffffff;
     display: inline-block;
     box-shadow: 0 3px 6px -1px rgba(0, 0, 0, 0.12), 0 10px 36px -4px rgba(77, 96, 232, 0.3);
     background: -webkit-linear-gradient(315deg, #73a5ff, #5477f5);
     background: linear-gradient(135deg, #73a5ff, #5477f5);
     position: fixed;
-    opacity: 0;
+    opacity: 1;
     transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
-    border-radius: 2px;
+    border-radius: 3px;
     cursor: pointer;
     text-decoration: none;
-    max-width: calc(50% - 20px);
+    width: 170px;
     z-index: 2147483647;
+    font-size: 13px;
+    cursor: default;
+}
+
+
+.searchToast {
+    padding: 10px 10px 10px 10px;
+    margin-right: 10px;
+    margin-bottom: 20px;
+    color: #ffffff;
+    display: inline-block;
+    box-shadow: 0 3px 6px -1px rgba(0, 0, 0, 0.12), 0 10px 36px -4px rgba(77, 96, 232, 0.3);
+    background: -webkit-linear-gradient(315deg, #73a5ff, #5477f5);
+    background: linear-gradient(135deg, #73a5ff, #5477f5);
+    position: fixed;
+    opacity: 1;
+    transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
+    border-radius: 3px;
+    cursor: pointer;
+    text-decoration: none;
+    width: 250px;
+    z-index: 2147483647;
+    font-size: 13px;
+    cursor: default;
 }
 
 .toastify.on {
@@ -2633,14 +2660,4 @@ ul li {
     left: 0;
     right: 0;
     max-width: fit-content;
-}
-
-@media only screen and (max-width: 360px) {
-    .toastify-right, .toastify-left {
-        margin-left: auto;
-        margin-right: auto;
-        left: 0;
-        right: 0;
-        max-width: fit-content;
-    }
 }

@@ -18,7 +18,7 @@ var mapInner = document.getElementById("mapWeather");
 var mapTitle = document.getElementById("map_popup_title");
 var searchInner = document.getElementById("mapSearch");
 var searchTitle = document.getElementById("search_popup_title");
-var searchOnMap = document.getElementById("click_on_map");
+//var searchOnMap = document.getElementById("click_on_map");
 var modalCurrent = document.getElementById("currentReport_popup");
 var modalSearch = document.getElementById("search_popup");
 var F_C_display = document.getElementById("F_C");
@@ -39,6 +39,46 @@ const fadeEffect = setInterval(() => {
   }
 }, 50);
 
+var locationToast = Toastify({
+ className: "locationToast",
+ text: "Change your location here →",
+ //destination: 'https://chrome.google.com/webstore/detail/coronavirus-live-status-c/ilfokbeknllmcepedkagnjciemcjncpc/reviews',
+ //newWindow: true,
+ gravity: 'top',
+ position: 'right',
+ close: false,
+ stopOnFocus: false,
+ backgroundColor: '#3B4149',
+ duration: 5000,
+ //avatar: '/coronavirus_128.png'
+ // callback: function(){
+ // }
+})
+
+var searchToast = Toastify({
+ className: "searchToast",
+ text: "If your city isn't on the list, <br>double click on the map to find the location. ",
+ //destination: 'https://chrome.google.com/webstore/detail/coronavirus-live-status-c/ilfokbeknllmcepedkagnjciemcjncpc/reviews',
+ //newWindow: true,
+ gravity: 'bottom',
+ position: 'right',
+ close: false,
+ stopOnFocus: false,
+ backgroundColor: '#3B4149',
+ duration: 8000,
+})
+
+chrome.storage.local.get('firstTimePopup', function(data) {
+  if(typeof data.firstTimePopup == 'undefined') {
+    chrome.storage.local.set({'firstTimePopup': 1});
+  }
+  if(data.firstTimePopup == 0) {
+    locationToast.showToast();
+    chrome.storage.local.set({'firstTimePopup': 1}); 
+  }
+});
+
+chrome.storage.local.set({'firstTimeSaerchPopupInSession': 0});
 
 chrome.storage.local.get(['latlong', 'city', 'country'], function(data) {
   latandlong = data.latlong;
@@ -1544,8 +1584,7 @@ chrome.storage.local.get('closeAds', function(data) {
     
     searchTitle.style.visibility = "hidden";
     searchInner.style.visibility = "hidden";
-    searchOnMap.style.visibility = "hidden";
-
+    //searchOnMap.style.visibility = "hidden";
     mapTitle.style.visibility = "visible";
     mapInner.style.visibility = "visible";
     weatherMap(weathermapStyle);
@@ -1558,6 +1597,7 @@ chrome.storage.local.get('closeAds', function(data) {
   });
 
   document.querySelector("#search_popup_page").addEventListener("click", (e) => {
+    chrome.storage.local.set({'firstTimeSaerchPopupInSession': 1}); 
     closeAllPopup();
     removeClassIcons();
     modalSearch.style.display = "block";
@@ -1565,7 +1605,7 @@ chrome.storage.local.get('closeAds', function(data) {
       document.getElementById("search_popup_close").style.visibility = 'visible';
       searchTitle.style.visibility = "visible";
       searchInner.style.visibility = "visible";
-      searchOnMap.style.visibility = "visible";
+      //searchOnMap.style.visibility = "visible";
       searchMap(mapStyle);
     }, 300);
 
@@ -1573,10 +1613,14 @@ chrome.storage.local.get('closeAds', function(data) {
     currentIcon.classList.add("sub_menu_current_icon_Class");
 
     var currentSubMenu = document.getElementById("sub_menu_home");
-    currentSubMenu.classList.add("sub_menu_current_Class");    
+    currentSubMenu.classList.add("sub_menu_current_Class");
+    setTimeout(function() {
+      searchToast.showToast();
+    }, 1000);         
   });
 
   document.querySelector("#location").addEventListener("click", (e) => { 
+    chrome.storage.local.set({'firstTimeSaerchPopupInSession': 1}); 
     document.getElementById("openSidebarMenu").checked = false;
       closeAllPopup();
       removeClassIcons();
@@ -1585,7 +1629,7 @@ chrome.storage.local.get('closeAds', function(data) {
         document.getElementById("search_popup_close").style.visibility = "visible";
         searchTitle.style.visibility = "visible";
         searchInner.style.visibility = "visible";
-        searchOnMap.style.visibility = "visible";
+        //searchOnMap.style.visibility = "visible";
       }, 300);
       searchMap(mapStyle);
 
@@ -1593,10 +1637,14 @@ chrome.storage.local.get('closeAds', function(data) {
       currentIcon.classList.add("sub_menu_current_icon_Class");
 
       var currentSubMenu = document.getElementById("sub_menu_home");
-      currentSubMenu.classList.add("sub_menu_current_Class");
+      currentSubMenu.classList.add("sub_menu_current_Class"); 
+      setTimeout(function() {
+        searchToast.showToast();
+      }, 1000);           
   });
 
   document.querySelector("#sidebar_search").addEventListener("click", (e) => {
+    chrome.storage.local.set({'firstTimeSaerchPopupInSession': 1}); 
     document.getElementById("openSidebarMenu").checked = false;
     closeAllPopup();
     removeClassIcons();
@@ -1605,7 +1653,7 @@ chrome.storage.local.get('closeAds', function(data) {
       document.getElementById("search_popup_close").style.visibility = "visible";
       searchTitle.style.visibility = "visible";
       searchInner.style.visibility = "visible";
-      searchOnMap.style.visibility = "visible";
+      //searchOnMap.style.visibility = "visible";
     }, 300);    
     searchMap(mapStyle);
 
@@ -1613,7 +1661,10 @@ chrome.storage.local.get('closeAds', function(data) {
     currentIcon.classList.add("sub_menu_current_icon_Class");
 
     var currentSubMenu = document.getElementById("sub_menu_home");
-    currentSubMenu.classList.add("sub_menu_current_Class");    
+    currentSubMenu.classList.add("sub_menu_current_Class");  
+    setTimeout(function() {
+      searchToast.showToast();
+    }, 1000);     
   });
 
   document.querySelector("#setting_popup_page").addEventListener("click", (e) => {
@@ -1665,7 +1716,7 @@ chrome.storage.local.get('closeAds', function(data) {
     currentIcon.classList.add("sub_menu_current_icon_Class");
 
     var currentSubMenu = document.getElementById("sub_menu_home");
-    currentSubMenu.classList.add("sub_menu_current_Class");
+    currentSubMenu.classList.add("sub_menu_current_Class");   
   });
 
   document.querySelector("#solar_popup_page").addEventListener("click", (e) => { 
@@ -1724,6 +1775,12 @@ chrome.storage.local.get('closeAds', function(data) {
   });
 
   document.querySelector("#report_button").addEventListener("click", (e) => {
+    chrome.storage.local.get('firstTimeSaerchPopupInSession', function(data) {
+    firstTimeSaerchPopupInSession = data.firstTimeSaerchPopupInSession;
+      if(firstTimeSaerchPopupInSession == 1) {
+        searchToast.hideToast();
+      }
+    });
     document.getElementById("openSidebarMenu").checked = false;
         closeAllPopup();
         removeClassIcons();
@@ -1763,22 +1820,30 @@ chrome.storage.local.get('closeAds', function(data) {
   });
 
   document.querySelector("#search_popup_close").addEventListener("click", (e) => {
-    document.getElementById("search_popup_close").style.transition = "all 0s";
-    document.getElementById("search_popup_close").style.visibility = "hidden";
-    searchTitle.style.visibility = "hidden";
-    searchInner.style.visibility = "hidden";
-    searchOnMap.style.visibility = "hidden";
-    closeAllPopup();
-    //document.getElementById('geocoderID').remove();
-    removeClassIcons();
-    var element = document.getElementById("home_icon_popup_page");
-    element.classList.add("sub_menu_icon_active_Class");
+    chrome.storage.local.get('firstTimeSaerchPopupInSession', function(data) {
+    firstTimeSaerchPopupInSession = data.firstTimeSaerchPopupInSession;
+      if(firstTimeSaerchPopupInSession == 1) {
+        searchToast.hideToast();
+      }
+    });
+    setTimeout(function() {
+      document.getElementById("search_popup_close").style.transition = "all 0s";
+      document.getElementById("search_popup_close").style.visibility = "hidden";
+      searchTitle.style.visibility = "hidden";
+      searchInner.style.visibility = "hidden";
+      //searchOnMap.style.visibility = "hidden";
+      closeAllPopup();
+      //document.getElementById('geocoderID').remove();
+      removeClassIcons();
+      var element = document.getElementById("home_icon_popup_page");
+      element.classList.add("sub_menu_icon_active_Class");
 
-    var currentIcon = document.getElementById("home_icon_popup_page");
-    currentIcon.classList.add("sub_menu_current_icon_Class");
+      var currentIcon = document.getElementById("home_icon_popup_page");
+      currentIcon.classList.add("sub_menu_current_icon_Class");
 
-    var currentSubMenu = document.getElementById("sub_menu_home");
-    currentSubMenu.classList.add("sub_menu_current_Class");     
+      var currentSubMenu = document.getElementById("sub_menu_home");
+      currentSubMenu.classList.add("sub_menu_current_Class");
+    }, 500);
   });
 
   document.querySelector("#map_popup_close").addEventListener("click", (e) => {
@@ -1800,18 +1865,26 @@ chrome.storage.local.get('closeAds', function(data) {
   });
 
   document.querySelector("#image_background").addEventListener("click", (e) => {
-    document.getElementById("openSidebarMenu").checked = false;
-    closeAllPopup();
-    removeClassIcons();
+    chrome.storage.local.get('firstTimeSaerchPopupInSession', function(data) {
+    firstTimeSaerchPopupInSession = data.firstTimeSaerchPopupInSession;
+      if(firstTimeSaerchPopupInSession == 1) {
+        searchToast.hideToast();
+      }
+    });
+    setTimeout(function() {
+      document.getElementById("openSidebarMenu").checked = false;
+      closeAllPopup();
+      removeClassIcons();
 
-    var element = document.getElementById("home_icon_popup_page");
-    element.classList.add("sub_menu_icon_active_Class");
+      var element = document.getElementById("home_icon_popup_page");
+      element.classList.add("sub_menu_icon_active_Class");
 
-    var currentIcon = document.getElementById("home_icon_popup_page");
-    currentIcon.classList.add("sub_menu_current_icon_Class");
-    
-    var currentSubMenu = document.getElementById("sub_menu_home");
-    currentSubMenu.classList.add("sub_menu_current_Class");    
+      var currentIcon = document.getElementById("home_icon_popup_page");
+      currentIcon.classList.add("sub_menu_current_icon_Class");
+      
+      var currentSubMenu = document.getElementById("sub_menu_home");
+      currentSubMenu.classList.add("sub_menu_current_Class");
+    }, 500);
   });
 
   document.querySelector("#F_sign").addEventListener("click", (e) => { 
@@ -1911,7 +1984,7 @@ chrome.storage.local.get('closeAds', function(data) {
     element.classList.add("blurIn");
     setTimeout(function() {
       element.classList.add("blurOut");
-    }, 2000);
+    }, 400);
 
     mapboxgl.accessToken = 'pk.eyJ1IjoiY29tZmFibGUiLCJhIjoiY2sybTF6Z3FpMGRkeTNscWxhMnNybnU3cyJ9.VDvM0a0jaMlLMwlqBI8kUw';
     if(typeof ((latandlong.split('"'))[1]) !== 'undefined') {
@@ -1952,7 +2025,7 @@ chrome.storage.local.get('closeAds', function(data) {
       flyTo: true,
       essential: true,
       types: 'place, locality, postcode',
-      limit: 7,
+      limit: 8,
       placeholder: 'Enter the city or ZIP code',
       proximity: {
         longitude: center.lng,
@@ -2161,23 +2234,8 @@ chrome.storage.local.get('closeAds', function(data) {
         "maxzoom": 8
       });
     });
-  }; 
+  };
 
 
-var myToast = Toastify({
- text: "This is a toast message",
- destination: null,
- newWindow: false,
- gravity: 'top',
- position: 'right',
- close: true,
- stopOnFocus: true,
- backgroundColor: '#262626',
- //callback: function(){},
- //selector: '#container',
- duration: 10000
-})
-
-//myToast.showToast();
 
 });
