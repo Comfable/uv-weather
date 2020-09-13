@@ -8,13 +8,22 @@ const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"
 
 mapStyle = 'mapbox://styles/mapbox/outdoors-v11';
 
-chrome.storage.local.get('theme', function(data) {
+chrome.storage.local.get(['theme', 'autoDark'], function(data) {
     const currentTheme = data.theme;
+    const autoDarkTheme = data.autoDark;
 
-      if(currentTheme) {
+      if(currentTheme || autoDarkTheme) {
           document.documentElement.setAttribute('data-theme', currentTheme);
-        
-          if(currentTheme === 'dark') {
+          
+          if(autoDarkTheme == '1' && b.isNight) {
+              document.documentElement.setAttribute('data-theme', 'dark');
+              mapStyle = 'mapbox://styles/mapbox/dark-v10';
+              document.querySelector('.modal_search_close').style.filter = 'invert(100%) sepia(0%) saturate(526%) hue-rotate(14deg) brightness(114%) contrast(101%) drop-shadow( 2px 2px 2px rgba(0, 0, 0, .50))';
+              document.getElementById("setting_defualt_theme_d").checked = true;
+              document.getElementById("checkbox").checked = true;
+              chrome.storage.local.set({'theme': 'dark'});
+          }
+          else if(currentTheme === 'dark') {
               toggleSwitch.checked = true;
               mapStyle = 'mapbox://styles/mapbox/dark-v10';
               document.querySelector('.modal_search_close').style.filter = 'invert(100%) sepia(0%) saturate(526%) hue-rotate(14deg) brightness(114%) contrast(101%) drop-shadow( 2px 2px 2px rgba(0, 0, 0, .50))';
@@ -76,28 +85,56 @@ chrome.storage.local.get('theme', function(data) {
 
 
 
-  // chrome.storage.local.get('autoDark', function(data) {
-  //   var currentAutoDark = data.autoDark;
-
-  //     if(currentAutoDark) {
-  //         document.documentElement.setAttribute('data-theme', currentAutoDark);
-        
-  //         if(currentAutoDark === '1') {
-  //         // chrome.storage.local.set({'autoDark': '0'});
-  //         }
-  //         else {
-    
-  //         }
-  //     }
-
-  // });
 
 
+  const toggleSwitchAutoDark = document.querySelector('.theme-switch_setting_auto_dark input[type="checkbox"]');
+  chrome.storage.local.get('autoDark', function(data) {
+    const currentAutoDark = data.autoDark;
+
+      if(currentAutoDark) {      
+          if(currentAutoDark === '1') {
+              toggleSwitchAutoDark.checked = true;
+              chrome.storage.local.set({'autoDark': '1'});
+          }
+          else {
+              chrome.storage.local.set({'autoDark': '0'});
+          }
+      }
+
+    function switchAutoDark(e) {
+      if(e.target.checked) {
+        chrome.storage.local.set({'autoDark': '1'});
+        document.getElementById("checkbox_autoDark").checked = true;
+        document.getElementById("checkbox_autoDark").disabled = true;
+
+        if(isNight) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          mapStyle = 'mapbox://styles/mapbox/dark-v10';
+          document.querySelector('.modal_search_close').style.filter = 'invert(100%) sepia(0%) saturate(526%) hue-rotate(14deg) brightness(114%) contrast(101%) drop-shadow( 2px 2px 2px rgba(0, 0, 0, .50))';
+          document.getElementById("setting_defualt_theme_d").checked = true;
+          document.getElementById("checkbox").checked = true;
+          chrome.storage.local.set({'theme': 'dark'});
+        }
+
+        delayButtonAutoDarkmode();
+      }
+      else {
+        chrome.storage.local.set({'autoDark': '0'});
+        document.getElementById("checkbox_autoDark").checked = false;
+        document.getElementById("checkbox_autoDark").disabled = true;
+        delayButtonAutoDarkmode();
+      }    
+    }
+    toggleSwitchAutoDark.addEventListener('change', switchAutoDark, false);
+
+  });
 
 
 
-const toggleSwitchWhiteIcon = document.querySelector('.theme-switch_setting input[type="checkbox"]');
-chrome.storage.local.get('whiteIcon', function(data) {
+
+
+  const toggleSwitchWhiteIcon = document.querySelector('.theme-switch_setting input[type="checkbox"]');
+  chrome.storage.local.get('whiteIcon', function(data) {
     const currentWhiteIcon = data.whiteIcon;
 
       if(currentWhiteIcon) {      
@@ -106,7 +143,6 @@ chrome.storage.local.get('whiteIcon', function(data) {
               chrome.storage.local.set({'whiteIcon': '1'});
           }
           else {
-
               chrome.storage.local.set({'whiteIcon': '0'});
           }
       }
@@ -115,17 +151,27 @@ chrome.storage.local.get('whiteIcon', function(data) {
       if(e.target.checked) {
         chrome.storage.local.set({'whiteIcon': '1'});
         document.getElementById("checkbox_whiteIcon").checked = true;
+        document.getElementById("checkbox_whiteIcon").disabled = true;
         chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
+        delayButtonWhiteIcon();
       }
       else {
         chrome.storage.local.set({'whiteIcon': '0'});
         document.getElementById("checkbox_whiteIcon").checked = false;
+        document.getElementById("checkbox_whiteIcon").disabled = true;
         chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
+        delayButtonWhiteIcon();
       }    
     }
     toggleSwitchWhiteIcon.addEventListener('change', switchWhiteIcon, false);
 
   });
+
+
+
+
+
+
 
 
   function delayButtonDarkmode() {
@@ -134,6 +180,18 @@ chrome.storage.local.get('whiteIcon', function(data) {
     }, 1500);
   };
 
+  function delayButtonAutoDarkmode() {
+      setTimeout(function() {
+      document.getElementById("checkbox_autoDark").disabled = false;
+    }, 3000);
+  };
+
+
+  function delayButtonWhiteIcon() {
+      setTimeout(function() {
+      document.getElementById("checkbox_whiteIcon").disabled = false;
+    }, 3000);
+  };
 
 
 if(navigator.onLine) {

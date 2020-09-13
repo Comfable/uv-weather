@@ -81,10 +81,7 @@ function uvReader(city,latandlong,country) {
 	lat = (latlong.split(','))[0];
 	lng = (latlong.split(','))[1];
 
-	//const ads = '2589e0786e11ce470e7d98e9153039f4';	
-	//fetch('https://uv-weather.herokuapp.com/https://api.darksky.net/forecast/' + ads +'/' + latlong + '?solar')
 	var weather_url = new URL('https://api.uvweather.net/uvweather');
-	//var weather_url = new URL('https://us-central1-uv-weather.cloudfunctions.net/uvweather');
 		params = {lat: lat.toString(), lng: lng.toString()}
 	Object.keys(params).forEach(key => weather_url.searchParams.append(key, params[key]))
 	fetch(weather_url)
@@ -158,10 +155,9 @@ function uvReader(city,latandlong,country) {
 		summaryDailyF = result.daily.hasOwnProperty('summary') ? result.daily.summary : '-'
 
 		summaryHourlyC = summaryUnitConvertor(result.hourly.summary);
-		//summaryHourlyC = result.hourly.summary;
 
 		summaryDailyC = summaryUnitConvertor(result.daily.summary);
-		//summaryDailyC = result.daily.summary;
+
 		current_tempF_max = Math.round(result.daily.data[0].temperatureMax);
 		current_tempF_min = Math.round(result.daily.data[0].temperatureMin);							   
 
