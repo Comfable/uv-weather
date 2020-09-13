@@ -35,6 +35,7 @@ chrome.storage.local.get(['verUpdate'], function(data) {
 
 chrome.runtime.onMessage.addListener(
 	function(request, sender, sendResponse) {
+
 		if(request.msg == "backgroundUpdate" && (navigator.onLine)) {
 			chrome.storage.local.get(['latlong', 'city', 'country'], function(data) {
 				latandlong = data.latlong;
@@ -47,26 +48,36 @@ chrome.runtime.onMessage.addListener(
 );
 
 
-
-chrome.storage.local.get(['IntervalUpdate'], function(data) {
-	intervalUpdateNumber = data.IntervalUpdate;
-	if(typeof intervalUpdateNumber == 'undefined') {
-		var intervalUpdateNumber = 120;
-		chrome.storage.local.set({'IntervalUpdate': '120'});
-	};
-	intervalUpdateTime = 1000 * 60 * intervalUpdateNumber; //miliseconds * seconds * minutes
-	var intervalUpdateTimes = window.setInterval(_ => {
-		if(navigator.onLine) {
-			chrome.storage.local.get(['latlong', 'city', 'country'], function(data){
-				latandlong = data.latlong;
-				city = data.city;
-				country = data.country;
-				uvReader(city,latandlong,country)
-			});
+chrome.runtime.onMessage.addListener(
+	function(request, sender, sendResponse) {
+		if(request.msg == "intervalUpdateMessage") {
+			intervalUpdateFunction();
 		}
-	}, intervalUpdateTime);
-});
+	}
+);
 
+function intervalUpdateFunction() {
+	chrome.storage.local.get(['IntervalUpdate'], function(data) {
+		intervalUpdateNumber = data.IntervalUpdate;
+		if(typeof intervalUpdateNumber == 'undefined') {
+			var intervalUpdateNumber = 120;
+			chrome.storage.local.set({'IntervalUpdate': '120'});
+		};
+		intervalUpdateTime = 1000 * 60 * intervalUpdateNumber; //miliseconds * seconds * minutes
+		var intervalUpdateTimes = window.setInterval(_ => {
+			if(navigator.onLine) {
+				chrome.storage.local.get(['latlong', 'city', 'country'], function(data){
+					latandlong = data.latlong;
+					city = data.city;
+					country = data.country;
+					uvReader(city,latandlong,country)
+				});
+			}
+		}, intervalUpdateTime);
+	});
+};
+
+intervalUpdateFunction();
 
 
 //uvReader----------------------------------------------------------------------------------

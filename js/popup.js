@@ -1780,6 +1780,7 @@ document.querySelector("#setting_defualt_button_f_all").addEventListener("click"
       document.getElementById("setting_defualt_button_90").disabled = false;
       document.getElementById("setting_defualt_button_60").disabled = true;
       document.getElementById("setting_defualt_button_60").checked = true;
+      chrome.runtime.sendMessage({ msg: "intervalUpdateMessage" });
       setTimeout(function() {
         window.open("https://uvweather.net/donate");
       }, 1000);
@@ -1790,6 +1791,7 @@ document.querySelector("#setting_defualt_button_f_all").addEventListener("click"
       document.getElementById("setting_defualt_button_60").disabled = false;
       document.getElementById("setting_defualt_button_90").disabled = true;
       document.getElementById("setting_defualt_button_90").checked = true;
+      chrome.runtime.sendMessage({ msg: "intervalUpdateMessage" });
     })
   document.querySelector("#setting_defualt_button_120_all").addEventListener("click", (e) => { 
       chrome.storage.local.set({'IntervalUpdate': '120'});
@@ -1797,6 +1799,7 @@ document.querySelector("#setting_defualt_button_f_all").addEventListener("click"
       document.getElementById("setting_defualt_button_90").disabled = false;
       document.getElementById("setting_defualt_button_120").disabled = true;
       document.getElementById("setting_defualt_button_120").checked = true;
+      chrome.runtime.sendMessage({ msg: "intervalUpdateMessage" });
     })
 
   function refreshPopup() {
