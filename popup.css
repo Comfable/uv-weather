@@ -2616,6 +2616,7 @@ ul li {
     z-index: 2147483647;
     font-size: 13px;
     cursor: default;
+    line-height: 140%;
 }
 
 .toastify.on {

@@ -73,8 +73,11 @@ chrome.storage.local.get('firstTimePopup', function(data) {
     chrome.storage.local.set({'firstTimePopup': 1});
   }
   if(data.firstTimePopup == 0) {
-    locationToast.showToast();
+    setTimeout(function() {
+      locationToast.showToast();
+    }, 400);
     chrome.storage.local.set({'firstTimePopup': 1}); 
+
   }
 });
 
@@ -1706,7 +1709,7 @@ chrome.storage.local.get('closeAds', function(data) {
     
     searchTitle.style.visibility = "hidden";
     searchInner.style.visibility = "hidden";
-    searchOnMap.style.visibility = "hidden";
+    //searchOnMap.style.visibility = "hidden";
 
     mapTitle.style.visibility = "visible";
     mapInner.style.visibility = "visible";
@@ -2228,6 +2231,7 @@ chrome.storage.local.get('closeAds', function(data) {
         "source": {
           "type": "raster",
           "tiles": ["https://tile.openweathermap.org/map/precipitation/{z}/{x}/{y}.png?appid=a080c7a5e8cbf016d7fa32f33f975880"],
+          //"tiles": ['http://maps.openweathermap.org/maps/2.0/weather/TA2/{z}/{x}/{y}?date=1527811200&opacity=0.9&fill_bound=true&appid=a080c7a5e8cbf016d7fa32f33f975880'],
           "tileSize": 256
         },
         "minzoom": 1,
