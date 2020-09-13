@@ -3,94 +3,6 @@ chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
 
 document.addEventListener("DOMContentLoaded", function(event) {
 
-
-
-// var config = {
-//   apiKey: 'AIzaSyAlT79n3EKrs_UHHsYla31GSD0cMt3uVW8',
-//   databaseURL: 'https://uv-weather.firebaseio.com',
-//   storageBucket: 'uv-weather.appspot.com'
-// };
-// firebase.initializeApp(config);
-
-// function initApp() {
-//   // Listen for auth state changes.
-//   // [START authstatelistener]
-//   firebase.auth().onAuthStateChanged(function(user) {
-//     if (user) {
-//       // User is signed in.
-//       var displayName = user.displayName;
-//       var email = user.email;
-//       var emailVerified = user.emailVerified;
-//       var photoURL = user.photoURL;
-//       var isAnonymous = user.isAnonymous;
-//       var uid = user.uid;
-//       var providerData = user.providerData;
-//       // [START_EXCLUDE]
-//       document.getElementById('quickstart-button').textContent = 'Sign out';
-//       document.getElementById('quickstart-sign-in-status').textContent = 'Signed in';
-//       document.getElementById('quickstart-account-details').textContent = JSON.stringify(user, null, '  ');
-//       // [END_EXCLUDE]
-//     } else {
-//       // Let's try to get a Google auth token programmatically.
-//       // [START_EXCLUDE]
-//       document.getElementById('quickstart-button').textContent = 'Sign in with Google';
-//       document.getElementById('quickstart-sign-in-status').textContent = 'Signed out';
-//       document.getElementById('quickstart-account-details').textContent = 'null';
-//       // [END_EXCLUDE]
-//     }
-//     document.getElementById('quickstart-button').disabled = false;
-//   });
-//   // [END authstatelistener]
-
-//   document.getElementById('quickstart-button').addEventListener('click', startSignIn, false);
-// }
-
-// /**
-//  * Start the auth flow and authorizes to Firebase.
-//  * @param{boolean} interactive True if the OAuth flow should request with an interactive mode.
-//  */
-// function startAuth(interactive) {
-//   // Request an OAuth token from the Chrome Identity API.
-//   chrome.identity.getAuthToken({interactive: !!interactive}, function(token) {
-//     if (chrome.runtime.lastError && !interactive) {
-//       console.log('It was not possible to get a token programmatically.');
-//     } else if(chrome.runtime.lastError) {
-//       console.error(chrome.runtime.lastError);
-//     } else if (token) {
-//       // Authorize Firebase with the OAuth Access Token.
-//       var credential = firebase.auth.GoogleAuthProvider.credential(null, token);
-//       firebase.auth().signInWithCredential(credential).catch(function(error) {
-//         // The OAuth token might have been invalidated. Lets' remove it from cache.
-//         if (error.code === 'auth/invalid-credential') {
-//           chrome.identity.removeCachedAuthToken({token: token}, function() {
-//             startAuth(interactive);
-//           });
-//         }
-//       });
-//     } else {
-//       console.error('The OAuth Token was null');
-//     }
-//   });
-// }
-
-// /**
-//  * Starts the sign-in process.
-//  */
-// function startSignIn() {
-//   document.getElementById('quickstart-button').disabled = true;
-//   if (firebase.auth().currentUser) {
-//     firebase.auth().signOut();
-//   } else {
-//     startAuth(true);
-//   }
-// }
-
-// window.onload = function() {
-//   initApp();
-// };
-
-
-
 const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
 
 mapStyleLight = 'mapbox://styles/comfable/ck540l8q22n1n1cpb2uceu4we';
@@ -951,19 +863,6 @@ if(navigator.onLine) {
   document.querySelector("#title_version_setting").textContent = "Version " + version_manifest;
 
 
-  //     noResults: () => {
-  //         const result = document.createElement("li");
-  //         result.setAttribute("class", "no_result");
-  //         result.setAttribute("tabindex", "1");
-  //         result.innerHTML = "Oops! We missed this place. <br> <br> If we miss your city, or something on the search isn't right, you can tell us. <br> We review your report, and update the database.<button class='button_current_report_missing_Class'>Report a Missing Place</button>";
-  //         document.querySelector("#autoComplete_list").appendChild(result);
-  //         document.querySelector(".button_current_report_missing_Class").addEventListener("click", (e) => { 
-  //             window.open('https://uvweather.net/add-a-place', '_blank');
-  //         });
-  //     },
-
-    
-
   document.querySelector("#setting_defualt_button_u").addEventListener("click", (e) => { 
       setSettingUT = "u";
       chrome.storage.local.set({'setSettingUT': 'u'});
@@ -1588,14 +1487,13 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
   document.querySelector("#C_sign").addEventListener("click", (e) => { 
       setSettingFC = "c";
       chrome.storage.local.set({'setSettingFC': 'c'});
-      // document.getElementById("setting_defualt_button_c").checked = true;     
-      // document.getElementById("setting_defualt_button_c").disabled = true;
-      // document.getElementById("setting_defualt_button_f").disabled = false;
       ctemp();
   });
 
 
-
+  document.querySelector("#donate_button").addEventListener("click", (e) => {
+      window.open("https://uvweather.net/donate");
+  });
 
 
 
