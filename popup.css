@@ -48,6 +48,8 @@
   position: relative;
   width: 50px;
   margin-left: 60px;
+  margin-top: -10px !important;
+  margin-bottom: 0px !important;
 }
 
 .theme-switch input {
@@ -63,13 +65,15 @@
   right: 0;
   top: 0;
   transition: .4s;
+  margin-right: 69px !important;
+  margin-top: 9px !important;
 }
 
 .slider:before {
   background-color: #fff;
   bottom: 2px;
   content: "";
-  height: 21px;
+  height: 22px;
   left: 2px;
   position: absolute;
   transition: .4s;
@@ -78,6 +82,8 @@
 
 input:checked + .slider {
   background-color: #FF662B;
+  margin-right: 69px !important;
+  margin-top: 9px !important;
 }
 
 input:checked + .slider:before {
@@ -93,6 +99,61 @@ input:checked + .slider:before {
 }
 
 
+
+.theme-switch_setting {
+  display: inline-block;
+  height: 25px;
+  position: relative;
+  width: 50px;
+  margin-left: 15px;
+  margin-top: -10px !important;
+}
+
+.theme-switch_setting input {
+  display:none;
+}
+.slider_setting {
+  background-color: #ccc;
+  bottom: 0;
+  cursor: pointer;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: .4s;
+  margin-right: 8px !important;
+  margin-top: 9px !important;
+}
+
+.slider_setting:before {
+  background-color: #fff;
+  bottom: 2px;
+  content: "";
+  height: 12px !important;
+  width: 12px !important;
+  left: 2px;
+  position: absolute;
+  transition: .4s;
+  width: 21px;
+}
+
+input:checked + .slider_setting {
+  background-color: #FF662B;
+  margin-right: 8px !important;
+  margin-top: 9px !important;
+}
+
+input:checked + .slider_setting:before {
+  transform: translateX(25px);
+}
+
+.slider_setting.round {
+  border-radius: 21px;
+}
+
+.slider_setting.round:before {
+  border-radius: 50%;
+}
 
 
 
@@ -684,22 +745,12 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 	margin-top: 15px;
 }
 
-.setting_title_badge_Class {
-	position: relative;
-	text-align: left;
-	font-weight: normal;
-	margin-top: 15px;
-}
 .setting_body_badge_Class {
 	position: relative;
 	text-align: left;
 	font-weight: normal;
 }
-.setting_title_temp_Class {
-	position: relative;
-	text-align: left;
-	font-weight: normal;
-}
+
 .setting_body_temp_Class {
 	position: relative;
 	text-align: left;
@@ -997,7 +1048,7 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 
 .text_setting_Class {
 	position: absolute;
-	top: 105px;
+	top: 90px;
 	text-align: left;
 	font-weight: 250;
 	font-size: 12px;
@@ -1157,12 +1208,6 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   cursor: pointer;
   z-index: 10500;
   filter: var(--icon-color);
-}
-.setting_unit_badge_Class {
-	position: absolute;
-	left: 30px;
-	top: 170px;
-  	font-size: 11px;
 }
 
 .searchBox_Class {
@@ -1837,4 +1882,127 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 
 .mapbox-gl-geocoder--error {
 	padding: 16px 12px 16px 12px !important;
+}
+
+
+
+
+
+
+
+
+ul li{
+  color: var(--font-color);
+  display: flex;
+  position: relative;
+  float: left;
+}
+
+ul li input[type=radio]{
+  position: absolute;
+  visibility: hidden;
+}
+
+ul li label{
+  display: inline-block;
+  position: relative;
+  font-weight: 300;
+  font-size: 13px;
+  padding: 5px 10px 5px 60px;
+  margin: 0px auto 55px 0px;
+  z-index: 9;
+  cursor: pointer;
+  -webkit-transition: all 0.25s linear;
+}
+
+ul li:hover label{
+	color: var(--font-color);
+}
+
+ul li .check{
+  display: inline-block;
+  position: absolute;
+  border: 3px solid;
+  border-color: var(--font-color);
+  border-radius: 100%;
+  height: 15px;
+  width: 15px;
+  top: 0px;
+  left: 28px;
+  z-index: 5;
+  transition: border .25s linear;
+  -webkit-transition: border .25s linear;
+}
+
+ul li:hover .check {
+  border: 3px solid;
+  border-color: var(--font-color);
+}
+
+ul li .check::before {
+  display: inline-block;
+  position: absolute;
+  content: '';
+  border-radius: 100%;
+  height: 9px;
+  width: 9px;
+  top: 3px;
+  left: 3px;
+  margin: auto;
+  transition: background 0.25s linear;
+  -webkit-transition: background 0.25s linear;
+}
+
+input[type=radio]:checked ~ .check {
+  border: 3px solid #F06522;
+}
+
+input[type=radio]:checked ~ .check::before{
+  background: #F06522;
+}
+
+input[type=radio]:checked ~ label{
+  color: #F06522;
+}
+
+.setting_unit_badge_Class {
+	position: absolute;
+	left: 0px;
+	top: 130px;
+  	font-size: 12px;
+}
+
+.setting_title_section_unit_Class {
+	position: absolute;
+	left: 25px;
+	top: -20px;
+	margin-bottom: 10px;
+}
+.setting_title_section_badge_Class {
+	position: absolute;
+	left: 25px;
+	top: 60px;
+	margin-bottom: 10px;
+}
+.setting_title_section_theme_Class {
+	position: absolute;
+	left: 25px;
+	top: 140px;
+	margin-bottom: 10px;
+}
+.setting_section_badge_color_Class {
+	position: absolute;
+	left: 25px;
+	top: 200px;
+  	margin-right: 25px !important;
+  	padding-right: 25px !important;
+}
+
+.setting_section_auto_dark_Class {
+	position: absolute;
+	left: 25px;
+	top: 235px;
+}
+.setting_section_title_auto_dark_Class {
+  	margin-right: 35px !important;
 }

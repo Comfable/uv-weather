@@ -9,7 +9,7 @@ chrome.storage.local.get(['verUpdate'], function(data) {
 		  	 .then(function(result) {
 				countryAPI = JSON.stringify(result.country);
 				country = (countryAPI.split('"'))[1];
-				if (country == "ZZ") {
+				if(country == "ZZ") {
 						country = " "
 					}
 				city = JSON.stringify(result.city);
@@ -123,7 +123,7 @@ function uvReader(city,latandlong,country) {
 		windGustMS = Math.round(windGustMPH * 0.4470389 * 10) / 10;
 		weatherEmojiIcon = weatherEmoji(icon);
 
-			if (result.currently.windSpeed > 0) {
+			if(result.currently.windSpeed > 0) {
 				windBearing = Math.round(result.currently.windBearing); //true north at 0° and progressing clockwise
 				windCompass = degToCompass(result.currently.windBearing);
 			}
@@ -135,7 +135,7 @@ function uvReader(city,latandlong,country) {
 			visibility = result.currently.hasOwnProperty('visibility') ? Math.round(result.currently.visibility *10)/10 : '-';
 			visibilityKM = result.currently.hasOwnProperty('visibility') ? Math.round(result.currently.visibility * 1.60934 *10)/10 : '-';
 
-			if (visibility >= 10) {
+			if(visibility >= 10) {
 				visibility = "+10";
 				visibilityKM = "+16";
 			}
@@ -183,7 +183,7 @@ function uvReader(city,latandlong,country) {
 		forecast_0_tempF = Math.round(result.daily.data[0].temperatureMax);
 		forecast_1_tempF = Math.round(result.daily.data[1].temperatureMax);
 
-		if (updateTime > sunriseTime && updateTime < sunsetTime) {
+		if(updateTime > sunriseTime && updateTime < sunsetTime) {
 
 				isDay = true;					     	
 			}
@@ -191,7 +191,7 @@ function uvReader(city,latandlong,country) {
 				isNight = true;							     	
 			};
 
-		if (icon === "cloudy" || icon === "partly-cloudy-day" || icon === "partly-cloudy-night") {
+		if(icon === "cloudy" || icon === "partly-cloudy-day" || icon === "partly-cloudy-night") {
 				cloudy = true;							
 			}
 				else if (icon=== "rain"){
@@ -209,7 +209,7 @@ function uvReader(city,latandlong,country) {
 
 		function accufeelCalc() {
 
-			if (result.hourly.data[0].hasOwnProperty('solar')) {
+			if(result.hourly.data[0].hasOwnProperty('solar')) {
 				ghiSolarClearSki = result.hourly.data[0].solar.ghi; //GHI = DHI + DNI * cos (θ)
 
 				if (ghiSolarClearSki >=250) { 
@@ -246,8 +246,8 @@ function uvReader(city,latandlong,country) {
 			totalHours = Math.floor(totalSeconds/(60*60));
 			totalSeconds = totalSeconds - (totalHours*60*60);
 			totalMinutes = Math.ceil(totalSeconds/60);
-			if (totalHours<10) {totalHours = "0"+totalHours};
-			if (totalMinutes<10) {totalMinutes = "0"+totalMinutes};
+			if(totalHours<10) {totalHours = "0"+totalHours};
+			if(totalMinutes<10) {totalMinutes = "0"+totalMinutes};
 			dayLength =  totalHours + ":" + totalMinutes + " HH:MM";
 
 			dusk = timesSolar.dusk;
@@ -264,98 +264,170 @@ function uvReader(city,latandlong,country) {
 		update_tomorrow_is_c(forecast_1_tempF,forecast_0_tempF);
 
 		
-		if (icon === "rain" || icon === "sleet" || icon === "snow")
+		if(icon === "rain" || icon === "sleet" || icon === "snow")
 			{cloudAdj = 0.31;}
-		else if (cloudCover < 20)
+		else if(cloudCover < 20)
 			{cloudAdj = 1;}
-		else if (cloudCover >= 20 && cloudCover < 70)
+		else if(cloudCover >= 20 && cloudCover < 70)
 			{cloudAdj = 0.89;}
-		else if (cloudCover >= 70 && cloudCover < 90)
+		else if(cloudCover >= 70 && cloudCover < 90)
 			{cloudAdj = 0.73;}
-		else if (cloudCover >= 90)
+		else if(cloudCover >= 90)
 			{cloudAdj = 0.31;}
 		else {cloudAdj = 1;}
 
 		uv1 = Math.round(uvCurrently * cloudAdj);
 
-		if (isNight) {
+		if(isNight) {
 			current_uv_note = (" (night)");
 			}
-		else if (uv1 >= 0 && uv1 <= 2) {
+		else if(uv1 >= 0 && uv1 <= 2) {
 			current_uv_note = (" (Low)");
 			}
-		else if (uv1 >= 3 && uv1 <= 5) {
+		else if(uv1 >= 3 && uv1 <= 5) {
 			current_uv_note = (" (Moderate)");
 			}
-		else if (uv1 >= 6 && uv1 <= 7) {
+		else if(uv1 >= 6 && uv1 <= 7) {
 			current_uv_note = (" (High)");
 			}
-		else if (uv1 >= 8 && uv1 <= 10) {
+		else if(uv1 >= 8 && uv1 <= 10) {
 			current_uv_note = (" (Very High)");
 			}
-		else if (uv1 >= 11) {
+		else if(uv1 >= 11) {
 			current_uv_note = (" (Extreme)");
 			};
+		  	
 
+		currentWhiteIcon = 0;
 
-		function badgeBackgroundImage() {
-			if(isDay && sunnyDay && temperatureF >= 50) {
+		function badgeBackgroundImage(currentWhiteIcon) {
+			
+			if(isDay && sunnyDay && temperatureF >= 50 && currentWhiteIcon == 0) {
 				chrome.browserAction.setBadgeBackgroundColor({color: '#fc923b'});
-				chrome.browserAction.setIcon({path : { "128": "images/sun-128.png"}})
+				chrome.browserAction.setIcon({path : { "128": "images/badge/sun-128.png"}})
 				}
-			else if(isDay && sunnyDay && temperatureF < 50) {
+			else if(isDay && sunnyDay && temperatureF < 50 && currentWhiteIcon == 0) {
 				chrome.browserAction.setBadgeBackgroundColor({color: '#f8bd90'});
-				chrome.browserAction.setIcon({path : { "128": "images/sun-cold-128.png"}})
+				chrome.browserAction.setIcon({path : { "128": "images/badge/sun-cold-128.png"}})
 				}			
-			else if(isDay && cloudy) {
+			else if(isDay && cloudy && currentWhiteIcon == 0) {
 				chrome.browserAction.setBadgeBackgroundColor({color: '#549dd0'});
-				chrome.browserAction.setIcon({path : { "128": "images/cloud-day-128.png"}});
+				chrome.browserAction.setIcon({path : { "128": "images/badge/cloud-day-128.png"}});
 				}
-			else if(isNight && cloudy) {
+			else if(isNight && cloudy && currentWhiteIcon == 0) {
 				chrome.browserAction.setBadgeBackgroundColor({color: '#000000'});
-				chrome.browserAction.setIcon({path : { "128": "images/cloud-night-128.png"}});							     		
+				chrome.browserAction.setIcon({path : { "128": "images/badge/cloud-night-128.png"}});							     		
 				}
-			else if(isDay && rainy) {
+			else if(isDay && rainy && currentWhiteIcon == 0) {
 				chrome.browserAction.setBadgeBackgroundColor({color: '#549dd0'});
-				chrome.browserAction.setIcon({path : { "128": "images/rain-day-128.png"}});
+				chrome.browserAction.setIcon({path : { "128": "images/badge/rain-day-128.png"}});
 				}
-			else if(isNight && rainy) {
+			else if(isNight && rainy && currentWhiteIcon == 0) {
 				chrome.browserAction.setBadgeBackgroundColor({color: '#000000'});
-				chrome.browserAction.setIcon({path : { "128": "images/rain-night-128.png"}});
+				chrome.browserAction.setIcon({path : { "128": "images/badge/rain-night-128.png"}});
 				}
-			else if(isDay && snowy) {
+			else if(isDay && snowy && currentWhiteIcon == 0) {
 				chrome.browserAction.setBadgeBackgroundColor({color: '#549dd0'});
-				chrome.browserAction.setIcon({path : { "128": "images/snow-day-128.png"}});
+				chrome.browserAction.setIcon({path : { "128": "images/badge/snow-day-128.png"}});
 				}
-			else if(isNight && snowy) {
+			else if(isNight && snowy && currentWhiteIcon == 0) {
 				chrome.browserAction.setBadgeBackgroundColor({color: '#000000'});
-				chrome.browserAction.setIcon({path : { "128": "images/snow-night-128.png"}});
+				chrome.browserAction.setIcon({path : { "128": "images/badge/snow-night-128.png"}});
 				}			
-			else {
+			else if(currentWhiteIcon == 0) {
 				chrome.browserAction.setBadgeBackgroundColor({color: '#000000'});
-				chrome.browserAction.setIcon({path : { "128": "images/moon-128.png"}});
+				chrome.browserAction.setIcon({path : { "128": "images/badge/moon-128.png"}});
+			}
+
+
+			else if(isDay && sunnyDay && temperatureF >= 50 && currentWhiteIcon == 1) {
+				chrome.browserAction.setBadgeBackgroundColor({color: '#fc923b'});
+				chrome.browserAction.setIcon({path : { "128": "images/badge/sun-dark-128.png"}})
+				}
+			else if(isDay && sunnyDay && temperatureF < 50 && currentWhiteIcon == 1) {
+				chrome.browserAction.setBadgeBackgroundColor({color: '#f8bd90'});
+				chrome.browserAction.setIcon({path : { "128": "images/badge/sun-dark-128.png"}})
+				}			
+			else if(isDay && cloudy && currentWhiteIcon == 1) {
+				chrome.browserAction.setBadgeBackgroundColor({color: '#549dd0'});
+				chrome.browserAction.setIcon({path : { "128": "images/badge/cloud-dark-128.png"}});
+				}
+			else if(isNight && cloudy && currentWhiteIcon == 1) {
+				chrome.browserAction.setBadgeBackgroundColor({color: '#000000'});
+				chrome.browserAction.setIcon({path : { "128": "images/badge/cloud-dark-128.png"}});							     		
+				}
+			else if(isDay && rainy && currentWhiteIcon == 1) {
+				chrome.browserAction.setBadgeBackgroundColor({color: '#549dd0'});
+				chrome.browserAction.setIcon({path : { "128": "images/badge/rain-dark-128.png"}});
+				}
+			else if(isNight && rainy && currentWhiteIcon == 1) {
+				chrome.browserAction.setBadgeBackgroundColor({color: '#000000'});
+				chrome.browserAction.setIcon({path : { "128": "images/badge/rain-dark-128.png"}});
+				}
+			else if(isDay && snowy && currentWhiteIcon == 1) {
+				chrome.browserAction.setBadgeBackgroundColor({color: '#549dd0'});
+				chrome.browserAction.setIcon({path : { "128": "images/badge/snow-dark-128.png"}});
+				}
+			else if(isNight && snowy && currentWhiteIcon == 1) {
+				chrome.browserAction.setBadgeBackgroundColor({color: '#000000'});
+				chrome.browserAction.setIcon({path : { "128": "images/badge/snow-dark-128.png"}});
+				}			
+			else if(currentWhiteIcon == 1) {
+				chrome.browserAction.setBadgeBackgroundColor({color: '#000000'});
+				chrome.browserAction.setIcon({path : { "128": "images/badge/moon-dark-128.png"}});
 			}
 		}
+
 
 
 		function tempc() {
 			chrome.browserAction.setBadgeText({"text":temperatureC +"°C" });
-			badgeBackgroundImage();
+			
+			chrome.storage.local.get('whiteIcon', function(data) {
+			  var currentWhiteIcon = data.whiteIcon;
+			  if(currentWhiteIcon == 0 || (typeof currentWhiteIcon == 'undefined') || currentWhiteIcon == 'undefined') {
+			  	var currentWhiteIcon = 0;
+			  } else{
+			  	var currentWhiteIcon = 1;
+			  }
+				badgeBackgroundImage(currentWhiteIcon);
+			});
+
 		}
 									 
 		function tempf() {
 			chrome.browserAction.setBadgeText({"text":temperatureF +"°F" });
-			badgeBackgroundImage();
+
+			chrome.storage.local.get('whiteIcon', function(data) {
+			  var currentWhiteIcon = data.whiteIcon;
+			  if(currentWhiteIcon == 0 || (typeof currentWhiteIcon == 'undefined') || currentWhiteIcon == 'undefined') {
+			  	var currentWhiteIcon = 0;
+			  } else{
+			  	var currentWhiteIcon = 1;
+			  }
+				badgeBackgroundImage(currentWhiteIcon);
+			});
+
 		}
 
 		function uvi() {
-			if (uv1>9) {
+			if(uv1>9) {
 	          chrome.browserAction.setBadgeText({"text": "UV"+ uv1});
 	        }
 	        else {
 	          chrome.browserAction.setBadgeText({"text": "UV "+ uv1});
 	        }
-			badgeBackgroundImage();
+
+			chrome.storage.local.get('whiteIcon', function(data) {
+			  var currentWhiteIcon = data.whiteIcon;
+			  if(currentWhiteIcon == 0 || (typeof currentWhiteIcon == 'undefined') || currentWhiteIcon == 'undefined') {
+			  	var currentWhiteIcon = 0;
+			  } else{
+			  	var currentWhiteIcon = 1;
+			  }
+				badgeBackgroundImage(currentWhiteIcon);
+			});
+
 		}
 
 
@@ -426,7 +498,20 @@ function uvReader(city,latandlong,country) {
 			setTimeout(function(){
 				clearInterval(animatedBadgeInterval);   
 				}, 500);
-			setTimeout(badgeBackgroundImage, 550)
+
+			chrome.storage.local.get('whiteIcon', function(data) {
+			  var currentWhiteIcon = data.whiteIcon;
+			  if(currentWhiteIcon == 0 || (typeof currentWhiteIcon == 'undefined') || currentWhiteIcon == 'undefined') {
+			  	var currentWhiteIcon = 0;
+			  } else{
+			  	var currentWhiteIcon = 1;
+			  }
+
+			setTimeout(function(){
+				badgeBackgroundImage(currentWhiteIcon);   
+				}, 550);
+			});
+
 		}
 
 

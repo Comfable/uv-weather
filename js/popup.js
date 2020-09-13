@@ -11,27 +11,33 @@ mapStyle = 'mapbox://styles/mapbox/outdoors-v11';
 chrome.storage.local.get('theme', function(data) {
     const currentTheme = data.theme;
 
-      if (currentTheme) {
+      if(currentTheme) {
           document.documentElement.setAttribute('data-theme', currentTheme);
         
-          if (currentTheme === 'dark') {
+          if(currentTheme === 'dark') {
               toggleSwitch.checked = true;
               mapStyle = 'mapbox://styles/mapbox/dark-v10';
               document.querySelector('.modal_search_close').style.filter = 'invert(100%) sepia(0%) saturate(526%) hue-rotate(14deg) brightness(114%) contrast(101%) drop-shadow( 2px 2px 2px rgba(0, 0, 0, .50))';
+              document.getElementById("setting_defualt_theme_d").checked = true;      
           }
           else {
               mapStyle = 'mapbox://styles/mapbox/outdoors-v11';
               document.querySelector('.modal_search_close').style.filter = 'invert(0%) sepia(100%) saturate(7500%) hue-rotate(59deg) brightness(89%) contrast(111%) drop-shadow( 2px 2px 2px rgba(0, 0, 0, .50))';
+              document.getElementById("setting_defualt_theme_l").checked = true;      
           }
+      }
+      else{
+              document.getElementById("setting_defualt_theme_l").checked = true;      
       }
 
       function switchTheme(e) {
-          if (e.target.checked) {
+          if(e.target.checked) {
               document.documentElement.setAttribute('data-theme', 'dark');
               chrome.storage.local.set({'theme': 'dark'});
               document.getElementById("checkbox").disabled = true;
               mapStyle = 'mapbox://styles/mapbox/dark-v10';
               document.querySelector('.modal_search_close').style.filter = 'invert(100%) sepia(0%) saturate(526%) hue-rotate(14deg) brightness(114%) contrast(101%) drop-shadow( 2px 2px 2px rgba(0, 0, 0, .50))';
+              document.getElementById("setting_defualt_theme_d").checked = true;      
               delayButtonDarkmode();
           }
           else {
@@ -40,6 +46,7 @@ chrome.storage.local.get('theme', function(data) {
               document.getElementById("checkbox").disabled = true;
               mapStyle = 'mapbox://styles/mapbox/outdoors-v11';
               document.querySelector('.modal_search_close').style.filter = 'invert(0%) sepia(100%) saturate(7500%) hue-rotate(59deg) brightness(89%) contrast(111%) drop-shadow( 2px 2px 2px rgba(0, 0, 0, .50))';
+              document.getElementById("setting_defualt_theme_l").checked = true;      
               delayButtonDarkmode();
           }    
       }
@@ -48,6 +55,78 @@ chrome.storage.local.get('theme', function(data) {
   });
 
  
+  document.querySelector("#setting_defualt_theme_d").addEventListener("click", (e) => {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      chrome.storage.local.set({'theme': 'dark'});
+      mapStyle = 'mapbox://styles/mapbox/dark-v10';
+      document.querySelector('.modal_search_close').style.filter = 'invert(100%) sepia(0%) saturate(526%) hue-rotate(14deg) brightness(114%) contrast(101%) drop-shadow( 2px 2px 2px rgba(0, 0, 0, .50))';
+      document.getElementById("setting_defualt_theme_d").checked = true;
+      document.getElementById("checkbox").checked = true;
+  });
+
+
+  document.querySelector("#setting_defualt_theme_l").addEventListener("click", (e) => {
+      document.documentElement.setAttribute('data-theme', 'light');
+      chrome.storage.local.set({'theme': 'light'});
+      mapStyle = 'mapbox://styles/mapbox/outdoors-v11';
+      document.querySelector('.modal_search_close').style.filter = 'invert(0%) sepia(100%) saturate(7500%) hue-rotate(59deg) brightness(89%) contrast(111%) drop-shadow( 2px 2px 2px rgba(0, 0, 0, .50))';
+      document.getElementById("setting_defualt_theme_l").checked = true;
+      document.getElementById("checkbox").checked = false;
+  });
+
+
+
+  // chrome.storage.local.get('autoDark', function(data) {
+  //   var currentAutoDark = data.autoDark;
+
+  //     if(currentAutoDark) {
+  //         document.documentElement.setAttribute('data-theme', currentAutoDark);
+        
+  //         if(currentAutoDark === '1') {
+  //         // chrome.storage.local.set({'autoDark': '0'});
+  //         }
+  //         else {
+    
+  //         }
+  //     }
+
+  // });
+
+
+
+
+
+const toggleSwitchWhiteIcon = document.querySelector('.theme-switch_setting input[type="checkbox"]');
+chrome.storage.local.get('whiteIcon', function(data) {
+    const currentWhiteIcon = data.whiteIcon;
+
+      if(currentWhiteIcon) {      
+          if(currentWhiteIcon === '1') {
+              toggleSwitchWhiteIcon.checked = true;
+              chrome.storage.local.set({'whiteIcon': '1'});
+          }
+          else {
+
+              chrome.storage.local.set({'whiteIcon': '0'});
+          }
+      }
+
+    function switchWhiteIcon(e) {
+      if(e.target.checked) {
+        chrome.storage.local.set({'whiteIcon': '1'});
+        document.getElementById("checkbox_whiteIcon").checked = true;
+        chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
+      }
+      else {
+        chrome.storage.local.set({'whiteIcon': '0'});
+        document.getElementById("checkbox_whiteIcon").checked = false;
+        chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
+      }    
+    }
+    toggleSwitchWhiteIcon.addEventListener('change', switchWhiteIcon, false);
+
+  });
+
 
   function delayButtonDarkmode() {
       setTimeout(function() {
@@ -211,7 +290,7 @@ if(navigator.onLine) {
           window.open(url_owner, "_blank");
         })
       }
-      else{
+      else {
           document.querySelector("#link_flickr_text").textContent = 'Photo by ' + ownername.substr(0,10) + ' on Flickr';
           document.querySelector("#link_flickr").addEventListener("click", (e) => {
           window.open(url_owner, "_blank");
@@ -232,8 +311,8 @@ if(navigator.onLine) {
     setSettingFC = data.setSettingFC;
     setSettingUT = data.setSettingUT;
 
-    if (typeof setSettingFC === 'undefined') {
-         if (country == "US") {
+    if(typeof setSettingFC === 'undefined') {
+         if(country == "US") {
              setSettingFC = "f";
              chrome.storage.local.set({'setSettingFC': 'f'});
          } else {
@@ -242,12 +321,12 @@ if(navigator.onLine) {
          }
       }
 
-    if (typeof setSettingUT === 'undefined') {
+    if(typeof setSettingUT === 'undefined') {
         setSettingUT = "t";
         chrome.storage.local.set({'setSettingUT': 't'});
       }
 
-    if (setSettingUT == "u") {
+    if(setSettingUT == "u") {
         document.getElementById("setting_defualt_button_u").checked = true;
         document.getElementById("setting_defualt_button_u").disabled = true;
       }
@@ -256,7 +335,7 @@ if(navigator.onLine) {
         document.getElementById("setting_defualt_button_t").disabled = true;
       }
 
-    if (setSettingFC == "f") {
+    if(setSettingFC == "f") {
         document.getElementById("setting_defualt_button_f").checked = true;      
         document.getElementById("setting_defualt_button_f").disabled = true;
       }
@@ -265,7 +344,7 @@ if(navigator.onLine) {
         document.getElementById("setting_defualt_button_c").disabled = true;
       }
 
-    if (setSettingFC == 'f'){
+    if(setSettingFC == 'f'){
         ftemp();
       }
     else {
@@ -291,32 +370,32 @@ if(navigator.onLine) {
       resUV0[i].style.opacity = ".3";
     }
 
-    if (b.uv1 == 1) {
+    if(b.uv1 == 1) {
         document.querySelector("#icon_uv_1").style.opacity = "1";
         document.querySelector("#icon_uv_1_tooltip").style.opacity = "1";
       }
-    else if (b.uv1 == 2) {
+    else if(b.uv1 == 2) {
         resUV2 = document.querySelectorAll('#icon_uv_1, #icon_uv_2, #icon_uv_1_tooltip, #icon_uv_2_tooltip')
         for (var i = 0; i < resUV2.length; i++){
           resUV2[i].style.opacity = "1";
           resUV2[i].style.filter = "drop-shadow( 2px 2px 2px rgba(0, 0, 0, .5))";
         }       
       }
-    else if (b.uv1 >= 3 && b.uv1 <= 5) {
+    else if(b.uv1 >= 3 && b.uv1 <= 5) {
         resUV3 = document.querySelectorAll('#icon_uv_1, #icon_uv_2, #icon_uv_3, #icon_uv_1_tooltip, #icon_uv_2_tooltip, #icon_uv_3_tooltip')
         for (var i = 0; i < resUV3.length; i++){
           resUV3[i].style.opacity = "1";
           resUV3[i].style.filter = "drop-shadow( 2px 2px 2px rgba(0, 0, 0, .5))";
         }
       }
-    else if (b.uv1 >= 6 && b.uv1 <= 7) {
+    else if(b.uv1 >= 6 && b.uv1 <= 7) {
         resUV6 = document.querySelectorAll('#icon_uv_1, #icon_uv_2, #icon_uv_3, #icon_uv_4, #icon_uv_1_tooltip, #icon_uv_2_tooltip, #icon_uv_3_tooltip, #icon_uv_4_tooltip')
         for (var i = 0; i < resUV6.length; i++){
           resUV6[i].style.opacity = "1";
           resUV6[i].style.filter = "drop-shadow( 2px 2px 2px rgba(0, 0, 0, .5))";
         }
       }
-    else if (b.uv1 >= 8) {
+    else if(b.uv1 >= 8) {
         resUV8 = document.querySelectorAll('#icon_uv_1, #icon_uv_2, #icon_uv_3, #icon_uv_4, #icon_uv_5, #icon_uv_6, #icon_uv_1_tooltip, #icon_uv_2_tooltip, #icon_uv_3_tooltip, #icon_uv_4_tooltip, #icon_uv_5_tooltip, #icon_uv_6_tooltip')
         for (var i = 0; i < resUV8.length; i++){
           resUV8[i].style.opacity = "1";
@@ -330,7 +409,7 @@ if(navigator.onLine) {
 
   switch(b.icon) {
     case 'clear-day':
-      if (b.isDay) {
+      if(b.isDay) {
       document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_clear-day.svg")';
         }
         else {
@@ -390,7 +469,7 @@ if(navigator.onLine) {
       document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/clear-night.jpg")';      
       break;
     case 'rain':
-            if (b.isDay) {
+            if(b.isDay) {
             document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/rain-day.jpg")';
               }
             else {
@@ -398,7 +477,7 @@ if(navigator.onLine) {
               }     
       break;
     case 'snow':
-            if (b.isDay) {
+            if(b.isDay) {
             document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/snow-day.jpg")';
               }
             else {
@@ -406,7 +485,7 @@ if(navigator.onLine) {
               }
       break;
     case 'sleet':
-            if (b.isDay) {
+            if(b.isDay) {
             document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/sleet-day.jpg")';
               }
             else {
@@ -414,7 +493,7 @@ if(navigator.onLine) {
               }
       break;
     case 'wind':
-            if (b.isDay) {
+            if(b.isDay) {
             document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/wind-day.jpg")';
               }
             else {
@@ -422,7 +501,7 @@ if(navigator.onLine) {
               }     
       break;
     case 'fog':
-            if (b.isDay) {
+            if(b.isDay) {
             document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/fog-day.jpg")';
               }
             else {
@@ -430,7 +509,7 @@ if(navigator.onLine) {
               }
       break;
     case 'cloudy':
-            if (b.isDay) {
+            if(b.isDay) {
             document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/cloudy-day.jpg")';
               }
             else {
@@ -438,7 +517,7 @@ if(navigator.onLine) {
               }
       break;
     case 'partly-cloudy-day':
-            if (b.isDay) {
+            if(b.isDay) {
       document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/partly-cloudy-day.jpg")';
               }
             else {
@@ -496,7 +575,7 @@ if(navigator.onLine) {
     document.querySelector("#current_temp_min").textContent = b.current_tempF_min + "°";
     document.querySelector("#forecast_tomorrow").textContent = b.update_tomorrow_f;
 
-   for (i=1;i<4;i++){
+    for(i=1;i<4;i++) {
         document.querySelector(`#forecast_${i}_temp`).textContent = Math.round(b.result.daily.data[i].temperatureMax) + "°";
     }
 
@@ -533,18 +612,18 @@ if(navigator.onLine) {
   function next7Function(){
     document.querySelector("#next7_update_date").textContent = 'Updated at ' + dayjs.unix(b.updateTime + b.offsetUnix).format('MMM DD, h:mm A');
 
-    for (i=1;i<4;i++){
+    for(i=1;i<4;i++) {
       document.querySelector(`#forecast_${i}_day`).textContent = dayjs.unix(b.result.daily.data[i].time).format('dddd');
       document.querySelector(`#forecast_${i}_uv`).textContent = "UVI " + (Math.round ((b.result.daily.data[i].uvIndex) * uv_adj_daily(b.result.daily.data[i].icon)));
     }
 
-    for (i=1;i<8;i++){
+    for(i=1;i<8;i++) {
       document.querySelector(`#forecast_${i*10}_day`).textContent = dayjs.unix(b.result.daily.data[i].time).format('dddd');
       document.querySelector(`#forecast_${i*10}_uv`).textContent = "UVI " + (Math.round ((b.result.daily.data[i].uvIndex) * uv_adj_daily(b.result.daily.data[i].icon)));
     }
 
     var i;
-    for (i = 1; i < 8; i++) {
+    for(i = 1; i < 8; i++) {
       forecast_icon = b.result.daily.data[i].icon; 
       switch(forecast_icon) {
         case 'clear-day':
@@ -640,14 +719,14 @@ if(navigator.onLine) {
   function next48Function() {
     document.querySelector("#next48_update_date").textContent = 'Updated at ' + dayjs.unix(b.updateTime + b.offsetUnix).format('MMM DD, h:mm A');
 
-    for(i=1;i<25;i++){
+    for(i=1;i<25;i++) {
       document.querySelector(`#forecast_${i}_hours`).textContent = dayjs.unix(b.result.hourly.data[i].time + b.offsetUnix).format('h A');
       document.querySelector(`#forecast_${i}_hours_uv`).textContent = "UVI " + Math.round((b.result.hourly.data[i].uvIndex) * uv_adj_daily(b.result.hourly.data[i].icon, b.result.hourly.data[i].cloudCover));
       document.querySelector(`#forecast_${i}_hours_rain`).textContent = Math.round(((b.result.hourly.data[i].precipProbability) * 100)/5)*5 + "%";
     }
   
     var i;
-    for (i = 1; i < 25; i++) {
+    for(i = 1; i < 25; i++) {
       forecast_hours_icon = b.result.hourly.data[i].icon;
     switch(forecast_hours_icon) {
       case 'clear-day':
@@ -689,7 +768,7 @@ if(navigator.onLine) {
   next48Function();
 
   function trackSunExposure() {
-    if (b.uv1 == 0 || b.isNight) {
+    if(b.uv1 == 0 || b.isNight) {
         document.querySelector("#link_qsun_text").textContent = 'UV Weather App for iOS & Android';
      }
     else{
@@ -719,7 +798,7 @@ if(navigator.onLine) {
   document.querySelector("#setting_defualt_button_u").addEventListener("click", (e) => { 
       setSettingUT = "u";
       chrome.storage.local.set({'setSettingUT': 'u'});
-        if (b.uv1>9) {
+        if(b.uv1>9) {
           chrome.browserAction.setBadgeText({"text": "UV"+ b.uv1});
         }
         else {
@@ -744,7 +823,7 @@ if(navigator.onLine) {
   document.querySelector("#setting_defualt_button_c").addEventListener("click", (e) => { 
       setSettingFC = "c";
       chrome.storage.local.set({'setSettingFC': 'c'});
-      if (setSettingUT == "t") {
+      if(setSettingUT == "t") {
         chrome.browserAction.setBadgeText({"text":b.temperatureC +"°C" });
       }
       ctemp();
@@ -755,7 +834,7 @@ if(navigator.onLine) {
 document.querySelector("#setting_defualt_button_f").addEventListener("click", (e) => { 
       setSettingFC = "f";
       chrome.storage.local.set({'setSettingFC': 'f'});
-      if (setSettingUT == "t") {   
+      if(setSettingUT == "t") {   
         chrome.browserAction.setBadgeText({"text":b.temperatureF +"°F" });
       }      
       ftemp();
@@ -1201,7 +1280,7 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
           latlong =  '"' + lat + ',' + lng + '"';
           city =  '"' + cityAPI + '"';
 
-          if (((ev.result.place_name).split(','))[2]) {
+          if(((ev.result.place_name).split(','))[2]) {
               country = ((ev.result.place_name).split(','))[2];
           }
           else {
@@ -1235,7 +1314,7 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
 
   function weatherMap() {
     mapboxgl.accessToken = 'pk.eyJ1IjoiY29tZmFibGUiLCJhIjoiY2sybTF6Z3FpMGRkeTNscWxhMnNybnU3cyJ9.VDvM0a0jaMlLMwlqBI8kUw';
-    if (typeof ((b.latandlong.split('"'))[1]) !== 'undefined') {
+    if(typeof ((b.latandlong.split('"'))[1]) !== 'undefined') {
       latandlongMapBox = ((b.latandlong.split('"'))[1]).split(',').reverse().join(',');
       latandlongMapBox = JSON.parse("[" + latandlongMapBox + "]");
     }
@@ -1293,7 +1372,7 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
       updateTimeRelative = "Updated " + dayjs.unix(b.updateTime).format("h:mm A");
 
     chrome.storage.local.get('setSettingFC', function(data) {
-        if (data.setSettingFC == "c") {
+        if(data.setSettingFC == "c") {
             ctemp();
           }
           else{
