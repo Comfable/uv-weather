@@ -3,7 +3,17 @@ var start = new Date();
 var lines = 16,
 cW = 40,
 cH = 40;
-function animatedBadge(isDay,sunnyDay,cloudy,rainy,Snowy) {
+
+function capital_letter(str) {
+    str = str.split(" ");
+    for (var i = 0, x = str.length; i < x; i++) {
+        str[i] = str[i][0].toUpperCase() + str[i].substr(1);
+    }
+    return str.join(" ");
+};
+
+
+function animatedBadge(isDayBadge,sunnyDayBadge,cloudyBadge,rainyBadge,snowyBadge) {
 	var rotation = parseInt(((new Date() - start) / 1000) * lines) / lines;
 	context.save();
 	context.clearRect(0, 0, cW, cH);
@@ -15,10 +25,10 @@ function animatedBadge(isDay,sunnyDay,cloudy,rainy,Snowy) {
 		context.moveTo(cW / 10, 0);
 		context.lineTo(cW / 4, 0);
 		context.lineWidth = cW / 30;
-		if (isDay && sunnyDay) {
+		if (isDayBadge && sunnyDayBadge) {
 			context.strokeStyle = 'rgba(254, 102, 1,' + i / lines + ')';
 		}
-		else if (isDay && (cloudy || rainy || Snowy)) {
+		else if (isDayBadge && (cloudyBadge || rainyBadge || snowyBadge)) {
 			context.strokeStyle = 'rgba(31, 97, 143,' + i / lines + ')';
 		}
 		else {

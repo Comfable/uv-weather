@@ -1,3 +1,5 @@
+var uv1;
+
 chrome.storage.local.get(['verUpdate'], function(data) {
 	verUpdate = data.verUpdate;
 
@@ -19,16 +21,22 @@ chrome.storage.local.get(['verUpdate'], function(data) {
 				chrome.storage.local.set({'country': country});
 				chrome.storage.local.set({'fullname': fullname});
 				chrome.storage.local.set({'verUpdate': 1});
-				uvReader(city,latandlong,country);
+					uvReader(city,latandlong,country);
+					setTimeout(function() {
+						badgeReader(city,latandlong,country,uv1);
+					}, 500);
 			})
 	}
 	else{
-		chrome.storage.local.get(['latlong', 'city', 'country'], function(data) {
+		chrome.storage.local.get(['latlong', 'city', 'country'], function(data) { //update the extension and refresh the popup
 	  		latandlong = data.latlong;
 	 		city = data.city;
 	 		country = data.country;
-	 		uvReader(city,latandlong,country);
-		});	
+					uvReader(city,latandlong,country);
+					setTimeout(function() {
+						badgeReader(city,latandlong,country,uv1);
+    				}, 500);
+		});
 	}
 });
 
@@ -47,6 +55,19 @@ chrome.runtime.onMessage.addListener(
 	}
 );
 
+chrome.runtime.onMessage.addListener(
+	function(request, sender, sendResponse) {
+
+		if(request.msg == "badgeUpdate" && (navigator.onLine)) {
+			chrome.storage.local.get(['latlong', 'city', 'country'], function(data) {
+				latandlong = data.latlong;
+		 		city = data.city;
+		 		country = data.country;
+				badgeReader(city,latandlong,country,uv1);
+			});
+		}
+	}
+);
 
 chrome.runtime.onMessage.addListener(
 	function(request, sender, sendResponse) {
@@ -57,31 +78,438 @@ chrome.runtime.onMessage.addListener(
 );
 
 function intervalUpdateFunction() {
-	chrome.storage.local.get(['IntervalUpdate'], function(data) {
+	chrome.storage.local.get(['IntervalUpdate', ''], function(data) {
 		intervalUpdateNumber = data.IntervalUpdate;
 		if(typeof intervalUpdateNumber == 'undefined') {
 			var intervalUpdateNumber = 120;
 			chrome.storage.local.set({'IntervalUpdate': '120'});
 		};
 		intervalUpdateTime = 1000 * 60 * intervalUpdateNumber; //miliseconds * seconds * minutes
+
 		var intervalUpdateTimes = window.setInterval(_ => {
 			if(navigator.onLine) {
 				chrome.storage.local.get(['latlong', 'city', 'country'], function(data){
 					latandlong = data.latlong;
 					city = data.city;
 					country = data.country;
-					uvReader(city,latandlong,country)
+					if(setSettingUT == 'u') {
+						uvReader(city,latandlong,country);
+						setTimeout(function() {
+							badgeReader(city,latandlong,country,uv1);
+    					}, 500);
+					}
+					else {
+							badgeReader(city,latandlong,country,uv1);
+					}
+					
 				});
 			}
 		}, intervalUpdateTime);
 	});
 };
-
 intervalUpdateFunction();
+
+
+//badgeReader----------------------------------------------------------------------------------
+function badgeReader(city,latandlong,country,uv1) {
+	cityBadge = city.split('"')[1];
+	regionBadge = country;
+	latlong = (latandlong.split('"'))[1];
+	lat = (latlong.split(','))[0];
+	lng = (latlong.split(','))[1];
+	fetch('https://uv-weather.herokuapp.com/https://api.openweathermap.org/data/2.5/weather?lat='+ lat + '&lon=' + lng + '&appid=c33b87de15e56ce0b4a4a0fef54d8ecd')
+	.then((resp) => resp.json())
+	.then(function(resultBadge) {
+		window.resultBadge = resultBadge;
+		temperatureCbadge = Math.round((resultBadge.main.temp) - 273.15);
+		temperatureFbadge = Math.round((1.8*temperatureCbadge) + 32);
+		if(temperatureCbadge == -0) {temperatureCbadge = 0};
+		if(temperatureFbadge == -0) {temperatureFbadge = 0};
+		summaryBadge = resultBadge.weather[0].main;
+		descriptionBadge = resultBadge.weather[0].description;
+		sunriseTimeBadge = resultBadge.sys.sunrise;
+		sunsetTimeBadge = resultBadge.sys.sunset;
+		updateTimeBadge = resultBadge.dt;
+		timeZoneBadge = resultBadge.timezone;
+		cloudCoverBadge = resultBadge.clouds.all;
+
+
+		isDayBadge = false;
+		isNightBadge = false;
+		cloudyBadge = false;
+		sunnyDayBadge = false;
+		rainyBadge = false;
+		snowyBadge = false;
+
+		systemTimeBadge = new Date();
+		systemTimeUnixBadge = Math.round((systemTimeBadge).getTime() / 1000);
+		DeviceTimeDifferenceFromGMTBadge = systemTimeBadge.getTimezoneOffset() / 60;
+		offsetTimeBadge = DeviceTimeDifferenceFromGMTBadge + timeZoneBadge/3600;
+		offsetUnixBadge = offsetTimeBadge * 3600;
+		localTimeUnixBadge = Math.round(systemTimeUnixBadge + offsetUnixBadge);
+		timesSolarBadge = SunCalc.getTimes(localTimeUnixBadge, lat, lng);	
+			dawnBadge = timesSolarBadge.dawn;
+			duskBadge = timesSolarBadge.dusk;
+
+			localTimeUnixBadgeDD = dayjs.unix(systemTimeUnixBadge + offsetUnixBadge).format('DD');
+			dawnBadgeBadgeDD = dayjs.unix(dawnBadge + offsetUnixBadge).format('DD');
+
+			localTimeUnixBadge = dayjs.unix(systemTimeUnixBadge + offsetUnixBadge);
+			if(localTimeUnixBadgeDD !== dawnBadgeBadgeDD) {
+				dawnDayjsBadge = dayjs.unix(dawnBadge + offsetUnixBadge - 86400);
+				duskDayjsBadge = dayjs.unix(duskBadge + offsetUnixBadge - 86400);
+			}
+			else{
+				dawnDayjsBadge = dayjs.unix(dawnBadge + offsetUnixBadge);
+				duskDayjsBadge = dayjs.unix(duskBadge + offsetUnixBadge);
+			}
+
+			if(localTimeUnixBadge >= dawnDayjsBadge && localTimeUnixBadge <= duskDayjsBadge) {
+			   	isDayBadge = true;	
+			} 
+			else {
+			    isNightBadge = true;	
+			}
+
+		if(descriptionBadge === "overcast clouds" || descriptionBadge === "broken clouds") {
+				iconBadge = 'cloudy';							
+			}
+		else if(summaryBadge === "Ash" || summaryBadge === "Sand" || summaryBadge === "Fog" || summaryBadge === "Dust" || summaryBadge === "Haze" || summaryBadge === "Smoke" || summaryBadge === "Mist") {
+				iconBadge = 'fog';							
+			}
+		else if(summaryBadge === "Rain" || summaryBadge === "Thunderstorm" || summaryBadge === "Drizzle") {
+				iconBadge = 'rain'; 
+			}
+		else if(summaryBadge === "Snow") {
+				iconBadge = 'snow'; 
+			}
+		else if(summaryBadge === "Squall" || summaryBadge === "Tornado") {
+				iconBadge = 'wind'; 
+			}
+		else if(descriptionBadge === "Sleet") {
+				iconBadge = 'sleet'; 
+			}
+		else if((descriptionBadge === "few clouds" || descriptionBadge === "scattered clouds") && isDayBadge) {
+				iconBadge = 'partly-cloudy-day'; 
+			}
+		else if((descriptionBadge === "few clouds" || descriptionBadge === "scattered clouds") && isNightBadge) {
+				iconBadge = 'partly-cloudy-night'; 
+			}
+		else if(summaryBadge === "Clear" && isNightBadge) {
+				iconBadge = 'clear-night'; 
+			}
+		else if(summaryBadge === "Clear" && isDayBadge) {
+				iconBadge = 'clear-day'; 
+		}
+
+
+		if(iconBadge === "cloudy" || iconBadge === "partly-cloudy-day" || iconBadge === "partly-cloudy-night") {
+				cloudyBadge  = true;							
+			}
+				else if (iconBadge === "rain"){
+				rainyBadge  = true; 
+			}
+				else if (iconBadge === "snow" || iconBadge === "sleet"){
+				snowyBadge  = true; 
+			}	else {
+				sunnyDayBadge  = true;
+		};
+
+
+					animatedBadgeInterval = setInterval(function() {animatedBadge(isDayBadge,sunnyDayBadge,cloudyBadge,rainyBadge,snowyBadge); }, 1000 / 30);
+
+
+		currentWhiteIcon = 0;
+		function badgeBackgroundImage(currentWhiteIcon) {
+			
+			if(isDayBadge && sunnyDayBadge && temperatureFbadge >= 50 && currentWhiteIcon == 0) {
+				chrome.browserAction.setIcon({path : { "128": "images/badge/sun-128.png"}})
+				}
+			else if(isDayBadge && sunnyDayBadge && temperatureFbadge < 50 && currentWhiteIcon == 0) {
+				chrome.browserAction.setIcon({path : { "128": "images/badge/sun-cold-128.png"}})
+				}			
+			else if(isDayBadge && cloudyBadge && currentWhiteIcon == 0) {
+				chrome.browserAction.setIcon({path : { "128": "images/badge/cloud-day-128.png"}});
+				}
+			else if(isNightBadge && cloudyBadge && currentWhiteIcon == 0) {
+				chrome.browserAction.setIcon({path : { "128": "images/badge/cloud-night-128.png"}});							     		
+				}
+			else if(isDayBadge && rainyBadge && currentWhiteIcon == 0) {
+				chrome.browserAction.setIcon({path : { "128": "images/badge/rain-day-128.png"}});
+				}
+			else if(isNightBadge && rainyBadge && currentWhiteIcon == 0) {
+				chrome.browserAction.setIcon({path : { "128": "images/badge/rain-night-128.png"}});
+				}
+			else if(isDayBadge && snowyBadge && currentWhiteIcon == 0) {
+				chrome.browserAction.setIcon({path : { "128": "images/badge/snow-day-128.png"}});
+				}
+			else if(isNightBadge && snowyBadge && currentWhiteIcon == 0) {
+				chrome.browserAction.setIcon({path : { "128": "images/badge/snow-night-128.png"}});
+				}			
+			else if(currentWhiteIcon == 0) {
+				chrome.browserAction.setIcon({path : { "128": "images/badge/moon-128.png"}});
+			}
+
+
+			else if(isDayBadge && sunnyDayBadge && temperatureFbadge >= 50 && currentWhiteIcon == 1) {
+				chrome.browserAction.setIcon({path : { "128": "images/badge/sun-dark-128.png"}})
+				}
+			else if(isDayBadge && sunnyDayBadge && temperatureFbadge < 50 && currentWhiteIcon == 1) {
+				chrome.browserAction.setIcon({path : { "128": "images/badge/sun-dark-128.png"}})
+				}			
+			else if(isDayBadge && cloudyBadge && currentWhiteIcon == 1) {
+				chrome.browserAction.setIcon({path : { "128": "images/badge/cloud-dark-128.png"}});
+				}
+			else if(isNightBadge && cloudyBadge && currentWhiteIcon == 1) {
+				chrome.browserAction.setIcon({path : { "128": "images/badge/cloud-dark-128.png"}});							     		
+				}
+			else if(isDayBadge && rainyBadge && currentWhiteIcon == 1) {
+				chrome.browserAction.setIcon({path : { "128": "images/badge/rain-dark-128.png"}});
+				}
+			else if(isNightBadge && rainyBadge && currentWhiteIcon == 1) {
+				chrome.browserAction.setIcon({path : { "128": "images/badge/rain-dark-128.png"}});
+				}
+			else if(isDayBadge && snowyBadge && currentWhiteIcon == 1) {
+				chrome.browserAction.setIcon({path : { "128": "images/badge/snow-dark-128.png"}});
+				}
+			else if(isNightBadge && snowyBadge && currentWhiteIcon == 1) {
+				chrome.browserAction.setIcon({path : { "128": "images/badge/snow-dark-128.png"}});
+				}			
+			else if(currentWhiteIcon == 1) {
+				chrome.browserAction.setIcon({path : { "128": "images/badge/moon-dark-128.png"}});
+			}
+		}
+
+		function badgeBackgroundColor() {
+			if(isDayBadge && sunnyDayBadge && temperatureFbadge >= 50) {
+				chrome.browserAction.setBadgeBackgroundColor({color: '#fc923b'});
+				}
+			else if(isDayBadge && sunnyDayBadge && temperatureFbadge < 50) {
+				chrome.browserAction.setBadgeBackgroundColor({color: '#f8bd90'});
+				}			
+			else if(isDayBadge && cloudyBadge && currentWhiteIcon == 0) {
+				chrome.browserAction.setBadgeBackgroundColor({color: '#549dd0'});
+				}
+			else if(isNightBadge && cloudyBadge && currentWhiteIcon == 0) {
+				chrome.browserAction.setBadgeBackgroundColor({color: '#000000'});
+				}
+			else if(isDayBadge && rainyBadge && currentWhiteIcon == 0) {
+				chrome.browserAction.setBadgeBackgroundColor({color: '#549dd0'});
+				}
+			else if(isNightBadge && rainyBadge && currentWhiteIcon == 0) {
+				chrome.browserAction.setBadgeBackgroundColor({color: '#000000'});
+				}
+			else if(isDayBadge && snowyBadge && currentWhiteIcon == 0) {
+				chrome.browserAction.setBadgeBackgroundColor({color: '#549dd0'});
+				}
+			else if(isNightBadge && snowyBadge && currentWhiteIcon == 0) {
+				chrome.browserAction.setBadgeBackgroundColor({color: '#000000'});
+				}			
+			else if(currentWhiteIcon == 0) {
+				chrome.browserAction.setBadgeBackgroundColor({color: '#000000'});
+			}
+		}
+
+		function tempc() {
+			
+			chrome.storage.local.get(['whiteIcon','badgeSize'], function(data) {
+			  var currentWhiteIcon = data.whiteIcon;
+			  var currentBadgeSize = data.badgeSize;
+			  if(currentWhiteIcon == 0 || (typeof currentWhiteIcon == 'undefined') || currentWhiteIcon == 'undefined') {
+			  	var currentWhiteIcon = 0;
+			  } else{
+			  	var currentWhiteIcon = 1;
+			  }
+			  	if(currentBadgeSize == 1) {
+				  	setTimeout(function(){
+				  		largBadgeNumber(temperatureCbadge, currentWhiteIcon)
+					}, 550);
+				  }
+				  else{
+					chrome.browserAction.setBadgeText({"text":temperatureCbadge +"°C" });
+					badgeBackgroundColor();
+					setTimeout(function(){
+						badgeBackgroundImage(currentWhiteIcon);
+					}, 550);   
+				  }
+			});
+
+		};
+									 
+		function tempf() {
+			chrome.storage.local.get(['whiteIcon','badgeSize'], function(data) {
+			  var currentWhiteIcon = data.whiteIcon;
+			  var currentBadgeSize = data.badgeSize;
+			  if(currentWhiteIcon == 0 || (typeof currentWhiteIcon == 'undefined') || currentWhiteIcon == 'undefined') {
+			  	var currentWhiteIcon = 0;
+			  } else{
+			  	var currentWhiteIcon = 1;
+			  }
+			  	if(currentBadgeSize == 1) {
+				  	setTimeout(function(){
+				  		largBadgeNumber(temperatureFbadge, currentWhiteIcon)
+					}, 550);
+				  }
+				  else{
+				  	chrome.browserAction.setBadgeText({"text":temperatureFbadge +"°F" });
+				  	badgeBackgroundColor();
+					setTimeout(function(){
+						badgeBackgroundImage(currentWhiteIcon);
+					}, 550);   
+				  }
+			});
+		};
+
+
+		function uvi() {
+			chrome.storage.local.get(['whiteIcon','badgeSize'], function(data) {
+			  var currentWhiteIcon = data.whiteIcon;
+			  var currentBadgeSize = data.badgeSize;
+			  if(currentWhiteIcon == 0 || (typeof currentWhiteIcon == 'undefined') || currentWhiteIcon == 'undefined') {
+			  	var currentWhiteIcon = 0;
+			  } else{
+			  	var currentWhiteIcon = 1;
+			  }
+			  	if(currentBadgeSize == 1) {
+				  	setTimeout(function(){
+				  		largBadgeNumber(uv1, currentWhiteIcon)
+					}, 550);
+				  }
+				  else{
+				  	if(uv1>9) {
+			          chrome.browserAction.setBadgeText({"text": "UV"+ uv1});
+			        }
+			        else {
+			          chrome.browserAction.setBadgeText({"text": "UV "+ uv1});
+			        }
+			        badgeBackgroundColor();
+			        setTimeout(function(){
+						badgeBackgroundImage(currentWhiteIcon);
+					}, 550);
+				  }
+			});
+
+		}
+
+
+
+		function UTFC() {
+		
+			chrome.storage.local.get(['setSettingFC', 'setSettingUT', 'timeFormat'], function(data) {
+			setSettingFC = data.setSettingFC;
+			setSettingUT = data.setSettingUT;
+	   		
+
+			if(typeof setSettingFC === 'undefined') {
+				if (country == "US" || country == "us" || country == "United States of America") {
+						setSettingFC = "f";
+						chrome.storage.local.set({'setSettingFC': 'f'});
+						chrome.storage.local.set({'TimeFormat': '12h'});
+					} else {
+						setSettingFC = "c";
+						chrome.storage.local.set({'setSettingFC': 'c'});
+					if (country == "CA" || country == "ca" || country == "Canada") {
+						chrome.storage.local.set({'TimeFormat': '12h'});
+					}
+					else {
+						chrome.storage.local.set({'TimeFormat': '24h'});
+					}
+				}
+			}
+
+			if(typeof setSettingUT === 'undefined') {
+				setSettingUT = "t";
+				chrome.storage.local.set({'setSettingUT': 't'});
+				if (country == "US" || country == "us" || country == "United States of America") {
+					tempf ();
+					} else {
+						tempc ();
+					 }
+				}
+			else {
+				if(setSettingUT == "t") {
+					if (setSettingFC == "f") {
+						tempf ();}
+					else {
+						tempc ();}
+				}
+				else {
+					uvi ();
+				};
+			}
+			
+
+				chrome.storage.local.get('TimeFormat', function(data) {
+    				if(data.TimeFormat == "24h") {						
+						updateTimeRelativeBadge = dayjs.unix(updateTimeBadge).format('HH:mm');
+					}
+					else{
+						updateTimeRelativeBadge = dayjs.unix(updateTimeBadge).format('h:mm A');
+					}
+					
+
+					if(setSettingUT == "u" && setSettingFC == "f") {
+						toolTipBadge = temperatureFbadge + "° " + capital_letter(descriptionBadge) + " - " + cityBadge + "\n" + "Updated at " + updateTimeRelativeBadge;
+						chrome.browserAction.setTitle({title: toolTipBadge});
+						}
+					else if(setSettingUT == "u" && setSettingFC == "c") {
+						toolTipBadge = temperatureCbadge + "° " + capital_letter(descriptionBadge) + " - " + cityBadge  + "\n" + "Updated at " + updateTimeRelativeBadge;
+						chrome.browserAction.setTitle({title: toolTipBadge});
+						}
+					else if(setSettingUT == "t" && setSettingFC == "f") {
+						toolTipBadge = temperatureFbadge + "° " + capital_letter(descriptionBadge) + " - " + cityBadge  + "\n" + "Updated at " +updateTimeRelativeBadge;
+						chrome.browserAction.setTitle({title: toolTipBadge});
+						}
+					else if(setSettingUT == "t" && setSettingFC == "c") {
+						toolTipBadge = temperatureCbadge + "° " + capital_letter(descriptionBadge) + " - " + cityBadge + "\n"  + "Updated at " + updateTimeRelativeBadge;
+						chrome.browserAction.setTitle({title: toolTipBadge});
+						};						
+					return;
+
+				});
+
+			});
+
+		};
+		
+
+		if(navigator.onLine) {						
+			utfc = UTFC(function(value){	
+				});
+
+			chrome.storage.local.get('whiteIcon', function(data) {
+			  var currentWhiteIcon = data.whiteIcon;
+			  if((window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) && (typeof currentWhiteIcon == 'undefined') || currentWhiteIcon == 'undefined') {
+			  	var currentWhiteIcon = 0;
+			  }
+			  else if((window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) && (typeof currentWhiteIcon == 'undefined') || currentWhiteIcon == 'undefined') {
+			  	var currentWhiteIcon = 1;
+			  	chrome.storage.local.set({'whiteIcon': '1'});
+			  }
+			  else if((window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) && currentWhiteIcon == 0) {
+			  	var currentWhiteIcon = 0;
+			  } 
+			  else if((window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) && currentWhiteIcon == 1) {
+			  	var currentWhiteIcon = 1;
+			  	chrome.storage.local.set({'whiteIcon': '1'});
+			  }
+
+
+			});
+
+		}
+
+					setTimeout(function(){
+						clearInterval(animatedBadgeInterval);   
+					}, 500);
+//---result
+	});
+};
 
 
 //uvReader----------------------------------------------------------------------------------
 function uvReader(city,latandlong,country) {
+	
 	country = country;
 
 	cityName = (city.split('"'))[1].charAt(0).toUpperCase() + (city.split('"'))[1].slice(1);
@@ -95,37 +523,20 @@ function uvReader(city,latandlong,country) {
 	latlong = (latandlong.split('"'))[1];
 	lat = (latlong.split(','))[0];
 	lng = (latlong.split(','))[1];
-	
-
-	// fetch('https://weather.cit.api.here.com/weather/1.0/report.json?product=observation&latitude=-33.8686&longitude=151.2094&oneobservation=true&app_id=devportal-demo-20180625&app_code=9v2BkviRwi9Ot26kp2IysQ')
-	// .then((resp) => resp.json())
-	// .then(function(result) {				
-	// 	window.result = result;
-	// 	console.log(JSON.stringify(result));
-	// });
-
 
 	const ads = '2589e0786e11ce470e7d98e9153039f4';	
 	fetch('https://uv-weather.herokuapp.com/https://api.darksky.net/forecast/' + ads +'/' + latlong + '?solar')
-
-	// var weather_url = new URL('https://api.uvweather.net/uvweather');
-	// 	params = {lat: lat.toString(), lng: lng.toString()}
-	// Object.keys(params).forEach(key => weather_url.searchParams.append(key, params[key]))
-	//fetch(weather_url)
 	.then((resp) => resp.json())
 	.then(function(result) {				
 		window.result = result;
+
 		isDay = false;
 		isNight = false;
 		cloudy = false;
 		sunnyDay = false;
 		rainy = false;
 		snowy = false;
-			systemTime = new Date();
-			systemTimeUnix = Math.round((systemTime).getTime() / 1000);
-			DeviceTimeDifferenceFromGMT = systemTime.getTimezoneOffset() / 60;
-		offsetTime = DeviceTimeDifferenceFromGMT + result.offset;
-			offsetUnix = offsetTime * 3600;
+
 		cloudCover = Math.round(result.currently.cloudCover * 100);
 		icon = result.currently.icon;
 		updateTime = result.currently.time;
@@ -145,6 +556,8 @@ function uvReader(city,latandlong,country) {
 		windGustKMH = Math.round(windGustMPH * 1.609334);
 		windGustMS = Math.round(windGustMPH * 0.4470389 * 10) / 10;
 		weatherEmojiIcon = weatherEmoji(icon);
+
+		ghiSolarClearSki = result.hourly.data[0].hasOwnProperty('solar') ? result.hourly.data[0].solar.ghi : '-'; //GHI = DHI + DNI * cos (θ)
 
 			if(result.currently.windSpeed > 0) {
 				windBearing = Math.round(result.currently.windBearing); //true north at 0° and progressing clockwise
@@ -205,59 +618,15 @@ function uvReader(city,latandlong,country) {
 		forecast_0_tempF = Math.round(result.daily.data[0].temperatureMax);
 		forecast_1_tempF = Math.round(result.daily.data[1].temperatureMax);
 
-		if(updateTime > sunriseTime && updateTime < sunsetTime) {
-
-				isDay = true;					     	
-			}
-				else {
-				isNight = true;							     	
-			};
-
-		if(icon === "cloudy" || icon === "partly-cloudy-day" || icon === "partly-cloudy-night") {
-				cloudy = true;							
-			}
-				else if (icon=== "rain"){
-				rainy = true; 
-			}
-				else if (icon=== "snow" || icon=== "sleet"){
-				snowy = true; 
-			}			else {
-				sunnyDay = true;
-		};
-
-
-		animatedBadgeInterval = setInterval(function() {animatedBadge(isDay,sunnyDay,cloudy,rainy,snowy); }, 1000 / 30);
-
-
-		function accufeelCalc() {
-
-			if(result.hourly.data[0].hasOwnProperty('solar')) {
-				ghiSolarClearSki = result.hourly.data[0].solar.ghi; //GHI = DHI + DNI * cos (θ)
-
-				if (ghiSolarClearSki >=250) { 
-					cloudAdj_hourly = uv_adj_daily(icon);
-					ghiSolarCloud = ghiSolarClearSki * cloudAdj_hourly;
-					TglobeC = 0.01498*ghiSolarCloud + 1.184*temperatureC - 0.0789*humidity - 2.739;	//day
-				}
-				 else {	//Low GHI
-					TglobeC = temperatureC;
-				}
-			}
-			else {
-				TglobeC = temperatureC;	//night
-			};
-											
-			Tmrta =	Math.pow(TglobeC + 273.15, 4) + (2.5 * 100000000 * Math.pow(windSpeedMS, 0.60) * (TglobeC - temperatureC));
-			TmrtC =	Math.pow(Tmrta, 1/4) - 273.15;
-							
-			accufeelResultC = Math.round(accufeel(temperatureC, TmrtC, windSpeedMS, humidity));
-
-			accufeelResultF = c2f(accufeelResultC);
-		}
-		accufeelCalc();
 
 		//Solar Times --------------------------------------------------------------------------------------------------------------
+			systemTime = new Date();
+			systemTimeUnix = Math.round((systemTime).getTime() / 1000);
+			DeviceTimeDifferenceFromGMT = systemTime.getTimezoneOffset() / 60;
+		offsetTime = DeviceTimeDifferenceFromGMT + result.offset;
+			offsetUnix = offsetTime * 3600;
 		localTimeUnix = Math.round(systemTimeUnix + offsetUnix);
+		
 		timesSolar = SunCalc.getTimes(localTimeUnix, lat, lng);
 			sunriseTimeSolar = timesSolar.sunrise;
 			sunsetTimeSolar = timesSolar.sunset;
@@ -271,13 +640,32 @@ function uvReader(city,latandlong,country) {
 			if(totalHours<10) {totalHours = "0"+totalHours};
 			if(totalMinutes<10) {totalMinutes = "0"+totalMinutes};
 			dayLength =  totalHours + ":" + totalMinutes + " HH:MM";
-
-			dusk = timesSolar.dusk;
+			
 			dawn = timesSolar.dawn;
+			dusk = timesSolar.dusk;
 			nightStarts = timesSolar.night;
 			nightEnds = timesSolar.nightEnd;
 
 
+			localTimeUnixDD = dayjs.unix(systemTimeUnix + offsetUnix).format('DD');
+			dawnDD = dayjs.unix(dawn + offsetUnix).format('DD');
+
+			localTimeUnix = dayjs.unix(systemTimeUnix + offsetUnix);
+			if(localTimeUnixDD !== dawnDD) {
+				dawnDayjs = dayjs.unix(dawn + offsetUnix - 86400);
+				duskDayjs = dayjs.unix(dusk + offsetUnix - 86400);
+			}
+			else{
+				dawnDayjs = dayjs.unix(dawn + offsetUnix);
+				duskDayjs = dayjs.unix(dusk + offsetUnix);
+			}
+
+			if(localTimeUnix >= dawnDayjs && localTimeUnix <= duskDayjs) {
+			   	isDay = true;	
+			} 
+			else {
+			    isNight = true;	
+			}
 
 		iconTitleWeather(icon);
 
@@ -319,315 +707,8 @@ function uvReader(city,latandlong,country) {
 			current_uv_note = (" (Extreme)");
 			};
 		  	
-
-		currentWhiteIcon = 0;
-
-		function badgeBackgroundImage(currentWhiteIcon) {
-			
-			if(isDay && sunnyDay && temperatureF >= 50 && currentWhiteIcon == 0) {
-				chrome.browserAction.setBadgeBackgroundColor({color: '#fc923b'});
-				chrome.browserAction.setIcon({path : { "128": "images/badge/sun-128.png"}})
-				}
-			else if(isDay && sunnyDay && temperatureF < 50 && currentWhiteIcon == 0) {
-				chrome.browserAction.setBadgeBackgroundColor({color: '#f8bd90'});
-				chrome.browserAction.setIcon({path : { "128": "images/badge/sun-cold-128.png"}})
-				}			
-			else if(isDay && cloudy && currentWhiteIcon == 0) {
-				chrome.browserAction.setBadgeBackgroundColor({color: '#549dd0'});
-				chrome.browserAction.setIcon({path : { "128": "images/badge/cloud-day-128.png"}});
-				}
-			else if(isNight && cloudy && currentWhiteIcon == 0) {
-				chrome.browserAction.setBadgeBackgroundColor({color: '#000000'});
-				chrome.browserAction.setIcon({path : { "128": "images/badge/cloud-night-128.png"}});							     		
-				}
-			else if(isDay && rainy && currentWhiteIcon == 0) {
-				chrome.browserAction.setBadgeBackgroundColor({color: '#549dd0'});
-				chrome.browserAction.setIcon({path : { "128": "images/badge/rain-day-128.png"}});
-				}
-			else if(isNight && rainy && currentWhiteIcon == 0) {
-				chrome.browserAction.setBadgeBackgroundColor({color: '#000000'});
-				chrome.browserAction.setIcon({path : { "128": "images/badge/rain-night-128.png"}});
-				}
-			else if(isDay && snowy && currentWhiteIcon == 0) {
-				chrome.browserAction.setBadgeBackgroundColor({color: '#549dd0'});
-				chrome.browserAction.setIcon({path : { "128": "images/badge/snow-day-128.png"}});
-				}
-			else if(isNight && snowy && currentWhiteIcon == 0) {
-				chrome.browserAction.setBadgeBackgroundColor({color: '#000000'});
-				chrome.browserAction.setIcon({path : { "128": "images/badge/snow-night-128.png"}});
-				}			
-			else if(currentWhiteIcon == 0) {
-				chrome.browserAction.setBadgeBackgroundColor({color: '#000000'});
-				chrome.browserAction.setIcon({path : { "128": "images/badge/moon-128.png"}});
-			}
-
-
-			else if(isDay && sunnyDay && temperatureF >= 50 && currentWhiteIcon == 1) {
-				chrome.browserAction.setBadgeBackgroundColor({color: '#fc923b'});
-				chrome.browserAction.setIcon({path : { "128": "images/badge/sun-dark-128.png"}})
-				}
-			else if(isDay && sunnyDay && temperatureF < 50 && currentWhiteIcon == 1) {
-				chrome.browserAction.setBadgeBackgroundColor({color: '#f8bd90'});
-				chrome.browserAction.setIcon({path : { "128": "images/badge/sun-dark-128.png"}})
-				}			
-			else if(isDay && cloudy && currentWhiteIcon == 1) {
-				chrome.browserAction.setBadgeBackgroundColor({color: '#549dd0'});
-				chrome.browserAction.setIcon({path : { "128": "images/badge/cloud-dark-128.png"}});
-				}
-			else if(isNight && cloudy && currentWhiteIcon == 1) {
-				chrome.browserAction.setBadgeBackgroundColor({color: '#000000'});
-				chrome.browserAction.setIcon({path : { "128": "images/badge/cloud-dark-128.png"}});							     		
-				}
-			else if(isDay && rainy && currentWhiteIcon == 1) {
-				chrome.browserAction.setBadgeBackgroundColor({color: '#549dd0'});
-				chrome.browserAction.setIcon({path : { "128": "images/badge/rain-dark-128.png"}});
-				}
-			else if(isNight && rainy && currentWhiteIcon == 1) {
-				chrome.browserAction.setBadgeBackgroundColor({color: '#000000'});
-				chrome.browserAction.setIcon({path : { "128": "images/badge/rain-dark-128.png"}});
-				}
-			else if(isDay && snowy && currentWhiteIcon == 1) {
-				chrome.browserAction.setBadgeBackgroundColor({color: '#549dd0'});
-				chrome.browserAction.setIcon({path : { "128": "images/badge/snow-dark-128.png"}});
-				}
-			else if(isNight && snowy && currentWhiteIcon == 1) {
-				chrome.browserAction.setBadgeBackgroundColor({color: '#000000'});
-				chrome.browserAction.setIcon({path : { "128": "images/badge/snow-dark-128.png"}});
-				}			
-			else if(currentWhiteIcon == 1) {
-				chrome.browserAction.setBadgeBackgroundColor({color: '#000000'});
-				chrome.browserAction.setIcon({path : { "128": "images/badge/moon-dark-128.png"}});
-			}
-		}
-
-
-
-		function tempc() {
-			
-			chrome.storage.local.get(['whiteIcon','badgeSize'], function(data) {
-			  var currentWhiteIcon = data.whiteIcon;
-			  var currentBadgeSize = data.badgeSize;
-			  if(currentWhiteIcon == 0 || (typeof currentWhiteIcon == 'undefined') || currentWhiteIcon == 'undefined') {
-			  	var currentWhiteIcon = 0;
-			  } else{
-			  	var currentWhiteIcon = 1;
-			  }
-			  	if(currentBadgeSize == 1) {
-				  	setTimeout(function(){
-				  		largBadgeNumber(temperatureC, currentWhiteIcon)
-					}, 550);
-				  }
-				  else{
-					chrome.browserAction.setBadgeText({"text":temperatureC +"°C" });
-					setTimeout(function(){
-						badgeBackgroundImage(currentWhiteIcon);
-					}, 550);   
-				  }
-			});
-
-		}
-									 
-		function tempf() {
-			chrome.storage.local.get(['whiteIcon','badgeSize'], function(data) {
-			  var currentWhiteIcon = data.whiteIcon;
-			  var currentBadgeSize = data.badgeSize;
-			  if(currentWhiteIcon == 0 || (typeof currentWhiteIcon == 'undefined') || currentWhiteIcon == 'undefined') {
-			  	var currentWhiteIcon = 0;
-			  } else{
-			  	var currentWhiteIcon = 1;
-			  }
-			  	if(currentBadgeSize == 1) {
-				  	setTimeout(function(){
-				  		largBadgeNumber(temperatureF, currentWhiteIcon)
-					}, 550);
-				  }
-				  else{
-				  	chrome.browserAction.setBadgeText({"text":temperatureF +"°F" });
-					setTimeout(function(){
-						badgeBackgroundImage(currentWhiteIcon);
-					}, 550);   
-				  }
-			});
-		}
-
-		function uvi() {
-			chrome.storage.local.get(['whiteIcon','badgeSize'], function(data) {
-			  var currentWhiteIcon = data.whiteIcon;
-			  var currentBadgeSize = data.badgeSize;
-			  if(currentWhiteIcon == 0 || (typeof currentWhiteIcon == 'undefined') || currentWhiteIcon == 'undefined') {
-			  	var currentWhiteIcon = 0;
-			  } else{
-			  	var currentWhiteIcon = 1;
-			  }
-			  	if(currentBadgeSize == 1) {
-				  	setTimeout(function(){
-				  		largBadgeNumber(uv1, currentWhiteIcon)
-					}, 550);
-				  }
-				  else{
-				  	if(uv1>9) {
-			          chrome.browserAction.setBadgeText({"text": "UV"+ uv1});
-			        }
-			        else {
-			          chrome.browserAction.setBadgeText({"text": "UV "+ uv1});
-			        }
-			        setTimeout(function(){
-						badgeBackgroundImage(currentWhiteIcon);
-					}, 550);
-				  }
-			});
-
-		}
-
-
-		function UTFC() {
-		
-			chrome.storage.local.get(['setSettingFC', 'setSettingUT', 'timeFormat'], function(data) {
-			setSettingFC = data.setSettingFC;
-			setSettingUT = data.setSettingUT;
-	   		
-
-			if(typeof setSettingFC === 'undefined') {
-				if (country == "US" || country == "us" || country == "United States of America") {
-						setSettingFC = "f";
-						chrome.storage.local.set({'setSettingFC': 'f'});
-						chrome.storage.local.set({'TimeFormat': '12h'});
-					} else {
-						setSettingFC = "c";
-						chrome.storage.local.set({'setSettingFC': 'c'});
-					if (country == "CA" || country == "ca" || country == "Canada") {
-						chrome.storage.local.set({'TimeFormat': '12h'});
-					}
-					else {
-						chrome.storage.local.set({'TimeFormat': '24h'});
-					}
-				}
-			}
-
-			if(typeof setSettingUT === 'undefined') {
-				setSettingUT = "t";
-				chrome.storage.local.set({'setSettingUT': 't'});
-				if (country == "US" || country == "us" || country == "United States of America") {
-					tempf ();
-					} else {
-						tempc ();
-					 }
-				}
-			else {
-				if(setSettingUT == "t") {
-					if (setSettingFC == "f") {
-						tempf ();}
-					else {
-					tempc ();}
-				}
-				else {
-					uvi ();
-				};
-			}
-				
-				chrome.storage.local.get('TimeFormat', function(data) {
-    				if(data.TimeFormat == "24h") {						
-						updateTimeRelativeBadge = dayjs.unix(updateTime + offsetUnix).format('HH:mm');
-					}
-					else{
-						updateTimeRelativeBadge = dayjs.unix(updateTime + offsetUnix).format('h:mm A');
-					}
-					
-					// if(setSettingUT == "u" && setSettingFC == "f") {
-					// 	toolTipBadge = temperatureF + "° " + summary + "\n" + accufeelResultF + "° " + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
-					// 	chrome.browserAction.setTitle({title: toolTipBadge});
-					// 	}
-					// else if(setSettingUT == "u" && setSettingFC == "c") {
-					// 	toolTipBadge = temperatureC + "° " + summary + "\n" + accufeelResultC + "° " + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
-					// 	chrome.browserAction.setTitle({title: toolTipBadge});
-					// 	}
-					// else if(setSettingUT == "t" && setSettingFC == "f") {
-					// 	toolTipBadge = temperatureF + "° " + summary + "\n" + accufeelResultF + "° " + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
-					// 	chrome.browserAction.setTitle({title: toolTipBadge});
-					// 	}
-					// else if(setSettingUT == "t" && setSettingFC == "c") {
-					// 	toolTipBadge = temperatureC + "° " + summary + "\n" + accufeelResultC + "° " + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
-					// 	chrome.browserAction.setTitle({title: toolTipBadge});
-					// 	};
-
-
-					cityBadge = city.split('"')[1];
-					regionBadge = country;
-					temperatureFbadge = temperatureF;
-					temperatureCbadge = temperatureC;
-					current_tempF_max_badge = current_tempF_max;
-					current_tempF_min_badge = current_tempF_min;
-
-					current_tempC_max_badge = current_tempC_max;
-					current_tempC_min_badge = current_tempC_min;
-
-					if(setSettingUT == "u" && setSettingFC == "f") {
-						toolTipBadge = temperatureFbadge + "° " + summary + " - " + cityBadge + ", " + regionBadge + "\n" + current_tempF_max_badge + "° max / " + current_tempF_min_badge + "°" + "\n" + "Updated at " + updateTimeRelativeBadge;
-						chrome.browserAction.setTitle({title: toolTipBadge});
-						}
-					else if(setSettingUT == "u" && setSettingFC == "c") {
-						toolTipBadge = temperatureCbadge + "° " + summary + " - " + cityBadge + ", " + regionBadge + "\n" + current_tempC_max_badge + "° max / " + current_tempC_min_badge + "° min" + "\n" + "Updated at " + updateTimeRelativeBadge;
-						chrome.browserAction.setTitle({title: toolTipBadge});
-						}
-					else if(setSettingUT == "t" && setSettingFC == "f") {
-						toolTipBadge = temperatureFbadge + "° " + summary + " - " + cityBadge + ", " + regionBadge + "\n" + current_tempF_max_badge + "° max / " + current_tempF_min_badge + "° min" + "\n" + "Updated at " + updateTimeRelativeBadge;
-						chrome.browserAction.setTitle({title: toolTipBadge});
-						}
-					else if(setSettingUT == "t" && setSettingFC == "c") {
-						toolTipBadge = temperatureCbadge + "° " + summary + " - " + cityBadge + ", " + regionBadge + "\n" + current_tempC_max_badge + "° max / " + current_tempC_min_badge + "° min" + "\n" + "Updated at " + updateTimeRelativeBadge;
-						chrome.browserAction.setTitle({title: toolTipBadge});
-						};						
-					return;
-
-				});
-
-			});
-
-		}
-		
-
-
-
-		if(navigator.onLine) {						
-			utfc = UTFC(function(value){	
-				});
-
-			setTimeout(function(){
-				clearInterval(animatedBadgeInterval);   
-				}, 500);
-
-
-
-			chrome.storage.local.get('whiteIcon', function(data) {
-			  var currentWhiteIcon = data.whiteIcon;
-			  if((window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) && (typeof currentWhiteIcon == 'undefined') || currentWhiteIcon == 'undefined') {
-			  	var currentWhiteIcon = 0;
-			  }
-			  else if((window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) && (typeof currentWhiteIcon == 'undefined') || currentWhiteIcon == 'undefined') {
-			  	var currentWhiteIcon = 1;
-			  	chrome.storage.local.set({'whiteIcon': '1'});
-			  }
-			  else if((window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) && currentWhiteIcon == 0) {
-			  	var currentWhiteIcon = 0;
-			  } 
-			  else if((window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) && currentWhiteIcon == 1) {
-			  	var currentWhiteIcon = 1;
-			  	chrome.storage.local.set({'whiteIcon': '1'});
-			  }
-
-
-			});
-
-
-
-
-
-		}
-
-
 	})
-
-}; 
+};
 
 
 /* Check whether new version is installed */

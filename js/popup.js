@@ -1,6 +1,4 @@
 var b = chrome.extension.getBackgroundPage();
-chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
-
 document.addEventListener("DOMContentLoaded", function(event) {
 
 const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
@@ -12,7 +10,6 @@ weathermapStyleDark = 'mapbox://styles/comfable/ck53akus306vq1cn1vqcqmlbt';
 
 mapStyle = mapStyleLight;
 weathermapStyle = weathermapStyleLight;
-
 
 chrome.storage.local.get('closeAds', function(data) {
     if(data.closeAds == 1) {
@@ -36,7 +33,7 @@ chrome.storage.local.get(['theme', 'autoDark'], function(data) {
           if(autoDarkTheme == '1' && b.isNight) {
               darkDisplay();
           }
-          else if(autoDarkTheme == '1' && b.isDay) {
+          else if(autoDarkTheme == '1' && b.isDayBadge) {
               lightDisplay();    
           }
           else if(currentTheme === 'dark') {
@@ -181,14 +178,14 @@ chrome.storage.local.get(['theme', 'autoDark'], function(data) {
         chrome.storage.local.set({'whiteIcon': '1'});
         document.getElementById("checkbox_whiteIcon").checked = true;
         document.getElementById("checkbox_whiteIcon").disabled = true;
-        chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
+        chrome.runtime.sendMessage({ msg: "badgeUpdate" });
         delayButtonWhiteIcon();
       }
       else {
         chrome.storage.local.set({'whiteIcon': '0'});
         document.getElementById("checkbox_whiteIcon").checked = false;
         document.getElementById("checkbox_whiteIcon").disabled = true;
-        chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
+        chrome.runtime.sendMessage({ msg: "badgeUpdate" });
         delayButtonWhiteIcon();
       }    
     }
@@ -249,11 +246,35 @@ if(navigator.onLine) {
   country = b.country;
 
 
+  function accufeelCalc() {
+    if(b.ghiSolarClearSki !== '-') {
+      if (b.ghiSolarClearSki >=250) { 
+        cloudAdj_hourly = uv_adj_daily(b.icon);
+        ghiSolarCloud = b.ghiSolarClearSki * cloudAdj_hourly;
+        TglobeC = 0.01498*ghiSolarCloud + 1.184*b.temperatureCbadge - 0.0789*b.humidity - 2.739; //day
+      }
+       else { //Low GHI
+        TglobeC = b.temperatureCbadge;
+      }
+    }
+    else {
+      TglobeC = b.temperatureCbadge; //night
+    };
+                    
+    Tmrta = Math.pow(TglobeC + 273.15, 4) + (2.5 * 100000000 * Math.pow(b.windSpeedMS, 0.60) * (TglobeC - b.temperatureCbadge));
+    TmrtC = Math.pow(Tmrta, 1/4) - 273.15;
+    accufeelResultC = Math.round(accufeel(b.temperatureCbadge, TmrtC, b.windSpeedMS, b.humidity));
+    accufeelResultF = c2f(accufeelResultC);
+  }
+  accufeelCalc();
+
+
+
   function groundFlickr() {
 
-    switch(b.icon) {
+    switch(b.iconBadge) {
       case 'clear-day':
-            if (b.isDay) {
+            if (b.isDayBadge) {
           galleryID = '72157711948824252';
         }
             else {
@@ -264,7 +285,7 @@ if(navigator.onLine) {
           galleryID = '72157711948534226';
         break;
       case 'rain':
-              if (b.isDay) {
+              if (b.isDayBadge) {
           galleryID = '72157711948916072';
                 }
               else {
@@ -272,7 +293,7 @@ if(navigator.onLine) {
                 }
         break;
       case 'snow':
-              if (b.isDay) {
+              if (b.isDayBadge) {
           galleryID = '72157711948582321';
                 }
               else {
@@ -280,7 +301,7 @@ if(navigator.onLine) {
                 }
         break;
       case 'sleet':
-              if (b.isDay) {
+              if (b.isDayBadge) {
           galleryID = '72157711948578771';
                 }
               else {
@@ -288,7 +309,7 @@ if(navigator.onLine) {
                 }
         break;
       case 'wind':
-              if (b.isDay) {
+              if (b.isDayBadge) {
           galleryID = '72157711950448603';
                 }
               else {
@@ -296,7 +317,7 @@ if(navigator.onLine) {
                 }     
         break;
       case 'fog':
-              if (b.isDay) {
+              if (b.isDayBadge) {
           galleryID = '72157711948567181';
                 }
               else {
@@ -304,7 +325,7 @@ if(navigator.onLine) {
                 }
         break;
       case 'cloudy':
-              if (b.isDay) {
+              if (b.isDayBadge) {
           galleryID = '72157711950426443';
                 }
               else {
@@ -312,7 +333,7 @@ if(navigator.onLine) {
                 }
         break;
       case 'partly-cloudy-day':
-            if (b.isDay) {
+            if (b.isDayBadge) {
           galleryID = '72157711950434293';
         }
         else {
@@ -411,6 +432,7 @@ if(navigator.onLine) {
 
 
   function UTFC (){
+
     chrome.storage.local.get(['setSettingFC', 'setSettingUT'], function(data) {
     setSettingFC = data.setSettingFC;
     setSettingUT = data.setSettingUT;
@@ -432,27 +454,23 @@ if(navigator.onLine) {
 
     if(setSettingUT == "u") {
         document.getElementById("setting_defualt_button_u").checked = true;
-        //document.getElementById("setting_defualt_button_u_all").disabled = true;
       }
     else {
         document.getElementById("setting_defualt_button_t").checked = true;
-        //document.getElementById("setting_defualt_button_t_all").disabled = true;
       }
 
     if(setSettingFC == "f") {
         document.getElementById("setting_defualt_button_f").checked = true;      
-        //document.getElementById("setting_defualt_button_f_all").disabled = true;
       }
     else {
         document.getElementById("setting_defualt_button_c").checked = true;     
-        //document.getElementById("setting_defualt_button_c_all").disabled = true;
       }
 
     if(setSettingFC == 'f'){
         ftemp();
       }
     else {
-        ctemp(); 
+        ctemp();
       }
 
     return;
@@ -469,6 +487,7 @@ if(navigator.onLine) {
 
 
   function uvRecommendation() {
+
     resUV0 = document.querySelectorAll('#icon_uv_1, #icon_uv_2, #icon_uv_3, #icon_uv_4, #icon_uv_5, #icon_uv_6, #icon_uv_1_tooltip, #icon_uv_2_tooltip, #icon_uv_3_tooltip, #icon_uv_4_tooltip, #icon_uv_5_tooltip, #icon_uv_6_tooltip')
     for (var i = 0; i < resUV0.length; i++){
       resUV0[i].style.opacity = ".3";
@@ -510,9 +529,9 @@ if(navigator.onLine) {
   uvRecommendation();
 
   function iconCurrent_animated() {
-  switch(b.icon) {
+  switch(b.iconBadge) {
     case 'clear-day':
-      if(b.isDay) {
+      if(b.isDayBadge) {
       document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_clear-day.svg")';
         }
         else {
@@ -541,7 +560,7 @@ if(navigator.onLine) {
       document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_cloudy.svg")';
       break;
     case 'partly-cloudy-day':
-      if(b.isDay) {
+      if(b.isDayBadge) {
       document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/a_partly-cloudy-day.svg")';
         }
         else {
@@ -559,7 +578,7 @@ if(navigator.onLine) {
 
 
   function iconCurrent() {
-  switch(b.icon) {
+  switch(b.iconBadge) {
     case 'clear-day':
       document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/wi_sun.svg")';
       break;
@@ -598,9 +617,9 @@ if(navigator.onLine) {
 
 
   function groundCurrent() {
-  switch(b.icon) {
+  switch(b.iconBadge) {
     case 'clear-day':
-            if (b.isDay) {
+            if (b.isDayBadge) {
       document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/clear-day.jpg")';
               }
             else {
@@ -611,7 +630,7 @@ if(navigator.onLine) {
       document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/clear-night.jpg")';      
       break;
     case 'rain':
-            if(b.isDay) {
+            if(b.isDayBadge) {
             document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/rain-day.jpg")';
               }
             else {
@@ -619,7 +638,7 @@ if(navigator.onLine) {
               }     
       break;
     case 'snow':
-            if(b.isDay) {
+            if(b.isDayBadge) {
             document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/snow-day.jpg")';
               }
             else {
@@ -627,7 +646,7 @@ if(navigator.onLine) {
               }
       break;
     case 'sleet':
-            if(b.isDay) {
+            if(b.isDayBadge) {
             document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/sleet-day.jpg")';
               }
             else {
@@ -635,7 +654,7 @@ if(navigator.onLine) {
               }
       break;
     case 'wind':
-            if(b.isDay) {
+            if(b.isDayBadge) {
             document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/wind-day.jpg")';
               }
             else {
@@ -643,7 +662,7 @@ if(navigator.onLine) {
               }     
       break;
     case 'fog':
-            if(b.isDay) {
+            if(b.isDayBadge) {
             document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/fog-day.jpg")';
               }
             else {
@@ -651,7 +670,7 @@ if(navigator.onLine) {
               }
       break;
     case 'cloudy':
-            if(b.isDay) {
+            if(b.isDayBadge) {
             document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/cloudy-day.jpg")';
               }
             else {
@@ -659,7 +678,7 @@ if(navigator.onLine) {
               }
       break;
     case 'partly-cloudy-day':
-            if(b.isDay) {
+            if(b.isDayBadge) {
       document.querySelector('.image_background_Class').style.backgroundImage = 'url("images/background/partly-cloudy-day.jpg")';
               }
             else {
@@ -679,26 +698,39 @@ if(navigator.onLine) {
 
 
   function ctemp(){
+      if(b.temperatureCbadge > b.current_tempC_max) {
+          b.current_tempC_max =  b.temperatureCbadge
+        } 
+      if(b.temperatureCbadge < b.current_tempC_min) {
+          b.current_tempC_min = b.temperatureCbadge
+        }
       document.querySelector("#current_report_dewPoint").textContent = b.dewPointC + "° C";
-      document.querySelector("#current_temp").textContent = b.temperatureC;
-      document.querySelector("#current_report_temp").textContent = b.temperatureC + "° C";
-      document.querySelector("#current_accufeel").textContent = "AccuFeel " + b.accufeelResultC + "°";
-      document.querySelector("#current_report_accufeel").textContent = b.accufeelResultC + "° C";
+      document.querySelector("#current_temp").textContent = b.temperatureCbadge;
+      document.querySelector("#current_report_temp").textContent = b.temperatureCbadge + "° C";
+      document.querySelector("#current_accufeel").textContent = "AccuFeel " + accufeelResultC + "°";
+      document.querySelector("#current_report_accufeel").textContent = accufeelResultC + "° C";
       document.querySelector("#current_temp_max").textContent = b.current_tempC_max + "°";
+
       document.querySelector("#current_temp_min").textContent = b.current_tempC_min + "°";
       document.querySelector("#forecast_tomorrow").textContent = b.update_tomorrow_c;
 
       for (i=1;i<3;i++){
-        document.querySelector(`#forecast_${i}_temp`).textContent = f2c(Math.round(b.result.daily.data[i].temperatureMax)) + "°";
+        if(b.result) {
+          document.querySelector(`#forecast_${i}_temp`).textContent = f2c(Math.round(b.result.daily.data[i].temperatureMax)) + "°";
+        }
       }
 
       for(i=1;i<8;i++){
-        document.querySelector(`#forecast_${i*10}_temp`).textContent = f2c(Math.round(b.result.daily.data[i].temperatureMax)) + "°";
-        document.querySelector(`#forecast_${i*10}_temp_min`).textContent = f2c(Math.round(b.result.daily.data[i].temperatureMin)) + "°";
+        if(b.result) {
+          document.querySelector(`#forecast_${i*10}_temp`).textContent = f2c(Math.round(b.result.daily.data[i].temperatureMax)) + "°";
+          document.querySelector(`#forecast_${i*10}_temp_min`).textContent = f2c(Math.round(b.result.daily.data[i].temperatureMin)) + "°";
+        }
       }
 
       for (i=1;i<49;i++){
-        document.querySelector(`#forecast_${i}_hours_temp`).textContent = Math.round(((b.result.hourly.data[i].temperature)-32) * 5/9) + "°";
+        if(b.result) {
+          document.querySelector(`#forecast_${i}_hours_temp`).textContent = Math.round(((b.result.hourly.data[i].temperature)-32) * 5/9) + "°";
+        }
       }
 
       document.querySelector("#summery_next7_text").textContent = b.summaryDailyC;
@@ -723,11 +755,11 @@ if(navigator.onLine) {
           var currentBadgeSize = data.badgeSize;
             if(currentBadgeSize == 1) {
               setTimeout(function(){
-                largBadgeNumber(b.temperatureC, currentWhiteIcon)
+                largBadgeNumber(b.temperatureCbadge, currentWhiteIcon)
               }, 550);
             }
             else{
-              chrome.browserAction.setBadgeText({"text":b.temperatureC +"°C" });
+              chrome.browserAction.setBadgeText({"text":b.temperatureCbadge +"°C" });
             }
          });
       }      
@@ -735,26 +767,38 @@ if(navigator.onLine) {
 
 
   function ftemp(){
+    if(b.temperatureFbadge > b.current_tempF_max) {
+        b.current_tempF_max =  b.temperatureFbadge
+      } 
+    if(b.temperatureFbadge < b.current_tempF_min) {
+        b.current_tempF_min = b.temperatureFbadge
+      }
     document.querySelector("#current_report_dewPoint").textContent = b.dewPointF + "° F";
-    document.querySelector("#current_temp").textContent = b.temperatureF;
-    document.querySelector("#current_report_temp").textContent = b.temperatureF + "° F";
-    document.querySelector("#current_accufeel").textContent = "AccuFeel " + b.accufeelResultF + "°";
-    document.querySelector("#current_report_accufeel").textContent = b.accufeelResultF + "° F";    
+    document.querySelector("#current_temp").textContent = b.temperatureFbadge;
+    document.querySelector("#current_report_temp").textContent = b.temperatureFbadge + "° F";
+    document.querySelector("#current_accufeel").textContent = "AccuFeel " + accufeelResultF + "°";
+    document.querySelector("#current_report_accufeel").textContent = accufeelResultF + "° F";    
     document.querySelector("#current_temp_max").textContent = b.current_tempF_max + "°";
     document.querySelector("#current_temp_min").textContent = b.current_tempF_min + "°";
     document.querySelector("#forecast_tomorrow").textContent = b.update_tomorrow_f;
 
     for(i=1;i<3;i++) {
+      if(b.result) {
         document.querySelector(`#forecast_${i}_temp`).textContent = Math.round(b.result.daily.data[i].temperatureMax) + "°";
+      }
     }
 
-    for(i=1;i<8;i++){
-      document.querySelector(`#forecast_${i*10}_temp`).textContent = Math.round(b.result.daily.data[i].temperatureMax) + "°";
-      document.querySelector(`#forecast_${i*10}_temp_min`).textContent = Math.round(b.result.daily.data[i].temperatureMin) + "°";
+    for(i=1;i<8;i++) {
+      if(b.result) {
+        document.querySelector(`#forecast_${i*10}_temp`).textContent = Math.round(b.result.daily.data[i].temperatureMax) + "°";
+        document.querySelector(`#forecast_${i*10}_temp_min`).textContent = Math.round(b.result.daily.data[i].temperatureMin) + "°";
+      }    
     }
 
-    for (i=1;i<49;i++){
-      document.querySelector(`#forecast_${i}_hours_temp`).textContent = Math.round(b.result.hourly.data[i].temperature) + "°";
+    for(i=1;i<49;i++) {
+      if(b.result) {
+        document.querySelector(`#forecast_${i}_hours_temp`).textContent = Math.round(b.result.hourly.data[i].temperature) + "°";
+      }
     }
     document.querySelector("#summery_next7_text").textContent = b.summaryDailyF;
     document.querySelector("#summery_next48_text").textContent = b.summaryHourlyF;
@@ -778,11 +822,11 @@ if(navigator.onLine) {
         var currentBadgeSize = data.badgeSize;
           if(currentBadgeSize == 1) {
             setTimeout(function(){
-              largBadgeNumber(b.temperatureF, currentWhiteIcon)
+              largBadgeNumber(b.temperatureFbadge, currentWhiteIcon)
             }, 550);
           }
           else{
-            chrome.browserAction.setBadgeText({"text":b.temperatureF +"°F" });
+            chrome.browserAction.setBadgeText({"text":b.temperatureFbadge +"°F" });
           }
        });
     }    
@@ -790,7 +834,7 @@ if(navigator.onLine) {
 
   
   function solarFunction12H(){
-    document.querySelector("#solar_now_date").textContent = dayjs.unix(b.updateTime + b.offsetUnix).format('MMMM DD, h:mm A');
+    document.querySelector("#solar_now_date").textContent = dayjs.unix(b.updateTime + b.offsetUnix).format('MMMM DD, h:mm A') + ' (LT)';
     document.querySelector("#solar_1_time").textContent = dayjs.unix(b.sunriseTimeSolar + b.offsetUnix).format('h:mm A');
     document.querySelector("#solar_2_time").textContent = dayjs.unix(b.sunsetTimeSolar + b.offsetUnix).format('h:mm A');
     document.querySelector("#solar_3_time").textContent = dayjs.unix(b.solarNoon + b.offsetUnix).format('h:mm A');
@@ -804,7 +848,7 @@ if(navigator.onLine) {
 
   function solarFunction24H(){
 
-    document.querySelector("#solar_now_date").textContent = dayjs.unix(b.updateTime + b.offsetUnix).format('MMMM DD, HH:mm');
+    document.querySelector("#solar_now_date").textContent = dayjs.unix(b.updateTime + b.offsetUnix).format('MMMM DD, HH:mm') + ' (LT)';
     document.querySelector("#solar_1_time").textContent = dayjs.unix(b.sunriseTimeSolar + b.offsetUnix).format('HH:mm');
     document.querySelector("#solar_2_time").textContent = dayjs.unix(b.sunsetTimeSolar + b.offsetUnix).format('HH:mm');
     document.querySelector("#solar_3_time").textContent = dayjs.unix(b.solarNoon + b.offsetUnix).format('HH:mm');
@@ -817,8 +861,8 @@ if(navigator.onLine) {
 
   }
 
-  chrome.storage.local.get('TimeFormat', function(data) {
-    if(data.TimeFormat == "24h") {
+  chrome.storage.local.get('TimeFormat', function(dataTime) {
+    if(dataTime.TimeFormat == "24h") {
       solarFunction24H();
       document.getElementById("setting_defualt_button_24h").checked = true;
       document.getElementById("setting_defualt_button_12h").checked = false;
@@ -855,14 +899,14 @@ if(navigator.onLine) {
     }
   })
 
-  
+
   function next7Function(){
-    chrome.storage.local.get('TimeFormat', function(data) {
-      if(data.TimeFormat == "24h") {
-        document.querySelector("#next7_update_date").textContent = 'Updated at ' + dayjs.unix(b.updateTime + b.offsetUnix).format('MMM DD, HH:mm');
+    chrome.storage.local.get('TimeFormat', function(dataTime) {
+      if(dataTime.TimeFormat == "24h") {
+        document.querySelector("#next7_update_date").textContent = 'Updated at ' + dayjs.unix(b.updateTime + b.offsetUnix).format('MMM DD, HH:mm') + ' (LT)';
       } 
       else {
-        document.querySelector("#next7_update_date").textContent = 'Updated at ' + dayjs.unix(b.updateTime + b.offsetUnix).format('MMM DD, h:mm A');
+        document.querySelector("#next7_update_date").textContent = 'Updated at ' + dayjs.unix(b.updateTime + b.offsetUnix).format('MMM DD, h:mm A') + ' (LT)';
       }
     })
 
@@ -950,18 +994,19 @@ if(navigator.onLine) {
     }
 
   }
-  next7Function();
-
+    if(b.result) {
+      next7Function();
+      }
 
   function reportFunction() {
     document.querySelector("#title_report_text").textContent = b.citys;
     document.querySelector("#current_report_summary").textContent = b.summaryMinutely;
-    chrome.storage.local.get('TimeFormat', function(data) {
-      if(data.TimeFormat == "24h") {
-        document.querySelector("#report_update_date").textContent = dayjs.unix(b.updateTime + b.offsetUnix).format('MMM DD, HH:mm');
+    chrome.storage.local.get('TimeFormat', function(dataTime) {
+      if(dataTime.TimeFormat == "24h") {
+        document.querySelector("#report_update_date").textContent = dayjs.unix(b.updateTime + b.offsetUnix).format('MMM DD, HH:mm') + ' (LT)';
         }
       else {
-        document.querySelector("#report_update_date").textContent = dayjs.unix(b.updateTime + b.offsetUnix).format('MMM DD, h:mm A');
+        document.querySelector("#report_update_date").textContent = dayjs.unix(b.updateTime + b.offsetUnix).format('MMM DD, h:mm A') + ' (LT)';
      }
     })
     document.querySelector("#current_report_uv").textContent = b.uv1 + " " + b.current_uv_note;
@@ -971,23 +1016,23 @@ if(navigator.onLine) {
     document.querySelector("#current_report_humidity").textContent = b.humidity + "%";
     document.querySelector("#current_report_visibility").textContent = b.visibility + " mi (" + b.visibilityKM + " km)";
     document.querySelector("#current_report_pressure").textContent = b.pressure + " mb (hPa)";
-    document.querySelector("#current_report_cloud").textContent = b.cloudCover + "%";
+    document.querySelector("#current_report_cloud").textContent = b.cloudCoverBadge + "%";
     document.querySelector("#current_report_ozone").textContent = b.ozone + " du";
     document.querySelector("#current_report_precipitation").textContent =  b.precipProbability + "%";
   }
   reportFunction();
 
   function next48Function() {
-    chrome.storage.local.get('TimeFormat', function(data) {
-      if(data.TimeFormat == "24h") {
-        document.querySelector("#next48_update_date").textContent = 'Updated at ' + dayjs.unix(b.updateTime + b.offsetUnix).format('MMM DD, HH:mm');
+    chrome.storage.local.get('TimeFormat', function(dataTime) {
+      if(dataTime.TimeFormat == "24h") {
+        document.querySelector("#next48_update_date").textContent = 'Updated at ' + dayjs.unix(b.updateTime + b.offsetUnix).format('MMM DD, HH:mm') + ' (LT)';
         for(i=1;i<49;i++) {
           document.querySelector(`#forecast_${i}_hours`).textContent = dayjs.unix(b.result.hourly.data[i].time + b.offsetUnix).format('HH')+':00';
           document.querySelector(`#forecast_${i}_hours_uv`).textContent = "UVI " + Math.round((b.result.hourly.data[i].uvIndex) * uv_adj_daily(b.result.hourly.data[i].icon, b.result.hourly.data[i].cloudCover));
           document.querySelector(`#forecast_${i}_hours_rain`).textContent = Math.round(((b.result.hourly.data[i].precipProbability) * 100)/5)*5 + "%";
         }
       } else {
-        document.querySelector("#next48_update_date").textContent = 'Updated at ' + dayjs.unix(b.updateTime + b.offsetUnix).format('MMM DD, h:mm A');
+        document.querySelector("#next48_update_date").textContent = 'Updated at ' + dayjs.unix(b.updateTime + b.offsetUnix).format('MMM DD, h:mm A') + ' (LT)';
         for(i=1;i<49;i++) {
           document.querySelector(`#forecast_${i}_hours`).textContent = dayjs.unix(b.result.hourly.data[i].time + b.offsetUnix).format('h A');
           document.querySelector(`#forecast_${i}_hours_uv`).textContent = "UVI " + Math.round((b.result.hourly.data[i].uvIndex) * uv_adj_daily(b.result.hourly.data[i].icon, b.result.hourly.data[i].cloudCover));
@@ -1035,7 +1080,9 @@ if(navigator.onLine) {
       }
     }
   }
-  next48Function();
+  if(b.result) {
+    next48Function();
+    }
 
   function trackSunExposure() {
     if(b.uv1 == 0 || b.isNight) {
@@ -1097,11 +1144,11 @@ if(navigator.onLine) {
                     var currentBadgeSize = data.badgeSize;
                       if(currentBadgeSize == 1) {
                         setTimeout(function(){
-                          largBadgeNumber(b.temperatureF, currentWhiteIcon)
+                          largBadgeNumber(b.temperatureFbadge, currentWhiteIcon)
                         }, 550);
                       }
                       else{
-                        chrome.browserAction.setBadgeText({"text":b.temperatureF +"°F" });
+                        chrome.browserAction.setBadgeText({"text":b.temperatureFbadge +"°F" });
                       }
                    });
             }
@@ -1111,11 +1158,11 @@ if(navigator.onLine) {
                     var currentBadgeSize = data.badgeSize;
                       if(currentBadgeSize == 1) {
                         setTimeout(function(){
-                          largBadgeNumber(b.temperatureC, currentWhiteIcon)
+                          largBadgeNumber(b.temperatureCbadge, currentWhiteIcon)
                         }, 550);
                       }
                       else{
-                        chrome.browserAction.setBadgeText({"text":b.temperatureC +"°C" });
+                        chrome.browserAction.setBadgeText({"text":b.temperatureCbadge +"°C" });
                       }
                    });
           }
@@ -1134,11 +1181,11 @@ if(navigator.onLine) {
         var currentBadgeSize = data.badgeSize;
           if(currentBadgeSize == 1) {
             setTimeout(function(){
-              largBadgeNumber(b.temperatureC, currentWhiteIcon)
+              largBadgeNumber(b.temperatureCbadge, currentWhiteIcon)
             }, 550);
           }
           else{
-            chrome.browserAction.setBadgeText({"text":b.temperatureF +"°C" });
+            chrome.browserAction.setBadgeText({"text":b.temperatureCbadge +"°C" });
           }
        });
       }
@@ -1154,11 +1201,11 @@ document.querySelector("#setting_defualt_button_f_all").addEventListener("click"
         var currentBadgeSize = data.badgeSize;
           if(currentBadgeSize == 1) {
             setTimeout(function(){
-              largBadgeNumber(b.temperatureF, currentWhiteIcon)
+              largBadgeNumber(b.temperatureFbadge, currentWhiteIcon)
             }, 550);
           }
           else{
-            chrome.browserAction.setBadgeText({"text":b.temperatureF +"°F" });
+            chrome.browserAction.setBadgeText({"text":b.temperatureFbadge +"°F" });
           }
        });
       }      
@@ -1628,20 +1675,24 @@ document.querySelector("#setting_defualt_button_f_all").addEventListener("click"
                       chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
                     }, 350);
 
-                     setTimeout(function(){
+                   setTimeout(function(){
+                      chrome.runtime.sendMessage({ msg: "badgeUpdate" });
+                    }, 400);
+
+                    setTimeout(function(){
                         refreshPopup();
                         chrome.storage.local.get('autoDark', function(data) {
                         var autoDarkTheme = data.autoDark;
-                          if(autoDarkTheme == '1' && b.isNight) {
+                          if(autoDarkTheme == '1' && b.isNightBadge) {
                               darkDisplay();
                               map.setStyle(mapStyleDark);
                           }
-                          else if(autoDarkTheme == '1' && b.isDay) {
+                          else if(autoDarkTheme == '1' && b.isDayBadge) {
                               lightDisplay();
                               map.setStyle(mapStyleLight);
                           }
                         });
-                     }, 1350); 
+                     }, 1550); 
 
                 }
               }
@@ -1679,6 +1730,10 @@ document.querySelector("#setting_defualt_button_f_all").addEventListener("click"
             chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
           }, 50);
 
+          setTimeout(function(){
+            chrome.runtime.sendMessage({ msg: "badgeUpdate" });
+          }, 100);
+
            setTimeout(function(){
               refreshPopup();
 
@@ -1688,13 +1743,13 @@ document.querySelector("#setting_defualt_button_f_all").addEventListener("click"
                     darkDisplay();
                     map.setStyle(mapStyleDark);
                 }
-                else if(autoDarkTheme == '1' && b.isDay) {
+                else if(autoDarkTheme == '1' && b.isDayBadge) {
                     lightDisplay();
                     map.setStyle(mapStyleLight);
                 }
               });
 
-           }, 1050);
+           }, 1550);
 
           map.flyTo({
             center: [lng,lat],
@@ -1760,12 +1815,12 @@ document.querySelector("#setting_defualt_button_f_all").addEventListener("click"
         "maxzoom": 8
       });
     });
-    chrome.storage.local.get('TimeFormat', function(data) {
-      if(data.TimeFormat == "24h") { 
-        document.querySelector("#map_popup_title").textContent = 'PRECIPITATION FORECAST | UV WEATHER | ' + dayjs.unix(b.updateTime + b.offsetUnix).format('MMMM DD, YYYY HH:mm');
+    chrome.storage.local.get('TimeFormat', function(dataTime) {
+      if(dataTime.TimeFormat == "24h") { 
+        document.querySelector("#map_popup_title").textContent = 'PRECIPITATION FORECAST | UV WEATHER | ' + dayjs.unix(b.updateTime + b.offsetUnix).format('MMMM DD, YYYY HH:mm') + ' (LT)';
       }
       else{
-        document.querySelector("#map_popup_title").textContent = 'PRECIPITATION FORECAST | UV WEATHER | ' + dayjs.unix(b.updateTime + b.offsetUnix).format('MMMM DD, YYYY h:mm A');
+        document.querySelector("#map_popup_title").textContent = 'PRECIPITATION FORECAST | UV WEATHER | ' + dayjs.unix(b.updateTime + b.offsetUnix).format('MMMM DD, YYYY h:mm A') + ' (LT)';
       }
     })
   }; 
@@ -1842,18 +1897,27 @@ document.querySelector("#setting_defualt_button_f_all").addEventListener("click"
         if(e.target.checked) {
           chrome.storage.local.set({'badgeSize': '1'});
           document.getElementById("checkbox_largIcon").checked = true;
-          chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
+          document.getElementById("checkbox_largIcon").disabled = true;
+          chrome.runtime.sendMessage({ msg: "badgeUpdate" });
+          delayButtonBadgeSize();
         }
         else {
           chrome.storage.local.set({'badgeSize': '0'});
           document.getElementById("checkbox_largIcon").checked = false;
-          chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
+          document.getElementById("checkbox_largIcon").disabled = true;
+          chrome.runtime.sendMessage({ msg: "badgeUpdate" });
+          delayButtonBadgeSize();
         }    
       }
       toggleSwitchBadgeSize.addEventListener('change', switchBadgeSize, false);
 
   });
 
+  function delayButtonBadgeSize() {
+      setTimeout(function() {
+      document.getElementById("checkbox_largIcon").disabled = false;
+    }, 1500);
+  };
 
   document.querySelector("#setting_defualt_button_60_all").addEventListener("click", (e) => { 
       chrome.storage.local.set({'IntervalUpdate': '60'});
@@ -1883,10 +1947,11 @@ document.querySelector("#setting_defualt_button_f_all").addEventListener("click"
       chrome.runtime.sendMessage({ msg: "intervalUpdateMessage" });
     })
 
+
   function refreshPopup() {
-  
-      chrome.storage.local.get('TimeFormat', function(data) {
-        if(data.TimeFormat == "24h") {
+    setTimeout(function() {
+      chrome.storage.local.get('TimeFormat', function(dataTime) {
+        if(dataTime.TimeFormat == "24h") {
             solarFunction24H();
           }
           else{
@@ -1904,9 +1969,8 @@ document.querySelector("#setting_defualt_button_f_all").addEventListener("click"
           }
       });
 
-    setTimeout(function() {
-      chrome.storage.local.get('TimeFormat', function(data) {
-        if(data.TimeFormat == "24h") {            
+      chrome.storage.local.get('TimeFormat', function(dataTime) {
+        if(dataTime.TimeFormat == "24h") {            
           updateTimeRelative = "Updated " + dayjs.unix(b.updateTime).format("HH:mm");
         }
         else{
@@ -1936,6 +2000,7 @@ document.querySelector("#setting_defualt_button_f_all").addEventListener("click"
           }
       });
 
+      accufeelCalc();
       uvRecommendation();
       next48Function();
       next7Function();
