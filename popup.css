@@ -29,14 +29,14 @@
 
 .preloader {
   align-items: center;
-  background: #2C3E50;
+  background: #2C3E50 !important;
   display: flex;
   height: 100vh;
   justify-content: center;
   left: 0;
   position: fixed;
   top: 0;
-  transition: opacity 1.150s linear;
+  transition: opacity 2.250s linear;
   width: 100%;
   z-index: 99999;
   opacity: 1;
@@ -211,6 +211,19 @@ body {
   	font-family: Helvetica;
   	color: var(--font-color);
 }
+
+#preload_body {
+	display: none;
+}  
+/*#main_menu {
+	display: none;
+	visibility: hidden;
+} */
+/*#search_home {
+	display: none;
+	visibility: hidden;	
+}*/
+
 a:hover {
   cursor: pointer;
 }
@@ -1440,18 +1453,6 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 	font-size: 9px;
 	color: #a9a9a9;
 	margin: 0 auto;
-}
-
-.share_group_Class {
-	display: none;
-	position: absolute;
-	top: 30px;
-	left: 245px;
-	align-items: center;
-	justify-content: center;
-	align-content: center;
-	text-align: center;
-	vertical-align: middle;
 }
 
 .icon_eart_Class {

@@ -573,7 +573,7 @@ function popupPage(city,latandlong,country) {
 
 				//popupPage
 				const ads = '3dfc8ba9095bfa87462f459fc85238c6';	
-				fetch('https://uv-weather.herokuapp.com/https://api.darksky.net/forecast/' + ads +'/' + latlong + '?solar')
+				return fetch('https://uv-weather.herokuapp.com/https://api.darksky.net/forecast/' + ads +'/' + latlong + '?solar')
 				.then((resp) => resp.json())
 				.then(function(result) {				
 					window.result = result;

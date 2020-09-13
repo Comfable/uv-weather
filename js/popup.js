@@ -1,20 +1,29 @@
 document.addEventListener("DOMContentLoaded", function() {
 
-chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
-const b = chrome.extension.getBackgroundPage();
-
-
 const preloader = document.querySelector('.preloader');
 const fadeEffect = setInterval(() => {
-  if (!preloader.style.opacity) {
+  if(!preloader.style.opacity) {
     return preloader.style.opacity = 1;
   }
-  if (preloader.style.opacity > 0) {
+  if(preloader.style.opacity > 0) {
     return preloader.style.opacity -= 0.1;
   } else {
     clearInterval(fadeEffect);
   }
 }, 100);
+
+chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
+const b = chrome.extension.getBackgroundPage();
+
+ 
+
+timer_preload_body = setInterval(() => {
+  if(typeof b.uv1 !== 'undefined' || !(navigator.onLine)) {
+    document.getElementById("preload_body").style.display = "block";
+    clearInterval(timer_preload_body);
+  }
+}, 50);
+
 
 
 const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
