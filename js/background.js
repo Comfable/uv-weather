@@ -77,11 +77,14 @@ function uvReader(city,latandlong,country) {
 	latlong = (latandlong.split('"'))[1];
 	lat = (latlong.split(','))[0];
 	lng = (latlong.split(','))[1];
+	
+	const ads = '2589e0786e11ce470e7d98e9153039f4';	
+	fetch('https://uv-weather.herokuapp.com/https://api.darksky.net/forecast/' + ads +'/' + latlong + '?solar')
 
-	var weather_url = new URL('https://api.uvweather.net/uvweather');
-		params = {lat: lat.toString(), lng: lng.toString()}
-	Object.keys(params).forEach(key => weather_url.searchParams.append(key, params[key]))
-	fetch(weather_url)
+	// var weather_url = new URL('https://api.uvweather.net/uvweather');
+	// 	params = {lat: lat.toString(), lng: lng.toString()}
+	// Object.keys(params).forEach(key => weather_url.searchParams.append(key, params[key]))
+	//fetch(weather_url)
 	.then((resp) => resp.json())
 	.then(function(result) {				
 		window.result = result;
