@@ -12,15 +12,21 @@
   <script src="/js/popup.js"></script>
   <link rel="stylesheet" href="/popup.css" media="screen" />
   <script async src="/library/ga.js"></script>
-  <script src="/library/autoComplete.min.js"></script>
 
-  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.js'></script>
-  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.css' rel='stylesheet' />
+  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.js'></script>
+  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.css' rel='stylesheet' />
 
 </head>
 
 <body>
   
+  <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.min.js"></script>
+  <link
+  rel="stylesheet"
+  href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.css"
+  type="text/css"
+  />
+
 <!-- No Internet Page -->
 <div id="noInternet_popup" class="noInternet_popup_Class">
   <div class="noInternet_content_Class">
@@ -352,30 +358,13 @@
   </div>
 
 
-
     <!-- Search Page -->
-      <div id="search_popup" class="modal_search">
-        <div id="search_popup_close" class="modal_close"></div>
-        <div id="searchBox" class="searchBox_Class">
-
-            <input type="search" id="autoComplete" placeholder="Enter your city or town"/>
-            
-        </div>
-
-        <div id="search_or_text" class="search_or_text_class">or
-
-            <div id="currentLocation_button" class="currentLocation_button_Class"> 
-              <button id="currentLocation_button_searchPage" class="button_current_location_Class">Use My Current Location</button>
-            </div>
-        </div>
-
-
-        <div id="search_search_text" class="search_search_text_class">By default, UV Weather uses your current location. However, you can select a different location.<br><br>
-
-          <!-- <div id="search_currentLocation_title" class="search_currentLocation_title_class">Current Location:<b></div> -->
-          <div id="search_currentLocation_text" class="search_currentLocation_text_class">
-          </div>
-        </div>
+      <div id="search_popup">
+              <div id="search_popup_close" class="modal_search_close"></div>
+              <div id="mapSearch" class='search_Class'></div>
+              <a target='_blank' href="https://uvweather.net/add-a-place" class="whitelink">
+                <span id="search_popup_title" class="modal_search_title">Report a Missing Place</span>
+              </a>
       </div>
 
 

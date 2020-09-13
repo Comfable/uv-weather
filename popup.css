@@ -1068,7 +1068,7 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
  text-align: left;
  padding: 10px;
  border-radius: 3px;
- z-index: 15000;
+ z-index: 16000;
  opacity: 0;
  transition: opacity .6s;
  font-size: 12px;
@@ -1122,25 +1122,7 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   color: var(--font-color);
   z-index: 1000;
 }
-.modal_search {
-    position: absolute;
-    width: 310px;
-    height: 426px;
-    left: 250px;
-    top: 0;
-    max-width: 310px;
-    display: none;
-    vertical-align: right;
-    width: 100%;
-    -webkit-border-radius: 0px !important;
-    -moz-border-radius: 0px !important;
-    -o-border-radius: 0px !important;
-    -ms-border-radius: 0px !important;
-    border-radius: 0px !important;
-	background-color: var(--bg-color);
-	color: var(--font-color);
-    z-index: 12000;
-}
+
 .modal_next48 {
 	height: 412px;
 	overflow: auto;
@@ -1187,98 +1169,6 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 	position: absolute;
 	top: 53px;
 	margin: 0 30px 0 30px;
-}
-
-#autoComplete_wrapper {
-  position: relative;
-  display: inline-block;
-}
-
-#autoComplete {
-  position: relative;
-  text-align: left;
-  font-size: 12px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  color: #7f8c8d;
-  font-style: italic;
-  font-weight: 300;
-  padding: 12px 43px 12px 15px;
-  outline: none;
-  appearance: none;
-  -webkit-appearance: none;
-  box-sizing: border-box;
-  height: 40px;
-  width: 250px;
-  background-image: url("/images/icon_search.png");
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  overflow: hidden;
-}
-
-#autoComplete_list {
-  position: relative;
-  z-index: 1000;
-  padding: 0;
-  transition: all 0.1s ease-in-out;
-  -webkit-transition: all -webkit-transform 0.1s ease;
-  overflow: hidden;
-  width: 250px;
-  background-color: var(--bg-color);
-  color: var(--font-color);
-}
-
-.autoComplete_result {
-  padding: 0.6rem;
-  margin: 0.15rem auto;
-  border: 0.05rem solid #e3e3e3;
-  list-style: none;
-  text-align: left;
-  transition: all 0.1s ease-in-out;
-  overflow: hidden;
-  background-color: var(--bg-color);
-  color: var(--font-color);
-}
-
-.autoComplete_result::selection {
-  color: rgba(#ffffff, 0);
-  background-color: rgba(#ffffff, 0);
-  overflow: hidden;
-}
-
-.autoComplete_result:last-child {
-  overflow: hidden;
-}
-
-.autoComplete_result:hover {
-  cursor: pointer;
-  background-color: var(--bg-color-autosearch);
-  overflow: hidden;
-}
-
-.autoComplete_result:focus {
-  outline: none;
-  background-color: var(--bg-color-autosearch);
-  overflow: hidden;
-}
-
-.autoComplete_highlighted {
-  opacity: 1;
-  color: #fb8d26;
-  font-weight: bold;
-  overflow: hidden;
-}
-
-.autoComplete_highlighted::selection {
-  color: rgba(#ffffff, 0);
-  background-color: rgba(#ffffff, 0);
-  overflow: hidden;
-}
-
-.autoComplete_selected {
-  cursor: pointer;
-  background-color: var(--bg-color-autosearch);
-  overflow: hidden;
 }
 
 .no_result {
@@ -1827,4 +1717,124 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
     margin: 0 auto !important;
     white-space: normal !important;
     display: block !important;
+}
+
+
+
+
+
+
+
+
+.geocoder {
+  position: absolute;
+  z-index: 1;
+  width: 50%;
+  left: 10%;
+  margin-left: -25%;
+  top: 20px;
+}
+
+.mapboxgl-ctrl-geocoder {
+    font-size: 14px !important;
+    line-height: 18px;
+    position: relative;
+    background-color: #fff;
+    width: 100%;
+    min-width: 250px !important;
+    z-index: 1;
+    border-radius: 2px !important;
+    transition: width .25s, min-width .25s;
+}
+
+.mapboxgl-ctrl-geocoder--input {
+	height: 40px !important;
+	padding-left: 12px !important;
+	line-height: 14px !important;
+}
+
+.mapboxgl-ctrl-geocoder--icon-search {
+    position: absolute;
+    top: 9px !important;
+    left: 196px !important;
+    width: 23px;
+    height: 23px;
+    display: none !important;
+}
+
+.mapboxgl-ctrl-geocoder--icon-close {
+    width: 20px;
+    height: 20px;
+    margin-top: 3px !important;
+    margin-right: 3px;
+}
+
+.mapboxgl-ctrl-geocoder .suggestions {
+  font-size: 14px !important;
+}
+
+.mapboxgl-ctrl-geocoder .suggestions > li > a {
+  padding: 3px 12px !important;
+}
+
+
+.mapboxgl-ctrl-geocoder, .mapboxgl-ctrl-geocoder .suggestions {
+    box-shadow: 0 0 10px 2px rgba(0,0,0,.1);
+}
+
+.modal_search {
+  	position: absolute;	
+	left: 250px;
+  	top: 0px;
+	width: 310px;
+	height: 526px;
+
+}
+
+.search_Class { 
+  	position: absolute;
+	left: 250px;
+  	top: 0px;
+	width: 310px;
+	height: 526px;
+	z-index: 15000;
+	visibility: hidden;
+}
+
+.modal_search_close {
+  	position: absolute;
+  	top: 15.5px;
+  	left: 265.5px;
+  	width: 30px;
+  	height: 30px;
+  	background-image: url("/images/left-arrow.svg");
+  	filter: drop-shadow( 2px 2px 2px rgba(0, 0, 0, .50));
+  	background-position: center;
+  	background-repeat: no-repeat;
+  	background-size: cover;
+  	cursor: pointer;
+  	z-index: 15500;
+  	visibility: hidden;
+}
+
+.modal_search_title {
+  	position: absolute;
+ 	top: 509px;
+  	left: 439px;
+  	display: block;
+  	filter: drop-shadow( 2px 2px 2px rgba(0, 0, 0, .50));
+  	z-index: 15500;
+	text-align: left;
+	font-weight: 250;
+	font-size: 11px;
+	color: var(--font-color);
+	visibility: hidden;	
+}
+
+.mapboxgl-map {
+	position: absolute !important;
+}
+
+.mapbox-gl-geocoder--error {
+	padding: 16px 12px 16px 12px !important;
 }
