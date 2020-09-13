@@ -36,7 +36,7 @@
   left: 0;
   position: fixed;
   top: 0;
-  transition: opacity 2.250s linear;
+  transition: opacity 1.750s linear;
   width: 100%;
   z-index: 99999;
   opacity: 1;
@@ -733,11 +733,14 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 }
 .title_version_Class {
 	position: relative;
-	text-align: left;
+	text-align: center;
 	font-weight: 250;
-	font-size: 9px;
-	margin-top: 1px;
-}
+	font-size: 10px;
+	margin-top: 10px;
+    color: var(--font-color);
+    pointer-events: none;
+    filter: brightness(225%)!important;
+ }
 
 
 

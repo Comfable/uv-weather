@@ -37,7 +37,7 @@ const fadeEffect = setInterval(() => {
   } else {
     clearInterval(fadeEffect);
   }
-}, 100);
+}, 50);
 
 
 chrome.storage.local.get(['latlong', 'city', 'country'], function(data) {
@@ -472,6 +472,8 @@ chrome.storage.local.get('closeAds', function(data) {
           document.getElementById("checkbox_largIcon").disabled = true;
           updateBadge();
           delayButtonBadgeSize();
+          delayButtonSetting();
+          delayReleaseButtonSetting();
         }
         else {
           chrome.storage.local.set({'badgeSize': '0'});
@@ -479,13 +481,20 @@ chrome.storage.local.get('closeAds', function(data) {
           document.getElementById("checkbox_largIcon").disabled = true;
           updateBadge();
           delayButtonBadgeSize();
+          delayButtonSetting();
+          delayReleaseButtonSetting();
         }    
       }
       toggleSwitchBadgeSize.addEventListener('change', switchBadgeSize, false);
   });
 
+  loadingIconBadge();
   refreshPopup();
   updateBadge();
+
+  version_manifest = chrome.runtime.getManifest().version;
+  document.querySelector("#title_version_setting").textContent = 'Version ' + version_manifest;
+
   document.getElementById("preload_body").style.display = "block";
 
         })
@@ -496,6 +505,13 @@ chrome.storage.local.get('closeAds', function(data) {
 
 
 /// Functions----------------------------------------------------------
+  function loadingIconBadge() {
+    animatedBadgeInterval = setInterval(function() {animatedBadge(isDay,sunnyDayBadge,cloudyBadge,rainyBadge,snowyBadge); }, 1000 / 30);
+    setTimeout(function() {
+      clearInterval(animatedBadgeInterval);   
+    }, 485);
+  };
+
   function refreshPopup() {
     chrome.storage.local.get(['verUpdate'], function(data) {
         if(data.verUpdate == 1) {
@@ -512,7 +528,7 @@ chrome.storage.local.get('closeAds', function(data) {
             ctemp();
           }
           else{
-             ftemp();
+            ftemp();
           }
       });
       document.querySelector("#location").textContent = citys;
@@ -918,21 +934,7 @@ chrome.storage.local.get('closeAds', function(data) {
       F_sign_elementStyle.top = '22px';
       C_sign_elementStyle.fontSize = '20px';
       F_sign_elementStyle.fontSize = '15px';
-
-      if(setSettingUT == "t") {
-        chrome.storage.local.get(['whiteIcon','badgeSize'], function(data) {
-          var currentWhiteIcon = data.whiteIcon;
-          var currentBadgeSize = data.badgeSize;
-            if(currentBadgeSize == 1) {
-              setTimeout(function(){
-                largBadgeNumber(temperatureCbadge, currentWhiteIcon)
-              }, 550);
-            }
-            else{
-              chrome.browserAction.setBadgeText({"text":temperatureCbadge +"°C" });
-            }
-         });
-      };     
+    
   };
 
   function accufeelCalc() {
@@ -1045,21 +1047,7 @@ chrome.storage.local.get('closeAds', function(data) {
     C_sign_elementStyle.top = '22px';
     F_sign_elementStyle.fontSize = '20px';
     C_sign_elementStyle.fontSize = '15px';
-
-    if(setSettingUT == "t") {
-      chrome.storage.local.get(['whiteIcon','badgeSize'], function(data) {
-        var currentWhiteIcon = data.whiteIcon;
-        var currentBadgeSize = data.badgeSize;
-          if(currentBadgeSize == 1) {
-            setTimeout(function(){
-              largBadgeNumber(temperatureFbadge, currentWhiteIcon)
-            }, 550);
-          }
-          else{
-            chrome.browserAction.setBadgeText({"text":temperatureFbadge +"°F" });
-          }
-       });
-    }    
+   
   };
 
   function darkDisplay() {
@@ -1296,15 +1284,12 @@ chrome.storage.local.get('closeAds', function(data) {
 
   function updateBadge() {
 
-    animatedBadgeInterval = setInterval(function() {animatedBadge(isDay,sunnyDayBadge,cloudyBadge,rainyBadge,snowyBadge); }, 1000 / 30);
-    setTimeout(function() {
-      clearInterval(animatedBadgeInterval);   
-    }, 485);
-    chrome.storage.local.get(['setSettingFC', 'setSettingUT', 'whiteIcon', 'badgeSize'], function(data) {
+    chrome.storage.local.get(['setSettingFC', 'setSettingUT', 'whiteIcon', 'badgeSize', 'TimeFormat'], function(data) {
     setSettingFC = data.setSettingFC;
     setSettingUT = data.setSettingUT;
     currentWhiteIcon = data.whiteIcon;
     currentBadgeSize = data.badgeSize;
+    TimeFormat = data.TimeFormat;
     if(currentWhiteIcon == 0 || (typeof currentWhiteIcon == 'undefined') || currentWhiteIcon == 'undefined') {
       currentWhiteIcon = 0;
     } else{
@@ -1317,9 +1302,9 @@ chrome.storage.local.get('closeAds', function(data) {
               }, 550);
             }
             else {
-              chrome.browserAction.setBadgeText({"text":temperatureCbadge +"°C" });              
               badgeBackgroundColor(currentWhiteIcon);
               setTimeout(function() {
+                chrome.browserAction.setBadgeText({"text":temperatureCbadge +"°C" });              
                 badgeBackgroundImage();
               }, 550);
             }
@@ -1332,9 +1317,9 @@ chrome.storage.local.get('closeAds', function(data) {
             }, 550);
           }
           else {
-            chrome.browserAction.setBadgeText({"text":temperatureFbadge +"°F" });
             badgeBackgroundColor(currentWhiteIcon);
             setTimeout(function() {
+              chrome.browserAction.setBadgeText({"text":temperatureFbadge +"°F" });
               badgeBackgroundImage();
             }, 550);
           }
@@ -1349,9 +1334,9 @@ chrome.storage.local.get('closeAds', function(data) {
                     }, 550);
                   }
                   else{
-                    chrome.browserAction.setBadgeText({"text": "UV"+ uv1});
                     badgeBackgroundColor(currentWhiteIcon);
                     setTimeout(function() {
+                      chrome.browserAction.setBadgeText({"text": "UV"+ uv1});
                       badgeBackgroundImage();
                     }, 550);
                   }
@@ -1363,15 +1348,38 @@ chrome.storage.local.get('closeAds', function(data) {
                     }, 550);
                   }
                   else{
-                    chrome.browserAction.setBadgeText({"text": "UV "+ uv1});                    
                     badgeBackgroundColor(currentWhiteIcon);
                     setTimeout(function() {
+                      chrome.browserAction.setBadgeText({"text": "UV "+ uv1});                    
                       badgeBackgroundImage();
                     }, 550);
                   }
         } 
       }
 
+        if(TimeFormat == "24h") {
+          updateTimeRelativeBadge = dayjs.unix(updateTimeBadge).format('HH:mm');
+        }
+        else{
+          updateTimeRelativeBadge = dayjs.unix(updateTimeBadge).format('h:mm A');
+        }
+        
+        if(setSettingUT == "u" && setSettingFC == "f") {
+          toolTipBadge = temperatureFbadge + "° " + capital_letter(descriptionBadge) + " - " + citys + "\n" + "Updated at " + updateTimeRelativeBadge;
+          chrome.browserAction.setTitle({title: toolTipBadge});
+          }
+        else if(setSettingUT == "u" && setSettingFC == "c") {
+          toolTipBadge = temperatureCbadge + "° " + capital_letter(descriptionBadge) + " - " + citys  + "\n" + "Updated at " + updateTimeRelativeBadge;
+          chrome.browserAction.setTitle({title: toolTipBadge});
+          }
+        else if(setSettingUT == "t" && setSettingFC == "f") {
+          toolTipBadge = temperatureFbadge + "° " + capital_letter(descriptionBadge) + " - " + citys  + "\n" + "Updated at " + updateTimeRelativeBadge;
+          chrome.browserAction.setTitle({title: toolTipBadge});
+          }
+        else if(setSettingUT == "t" && setSettingFC == "c") {
+          toolTipBadge = temperatureCbadge + "° " + capital_letter(descriptionBadge) + " - " + citys + "\n"  + "Updated at " + updateTimeRelativeBadge;
+          chrome.browserAction.setTitle({title: toolTipBadge});
+          };            
     });
   };
 
@@ -1420,13 +1428,6 @@ chrome.storage.local.get('closeAds', function(data) {
     next48Sub.classList.remove("sub_menu_current_Class");
   };
 
-  function delayButton12h24h() {
-      setTimeout(function() {
-      document.querySelector("#setting_defualt_button_12h_all").style.pointerEvents = "auto";
-      document.querySelector("#setting_defualt_button_24h_all").style.pointerEvents = "auto";
-    }, 1500);
-  };
-
   function delayButtonBadgeSize() {
       setTimeout(function() {
       document.getElementById("checkbox_largIcon").disabled = false;
@@ -1440,6 +1441,30 @@ chrome.storage.local.get('closeAds', function(data) {
         document.querySelector("#setting_defualt_button_120_all").style.pointerEvents = "auto";
     }, 1500);
   };
+
+  function delayReleaseButtonSetting() {
+      setTimeout(function() {
+      document.getElementById("setting_defualt_button_c_all").style.pointerEvents = "auto";
+      document.getElementById("setting_defualt_button_f_all").style.pointerEvents = "auto";
+      document.getElementById("setting_defualt_button_u_all").style.pointerEvents = "auto";
+      document.getElementById("setting_defualt_button_t_all").style.pointerEvents = "auto";
+      document.getElementById("setting_defualt_button_12h_all").style.pointerEvents = "auto";
+      document.getElementById("setting_defualt_button_24h_all").style.pointerEvents = "auto";
+      document.querySelector(".setting_section_badge_size_Class").style.pointerEvents = "auto";
+
+    }, 1500);
+  };
+
+  function delayButtonSetting() {
+      document.getElementById("setting_defualt_button_c_all").style.pointerEvents = "none";
+      document.getElementById("setting_defualt_button_f_all").style.pointerEvents = "none";
+      document.getElementById("setting_defualt_button_u_all").style.pointerEvents = "none";
+      document.getElementById("setting_defualt_button_t_all").style.pointerEvents = "none";
+      document.getElementById("setting_defualt_button_12h_all").style.pointerEvents = "none";
+      document.getElementById("setting_defualt_button_24h_all").style.pointerEvents = "none";
+      document.querySelector(".setting_section_badge_size_Class").style.pointerEvents = "none";
+  };
+
 
 /// Click event ------------------------------------------------------------------------------
   document.querySelector("#setting_defualt_theme_d_all").addEventListener("click", (e) => {
@@ -1459,75 +1484,21 @@ chrome.storage.local.get('closeAds', function(data) {
   document.querySelector("#setting_defualt_button_u_all").addEventListener("click", (e) => { 
       setSettingUT = "u";
       chrome.storage.local.set({'setSettingUT': 'u'});
-        if(uv1>9) {
-                chrome.storage.local.get(['whiteIcon','badgeSize'], function(data) {
-                var currentWhiteIcon = data.whiteIcon;
-                var currentBadgeSize = data.badgeSize;
-                  if(currentBadgeSize == 1) {
-                    setTimeout(function() {
-                      largBadgeNumber(uv1, currentWhiteIcon)
-                    }, 550);
-                  }
-                  else{
-                    chrome.browserAction.setBadgeText({"text": "UV"+ uv1});
-                  }
-               });
-        }
-        else {
-                chrome.storage.local.get(['whiteIcon','badgeSize'], function(data) {
-                var currentWhiteIcon = data.whiteIcon;
-                var currentBadgeSize = data.badgeSize;
-                  if(currentBadgeSize == 1) {
-                    setTimeout(function() {
-                      largBadgeNumber(uv1, currentWhiteIcon)
-                    }, 550);
-                  }
-                  else{
-                    chrome.browserAction.setBadgeText({"text": "UV "+ uv1});
-                  }
-               });
-        }        
-      document.getElementById("setting_defualt_button_u_all").disabled = true;
-      document.getElementById("setting_defualt_button_t_all").disabled = false;
+      delayButtonSetting();
+      updateBadge();       
       document.getElementById("setting_defualt_button_u").checked = true;
       document.getElementById("setting_defualt_button_t").checked = false;
+      delayReleaseButtonSetting();  
   });
   
   document.querySelector("#setting_defualt_button_t_all").addEventListener("click", (e) => { 
       setSettingUT = "t";
       chrome.storage.local.set({'setSettingUT': 't'});
-          if (setSettingFC == "f") {
-                  chrome.storage.local.get(['whiteIcon','badgeSize'], function(data) {
-                    var currentWhiteIcon = data.whiteIcon;
-                    var currentBadgeSize = data.badgeSize;
-                      if(currentBadgeSize == 1) {
-                        setTimeout(function(){
-                          largBadgeNumber(temperatureFbadge, currentWhiteIcon)
-                        }, 550);
-                      }
-                      else{
-                        chrome.browserAction.setBadgeText({"text":temperatureFbadge +"°F" });
-                      }
-                   });
-            }
-          else {
-                  chrome.storage.local.get(['whiteIcon','badgeSize'], function(data) {
-                    var currentWhiteIcon = data.whiteIcon;
-                    var currentBadgeSize = data.badgeSize;
-                      if(currentBadgeSize == 1) {
-                        setTimeout(function(){
-                          largBadgeNumber(temperatureCbadge, currentWhiteIcon)
-                        }, 550);
-                      }
-                      else{
-                        chrome.browserAction.setBadgeText({"text":temperatureCbadge +"°C" });
-                      }
-                   });
-          }
-      document.getElementById("setting_defualt_button_t_all").disabled = true;
-      document.getElementById("setting_defualt_button_u_all").disabled = false;
+      delayButtonSetting();
+      updateBadge();
       document.getElementById("setting_defualt_button_t").checked = true;
       document.getElementById("setting_defualt_button_u").checked = false;
+      delayReleaseButtonSetting();    
   });
 
   document.querySelector("#setting_defualt_button_c_all").addEventListener("click", (e) => { 
@@ -1536,22 +1507,11 @@ chrome.storage.local.get('closeAds', function(data) {
 
         setSettingFC = "c";
         chrome.storage.local.set({'setSettingFC': 'c'});
-        if(setSettingUT == "t") {
-        chrome.storage.local.get(['whiteIcon','badgeSize'], function(data) {
-          var currentWhiteIcon = data.whiteIcon;
-          var currentBadgeSize = data.badgeSize;
-            if(currentBadgeSize == 1) {
-              setTimeout(function(){
-                largBadgeNumber(temperatureCbadge, currentWhiteIcon)
-              }, 550);
-            }
-            else{
-              chrome.browserAction.setBadgeText({"text":temperatureCbadge +"°C" });
-            }
-         });
-        }
         ctemp();
+        updateBadge();
     }
+      delayButtonSetting();
+      delayReleaseButtonSetting();
    });
    });
 
@@ -1560,24 +1520,12 @@ chrome.storage.local.get('closeAds', function(data) {
       if(data.setSettingFC !== 'f') {
 
         setSettingFC = "f";
-        chrome.storage.local.set({'setSettingFC': 'f'});
-        if(setSettingUT == "t") {   
-        chrome.storage.local.get(['whiteIcon','badgeSize'], function(data) {
-          var currentWhiteIcon = data.whiteIcon;
-          var currentBadgeSize = data.badgeSize;
-            if(currentBadgeSize == 1) {
-              setTimeout(function(){
-                largBadgeNumber(temperatureFbadge, currentWhiteIcon)
-              }, 550);
-            }
-            else{
-              chrome.browserAction.setBadgeText({"text":temperatureFbadge +"°F" });
-            }
-         });
-        }      
+        chrome.storage.local.set({'setSettingFC': 'f'});    
         ftemp();
+        updateBadge();
     }
-
+      delayButtonSetting();
+      delayReleaseButtonSetting();
    });
    });
 
@@ -1866,6 +1814,7 @@ chrome.storage.local.get('closeAds', function(data) {
           ftemp();
           setSettingFC = "f";
           chrome.storage.local.set({'setSettingFC': 'f'});
+          updateBadge();
         }
       });
   });
@@ -1876,6 +1825,7 @@ chrome.storage.local.get('closeAds', function(data) {
           ctemp();
           setSettingFC = "c";
           chrome.storage.local.set({'setSettingFC': 'c'});
+          updateBadge();
         }
       });
   });
@@ -1899,22 +1849,20 @@ chrome.storage.local.get('closeAds', function(data) {
 
   document.querySelector("#setting_defualt_button_12h_all").addEventListener("click", (e) => {
       chrome.storage.local.set({'TimeFormat': '12h'});
-      document.querySelector("#setting_defualt_button_12h_all").style.pointerEvents = "none";
-      document.querySelector("#setting_defualt_button_24h_all").style.pointerEvents = "none";
       document.getElementById("setting_defualt_button_12h").checked = true;
       solarFunction12H();
       refresh24h12h();
-      delayButton12h24h();
+      delayButtonSetting();
+      delayReleaseButtonSetting();
   });
 
   document.querySelector("#setting_defualt_button_24h_all").addEventListener("click", (e) => {
       chrome.storage.local.set({'TimeFormat': '24h'});
-      document.querySelector("#setting_defualt_button_12h_all").style.pointerEvents = "none";
-      document.querySelector("#setting_defualt_button_24h_all").style.pointerEvents = "none";
       document.getElementById("setting_defualt_button_24h").checked = true;
       solarFunction24H();
       refresh24h12h()
-      delayButton12h24h();
+      delayButtonSetting();
+      delayReleaseButtonSetting();
   });
 
   document.querySelector("#setting_defualt_button_60_all").addEventListener("click", (e) => { 
