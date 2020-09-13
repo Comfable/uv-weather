@@ -1,5 +1,5 @@
 var uv1;
-
+var updateTimeoutActive;
 chrome.storage.local.get(['verUpdate'], function(data) {
 	verUpdate = data.verUpdate;
 
@@ -45,29 +45,25 @@ chrome.storage.local.get(['verUpdate'], function(data) {
 	}
 	else{
 
+			chrome.storage.local.get(['latlong', 'city', 'country', 'updateTimeoutActive'], function(data) { //update the extension and refresh the popup
+				updateTimeoutActiveData = data.updateTimeoutActive;
+				if(typeof updateTimeoutActiveData == 'undefined' || updateTimeoutActiveData == '0') {
 
-		if(typeof updateTimeoutActive == 'undefined' || updateTimeoutActive == 0) {
+		  			latandlong = data.latlong;
+		 			city = data.city;
+		 			country = data.country;
+						uvReader(city,latandlong,country);
+						setTimeout(function() {
+							badgeReader(city,latandlong,country,uv1);
+	    				}, 500);
+						chrome.storage.local.set({'updateTimeoutActive': '1'});
 
-			chrome.storage.local.get(['latlong', 'city', 'country'], function(data) { //update the extension and refresh the popup
-	  		latandlong = data.latlong;
-	 		city = data.city;
-	 		country = data.country;
-					uvReader(city,latandlong,country);
-					setTimeout(function() {
-						badgeReader(city,latandlong,country,uv1);
-    				}, 500);
-					updateTimeoutActive = 1;	
-    				updateTimeout();
-				});
-		}	
+	    		}
 
-	  		function updateTimeout() {
-		      		setTimeout(function() {
-		      		updateTimeoutActive = 0;
-		    		}, 10000);
-		  	};
-
+			});
+	
 	}
+
 });
 
 
@@ -106,6 +102,10 @@ chrome.runtime.onMessage.addListener(
 		}
 	}
 );
+
+var updateTimeoutActiveInterval = window.setInterval(_ => {
+		chrome.storage.local.set({'updateTimeoutActive': '0'});
+}, 55000);
 
 function intervalUpdateFunction() {
 	chrome.storage.local.get(['IntervalUpdate', ''], function(data) {
@@ -539,7 +539,6 @@ function badgeReader(city,latandlong,country,uv1) {
 function uvReader(city,latandlong,country) {
 	
 	country = country;
-
 	cityName = (city.split('"'))[1].charAt(0).toUpperCase() + (city.split('"'))[1].slice(1);
 	if(cityName && cityName.length > 15) {
 		citys = cityName.substr(0,15)
