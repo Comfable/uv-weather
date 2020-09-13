@@ -58,11 +58,16 @@ chrome.runtime.onStartup.addListener(function(details) {
 
 chrome.runtime.onInstalled.addListener(function(details) {
 	if(details.reason == "update") {
-			chrome.storage.local.get(['latlong', 'city', 'country'], function(data) {
+			chrome.storage.local.get(['latlong', 'city', 'country', 'setSettingUT'], function(data) {
 		  			latandlong = data.latlong;
 		 			city = data.city;
 		 			country = data.country;
-					badgeUV(city,latandlong,country);
+					if(data.setSettingUT == 'u') {
+							badgeUV(city,latandlong,country);
+					}
+					else {
+							badgeTemp(city,latandlong,country);
+					}
 			});
 	}
 });
@@ -216,17 +221,17 @@ function badgeGeneral(isDay,isNight,sunnyDayBadge,cloudyBadge,rainyBadge,snowyBa
 		   		TimeFormat = data.TimeFormat;
 
 				if(typeof setSettingFC === 'undefined') {
-					if (country == "US" || country == "us" || country == "United States of America") {
+					if(country == "US" || country == "us" || country == "United States of America") {
 							setSettingFC = "f";
 							chrome.storage.local.set({'setSettingFC': 'f'});
 							chrome.storage.local.set({'TimeFormat': '12h'});
 						} else {
 							setSettingFC = "c";
 							chrome.storage.local.set({'setSettingFC': 'c'});
-						if (country == "CA" || country == "ca" || country == "Canada") {
+						if(country == "CA" || country == "ca" || country == "Canada") {
 							chrome.storage.local.set({'TimeFormat': '12h'});
 						}
-						else {
+						else{
 							chrome.storage.local.set({'TimeFormat': '24h'});
 						}
 					}
@@ -298,7 +303,14 @@ function badgeTemp(city,latandlong,country) {
 	lat = (latlong.split(','))[0];
 	lng = (latlong.split(','))[1];
 
-	fetch('https://api.openweathermap.org/data/2.5/weather?lat='+ lat + '&lon=' + lng + '&appid=6761dd7f8d0c3c216f9af6813064f867')
+    if(country == "US" || country == "us" || country == "United States of America" || country == "CA" || country == "ca" || country == "Canada") {
+      owmAPIback = 'https://api.openweathermap.org/data/2.5/weather?lat='+ lat + '&lon=' + lng + '&appid=6761dd7f8d0c3c216f9af6813064f867';
+    }
+    else{
+      owmAPIback = 'https://uv-weather.herokuapp.com/https://api.openweathermap.org/data/2.5/weather?lat='+ lat + '&lon=' + lng + '&appid=6761dd7f8d0c3c216f9af6813064f867';
+    }
+
+	fetch(owmAPIback)
 	.then((resp) => resp.json())
 	.then(function(resultBadge) {
 		window.resultBadge = resultBadge;
@@ -332,7 +344,14 @@ function badgeUV(city,latandlong,country) {
 	lat = (latlong.split(','))[0];
 	lng = (latlong.split(','))[1];
 
-		fetch('https://api.openweathermap.org/data/2.5/weather?lat='+ lat + '&lon=' + lng + '&appid=6761dd7f8d0c3c216f9af6813064f867')
+	    if(country == "US" || country == "us" || country == "United States of America" || country == "CA" || country == "ca" || country == "Canada") {
+	      owmAPIback = 'https://api.openweathermap.org/data/2.5/weather?lat='+ lat + '&lon=' + lng + '&appid=6761dd7f8d0c3c216f9af6813064f867';
+	    }
+	    else{
+	      owmAPIback = 'https://uv-weather.herokuapp.com/https://api.openweathermap.org/data/2.5/weather?lat='+ lat + '&lon=' + lng + '&appid=6761dd7f8d0c3c216f9af6813064f867';
+	    }
+
+		fetch(owmAPIback)
 		.then((resp) => resp.json())
 		.then(function(resultBadge) {
 			window.resultBadge = resultBadge;

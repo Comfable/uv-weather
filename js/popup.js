@@ -61,7 +61,13 @@ function popupPage(city,latandlong,country) {
   lat = (latlong.split(','))[0];
   lng = (latlong.split(','))[1];
 
-    fetch('https://api.openweathermap.org/data/2.5/weather?lat='+ lat + '&lon=' + lng + '&appid=6761dd7f8d0c3c216f9af6813064f867')
+    if(country == "US" || country == "us" || country == "United States of America" || country == "CA" || country == "ca" || country == "Canada") {
+      owmAPIpopup = 'https://api.openweathermap.org/data/2.5/weather?lat='+ lat + '&lon=' + lng + '&appid=6761dd7f8d0c3c216f9af6813064f867';
+    }
+    else{
+      owmAPIpopup = 'https://uv-weather.herokuapp.com/https://api.openweathermap.org/data/2.5/weather?lat='+ lat + '&lon=' + lng + '&appid=6761dd7f8d0c3c216f9af6813064f867';
+    }
+    fetch(owmAPIpopup)
     .then((resp) => resp.json())
     .then(function(resultBadge) {
       window.resultBadge = resultBadge;
@@ -1842,9 +1848,9 @@ chrome.storage.local.get('closeAds', function(data) {
       donateButton.style.display = "none";
       donateClose.style.display = "none";
       donateCard.style.display = "none";
-      setTimeout(function() {
-        window.open("https://uvweather.net/donate");
-      }, 1000);
+      // setTimeout(function() {
+      //   window.open("https://uvweather.net/donate");
+      // }, 1000);
   });
 
   document.querySelector("#setting_defualt_button_12h_all").addEventListener("click", (e) => {
@@ -2156,5 +2162,22 @@ chrome.storage.local.get('closeAds', function(data) {
       });
     });
   }; 
+
+
+var myToast = Toastify({
+ text: "This is a toast message",
+ destination: null,
+ newWindow: false,
+ gravity: 'top',
+ position: 'right',
+ close: true,
+ stopOnFocus: true,
+ backgroundColor: '#262626',
+ //callback: function(){},
+ //selector: '#container',
+ duration: 10000
+})
+
+//myToast.showToast();
 
 });
