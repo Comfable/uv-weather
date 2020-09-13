@@ -77,7 +77,6 @@ function popupPage(city,latandlong,country) {
       solarNighDay(timeZoneBadge,lat,lng);
       iconBadgeConvert(descriptionBadge,summaryBadge);
 
-
         const ads = '3dfc8ba9095bfa87462f459fc85238c6'; 
         return fetch('https://uv-weather.herokuapp.com/https://api.darksky.net/forecast/' + ads +'/' + latlong + '?solar')
         .then((resp) => resp.json())
@@ -190,15 +189,6 @@ function popupPage(city,latandlong,country) {
           else if(uv1 >= 11) {
             current_uv_note = (" (Extreme)");
             };
-
-          badgeGeneral(isDay,isNight,sunnyDayBadge,cloudyBadge,rainyBadge,snowyBadge,temperatureFbadge,temperatureCbadge,uv1);
-
-
-
-
-
-
-
 
 chrome.storage.local.get(['theme', 'autoDark'], function(data) {
     const currentTheme = data.theme;
@@ -495,6 +485,7 @@ chrome.storage.local.get('closeAds', function(data) {
   });
 
   refreshPopup();
+  updateBadge();
   document.getElementById("preload_body").style.display = "block";
 
         })
@@ -1304,35 +1295,48 @@ chrome.storage.local.get('closeAds', function(data) {
   };
 
   function updateBadge() {
+
+    animatedBadgeInterval = setInterval(function() {animatedBadge(isDay,sunnyDayBadge,cloudyBadge,rainyBadge,snowyBadge); }, 1000 / 30);
+    setTimeout(function() {
+      clearInterval(animatedBadgeInterval);   
+    }, 485);
     chrome.storage.local.get(['setSettingFC', 'setSettingUT', 'whiteIcon', 'badgeSize'], function(data) {
     setSettingFC = data.setSettingFC;
     setSettingUT = data.setSettingUT;
     currentWhiteIcon = data.whiteIcon;
     currentBadgeSize = data.badgeSize;
-
+    if(currentWhiteIcon == 0 || (typeof currentWhiteIcon == 'undefined') || currentWhiteIcon == 'undefined') {
+      currentWhiteIcon = 0;
+    } else{
+      currentWhiteIcon = 1;
+    }
       if(setSettingUT == "t" && setSettingFC == "c") {
             if(currentBadgeSize == 1) {
-              setTimeout(function(){
+              setTimeout(function() {
                 largBadgeNumber(temperatureCbadge, currentWhiteIcon)
               }, 550);
             }
             else {
-              badgeBackgroundColor();
-              badgeBackgroundImage(currentWhiteIcon);
-              chrome.browserAction.setBadgeText({"text":temperatureCbadge +"°C" });
+              chrome.browserAction.setBadgeText({"text":temperatureCbadge +"°C" });              
+              badgeBackgroundColor(currentWhiteIcon);
+              setTimeout(function() {
+                badgeBackgroundImage();
+              }, 550);
             }
       }
 
       else if(setSettingUT == "t" && setSettingFC == "f") {
           if(currentBadgeSize == 1) {
-            setTimeout(function(){
+            setTimeout(function() {
               largBadgeNumber(temperatureFbadge, currentWhiteIcon)
             }, 550);
           }
           else {
-            badgeBackgroundColor();
-            badgeBackgroundImage(currentWhiteIcon);
             chrome.browserAction.setBadgeText({"text":temperatureFbadge +"°F" });
+            badgeBackgroundColor(currentWhiteIcon);
+            setTimeout(function() {
+              badgeBackgroundImage();
+            }, 550);
           }
       }  
 
@@ -1345,9 +1349,11 @@ chrome.storage.local.get('closeAds', function(data) {
                     }, 550);
                   }
                   else{
-                    badgeBackgroundColor();
-                    badgeBackgroundImage(currentWhiteIcon);
                     chrome.browserAction.setBadgeText({"text": "UV"+ uv1});
+                    badgeBackgroundColor(currentWhiteIcon);
+                    setTimeout(function() {
+                      badgeBackgroundImage();
+                    }, 550);
                   }
         }
         else {
@@ -1357,9 +1363,11 @@ chrome.storage.local.get('closeAds', function(data) {
                     }, 550);
                   }
                   else{
-                    badgeBackgroundColor();
-                    badgeBackgroundImage(currentWhiteIcon);
-                    chrome.browserAction.setBadgeText({"text": "UV "+ uv1});
+                    chrome.browserAction.setBadgeText({"text": "UV "+ uv1});                    
+                    badgeBackgroundColor(currentWhiteIcon);
+                    setTimeout(function() {
+                      badgeBackgroundImage();
+                    }, 550);
                   }
         } 
       }
@@ -2200,11 +2208,5 @@ chrome.storage.local.get('closeAds', function(data) {
       });
     });
   }; 
-
-
-// }
-// else {
-//     document.getElementById("noInternet_popup").style.visibility = "visible";
-// }
 
 });

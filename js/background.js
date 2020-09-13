@@ -40,7 +40,7 @@ chrome.storage.local.get(['verUpdate'], function(data) {
 
 
 chrome.runtime.onStartup.addListener(function(details) {
-	chrome.storage.local.get(['latlong', 'city', 'country', 'setSettingUT'], function(data) { //update the extension
+	chrome.storage.local.get(['latlong', 'city', 'country', 'setSettingUT'], function(data) { 
   			latandlong = data.latlong;
  			city = data.city;
  			country = data.country;
@@ -57,8 +57,8 @@ chrome.runtime.onStartup.addListener(function(details) {
 
 
 chrome.runtime.onInstalled.addListener(function(details) {
-	if(details.reason == "update" && (navigator.onLine)) {
-			chrome.storage.local.get(['latlong', 'city', 'country'], function(data) { //update the extension
+	if(details.reason == "update") {
+			chrome.storage.local.get(['latlong', 'city', 'country'], function(data) {
 		  			latandlong = data.latlong;
 		 			city = data.city;
 		 			country = data.country;
@@ -87,7 +87,6 @@ function intervalUpdateFunction() {
 
 		var intervalUpdateTimes = window.setInterval(_ => {
 
-			if(navigator.onLine) {
 				chrome.storage.local.get(['latlong', 'city', 'country', 'setSettingUT'], function(data){
 					latandlong = data.latlong;
 					city = data.city;
@@ -99,7 +98,6 @@ function intervalUpdateFunction() {
 							badgeTemp(city,latandlong,country);
 					}
 				});
-			}
 		}, intervalUpdateTime);
 	});
 };
@@ -282,10 +280,8 @@ function badgeGeneral(isDay,isNight,sunnyDayBadge,cloudyBadge,rainyBadge,snowyBa
 			});
 		};
 		
-		if(navigator.onLine) {						
 			utfc = UTFC(function(value){	
 				});
-		}
 };
 
 
@@ -385,7 +381,7 @@ function badgeUV(city,latandlong,country) {
 
 
 chrome.runtime.onInstalled.addListener(function(details) {
-    if(details.reason == "install" && (navigator.onLine)) {
+    if(details.reason == "install") {
         var uninstallWebAddress = 'https://uvweather.net/goodbye/';
         var installWebAddress = 'https://uvweather.net/welcome/';
         chrome.tabs.create({ url: installWebAddress });
