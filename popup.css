@@ -2419,3 +2419,15 @@ ul li {
 .theme-switch_setting_animated_icon input {
   display:none;
 }
+
+.countryflagsClass {
+	width: 15px; 
+	margin-bottom: -3px; 
+	margin-left: 4px;
+	height: 15px;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	display: inline-block;
+	filter: opacity(80%);
+}

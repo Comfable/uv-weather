@@ -726,10 +726,10 @@ chrome.runtime.onInstalled.addListener(function(details) {
     if(details.reason == "install" && (navigator.onLine)) {
         var uninstallWebAddress = 'https://uvweather.net/goodbye/';
         var installWebAddress = 'https://uvweather.net/welcome/';
-        chrome.tabs.create({ url: installWebAddress });
+        //chrome.tabs.create({ url: installWebAddress });
         if(chrome.runtime.setUninstallURL) {
         	chrome.storage.local.clear();
-            chrome.runtime.setUninstallURL(uninstallWebAddress);
+            //chrome.runtime.setUninstallURL(uninstallWebAddress);
         }
     }
 });
