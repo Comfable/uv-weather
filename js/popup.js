@@ -13,6 +13,19 @@ weathermapStyleDark = 'mapbox://styles/comfable/ck53akus306vq1cn1vqcqmlbt';
 mapStyle = mapStyleLight;
 weathermapStyle = weathermapStyleLight;
 
+
+chrome.storage.local.get('closeAds', function(data) {
+    if(data.closeAds == 1) {
+      var donateButton = document.getElementById("donate_button");
+      var donateClose = document.getElementById("icon_colse_box");
+      var donateCard = document.getElementById("cardMain");
+      donateButton.style.display = "none";
+      donateClose.style.display = "none";
+      donateCard.style.display = "none";
+    }
+});
+
+
 chrome.storage.local.get(['theme', 'autoDark'], function(data) {
     const currentTheme = data.theme;
     const autoDarkTheme = data.autoDark;
@@ -1495,7 +1508,18 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
       window.open("https://uvweather.net/donate");
   });
 
-
+  document.querySelector("#icon_colse_box").addEventListener("click", (e) => {
+      chrome.storage.local.set({'closeAds': '1'});
+      var donateButton = document.getElementById("donate_button");
+      var donateClose = document.getElementById("icon_colse_box");
+      var donateCard = document.getElementById("cardMain");
+      donateButton.style.display = "none";
+      donateClose.style.display = "none";
+      donateCard.style.display = "none";
+      setTimeout(function() {
+        window.open("https://uvweather.net/donate");
+      }, 1000);
+  });
 
   function refreshPopup() {
   

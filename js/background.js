@@ -2,7 +2,7 @@ chrome.storage.local.get(['verUpdate'], function(data) {
 	verUpdate = data.verUpdate;
 
 	if(verUpdate !== 1 && verUpdate !== 2) {
-			fetch('https://us-central1-uv-weather.cloudfunctions.net/geolocation')
+			fetch('https://ipinfo.io/?token=6d819142de4288')
 		  	.then((resp) => resp.json())
 		  	 .then(function(result) {
 				countryAPI = JSON.stringify(result.country);
@@ -12,7 +12,7 @@ chrome.storage.local.get(['verUpdate'], function(data) {
 					}
 				city = JSON.stringify(result.city);
 				region = (JSON.stringify(result.region).split('"'))[1];
-				latandlong = JSON.stringify(result.cityLatLong);
+				latandlong = JSON.stringify(result.loc);
 				fullname = ((city.split('"'))[1].charAt(0).toUpperCase() + (city.split('"'))[1].slice(1)) + ", " + region.toUpperCase() + ", " + country;
 				chrome.storage.local.set({'city': city});
 				chrome.storage.local.set({'latlong': latandlong});
