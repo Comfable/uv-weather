@@ -11,6 +11,8 @@ const fadeEffect = setInterval(() => {
 }, 100);
 
 const b = chrome.extension.getBackgroundPage();
+chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
+
 document.addEventListener("DOMContentLoaded", function(event) {
 
 const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
@@ -457,7 +459,7 @@ if(navigator.onLine) {
   };
 
 
-  function UTFC (){
+  function UTFC() {
 
     chrome.storage.local.get(['setSettingFC', 'setSettingUT'], function(data) {
     setSettingFC = data.setSettingFC;
@@ -492,19 +494,19 @@ if(navigator.onLine) {
         document.getElementById("setting_defualt_button_c").checked = true;     
       }
 
-    if(setSettingFC == 'f'){
+    if(setSettingFC == 'f') {
         ftemp();
       }
     else {
         ctemp();
       }
 
-    return;
+    // return;
       });
     }
-    utfc = UTFC(function(value){  
-          });
-
+    // utfc = UTFC(function(value){  
+    //      });
+    UTFC();
 
   function uvRecommendation() {
     resUV0 = document.querySelectorAll('#icon_uv_1, #icon_uv_2, #icon_uv_3, #icon_uv_4, #icon_uv_5, #icon_uv_6, #icon_uv_1_tooltip, #icon_uv_2_tooltip, #icon_uv_3_tooltip, #icon_uv_4_tooltip, #icon_uv_5_tooltip, #icon_uv_6_tooltip')
@@ -545,7 +547,7 @@ if(navigator.onLine) {
         }
       }
   }
-  //uvRecommendation();
+  uvRecommendation();
 
   function iconCurrent_animated() {
   switch(b.iconBadge) {
@@ -731,7 +733,6 @@ if(navigator.onLine) {
       else{
         document.querySelector("#current_temp").textContent = b.temperatureCbadge;
       }
-      //document.querySelector("#current_temp").textContent = b.temperatureCbadge;
       document.querySelector("#current_report_temp").textContent = b.temperatureCbadge + "° C";
       document.querySelector("#current_accufeel").textContent = "AccuFeel " + accufeelResultC + "°";
       document.querySelector("#current_report_accufeel").textContent = accufeelResultC + "° C";
@@ -866,7 +867,7 @@ if(navigator.onLine) {
 
   
   function solarFunction12H() {
-    document.querySelector("#solar_now_date").textContent = dayjs.unix(b.updateTime + b.offsetUnix).format('MMMM DD, h:mm A') + ' (LT)';
+    document.querySelector("#solar_now_date").textContent = dayjs.unix(b.updateTimeBadge + b.offsetUnix).format('MMMM DD, h:mm A') + ' (LT)';
     document.querySelector("#solar_1_time").textContent = dayjs.unix(b.sunriseTimeSolar + b.offsetUnix).format('h:mm A');
     document.querySelector("#solar_2_time").textContent = dayjs.unix(b.sunsetTimeSolar + b.offsetUnix).format('h:mm A');
     document.querySelector("#solar_3_time").textContent = dayjs.unix(b.solarNoon + b.offsetUnix).format('h:mm A');
@@ -880,7 +881,7 @@ if(navigator.onLine) {
 
   function solarFunction24H() {
 
-    document.querySelector("#solar_now_date").textContent = dayjs.unix(b.updateTime + b.offsetUnix).format('MMMM DD, HH:mm') + ' (LT)';
+    document.querySelector("#solar_now_date").textContent = dayjs.unix(b.updateTimeBadge + b.offsetUnix).format('MMMM DD, HH:mm') + ' (LT)';
     document.querySelector("#solar_1_time").textContent = dayjs.unix(b.sunriseTimeSolar + b.offsetUnix).format('HH:mm');
     document.querySelector("#solar_2_time").textContent = dayjs.unix(b.sunsetTimeSolar + b.offsetUnix).format('HH:mm');
     document.querySelector("#solar_3_time").textContent = dayjs.unix(b.solarNoon + b.offsetUnix).format('HH:mm');
@@ -897,15 +898,15 @@ if(navigator.onLine) {
     chrome.storage.local.get('TimeFormat', function(dataTime) {
       if(dataTime.TimeFormat == "24h") {
         solarFunction24H();
-        document.querySelector("#next7_update_date").textContent = 'Updated at ' + dayjs.unix(b.updateTime + b.offsetUnix).format('MMM DD, HH:mm') + ' (LT)';
-        document.querySelector("#report_update_date").textContent = dayjs.unix(b.updateTime + b.offsetUnix).format('MMM DD, HH:mm') + ' (LT)';
-        document.querySelector("#next48_update_date").textContent = 'Updated at ' + dayjs.unix(b.updateTime + b.offsetUnix).format('MMM DD, HH:mm') + ' (LT)';
+        document.querySelector("#next7_update_date").textContent = 'Updated at ' + dayjs.unix(b.updateTimeBadge + b.offsetUnix).format('MMM DD, HH:mm') + ' (LT)';
+        document.querySelector("#report_update_date").textContent = dayjs.unix(b.updateTimeBadge + b.offsetUnix).format('MMM DD, HH:mm') + ' (LT)';
+        document.querySelector("#next48_update_date").textContent = 'Updated at ' + dayjs.unix(b.updateTimeBadge + b.offsetUnix).format('MMM DD, HH:mm') + ' (LT)';
           for(i=1;i<49;i++) {
               document.querySelector(`#forecast_${i}_hours`).textContent = dayjs.unix(b.result.hourly.data[i].time + b.offsetUnix).format('HH')+':00';
               document.querySelector(`#forecast_${i}_hours_uv`).textContent = "UVI " + Math.round((b.result.hourly.data[i].uvIndex) * uv_adj_daily(b.result.hourly.data[i].icon, b.result.hourly.data[i].cloudCover));
               document.querySelector(`#forecast_${i}_hours_rain`).textContent = Math.round(((b.result.hourly.data[i].precipProbability) * 100)/5)*5 + "%";
           }
-        document.querySelector("#map_popup_title").textContent = 'PRECIPITATION FORECAST | UV WEATHER | ' + dayjs.unix(b.updateTime + b.offsetUnix).format('MMMM DD, YYYY HH:mm') + ' (LT)';  
+        document.querySelector("#map_popup_title").textContent = 'PRECIPITATION FORECAST | UV WEATHER | ' + dayjs.unix(b.updateTimeBadge + b.offsetUnix).format('MMMM DD, YYYY HH:mm') + ' (LT)';  
         document.getElementById("setting_defualt_button_24h").checked = true;
         document.getElementById("setting_defualt_button_12h").checked = false;
         document.getElementById("setting_defualt_button_24h").disabled = true;
@@ -913,15 +914,15 @@ if(navigator.onLine) {
       } 
       else {
         solarFunction12H();
-        document.querySelector("#next7_update_date").textContent = 'Updated at ' + dayjs.unix(b.updateTime + b.offsetUnix).format('MMM DD, h:mm A') + ' (LT)';
-        document.querySelector("#report_update_date").textContent = dayjs.unix(b.updateTime + b.offsetUnix).format('MMM DD, h:mm A') + ' (LT)';
-        document.querySelector("#next48_update_date").textContent = 'Updated at ' + dayjs.unix(b.updateTime + b.offsetUnix).format('MMM DD, h:mm A') + ' (LT)';
+        document.querySelector("#next7_update_date").textContent = 'Updated at ' + dayjs.unix(b.updateTimeBadge + b.offsetUnix).format('MMM DD, h:mm A') + ' (LT)';
+        document.querySelector("#report_update_date").textContent = dayjs.unix(b.updateTimeBadge + b.offsetUnix).format('MMM DD, h:mm A') + ' (LT)';
+        document.querySelector("#next48_update_date").textContent = 'Updated at ' + dayjs.unix(b.updateTimeBadge + b.offsetUnix).format('MMM DD, h:mm A') + ' (LT)';
           for(i=1;i<49;i++) {
               document.querySelector(`#forecast_${i}_hours`).textContent = dayjs.unix(b.result.hourly.data[i].time + b.offsetUnix).format('h A');
               document.querySelector(`#forecast_${i}_hours_uv`).textContent = "UVI " + Math.round((b.result.hourly.data[i].uvIndex) * uv_adj_daily(b.result.hourly.data[i].icon, b.result.hourly.data[i].cloudCover));
               document.querySelector(`#forecast_${i}_hours_rain`).textContent = Math.round(((b.result.hourly.data[i].precipProbability) * 100)/5)*5 + "%";
           }
-        document.querySelector("#map_popup_title").textContent = 'PRECIPITATION FORECAST | UV WEATHER | ' + dayjs.unix(b.updateTime + b.offsetUnix).format('MMMM DD, YYYY h:mm A') + ' (LT)';
+        document.querySelector("#map_popup_title").textContent = 'PRECIPITATION FORECAST | UV WEATHER | ' + dayjs.unix(b.updateTimeBadge + b.offsetUnix).format('MMMM DD, YYYY h:mm A') + ' (LT)';
         document.getElementById("setting_defualt_button_12h").checked = true;
         document.getElementById("setting_defualt_button_24h").checked = false;
         document.getElementById("setting_defualt_button_12h").disabled = true;
@@ -929,9 +930,9 @@ if(navigator.onLine) {
       }
     });
   }
-  // if(b.result) {
-  //   refresh24h12h();
-  // }
+  if(b.result) {
+    refresh24h12h();
+  }
 
   chrome.storage.local.get('IntervalUpdate', function(data) {
     if(data.IntervalUpdate == "120") {
@@ -1035,9 +1036,9 @@ if(navigator.onLine) {
     }
 
   }
-    // if(b.result) {
-    //   next7Function();
-    //   }
+    if(b.result) {
+      next7Function();
+      }
 
   function reportFunction() {
     document.querySelector("#title_report_text").textContent = b.citys;
@@ -1053,7 +1054,7 @@ if(navigator.onLine) {
     document.querySelector("#current_report_ozone").textContent = b.ozone + " du";
     document.querySelector("#current_report_precipitation").textContent =  b.precipProbability + "%";
   }
-  //reportFunction();
+  reportFunction();
 
   function next48Function() {
     var i;
@@ -1096,9 +1097,9 @@ if(navigator.onLine) {
       }
     }
   }
-  // if(b.result) {
-  //   next48Function();
-  //   }
+  if(b.result) {
+    next48Function();
+    }
 
   function trackSunExposure() {
     if(b.uv1 == 0 || b.isNight) {
@@ -1108,7 +1109,7 @@ if(navigator.onLine) {
         document.querySelector("#link_qsun_text").textContent = "UV Weather App for iOS & Android";
       }
   }  
-  //trackSunExposure();
+  trackSunExposure();
 
   version_manifest = chrome.runtime.getManifest().version;
   document.querySelector("#title_version_home").textContent = "Version " + version_manifest;
@@ -1860,7 +1861,7 @@ document.querySelector("#setting_defualt_button_f_all").addEventListener("click"
           },
         "source": {
           "type": "raster",
-          "tiles": ["https://tile.openweathermap.org/map/precipitation/{z}/{x}/{y}.png?appid=c33b87de15e56ce0b4a4a0fef54d8ecd"],
+          "tiles": ["https://tile.openweathermap.org/map/precipitation/{z}/{x}/{y}.png?appid=a080c7a5e8cbf016d7fa32f33f975880"],
           "tileSize": 256
         },
         "minzoom": 1,

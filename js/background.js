@@ -35,17 +35,29 @@ chrome.storage.local.get(['verUpdate'], function(data) {
 				}
 			})
 	}
-	else{
 
-			chrome.storage.local.get(['latlong', 'city', 'country'], function(data) { //update the extension and refresh the popup
+});
+
+
+chrome.runtime.onStartup.addListener(function(details) {
+	chrome.storage.local.get(['latlong', 'city', 'country'], function(data) { //update the extension
+  			latandlong = data.latlong;
+ 			city = data.city;
+ 			country = data.country;
+			popupPage(city,latandlong,country);
+	});
+});
+
+
+chrome.runtime.onInstalled.addListener(function(details) {
+	if(details.reason == "update" && (navigator.onLine)) {
+			chrome.storage.local.get(['latlong', 'city', 'country'], function(data) { //update the extension
 		  			latandlong = data.latlong;
 		 			city = data.city;
 		 			country = data.country;
 					popupPage(city,latandlong,country);
 			});
-	
 	}
-
 });
 
 
@@ -408,7 +420,7 @@ function badgeGeneral(isDay,isNight,sunnyDayBadge,cloudyBadge,rainyBadge,snowyBa
 			chrome.storage.local.get(['setSettingFC', 'setSettingUT', 'TimeFormat'], function(data) {
 				setSettingFC = data.setSettingFC;
 				setSettingUT = data.setSettingUT;
-		   		TimeFormat = data.timeFormat;
+		   		TimeFormat = data.TimeFormat;
 
 				if(typeof setSettingFC === 'undefined') {
 					if (country == "US" || country == "us" || country == "United States of America") {
@@ -522,7 +534,6 @@ function badgeTemp(city,latandlong,country) {
 
 //popupPage----------------------------------------------------------------------------------
 function popupPage(city,latandlong,country) {
-	
 	country = country;
 	cityName = (city.split('"'))[1].charAt(0).toUpperCase() + (city.split('"'))[1].slice(1);
 	if(cityName && cityName.length > 15) {
@@ -549,19 +560,16 @@ function popupPage(city,latandlong,country) {
 			updateTimeBadge = resultBadge.dt;
 			timeZoneBadge = resultBadge.timezone;
 			cloudCoverBadge = resultBadge.clouds.all;
-
 			solarNighDay(timeZoneBadge,lat,lng);
 			iconBadgeConvert(descriptionBadge,summaryBadge);
-			
+
 				//popupPage
 				const ads = '3dfc8ba9095bfa87462f459fc85238c6';	
 				fetch('https://uv-weather.herokuapp.com/https://api.darksky.net/forecast/' + ads +'/' + latlong + '?solar')
 				.then((resp) => resp.json())
 				.then(function(result) {				
 					window.result = result;
-
 					updateTime = result.currently.time;
-
 					temperatureF =  Math.round(result.currently.temperature);
 					temperatureC =  f2c(temperatureF);
 					humidity = Math.round(100 * (result.currently.humidity));

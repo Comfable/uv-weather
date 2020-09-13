@@ -1,6 +1,6 @@
    {
     "name": "UV Weather",
-    "version": "1.0.80",
+    "version": "1.0.81",
     "description": "Live Weather for Real Life",
     "permissions": [ "activeTab","storage"],
     "background": {
