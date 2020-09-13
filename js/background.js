@@ -40,11 +40,18 @@ chrome.storage.local.get(['verUpdate'], function(data) {
 
 
 chrome.runtime.onStartup.addListener(function(details) {
-	chrome.storage.local.get(['latlong', 'city', 'country'], function(data) { //update the extension
+	chrome.storage.local.get(['latlong', 'city', 'country', 'setSettingUT'], function(data) { //update the extension
   			latandlong = data.latlong;
  			city = data.city;
  			country = data.country;
-			popupPage(city,latandlong,country);
+
+			if(data.setSettingUT == 'u') {
+					popupPage(city,latandlong,country);
+			}
+			else {
+					badgeTemp(city,latandlong,country);
+			}
+
 	});
 });
 
@@ -94,6 +101,7 @@ function intervalUpdateFunction() {
 		intervalUpdateTime = 1000 * 60 * intervalUpdateNumber; //miliseconds * seconds * minutes
 
 		var intervalUpdateTimes = window.setInterval(_ => {
+
 			if(navigator.onLine) {
 				chrome.storage.local.get(['latlong', 'city', 'country', 'setSettingUT'], function(data){
 					latandlong = data.latlong;
@@ -527,7 +535,7 @@ function badgeTemp(city,latandlong,country) {
 		cloudCoverBadge = resultBadge.clouds.all;
 		solarNighDay(timeZoneBadge,lat,lng);
 		iconBadgeConvert(descriptionBadge,summaryBadge);
-		badgeGeneral(isDay,isNight,sunnyDayBadge,cloudyBadge,rainyBadge,snowyBadge,temperatureFbadge,temperatureCbadge,uv1);	
+		badgeGeneral(isDay,isNight,sunnyDayBadge,cloudyBadge,rainyBadge,snowyBadge,temperatureFbadge,temperatureCbadge);	
 	});	
 };
 
