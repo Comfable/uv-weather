@@ -581,7 +581,7 @@ if(navigator.onLine) {
       document.querySelector("#current_temp_min").textContent = b.current_tempC_min + "°";
       document.querySelector("#forecast_tomorrow").textContent = b.update_tomorrow_c;
 
-      for (i=1;i<4;i++){
+      for (i=1;i<3;i++){
         document.querySelector(`#forecast_${i}_temp`).textContent = f2c(Math.round(b.result.daily.data[i].temperatureMax)) + "°";
       }
 
@@ -646,7 +646,7 @@ if(navigator.onLine) {
   function next7Function(){
     document.querySelector("#next7_update_date").textContent = 'Updated at ' + dayjs.unix(b.updateTime + b.offsetUnix).format('MMM DD, h:mm A');
 
-    for(i=1;i<4;i++) {
+    for(i=1;i<3;i++) {
       document.querySelector(`#forecast_${i}_day`).textContent = dayjs.unix(b.result.daily.data[i].time).format('dddd');
       document.querySelector(`#forecast_${i}_uv`).textContent = "UVI " + (Math.round ((b.result.daily.data[i].uvIndex) * uv_adj_daily(b.result.daily.data[i].icon)));
     }
@@ -662,67 +662,67 @@ if(navigator.onLine) {
       switch(forecast_icon) {
         case 'clear-day':
           document.querySelector('.forecast_'+ i +'_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_sun.svg")';
-          if(i<4) {
+          if(i<3) {
             document.querySelector('.forecast_'+ i*10 +'_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_sun.svg")';
           }
           break;
         case 'clear-night':
           document.querySelector('.forecast_'+ i +'_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_moon.svg")';
-          if(i<4) {          
+          if(i<3) {          
             document.querySelector('.forecast_'+ i*10 +'_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_moon.svg")';
           }
          break;
         case 'rain':
           document.querySelector('.forecast_'+ i +'_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_rain.svg")';
-          if(i<4) {
+          if(i<3) {
             document.querySelector('.forecast_'+ i*10 +'_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_rain.svg")';
           }
          break;
          case 'snow':
           document.querySelector('.forecast_'+ i +'_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_snow.svg")';
-          if(i<4) {
+          if(i<3) {
             document.querySelector('.forecast_'+ i*10 +'_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_snow.svg")';
           }
          break;
          case 'sleet':
           document.querySelector('.forecast_'+ i +'_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_snow_alt.svg")';
-          if(i<4) {
+          if(i<3) {
             document.querySelector('.forecast_'+ i*10 +'_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_snow_alt.svg")';
           }
          break;
          case 'wind':
           document.querySelector('.forecast_'+ i +'_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_wind.svg")';
-          if(i<4) {
+          if(i<3) {
             document.querySelector('.forecast_'+ i*10 +'_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_wind.svg")';
           }
          break;
          case 'fog':
           document.querySelector('.forecast_'+ i +'_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_fog_alt.svg")';
-          if(i<4) {
+          if(i<3) {
             document.querySelector('.forecast_'+ i*10 +'_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_fog_alt.svg")';
           }
          break;
          case 'cloudy':
           document.querySelector('.forecast_'+ i +'_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud.svg")';
-          if(i<4) {
+          if(i<3) {
             document.querySelector('.forecast_'+ i*10 +'_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud.svg")';
           }
          break;
          case 'partly-cloudy-day':
           document.querySelector('.forecast_'+ i +'_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_sun.svg")';
-          if(i<4) {
+          if(i<3) {
             document.querySelector('.forecast_'+ i*10 +'_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_sun.svg")';
           }
          break;
          case 'partly-cloudy-night':
           document.querySelector('.forecast_'+ i +'_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_moon.svg")';
-          if(i<4) {
+          if(i<3) {
             document.querySelector('.forecast_'+ i*10 +'_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_moon.svg")';
           }
          break;
          default:
           document.querySelector('.forecast_'+ i +'_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_sun.svg")';
-          if(i<4) {
+          if(i<3) {
             document.querySelector('.forecast_'+ i*10 +'_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_sun.svg")';
           }
         break;
@@ -938,6 +938,7 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
 
   var searchInner = document.getElementById("mapSearch");
   var searchTitle = document.getElementById("search_popup_title");
+  var searchOnMap = document.getElementById("click_on_map");
 
   var modalCurrent = document.getElementById("currentReport_popup");
   var modalSearch = document.getElementById("search_popup");
@@ -952,6 +953,7 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
     
     searchTitle.style.visibility = "hidden";
     searchInner.style.visibility = "hidden";
+    searchOnMap.style.visibility = "hidden";
 
     mapTitle.style.visibility = "visible";
     mapInner.style.visibility = "visible";
@@ -973,6 +975,7 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
     }, 300);
     searchTitle.style.visibility = "visible";
     searchInner.style.visibility = "visible";
+    searchOnMap.style.visibility = "visible";
     searchMap(mapStyle);
 
     var currentIcon = document.getElementById("home_icon_popup_page");
@@ -992,6 +995,7 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
       }, 300);
       searchTitle.style.visibility = "visible";
       searchInner.style.visibility = "visible";
+      searchOnMap.style.visibility = "visible";
       searchMap(mapStyle);
 
       var currentIcon = document.getElementById("home_icon_popup_page");
@@ -1011,6 +1015,7 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
     }, 300);
     searchTitle.style.visibility = "visible";
     searchInner.style.visibility = "visible";
+    searchOnMap.style.visibility = "visible";
     searchMap(mapStyle);
 
     var currentIcon = document.getElementById("home_icon_popup_page");
@@ -1132,12 +1137,14 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
   });
 
   document.querySelector("#search_popup_close").addEventListener("click", (e) => {
+
     document.getElementById("search_popup_close").style.transition = "all 0s";
     document.getElementById("search_popup_close").style.visibility = "hidden";
     searchTitle.style.visibility = "hidden";
     searchInner.style.visibility = "hidden";
+    searchOnMap.style.visibility = "hidden";
     closeAllPopup();
-
+    //document.getElementById('geocoderID').remove();
     removeClassIcons();
     var element = document.getElementById("home_icon_popup_page");
     element.classList.add("sub_menu_icon_active_Class");
@@ -1182,44 +1189,16 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
     currentSubMenu.classList.add("sub_menu_current_Class");    
   });
 
-//   document.querySelector("#currentLocation_button").addEventListener("click", (e) => {
-//       fetch('https://us-central1-uv-weather.cloudfunctions.net/geolocation')
-//         .then((resp) => resp.json())
-//          .then(function(result) {
-//         countryAPI = JSON.stringify(result.country);
-//         country = (countryAPI.split('"'))[1];
-//         if (country == "ZZ") {
-//             country = " "
-//           }
-//         city = JSON.stringify(result.city);
-//         region = (JSON.stringify(result.region).split('"'))[1];
-//         latandlong = JSON.stringify(result.cityLatLong);
-//         fullname = ((city.split('"'))[1].charAt(0).toUpperCase() + (city.split('"'))[1].slice(1)) + ", " + region.toUpperCase() + ", " + country;
-//         chrome.storage.local.set({'city': city});
-//         chrome.storage.local.set({'latlong': latandlong});
-//         chrome.storage.local.set({'country': country});
-//         chrome.storage.local.set({'fullname': fullname});
 
-//         document.querySelector("#search_currentLocation_text").textContent = fullname;
-//         setTimeout(function(){
-//           chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
-//         }, 50);
-//       });
-//       setTimeout(function() {
-//         refreshPopup();
-//       }, 1750);
-//       document.getElementById("currentLocation_button_searchPage").disabled = true;
-//       delayButtonCurrentLocation();      
-//   });
-
-// function delayButtonCurrentLocation() {
-//     setTimeout(function() {
-//       document.getElementById("currentLocation_button_searchPage").disabled = false;
-//     }, 5000);
-// };
 
 
   function searchMap(mapStyle) {
+    
+    var element = document.getElementById("mapSearch");
+    element.classList.add("blur");
+    setTimeout(function() {
+      element.classList.remove("blur");
+    }, 3000);
 
     mapboxgl.accessToken = 'pk.eyJ1IjoiY29tZmFibGUiLCJhIjoiY2sybTF6Z3FpMGRkeTNscWxhMnNybnU3cyJ9.VDvM0a0jaMlLMwlqBI8kUw';
     if(typeof ((b.latandlong.split('"'))[1]) !== 'undefined') {
@@ -1235,7 +1214,9 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
         style: mapStyle,
         center: latandlongMapBox,
         zoom: 9,
-        interactive: false
+        // maxZoom: 13,
+        // minZoom: 3,
+        interactive: true
     });
 
     map.dragRotate.disable();
@@ -1262,16 +1243,14 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
       flyTo: true,
       essential: true,
       types: 'place, locality, postcode',
-      limit: 8,
-      placeholder: 'Enter your city or town',
+      limit: 7,
+      placeholder: 'Enter the city or ZIP code',
       proximity: {
         longitude: center.lng,
         latitude: center.lat
       } 
     });
-
-
-
+    //document.getElementById('geocoderID').appendChild(geocoder.onAdd(map)); 
     map.addControl(geocoder);
 
     map.on('load', function() {
@@ -1281,17 +1260,72 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
           type: 'FeatureCollection',
           features: []
         }
+
       });
 
-      // map.addLayer({
-      //   id: 'point',
-      //   source: 'single-point',
-      //   type: 'circle',
-      //   paint: {
-      //     'circle-radius': 10,
-      //     'circle-color': '#FF662B'
-      //   }
-      // });
+
+
+      map.on('dblclick', function(e) {
+          locationByClick = map.queryRenderedFeatures(e.point);
+
+          lnglatclick = e.lngLat.wrap();
+          var lat = lnglatclick.lat;
+          var lng = lnglatclick.lng;
+          latlong =  '"' + lat + ',' + lng + '"';
+          latandlongbyClick = [lng,lat];
+
+          token = 'pk.eyJ1IjoiY29tZmFibGUiLCJhIjoiY2sybTF6Z3FpMGRkeTNscWxhMnNybnU3cyJ9.VDvM0a0jaMlLMwlqBI8kUw';
+          fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${latandlongbyClick}.json?types=place,locality&limit=1&access_token=${token}`)
+            .then((resp) => resp.json())
+             .then(function(result) {
+              
+              if(result.hasOwnProperty('features')) {
+                if(result.features.hasOwnProperty('0')) {
+                if(result.features[0].hasOwnProperty('place_name') && result.features[0].hasOwnProperty('text')) {
+                  var fullname = result.features[0].place_name;
+                  var cityAPI = result.features[0].text;
+
+                    latlong =  '"' + lat + ',' + lng + '"';
+                    city =  '"' + cityAPI + '"';
+
+                    if(((result.features[0].place_name).split(','))[2]) {
+                        country = ((result.features[0].place_name).split(','))[2];
+                    }
+                    else {
+                      country = ((result.features[0].place_name).split(','))[1];
+                    }
+
+                    chrome.storage.local.set({'fullname': fullname});
+                    chrome.storage.local.set({'latlong': latlong});
+                    chrome.storage.local.set({'city': city});
+                    chrome.storage.local.set({'country': country});
+
+                    setTimeout(function(){
+                      chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
+                    }, 350);
+
+                     setTimeout(function(){
+                        refreshPopup();
+                        chrome.storage.local.get('autoDark', function(data) {
+                        var autoDarkTheme = data.autoDark;
+                          if(autoDarkTheme == '1' && b.isNight) {
+                              darkDisplay();
+                              map.setStyle('mapbox://styles/mapbox/dark-v10');
+                          }
+                          else if(autoDarkTheme == '1' && b.isDay) {
+                              lightDisplay();
+                              map.setStyle('mapbox://styles/mapbox/outdoors-v11');
+                          }
+                        });
+                     }, 1350); 
+
+                }
+              }
+            }
+            });
+
+      });
+
 
 
       geocoder.on('result', function(ev) {
@@ -1402,6 +1436,15 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
     });
     document.querySelector("#map_popup_title").textContent = 'PRECIPITATION FORECAST | UV WEATHER | ' + dayjs.unix(b.updateTime + b.offsetUnix).format('MMMM DD, YYYY h:mm A');
   }; 
+
+
+
+
+
+
+
+
+
 
 
   function refreshPopup() {

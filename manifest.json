@@ -1,13 +1,13 @@
    {
     "name": "UV Weather",
-    "version": "1.0.53",
+    "version": "1.0.54",
     "description": "Live Weather for Real Life",
     "permissions": [ "activeTab","storage"],
     "background": {
     "scripts": ["/library/dayjs.min.js", "/library/util.js", "/js/background.js", "/library/accufeel.min.js", "/library/suncalc.min.js"],
     "persistent":true
     },
-    "content_security_policy":"script-src 'self' https://www.google-analytics.com https://api.tiles.mapbox.com https://api.mapbox.com; object-src 'self'",
+    "content_security_policy":"script-src 'self' https://www.google-analytics.com https://api.tiles.mapbox.com https://api.mapbox.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; object-src 'self'",
     "browser_action": {
     "default_title": "UV Weather",
       "default_popup": "popup.html",

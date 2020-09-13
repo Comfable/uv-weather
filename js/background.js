@@ -1,5 +1,3 @@
-const amb = 'pk.eyJ1IjoiY29tZmFibGUiLCJhIjoiY2sybTF6Z3FpMGRkeTNscWxhMnNybnU3cyJ9.VDvM0a0jaMlLMwlqBI8kUw';
-
 chrome.storage.local.get(['verUpdate'], function(data) {
 	verUpdate = data.verUpdate;
 
