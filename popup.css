@@ -1896,7 +1896,7 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 
 .click_on_map_Class {
   	position: absolute;
- 	top: 50px;
+ 	top: 10px; /* 50px*/
  	padding-top: 8px;
   	left: 250px;
   	display: block;

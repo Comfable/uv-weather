@@ -6,8 +6,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
 
-mapStyle = 'mapbox://styles/comfable/ck53bat1517jo1ck5jh1kp02m';
-weathermapStyle = 'mapbox://styles/mapbox/light-v10';
+mapStyleLight = 'mapbox://styles/comfable/ck540l8q22n1n1cpb2uceu4we';
+weathermapStyleLight = 'mapbox://styles/mapbox/light-v10';
+mapStyleDark = 'mapbox://styles/comfable/ck53akus306vq1cn1vqcqmlbt';
+weathermapStyleDark = 'mapbox://styles/comfable/ck53akus306vq1cn1vqcqmlbt';
+
+mapStyle = mapStyleLight;
+weathermapStyle = weathermapStyleLight;
 
 chrome.storage.local.get(['theme', 'autoDark'], function(data) {
     const currentTheme = data.theme;
@@ -137,8 +142,8 @@ chrome.storage.local.get(['theme', 'autoDark'], function(data) {
 
   function darkDisplay() {
     document.documentElement.setAttribute('data-theme', 'dark');
-    mapStyle = 'mapbox://styles/comfable/ck53akus306vq1cn1vqcqmlbt';
-    weathermapStyle = 'mapbox://styles/comfable/ck53akus306vq1cn1vqcqmlbt';
+    mapStyle = mapStyleDark;
+    weathermapStyle = weathermapStyleDark;
     document.getElementById("setting_defualt_theme_d").checked = true;
     document.getElementById("checkbox").checked = true;
     chrome.storage.local.set({'theme': 'dark'});
@@ -146,8 +151,8 @@ chrome.storage.local.get(['theme', 'autoDark'], function(data) {
 
   function lightDisplay() {
     document.documentElement.setAttribute('data-theme', 'light');
-    mapStyle = 'mapbox://styles/comfable/ck53bat1517jo1ck5jh1kp02m';
-    weathermapStyle = 'mapbox://styles/mapbox/light-v10';
+    mapStyle = mapStyleLight;
+    weathermapStyle = weathermapStyleLight;
     document.getElementById("setting_defualt_theme_l").checked = true;
     document.getElementById("checkbox").checked = false;
     chrome.storage.local.set({'theme': 'light'}); 
@@ -612,7 +617,7 @@ if(navigator.onLine) {
     document.querySelector("#current_temp_min").textContent = b.current_tempF_min + "°";
     document.querySelector("#forecast_tomorrow").textContent = b.update_tomorrow_f;
 
-    for(i=1;i<4;i++) {
+    for(i=1;i<3;i++) {
         document.querySelector(`#forecast_${i}_temp`).textContent = Math.round(b.result.daily.data[i].temperatureMax) + "°";
     }
 
@@ -1216,7 +1221,7 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
         container: 'mapSearch',
         style: mapStyle,
         center: latandlongMapBox,
-        zoom: 9,
+        zoom: 10,
         // maxZoom: 13,
         // minZoom: 3,
         interactive: true
@@ -1242,7 +1247,7 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
       flyTo: true,
       essential: true,
       types: 'place, locality, postcode',
-      limit: 8,
+      limit: 7,
       placeholder: 'Enter the city or ZIP code',
       proximity: {
         longitude: center.lng,
@@ -1250,9 +1255,11 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
       } 
     });
      
-    if (document.getElementById('geocoderID').children.length === 0){
-      document.getElementById('geocoderID').appendChild(geocoder.onAdd(map));
-    }
+    // if (document.getElementById('geocoderID').children.length === 0){
+    //   document.getElementById('geocoderID').appendChild(geocoder.onAdd(map));
+    // }
+    map.addControl(geocoder);
+
     //var nav = new mapboxgl.NavigationControl();
     //map.addControl(nav, 'bottom-right');
 
@@ -1313,11 +1320,11 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
                         var autoDarkTheme = data.autoDark;
                           if(autoDarkTheme == '1' && b.isNight) {
                               darkDisplay();
-                              map.setStyle('mapbox://styles/mapbox/dark-v10');
+                              map.setStyle(mapStyleDark);
                           }
                           else if(autoDarkTheme == '1' && b.isDay) {
                               lightDisplay();
-                              map.setStyle('mapbox://styles/mapbox/outdoors-v11');
+                              map.setStyle(mapStyleLight);
                           }
                         });
                      }, 1350); 
@@ -1338,16 +1345,6 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
           var cityAPI = ev.result.text;
           var lat = ev.result.geometry.coordinates[1];
           var lng = ev.result.geometry.coordinates[0];
-          
-          map.flyTo({
-            center: [lng,lat],
-            zoom: 9,
-            speed: 1.2,
-            curve: 1.42,
-            easing(t) {
-              return t;
-            }
-          });
 
           latlong =  '"' + lat + ',' + lng + '"';
           city =  '"' + cityAPI + '"';
@@ -1375,15 +1372,27 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
               var autoDarkTheme = data.autoDark;
                 if(autoDarkTheme == '1' && b.isNight) {
                     darkDisplay();
-                    map.setStyle('mapbox://styles/mapbox/dark-v10');
+                    map.setStyle(mapStyleDark);
                 }
                 else if(autoDarkTheme == '1' && b.isDay) {
                     lightDisplay();
-                    map.setStyle('mapbox://styles/mapbox/outdoors-v11');
+                    map.setStyle(mapStyleLight);
                 }
               });
 
-           }, 1050); 
+           }, 1050);
+
+          map.flyTo({
+            center: [lng,lat],
+            zoom: 10,
+            speed: 1.2,
+            curve: 1.42,
+            easing(t) {
+              return t;
+            }
+          });
+
+
       });
 
       geocoder.on('error', function(ev) {
