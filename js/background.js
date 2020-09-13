@@ -493,12 +493,22 @@ function uvReader(city,latandlong,country) {
 				clearInterval(animatedBadgeInterval);   
 				}, 500);
 
+
 			chrome.storage.local.get('whiteIcon', function(data) {
 			  var currentWhiteIcon = data.whiteIcon;
-			  if(currentWhiteIcon == 0 || (typeof currentWhiteIcon == 'undefined') || currentWhiteIcon == 'undefined') {
+			  if((window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) && (typeof currentWhiteIcon == 'undefined') || currentWhiteIcon == 'undefined') {
 			  	var currentWhiteIcon = 0;
-			  } else{
+			  }
+			  else if((window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) && (typeof currentWhiteIcon == 'undefined') || currentWhiteIcon == 'undefined') {
 			  	var currentWhiteIcon = 1;
+			  	chrome.storage.local.set({'whiteIcon': '1'});
+			  }
+			  else if((window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) && currentWhiteIcon == 0) {
+			  	var currentWhiteIcon = 0;
+			  } 
+			  else if((window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) && currentWhiteIcon == 1) {
+			  	var currentWhiteIcon = 1;
+			  	chrome.storage.local.set({'whiteIcon': '1'});
 			  }
 
 			setTimeout(function(){
@@ -513,6 +523,8 @@ function uvReader(city,latandlong,country) {
 
 }; 
 
+
+			
 
 
 /* Check whether new version is installed */

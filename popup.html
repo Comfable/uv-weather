@@ -11,11 +11,14 @@
   <script src="/js/background.js"></script>
   <script src="/js/popup.js"></script>
   <link rel="stylesheet" href="/popup.css" media="screen" />
-  <script async src="/library/ga.js"></script>
-
+  <script type="text/javascript" src="/library/gtm.js"></script>
+  
   <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.js'></script>
   <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.css' rel='stylesheet' />
 
+  <noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N9SQMMN" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+  </noscript>
 
 </head>
 
@@ -74,7 +77,7 @@
         <hr class="hr_forecast_menu">
       <a href="https://uvweather.net/request-a-feature" target="_blank" class="whitelink"><li>Request a Feature</li></a>
         <hr class="hr_forecast_menu">
-      <a href="https://chrome.uvweather.net" target="_blank" class="whitelink"><li>Write a Review</li></a>
+      <a href="https://chrome.google.com/webstore/detail/uv-weather/ngeokhpbgoadbpdpnplcminbjhdecjeb/reviews" target="_blank" class="whitelink"><li>Write a Review</li></a>
         <hr class="hr_forecast_menu">
       <a href="https://uvweather.net/about/" target="_blank" class="whitelink"><li>About Us</li></a>
     </ul>

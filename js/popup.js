@@ -3,7 +3,6 @@ chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
 
 document.addEventListener("DOMContentLoaded", function(event) {
 
-
 const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
 
 mapStyleLight = 'mapbox://styles/comfable/ck540l8q22n1n1cpb2uceu4we';
@@ -117,6 +116,13 @@ chrome.storage.local.get(['theme', 'autoDark'], function(data) {
           else {
               chrome.storage.local.set({'whiteIcon': '0'});
           }
+      }
+
+      if((window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) && (typeof currentWhiteIcon == 'undefined') || currentWhiteIcon == 'undefined') {
+          document.getElementById("checkbox_whiteIcon").checked = true;
+      }
+      else if((window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) && (typeof currentWhiteIcon == 'undefined') || currentWhiteIcon == 'undefined') {
+          document.getElementById("checkbox_whiteIcon").checked = false;
       }
 
     function switchWhiteIcon(e) {
@@ -1259,7 +1265,8 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
     //   document.getElementById('geocoderID').appendChild(geocoder.onAdd(map));
     // }
     map.addControl(geocoder);
-
+	map.addControl(new mapboxgl.NavigationControl());
+	
     //var nav = new mapboxgl.NavigationControl();
     //map.addControl(nav, 'bottom-right');
 
