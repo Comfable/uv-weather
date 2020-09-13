@@ -2222,3 +2222,13 @@ i {
 	top: 316px;
 	z-index: 150;
 }
+
+.hr_forecast_bold {
+    height: 2px;
+    border: 0;
+    background: var(--bg-color-hr); 
+    width: 116% !important;
+    margin-left: -9% !important;
+  	margin-bottom: 8px;
+  	margin-top: 7px;
+}

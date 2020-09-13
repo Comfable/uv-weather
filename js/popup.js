@@ -616,7 +616,7 @@ if(navigator.onLine) {
         document.querySelector(`#forecast_${i*10}_temp_min`).textContent = f2c(Math.round(b.result.daily.data[i].temperatureMin)) + "°";
       }
 
-      for (i=1;i<25;i++){
+      for (i=1;i<49;i++){
         document.querySelector(`#forecast_${i}_hours_temp`).textContent = Math.round(((b.result.hourly.data[i].temperature)-32) * 5/9) + "°";
       }
 
@@ -661,7 +661,7 @@ if(navigator.onLine) {
       document.querySelector(`#forecast_${i*10}_temp_min`).textContent = Math.round(b.result.daily.data[i].temperatureMin) + "°";
     }
 
-    for (i=1;i<25;i++){
+    for (i=1;i<49;i++){
       document.querySelector(`#forecast_${i}_hours_temp`).textContent = Math.round(b.result.hourly.data[i].temperature) + "°";
     }
     document.querySelector("#summery_next7_text").textContent = b.summaryDailyF;
@@ -813,14 +813,14 @@ if(navigator.onLine) {
   function next48Function() {
     document.querySelector("#next48_update_date").textContent = 'Updated at ' + dayjs.unix(b.updateTime + b.offsetUnix).format('MMM DD, h:mm A');
 
-    for(i=1;i<25;i++) {
+    for(i=1;i<49;i++) {
       document.querySelector(`#forecast_${i}_hours`).textContent = dayjs.unix(b.result.hourly.data[i].time + b.offsetUnix).format('h A');
       document.querySelector(`#forecast_${i}_hours_uv`).textContent = "UVI " + Math.round((b.result.hourly.data[i].uvIndex) * uv_adj_daily(b.result.hourly.data[i].icon, b.result.hourly.data[i].cloudCover));
       document.querySelector(`#forecast_${i}_hours_rain`).textContent = Math.round(((b.result.hourly.data[i].precipProbability) * 100)/5)*5 + "%";
     }
   
     var i;
-    for(i = 1; i < 25; i++) {
+    for(i = 1; i < 49; i++) {
       forecast_hours_icon = b.result.hourly.data[i].icon;
     switch(forecast_hours_icon) {
       case 'clear-day':
@@ -1095,6 +1095,30 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
     currentIcon.classList.add("sub_menu_current_icon_Class");
 
     var currentSubMenu = document.getElementById("sub_menu_setting");
+    currentSubMenu.classList.add("sub_menu_current_Class");
+  });
+
+
+  document.querySelector("#sidebar_map").addEventListener("click", (e) => {
+    document.getElementById("openSidebarMenu").checked = false;
+    closeAllPopup();
+    removeClassIcons();
+    setTimeout(function() {
+      document.getElementById("map_popup_close").style.visibility = "visible";
+    }, 300);
+    
+    searchTitle.style.visibility = "hidden";
+    searchInner.style.visibility = "hidden";
+    searchOnMap.style.visibility = "hidden";
+
+    mapTitle.style.visibility = "visible";
+    mapInner.style.visibility = "visible";
+    weatherMap(weathermapStyle);
+
+    var currentIcon = document.getElementById("home_icon_popup_page");
+    currentIcon.classList.add("sub_menu_current_icon_Class");
+
+    var currentSubMenu = document.getElementById("sub_menu_home");
     currentSubMenu.classList.add("sub_menu_current_Class");
   });
 
