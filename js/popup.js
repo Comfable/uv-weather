@@ -116,6 +116,44 @@ chrome.storage.local.get(['theme', 'autoDark'], function(data) {
 
 
 
+ const toggleSwitchAnimatedIcon = document.querySelector('.theme-switch_setting_animated_icon input[type="checkbox"]');
+  chrome.storage.local.get('animatedIcon', function(data) {
+    const currentAnimatedIcon = data.animatedIcon;
+
+      if(currentAnimatedIcon) {      
+          if(currentAnimatedIcon === '1') {
+              toggleSwitchAnimatedIcon.checked = true;
+              chrome.storage.local.set({'animatedIcon': '1'});
+          }
+          else {
+              chrome.storage.local.set({'animatedIcon': '0'});
+          }
+      }
+      else {
+              toggleSwitchAnimatedIcon.checked = true;
+              chrome.storage.local.set({'animatedIcon': '1'});
+      }
+
+    function switchAnimatedIcon(e) {
+      if(e.target.checked) {
+        chrome.storage.local.set({'animatedIcon': '1'});
+        document.getElementById("checkbox_animatedIcon").checked = true;
+        document.getElementById("checkbox_animatedIcon").disabled = true;
+        iconCurrent_animated();
+        delayButtonAnimatedIcon();
+      }
+      else {
+        chrome.storage.local.set({'animatedIcon': '0'});
+        document.getElementById("checkbox_animatedIcon").checked = false;
+        document.getElementById("checkbox_animatedIcon").disabled = true;
+        iconCurrent();
+        delayButtonAnimatedIcon();
+      }    
+    }
+    toggleSwitchAnimatedIcon.addEventListener('change', switchAnimatedIcon, false);
+  });
+
+
 
   const toggleSwitchWhiteIcon = document.querySelector('.theme-switch_setting input[type="checkbox"]');
   chrome.storage.local.get('whiteIcon', function(data) {
@@ -186,16 +224,21 @@ chrome.storage.local.get(['theme', 'autoDark'], function(data) {
   function delayButtonAutoDarkmode() {
       setTimeout(function() {
       document.getElementById("checkbox_autoDark").disabled = false;
-    }, 3000);
+    }, 1500);
   };
 
 
   function delayButtonWhiteIcon() {
       setTimeout(function() {
       document.getElementById("checkbox_whiteIcon").disabled = false;
-    }, 3000);
+    }, 1500);
   };
 
+  function delayButtonAnimatedIcon() {
+      setTimeout(function() {
+      document.getElementById("checkbox_animatedIcon").disabled = false;
+    }, 1500);
+  };
 
 if(navigator.onLine) {
 
@@ -466,8 +509,7 @@ if(navigator.onLine) {
   }
   uvRecommendation();
 
-  function iconCurrent() {
-
+  function iconCurrent_animated() {
   switch(b.icon) {
     case 'clear-day':
       if(b.isDay) {
@@ -514,7 +556,46 @@ if(navigator.onLine) {
     break;
    }
   }
-  iconCurrent();
+
+
+  function iconCurrent() {
+  switch(b.icon) {
+    case 'clear-day':
+      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/wi_sun.svg")';
+      break;
+    case 'clear-night':
+      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/wi_moon.svg")';
+      break;
+    case 'rain':
+      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/wi_cloud_rain.svg")'; 
+      break;
+    case 'snow':
+      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/wi_cloud_snow.svg")';
+      break;
+    case 'sleet':
+      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/wi_cloud_snow_alt.svg")';
+      break;
+    case 'wind':
+      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/wi_wind.svg")';   
+      break;
+    case 'fog':
+      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/wi_cloud_fog_alt.svg")';
+      break;
+    case 'cloudy':
+      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/wi_cloud.svg")';
+      break;
+    case 'partly-cloudy-day':
+      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/wi_cloud_sun.svg")';
+      break;
+    case 'partly-cloudy-night':
+      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/wi_cloud_moon.svg")';
+      break;
+    default:
+      document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/wi_sun.svg")';
+    break;
+   }
+  }
+
 
   function groundCurrent() {
   switch(b.icon) {
@@ -1846,7 +1927,14 @@ document.querySelector("#setting_defualt_button_f_all").addEventListener("click"
       document.querySelector("#current_uv").textContent = b.uv1;
       document.querySelector("#current_uv_note").textContent = b.current_uv_note;
 
-      iconCurrent();
+    chrome.storage.local.get('animatedIcon', function(data) {
+        if(data.animatedIcon === '1') {
+              iconCurrent_animated();
+          }
+          else {
+              iconCurrent();
+          }
+      });
 
       uvRecommendation();
       next48Function();

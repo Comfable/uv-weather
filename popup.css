@@ -2398,3 +2398,21 @@ ul li {
     position: relative;
     float: left;
 }
+
+.setting_section_animated_icon_Class {
+	position: relative;
+}
+.setting_section_title_animated_icon_Class {
+  	margin-right: 35px !important;
+}
+.theme-switch_setting_animated_icon {
+  display: inline-block;
+  height: 25px;
+  position: relative;
+  width: 50px;
+  margin-left: 4px;
+}
+
+.theme-switch_setting_animated_icon input {
+  display:none;
+}
