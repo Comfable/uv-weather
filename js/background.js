@@ -500,7 +500,7 @@ function badgeTemp(city,latandlong,country) {
 	lat = (latlong.split(','))[0];
 	lng = (latlong.split(','))[1];
 
-	fetch('https://api.openweathermap.org/data/2.5/weather?lat='+ lat + '&lon=' + lng + '&appid=a080c7a5e8cbf016d7fa32f33f975880')
+	fetch('https://api.openweathermap.org/data/2.5/weather?lat='+ lat + '&lon=' + lng + '&appid=6761dd7f8d0c3c216f9af6813064f867')
 	.then((resp) => resp.json())
 	.then(function(resultBadge) {
 		window.resultBadge = resultBadge;
@@ -536,7 +536,7 @@ function popupPage(city,latandlong,country) {
 	lat = (latlong.split(','))[0];
 	lng = (latlong.split(','))[1];
 
-		fetch('https://api.openweathermap.org/data/2.5/weather?lat='+ lat + '&lon=' + lng + '&appid=a080c7a5e8cbf016d7fa32f33f975880')
+		fetch('https://api.openweathermap.org/data/2.5/weather?lat='+ lat + '&lon=' + lng + '&appid=6761dd7f8d0c3c216f9af6813064f867')
 		.then((resp) => resp.json())
 		.then(function(resultBadge) {
 			window.resultBadge = resultBadge;

@@ -724,8 +724,13 @@ if(navigator.onLine) {
           b.current_tempC_min = b.temperatureCbadge
         }
       document.querySelector("#current_report_dewPoint").textContent = b.dewPointC + "° C";
-      const countUptemperatureCbadge = new CountUp('current_temp', b.temperatureCbadge, options);
-      countUptemperatureCbadge.start();
+      if(b.temperatureCbadge >= 6 || b.temperatureCbadge <= -6) {
+        const countUptemperatureCbadge = new CountUp('current_temp', b.temperatureCbadge, options);
+        countUptemperatureCbadge.start();
+      }
+      else{
+        document.querySelector("#current_temp").textContent = b.temperatureCbadge;
+      }
       //document.querySelector("#current_temp").textContent = b.temperatureCbadge;
       document.querySelector("#current_report_temp").textContent = b.temperatureCbadge + "° C";
       document.querySelector("#current_accufeel").textContent = "AccuFeel " + accufeelResultC + "°";
@@ -795,9 +800,13 @@ if(navigator.onLine) {
         b.current_tempF_min = b.temperatureFbadge
       }
     document.querySelector("#current_report_dewPoint").textContent = b.dewPointF + "° F";
-    const countUptemperatureFbadge = new CountUp('current_temp', b.temperatureFbadge, options);
-    countUptemperatureFbadge.start();
-    //document.querySelector("#current_temp").textContent = b.temperatureFbadge;
+      if(b.temperatureFbadge >= 6 || b.temperatureFbadge <= -6) {
+        const countUptemperatureFbadge = new CountUp('current_temp', b.temperatureFbadge, options);
+        countUptemperatureFbadge.start();
+      }
+      else{
+        document.querySelector("#current_temp").textContent = b.temperatureFbadge;
+      }
     document.querySelector("#current_report_temp").textContent = b.temperatureFbadge + "° F";
     document.querySelector("#current_accufeel").textContent = "AccuFeel " + accufeelResultF + "°";
     document.querySelector("#current_report_accufeel").textContent = accufeelResultF + "° F";    
