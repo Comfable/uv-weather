@@ -986,7 +986,7 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 	position: absolute;
 	left: 30px;
 	right: 30px;
-	top: 110px;
+	top: 100px;
 }
 .next48_table_Class {
 	position: absolute;
@@ -1526,7 +1526,6 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
     margin: 0 0 -3px -3px;
     display: hidden !important;
     background-repeat: no-repeat;
-    cursor: pointer;
 }
 
 .mapboxgl-ctrl-top-left, .mapboxgl-ctrl-top-right, .mapboxgl-ctrl-bottom-left, .mapboxgl-ctrl-bottom-right {
@@ -1867,7 +1866,7 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   	width: 30px;
   	height: 30px;
   	background-image: url("/images/left-arrow.svg");
-  	filter: drop-shadow( 2px 2px 2px rgba(0, 0, 0, .50));
+    filter: var(--icon-color);
   	background-position: center;
   	background-repeat: no-repeat;
   	background-size: cover;

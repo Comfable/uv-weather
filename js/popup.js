@@ -16,46 +16,30 @@ chrome.storage.local.get(['theme', 'autoDark'], function(data) {
           document.documentElement.setAttribute('data-theme', currentTheme);
           
           if(autoDarkTheme == '1' && b.isNight) {
-              document.documentElement.setAttribute('data-theme', 'dark');
-              mapStyle = 'mapbox://styles/mapbox/dark-v10';
-              document.querySelector('.modal_search_close').style.filter = 'invert(100%) sepia(0%) saturate(526%) hue-rotate(14deg) brightness(114%) contrast(101%) drop-shadow( 2px 2px 2px rgba(0, 0, 0, .50))';
-              document.getElementById("setting_defualt_theme_d").checked = true;
-              document.getElementById("checkbox").checked = true;
-              chrome.storage.local.set({'theme': 'dark'});
+              darkDisplay();
+          }
+          else if(autoDarkTheme == '1' && b.isDay) {
+              lightDisplay();    
           }
           else if(currentTheme === 'dark') {
               toggleSwitch.checked = true;
-              mapStyle = 'mapbox://styles/mapbox/dark-v10';
-              document.querySelector('.modal_search_close').style.filter = 'invert(100%) sepia(0%) saturate(526%) hue-rotate(14deg) brightness(114%) contrast(101%) drop-shadow( 2px 2px 2px rgba(0, 0, 0, .50))';
-              document.getElementById("setting_defualt_theme_d").checked = true;      
+              darkDisplay();     
           }
           else {
-              mapStyle = 'mapbox://styles/mapbox/outdoors-v11';
-              document.querySelector('.modal_search_close').style.filter = 'invert(0%) sepia(100%) saturate(7500%) hue-rotate(59deg) brightness(89%) contrast(111%) drop-shadow( 2px 2px 2px rgba(0, 0, 0, .50))';
-              document.getElementById("setting_defualt_theme_l").checked = true;      
+              lightDisplay();
           }
       }
       else{
-              document.getElementById("setting_defualt_theme_l").checked = true;      
+        document.getElementById("setting_defualt_theme_l").checked = true;      
       }
 
       function switchTheme(e) {
           if(e.target.checked) {
-              document.documentElement.setAttribute('data-theme', 'dark');
-              chrome.storage.local.set({'theme': 'dark'});
-              document.getElementById("checkbox").disabled = true;
-              mapStyle = 'mapbox://styles/mapbox/dark-v10';
-              document.querySelector('.modal_search_close').style.filter = 'invert(100%) sepia(0%) saturate(526%) hue-rotate(14deg) brightness(114%) contrast(101%) drop-shadow( 2px 2px 2px rgba(0, 0, 0, .50))';
-              document.getElementById("setting_defualt_theme_d").checked = true;      
+              darkDisplay();    
               delayButtonDarkmode();
           }
           else {
-              document.documentElement.setAttribute('data-theme', 'light');
-              chrome.storage.local.set({'theme': 'light'});
-              document.getElementById("checkbox").disabled = true;
-              mapStyle = 'mapbox://styles/mapbox/outdoors-v11';
-              document.querySelector('.modal_search_close').style.filter = 'invert(0%) sepia(100%) saturate(7500%) hue-rotate(59deg) brightness(89%) contrast(111%) drop-shadow( 2px 2px 2px rgba(0, 0, 0, .50))';
-              document.getElementById("setting_defualt_theme_l").checked = true;      
+              lightDisplay();    
               delayButtonDarkmode();
           }    
       }
@@ -65,26 +49,12 @@ chrome.storage.local.get(['theme', 'autoDark'], function(data) {
 
  
   document.querySelector("#setting_defualt_theme_d").addEventListener("click", (e) => {
-      document.documentElement.setAttribute('data-theme', 'dark');
-      chrome.storage.local.set({'theme': 'dark'});
-      mapStyle = 'mapbox://styles/mapbox/dark-v10';
-      document.querySelector('.modal_search_close').style.filter = 'invert(100%) sepia(0%) saturate(526%) hue-rotate(14deg) brightness(114%) contrast(101%) drop-shadow( 2px 2px 2px rgba(0, 0, 0, .50))';
-      document.getElementById("setting_defualt_theme_d").checked = true;
-      document.getElementById("checkbox").checked = true;
+    darkDisplay();
   });
-
 
   document.querySelector("#setting_defualt_theme_l").addEventListener("click", (e) => {
-      document.documentElement.setAttribute('data-theme', 'light');
-      chrome.storage.local.set({'theme': 'light'});
-      mapStyle = 'mapbox://styles/mapbox/outdoors-v11';
-      document.querySelector('.modal_search_close').style.filter = 'invert(0%) sepia(100%) saturate(7500%) hue-rotate(59deg) brightness(89%) contrast(111%) drop-shadow( 2px 2px 2px rgba(0, 0, 0, .50))';
-      document.getElementById("setting_defualt_theme_l").checked = true;
-      document.getElementById("checkbox").checked = false;
+    lightDisplay();
   });
-
-
-
 
 
   const toggleSwitchAutoDark = document.querySelector('.theme-switch_setting_auto_dark input[type="checkbox"]');
@@ -106,14 +76,11 @@ chrome.storage.local.get(['theme', 'autoDark'], function(data) {
         chrome.storage.local.set({'autoDark': '1'});
         document.getElementById("checkbox_autoDark").checked = true;
         document.getElementById("checkbox_autoDark").disabled = true;
-
-        if(isNight) {
-          document.documentElement.setAttribute('data-theme', 'dark');
-          mapStyle = 'mapbox://styles/mapbox/dark-v10';
-          document.querySelector('.modal_search_close').style.filter = 'invert(100%) sepia(0%) saturate(526%) hue-rotate(14deg) brightness(114%) contrast(101%) drop-shadow( 2px 2px 2px rgba(0, 0, 0, .50))';
-          document.getElementById("setting_defualt_theme_d").checked = true;
-          document.getElementById("checkbox").checked = true;
-          chrome.storage.local.set({'theme': 'dark'});
+        if(b.isNight) {
+            darkDisplay();
+        }
+        else {
+            lightDisplay();    
         }
 
         delayButtonAutoDarkmode();
@@ -126,7 +93,6 @@ chrome.storage.local.get(['theme', 'autoDark'], function(data) {
       }    
     }
     toggleSwitchAutoDark.addEventListener('change', switchAutoDark, false);
-
   });
 
 
@@ -168,11 +134,21 @@ chrome.storage.local.get(['theme', 'autoDark'], function(data) {
   });
 
 
+  function darkDisplay() {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    mapStyle = 'mapbox://styles/mapbox/dark-v10';
+    document.getElementById("setting_defualt_theme_d").checked = true;
+    document.getElementById("checkbox").checked = true;
+    chrome.storage.local.set({'theme': 'dark'});
+  };
 
-
-
-
-
+  function lightDisplay() {
+    document.documentElement.setAttribute('data-theme', 'light');
+    mapStyle = 'mapbox://styles/mapbox/outdoors-v11';
+    document.getElementById("setting_defualt_theme_l").checked = true;
+    document.getElementById("checkbox").checked = false;
+    chrome.storage.local.set({'theme': 'light'}); 
+  };
 
   function delayButtonDarkmode() {
       setTimeout(function() {
@@ -1244,6 +1220,7 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
 
 
   function searchMap(mapStyle) {
+
     mapboxgl.accessToken = 'pk.eyJ1IjoiY29tZmFibGUiLCJhIjoiY2sybTF6Z3FpMGRkeTNscWxhMnNybnU3cyJ9.VDvM0a0jaMlLMwlqBI8kUw';
     if(typeof ((b.latandlong.split('"'))[1]) !== 'undefined') {
       latandlongMapBox = ((b.latandlong.split('"'))[1]).split(',').reverse().join(',');
@@ -1356,6 +1333,19 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
 
            setTimeout(function(){
               refreshPopup();
+
+              chrome.storage.local.get('autoDark', function(data) {
+              var autoDarkTheme = data.autoDark;
+                if(autoDarkTheme == '1' && b.isNight) {
+                    darkDisplay();
+                    map.setStyle('mapbox://styles/mapbox/dark-v10');
+                }
+                else if(autoDarkTheme == '1' && b.isDay) {
+                    lightDisplay();
+                    map.setStyle('mapbox://styles/mapbox/outdoors-v11');
+                }
+              });
+
            }, 1050); 
       });
 
