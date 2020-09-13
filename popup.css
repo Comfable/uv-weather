@@ -931,6 +931,11 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 	left: 0px;
 	top: 30px;
 }
+.title_48_group_Class_setting {
+	position: absolute;
+	left: 0px;
+	top: 17px;
+}
 .title_uv_group_Class_report {
 	position: absolute;
 	left: 0px;
@@ -1003,7 +1008,7 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 	position: absolute;
 	left: 30px;
 	right: 30px;
-	top: 100px;
+	top: 85px;
 }
 .forecast_day_modal_Class {
 	position: relative;
@@ -1205,7 +1210,7 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 	position: absolute;
 	width: 310px;
 	left: 250px;
-	top: 37px;
+	top: 50px;
 	max-width: 310px;
 	display: none;
 	vertical-align: right;
