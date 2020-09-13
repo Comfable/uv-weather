@@ -8,7 +8,7 @@
 :root {
 	--web-view-ids: UV_Weather;
 	--font-color: #424242;
-    --bg-color: #fff;
+    --bg-color: #f2f2f2;
     --bg-color-hr: -webkit-gradient(linear, 0 0, 100% 0, from(white), to(white), color-stop(25%, #cfcfcf), color-stop(75%, #cfcfcf));
     --icon-color: invert(29%) sepia(32%) saturate(4%) hue-rotate(318deg) brightness(94%) contrast(94%);
     --bg-color-autosearch: #efefef;
@@ -36,7 +36,7 @@
   left: 0;
   position: fixed;
   top: 0;
-  transition: opacity 0.3s linear;
+  transition: opacity 1.150s linear;
   width: 100%;
   z-index: 99999;
   opacity: 1;
@@ -191,7 +191,6 @@ input:checked + .slider_setting:before {
 }
 
 body {
-	background: #E5E5E5;
 	width: 560px;
 	height: 526px;
 	font-weight: 250 !important;
@@ -341,13 +340,14 @@ input[type=checkbox] {
     box-sizing: border-box;
     cursor: pointer;
     position: absolute;
-    z-index: 9950;
+    z-index: 10950;
     top: 22px;
     left: 526px;
     width: 22px;
     height: 22px !important;
     border: solid 0px red;
 }
+
 .spinner {
     transition: all 0.3s;
     box-sizing: border-box;
@@ -376,6 +376,11 @@ input[type=checkbox] {
     float: left;
     margin-top: 3px;
 }
+
+.sidebarIconToggle:hover .spinner{
+    background-color: #FF662B;
+}
+
 input[type=checkbox]:checked ~ .sidebarIconToggle > .horizontal {
     transition: all 0.3s;
     box-sizing: border-box;
@@ -448,28 +453,39 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 	transform: matrix(1,0,0,1,0,0);
 	filter: invert(100%) drop-shadow( 2px 2px 2px rgba(0, 0, 0, .50));
 }
-.current_temp_group_Class {
+.current_temp_groupA_Class {
 	position: absolute;
-	top: 125px;
+	display: flex;
+	flex-direction: column;	
+	align-items: center;
+	top: 135px;
 	width: 250px;
-	margin: 0 auto;
+  }
+.current_temp_groupB_Class {
+	position: relative;
+	display: flex;
+	flex-direction: column;	
+	align-items: flex-start;
+  }
+
+.current_temp_groupC_Class {
 	display: flex;
 	flex-direction: row;
 	align-items: flex-start;
 	justify-content: center;
-}
+  	align-content: flex-start;
+  }  
 .current_temp_Class {
 	position: relative;
 	font-weight: 450;
 	font-size: 50px;
+	line-height: 35px;
 	color: rgba(255,255,255,1);
 	text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.50);
 }
 .current_temp_sign_Class {
 	position: relative;
-	margin-top: 7px;
-	margin-bottom: 4px;
-	margin-left: 0px;
+	margin-top: -5px;
 	font-weight: 450;
 	font-size: 25px;
 	color: rgba(255,255,255,1);
@@ -480,22 +496,22 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 	flex-direction: row;
 	align-items: flex-end;
 }
-.current_accufeel_Class {
+
+.current_accufeel_location_Class {
 	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.50);	
 	position: relative;
-	margin-left: 15px;
 	font-weight: 250;
 	font-size: 12px;
 	color: rgba(255,255,255,1);
 	text-align: left;
+	margin-left: 15px;
+}
+
+.current_accufeel_Class {
+	position: relative;
 }
 .location_Class {
 	position: relative;
-	margin: 0 0 6px 30px;
-	font-weight: 250;
-	font-size: 12px;
-	color: rgba(255,255,255,1);
-	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.50);
 }
 .location_Class_adj {
 	margin: 0 0 6px 6px;
@@ -518,53 +534,30 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 	box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.50);
 }
 .current_temp_maxmin_Class {
-	position: absolute;
-	top: 195px;
-	width: 250px;
-	margin: 0 auto;
-	font-weight: normal;
-	font-size: 18px;
+	position: relative;
+	font-weight: 200;
 	color: rgba(255,255,255,1);
-	display: flex;
-	flex-direction: row;
-	align-items: flex-end;
-	justify-content: center;
+	margin-top: 10px;
 	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.50);
 }
 .current_temp_max_Class {
-	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.50);
-	position: relative;
 	text-align: left;
-	font-weight: normal;
-	font-size: 18px;
-	color: rgba(255,255,255,1);
+	font-size: 15px;
 }
 .current_temp_max_icon_Class {
-	font-size: 12px !important;
-	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.50);
-	position: relative;
+	font-size: 8px !important;
 	text-align: left;
 	font-style: normal;
-	font-weight: normal;
-	color: rgba(255,255,255,1);
 }
 .current_temp_min_icon_Class {
-	font-size: 12px !important;
-	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.50);
-	position: relative;
+	font-size: 8px !important;
 	text-align: left;
 	font-style: normal;
-	font-weight: normal;
-	color: rgba(255,255,255,1);
 }
 .current_temp_min_Class {
-	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.50);
-	position: relative;
 	text-align: left;
-	font-weight: normal;
-	font-size: 18px;
-	color: rgba(255,255,255,1);
-	padding-left: 10px;
+	font-size: 15px;
+	padding-left: 0;
 }
 .down_Class {
 	position: absolute;
@@ -584,14 +577,16 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 }
 .group_uv_Class {
 	position: absolute;
-	left: 0px;
-	top: 250px;
+	display: flex;
+	flex-direction: column;	
+	align-items: center;
+	width: 250px;
+	top: 308px;
 }
 .current_uv_group_Class {
 	position: relative;
 	display: flex;
 	flex-direction: row;
-	width: 250px;
 	margin: 0 auto;
 	align-items: center;
 	justify-content: center;
@@ -600,18 +595,19 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.50);
 	text-align: center;
 	font-weight: normal;
-	font-size: 18px;
+	font-size: 14px;
 	color: rgba(255,255,255,1);
 	padding-right: 5px;
 }
 .current_uv_Class {
 	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.50);
 	text-align: center;
-	font-weight: normal;
-	font-size: 18px;
+	font-weight: 200;
+	font-size: 15px;
 	color: rgba(255,255,255,1);
 }
 .current_uv_note_Class {
+	display: none;
 	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.50);
 	text-align: center;
 	font-weight: 250;
@@ -625,15 +621,12 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
-	margin-top: 10px;
-	margin-left: 60px;
-	width: 130px;
+	margin-top: 5px;
 }
 .icon_uv_all_Class {
-	width: 15px;
-	max-width: 15px;
-	height: 15px; 
-	margin-right: 2px;
+	width: 11px;
+	height: 11px; 
+	margin-right: 1px;
 }
 .link_qsun_Class {
 	position: absolute;
@@ -665,17 +658,11 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 	line-height: 250% !important;
 }
 
-
-
-
-
-
-
-
 .title_uv_group_Class {
+	display: none;
 	position: absolute;
-	left: 325px;
-	top: 67px;
+	left: 270px;
+	top: 20px;
 	display: flex;
     flex-direction: row;
     align-items: center;
@@ -711,8 +698,8 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
     }
 }
 .uv_weather_logo_Class {
-	width: 50px;
-	height: 50px;
+	width: 27px;
+	height: 27px;
 	padding-right: 5px;
 	-webkit-animation: focus-in-contract .75s cubic-bezier(.25,.46,.45,.94) .1s both;
     animation: focus-in-contract .75s cubic-bezier(.25,.46,.45,.94) .1s both;
@@ -722,9 +709,10 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 .title_uv_Class {
 	position: relative;
 	text-align: left;
-	font-size: 15px;
+	font-size: 11px;
 }
 .title_powered_Class {
+	display: none;
 	position: relative;
 	text-align: left;
 	font-weight: 250;
@@ -735,12 +723,13 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 	text-align: left;
 	font-weight: 250;
 	font-size: 9px;
-	margin-top: 2px;
+	margin-top: 1px;
 }
 
 
 
 .forecast_tomorrow_Class {
+	display: none;
 	position: absolute;
 	left: 250px;
 	top: 200px;
@@ -807,26 +796,12 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 	left: 280.49px;
 	top: 371px;
 }
-.forecast_Class {
-	position: absolute;
-	left: 280px;
-	top: 247px;
-}
-.one_day_Class {
-	position: relative;
-}
-.two_day_Class {
-	position: relative;
-}
-.three_day_Class {
-	position: relative;
-}
 .hr_forecast {
     height: 1px;
     border: 0;
     background: var(--bg-color-hr); 
-    width: 116% !important;
-    margin-left: -9% !important;
+    width: 108% !important;
+    margin-left: -4% !important;
   	margin-bottom: 8px;
   	margin-top: 7px;
 }
@@ -852,7 +827,7 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 	display: inline-block;
 	text-align: left;
 	font-weight: 250;
-	font-size: 16px;
+	font-size: 14px;
 	padding-left: 10px;
 }
 .forecast_temp_Class {
@@ -929,7 +904,7 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 .title_uv_group_Class_setting {
 	position: absolute;
 	left: 0px;
-	top: 30px;
+	top: 17px;
 }
 .title_48_group_Class_setting {
 	position: absolute;
@@ -965,7 +940,7 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 	position: absolute;
 	left: 30px;
 	right: 30px;
-	top: 130px;
+	top: 100px;
 }
 .solar_Class {
 	position: relative;
@@ -1002,7 +977,7 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 	position: absolute;
 	left: 30px;
 	right: 30px;
-	top: 100px;
+	top: 85px;
 }
 .next48_table_Class {
 	position: absolute;
@@ -1171,7 +1146,7 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
  z-index: 15000;
  }
  .tooltip-bottom {
- top: 125%;
+ top: 0;
  margin-bottom: 0 !important;
  margin-top: 0 !important;
  padding-bottom: 10 !important;
@@ -1187,9 +1162,9 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 .modal {
   position: absolute;
   width: 310px;
-  height: 426px;
+  height: 410px;
   left: 250px;
-  top: 37px;
+  top: 50px;
   max-width: 310px;
   display: none;
   vertical-align: right;
@@ -1201,7 +1176,7 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   border-radius: 0px !important;
   background-color: var(--bg-color);
   color: var(--font-color);
-  z-index: 1000;
+  z-index: 1200;
 }
 
 .modal_next48 {
@@ -1221,7 +1196,7 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 	border-radius: 0px !important;
 	background-color: var(--bg-color);
 	color: var(--font-color);
-	 z-index: 1100;
+	 z-index: 1200;
 }
 .modal_close {
   position: absolute;
@@ -1230,7 +1205,6 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   display: block;
   width: 30px;
   height: 30px;
-  z-index: 1000;
   background-image: url("/images/left-arrow.svg");
   background-position: center;
   background-repeat: no-repeat;
@@ -1469,9 +1443,10 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 }
 
 .share_group_Class {
+	display: none;
 	position: absolute;
-	left: 190px;
-	top: 507px;
+	top: 30px;
+	left: 245px;
 	align-items: center;
 	justify-content: center;
 	align-content: center;
@@ -1583,13 +1558,15 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 
 /* Non solid icons get a stroke */
 .resp-sharing-button__icon {
-  	stroke: #fff;
+  	stroke: var(--font-color);
+  	filter: brightness(225%)!important;
   	fill: none
 }
 
 /* Solid icons get a fill */
 .resp-sharing-button__icon--solid {
- 	fill: #fff;
+ 	fill: var(--font-color);
+ 	filter: brightness(225%)!important;
  	filter: drop-shadow( 2px 2px 2px rgba(0, 0, 0, .50));
   	stroke: none
 }
@@ -1799,7 +1776,6 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 
 .geocoderClass {
   position: absolute;
-  z-index: 1;
   width: 250px;
   left: 250px;
   margin-left: 50px;
@@ -2037,7 +2013,7 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 	font-weight: 450;
 	font-size: 15px;
 	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.50);
-	margin-top: 10px;
+	margin-top: 0;
 	margin-left: 2px;
 	padding-right: 10px;
 }
@@ -2058,7 +2034,7 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   border: solid 0px white;
   border-radius: 5px;
   color: white;
-  padding: 10px 30px;
+  padding: 10px 15px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -2066,14 +2042,12 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   margin: 4px 2px;
   cursor: pointer;
   transition: all 0.15s;
+  text-transform: uppercase;
 }
 
 .button_current_donate_Class:focus { outline:0 !important; }
 
 .card {
-  position: absolute;
-  top: 325px;
-  left: 280px;
   width: 250px;
   text-align: center;
   display: inline-block;
@@ -2109,12 +2083,13 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 
 .donate_button_Class {
   position: absolute;
-  top: 409px;
+  top: 402px;
   left: 280px;
   width: 250px;
   text-align: center;
   display: inline-block;
   vertical-align: middle;
+  z-index: 1050;
 }
 
 i {
@@ -2128,7 +2103,7 @@ i {
   transform: rotate(-45deg);
   -webkit-transform: rotate(-45deg);
   color: white;
-  margin-left: 10px;
+  margin-left: 3px;
   border-color: white;
 }
 
@@ -2192,13 +2167,14 @@ i {
 	width: 20px;
 	height: 20px;
 	cursor: pointer;
+	z-index: 1150;
 }
 
 .icon_close_box_Class {
 	position: absolute;
 	left: 519px;
-	top: 316px;
-	z-index: 150;
+	top: 309px;
+	z-index: 1150;
 }
 
 .hr_forecast_bold {
@@ -2454,4 +2430,26 @@ ul li {
 	background-size: cover;
 	display: inline-block;
 	filter: opacity(80%);
+}
+
+.forecast_Class {
+	position: absolute;
+	left: 280px;
+	top: 340px;
+}
+.one_day_Class {
+	position: relative;
+}
+.two_day_Class {
+	position: relative;
+}
+.three_day_Class {
+	position: relative;
+}
+
+.icon_box_Class{
+	position: absolute;
+  	top: 318px;
+  	left: 280px;
+	z-index: 1000;
 }

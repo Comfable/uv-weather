@@ -1,3 +1,9 @@
+document.addEventListener("DOMContentLoaded", function() {
+
+chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
+const b = chrome.extension.getBackgroundPage();
+
+
 const preloader = document.querySelector('.preloader');
 const fadeEffect = setInterval(() => {
   if (!preloader.style.opacity) {
@@ -10,10 +16,6 @@ const fadeEffect = setInterval(() => {
   }
 }, 100);
 
-const b = chrome.extension.getBackgroundPage();
-chrome.runtime.sendMessage({ msg: "backgroundUpdate" });
-
-document.addEventListener("DOMContentLoaded", function(event) {
 
 const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
 const options = {duration: 0.9,};
@@ -1111,8 +1113,8 @@ if(navigator.onLine) {
   }  
   trackSunExposure();
 
-  version_manifest = chrome.runtime.getManifest().version;
-  document.querySelector("#title_version_home").textContent = "Version " + version_manifest;
+  // version_manifest = chrome.runtime.getManifest().version;
+  // document.querySelector("#title_version_home").textContent = version_manifest;
 
 
   document.querySelector("#setting_defualt_button_u_all").addEventListener("click", (e) => { 
@@ -2082,7 +2084,7 @@ document.querySelector("#setting_defualt_button_f_all").addEventListener("click"
       }
       reportFunction();
       trackSunExposure();
-    }, 250);
+    }, 500);
   }
 
 
@@ -2094,4 +2096,4 @@ else {
 
 });
 
-window.addEventListener('load',  () => fadeEffect);
+//window.addEventListener('load',  () => fadeEffect);
