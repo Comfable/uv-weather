@@ -47,18 +47,25 @@ chrome.runtime.onMessage.addListener(
 );
 
 
-intervalUpdateTime = 1000 * 60 * 60; //miliseconds * seconds * minutes
-var intervalUpdateTimes = window.setInterval(_ => {
-	if(navigator.onLine) {
-		chrome.storage.local.get(['latlong', 'city', 'country'], function(data){
-			latandlong = data.latlong;
-			city = data.city;
-			country = data.country;
-			uvReader(city,latandlong,country)
-		});
-	}
-}, intervalUpdateTime);
 
+chrome.storage.local.get(['IntervalUpdate'], function(data) {
+	intervalUpdateNumber = data.IntervalUpdate;
+	if(typeof intervalUpdateNumber == 'undefined') {
+		var intervalUpdateNumber = 120;
+		chrome.storage.local.set({'IntervalUpdate': '120'});
+	};
+	intervalUpdateTime = 1000 * 60 * intervalUpdateNumber; //miliseconds * seconds * minutes
+	var intervalUpdateTimes = window.setInterval(_ => {
+		if(navigator.onLine) {
+			chrome.storage.local.get(['latlong', 'city', 'country'], function(data){
+				latandlong = data.latlong;
+				city = data.city;
+				country = data.country;
+				uvReader(city,latandlong,country)
+			});
+		}
+	}, intervalUpdateTime);
+});
 
 
 
@@ -78,6 +85,15 @@ function uvReader(city,latandlong,country) {
 	lat = (latlong.split(','))[0];
 	lng = (latlong.split(','))[1];
 	
+
+	// fetch('https://weather.cit.api.here.com/weather/1.0/report.json?product=observation&latitude=-33.8686&longitude=151.2094&oneobservation=true&app_id=devportal-demo-20180625&app_code=9v2BkviRwi9Ot26kp2IysQ')
+	// .then((resp) => resp.json())
+	// .then(function(result) {				
+	// 	window.result = result;
+	// 	console.log(JSON.stringify(result));
+	// });
+
+
 	const ads = '2589e0786e11ce470e7d98e9153039f4';	
 	fetch('https://uv-weather.herokuapp.com/https://api.darksky.net/forecast/' + ads +'/' + latlong + '?solar')
 
@@ -94,7 +110,6 @@ function uvReader(city,latandlong,country) {
 		sunnyDay = false;
 		rainy = false;
 		snowy = false;
-
 			systemTime = new Date();
 			systemTimeUnix = Math.round((systemTime).getTime() / 1000);
 			DeviceTimeDifferenceFromGMT = systemTime.getTimezoneOffset() / 60;
@@ -507,22 +522,50 @@ function uvReader(city,latandlong,country) {
 						updateTimeRelativeBadge = dayjs.unix(updateTime + offsetUnix).format('h:mm A');
 					}
 					
+					// if(setSettingUT == "u" && setSettingFC == "f") {
+					// 	toolTipBadge = temperatureF + "° " + summary + "\n" + accufeelResultF + "° " + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
+					// 	chrome.browserAction.setTitle({title: toolTipBadge});
+					// 	}
+					// else if(setSettingUT == "u" && setSettingFC == "c") {
+					// 	toolTipBadge = temperatureC + "° " + summary + "\n" + accufeelResultC + "° " + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
+					// 	chrome.browserAction.setTitle({title: toolTipBadge});
+					// 	}
+					// else if(setSettingUT == "t" && setSettingFC == "f") {
+					// 	toolTipBadge = temperatureF + "° " + summary + "\n" + accufeelResultF + "° " + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
+					// 	chrome.browserAction.setTitle({title: toolTipBadge});
+					// 	}
+					// else if(setSettingUT == "t" && setSettingFC == "c") {
+					// 	toolTipBadge = temperatureC + "° " + summary + "\n" + accufeelResultC + "° " + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
+					// 	chrome.browserAction.setTitle({title: toolTipBadge});
+					// 	};
+
+
+					cityBadge = city.split('"')[1];
+					regionBadge = country;
+					temperatureFbadge = temperatureF;
+					temperatureCbadge = temperatureC;
+					current_tempF_max_badge = current_tempF_max;
+					current_tempF_min_badge = current_tempF_min;
+
+					current_tempC_max_badge = current_tempC_max;
+					current_tempC_min_badge = current_tempC_min;
+
 					if(setSettingUT == "u" && setSettingFC == "f") {
-						toolTipBadge = temperatureF + "° " + summary + "\n" + accufeelResultF + "° " + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
+						toolTipBadge = temperatureFbadge + "° " + summary + " - " + cityBadge + ", " + regionBadge + "\n" + current_tempF_max_badge + "° max / " + current_tempF_min_badge + "°" + "\n" + "Updated at " + updateTimeRelativeBadge;
 						chrome.browserAction.setTitle({title: toolTipBadge});
 						}
 					else if(setSettingUT == "u" && setSettingFC == "c") {
-						toolTipBadge = temperatureC + "° " + summary + "\n" + accufeelResultC + "° " + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
+						toolTipBadge = temperatureCbadge + "° " + summary + " - " + cityBadge + ", " + regionBadge + "\n" + current_tempC_max_badge + "° max / " + current_tempC_min_badge + "° min" + "\n" + "Updated at " + updateTimeRelativeBadge;
 						chrome.browserAction.setTitle({title: toolTipBadge});
 						}
 					else if(setSettingUT == "t" && setSettingFC == "f") {
-						toolTipBadge = temperatureF + "° " + summary + "\n" + accufeelResultF + "° " + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
+						toolTipBadge = temperatureFbadge + "° " + summary + " - " + cityBadge + ", " + regionBadge + "\n" + current_tempF_max_badge + "° max / " + current_tempF_min_badge + "° min" + "\n" + "Updated at " + updateTimeRelativeBadge;
 						chrome.browserAction.setTitle({title: toolTipBadge});
 						}
 					else if(setSettingUT == "t" && setSettingFC == "c") {
-						toolTipBadge = temperatureC + "° " + summary + "\n" + accufeelResultC + "° " + " AccuFeel " + "\n" + uv1 + " UVI " + current_uv_note + "\n" + "Updated at " + updateTimeRelativeBadge;
+						toolTipBadge = temperatureCbadge + "° " + summary + " - " + cityBadge + ", " + regionBadge + "\n" + current_tempC_max_badge + "° max / " + current_tempC_min_badge + "° min" + "\n" + "Updated at " + updateTimeRelativeBadge;
 						chrome.browserAction.setTitle({title: toolTipBadge});
-						};
+						};						
 					return;
 
 				});
@@ -562,28 +605,6 @@ function uvReader(city,latandlong,country) {
 			  }
 
 
-
-			// chrome.storage.local.get(['whiteIcon','badgeSize'], function(data) {
-			//   var currentWhiteIcon = data.whiteIcon;
-			//   var currentBadgeSize = data.badgeSize;
-			//   if(currentWhiteIcon == 0 || (typeof currentWhiteIcon == 'undefined') || currentWhiteIcon == 'undefined') {
-			//   	var currentWhiteIcon = 0;
-			//   } else{
-			//   	var currentWhiteIcon = 1;
-			//   }
-			//   	if(currentBadgeSize == 1) {
-
-
-			// 	  }
-			// 	  else{
-					// setTimeout(function(){
-					// 	badgeBackgroundImage(currentWhiteIcon);   
-					// }, 550);
-			// 	  }
-			// });
-
-
-
 			});
 
 
@@ -598,19 +619,18 @@ function uvReader(city,latandlong,country) {
 }; 
 
 
-			
-
-
 /* Check whether new version is installed */
 chrome.runtime.onInstalled.addListener(function(details) {
     /* other 'reason's include 'update' */
     if(details.reason == "install" && (navigator.onLine)) {
         /* If first install, set uninstall URL */
-        var uninstallGoogleFormLink = 'https://uvweather.net/goodbye/';
+        var uninstallWebAddress = 'https://uvweather.net/goodbye/';
+        var installWebAddress = 'https://uvweather.net/welcome/';
+        chrome.tabs.create({ url: installWebAddress });
         /* If Chrome version supports it... */
         if(chrome.runtime.setUninstallURL) {
         	chrome.storage.local.clear();
-            chrome.runtime.setUninstallURL(uninstallGoogleFormLink);
+            chrome.runtime.setUninstallURL(uninstallWebAddress);
         }
     }
 });

@@ -66,11 +66,11 @@ chrome.storage.local.get(['theme', 'autoDark'], function(data) {
   });
 
  
-  document.querySelector("#setting_defualt_theme_d").addEventListener("click", (e) => {
+  document.querySelector("#setting_defualt_theme_d_all").addEventListener("click", (e) => {
     darkDisplay();
   });
 
-  document.querySelector("#setting_defualt_theme_l").addEventListener("click", (e) => {
+  document.querySelector("#setting_defualt_theme_l_all").addEventListener("click", (e) => {
     lightDisplay();
   });
 
@@ -199,9 +199,9 @@ chrome.storage.local.get(['theme', 'autoDark'], function(data) {
 
 if(navigator.onLine) {
 
-  //window.onload = function() { 
+  window.onload = function() { 
     refreshPopup();
-  //};
+  };
 
   country = b.country;
 
@@ -389,20 +389,20 @@ if(navigator.onLine) {
 
     if(setSettingUT == "u") {
         document.getElementById("setting_defualt_button_u").checked = true;
-        document.getElementById("setting_defualt_button_u").disabled = true;
+        //document.getElementById("setting_defualt_button_u_all").disabled = true;
       }
     else {
         document.getElementById("setting_defualt_button_t").checked = true;
-        document.getElementById("setting_defualt_button_t").disabled = true;
+        //document.getElementById("setting_defualt_button_t_all").disabled = true;
       }
 
     if(setSettingFC == "f") {
         document.getElementById("setting_defualt_button_f").checked = true;      
-        document.getElementById("setting_defualt_button_f").disabled = true;
+        //document.getElementById("setting_defualt_button_f_all").disabled = true;
       }
     else {
         document.getElementById("setting_defualt_button_c").checked = true;     
-        document.getElementById("setting_defualt_button_c").disabled = true;
+        //document.getElementById("setting_defualt_button_c_all").disabled = true;
       }
 
     if(setSettingFC == 'f'){
@@ -753,6 +753,27 @@ if(navigator.onLine) {
     }
   })
 
+  chrome.storage.local.get('IntervalUpdate', function(data) {
+    if(data.IntervalUpdate == "120") {
+      document.getElementById("setting_defualt_button_60").disabled = false;
+      document.getElementById("setting_defualt_button_90").disabled = false;
+      document.getElementById("setting_defualt_button_120").disabled = true;
+      document.getElementById("setting_defualt_button_120").checked = true;
+    } 
+    else if(data.IntervalUpdate == "90") {
+      document.getElementById("setting_defualt_button_120").disabled = false;
+      document.getElementById("setting_defualt_button_60").disabled = false;
+      document.getElementById("setting_defualt_button_90").disabled = true;
+      document.getElementById("setting_defualt_button_90").checked = true;
+    }
+    else if(data.IntervalUpdate == "60") {
+      document.getElementById("setting_defualt_button_120").disabled = false;
+      document.getElementById("setting_defualt_button_90").disabled = false;
+      document.getElementById("setting_defualt_button_60").disabled = true;
+      document.getElementById("setting_defualt_button_60").checked = true;
+    }
+  })
+
   
   function next7Function(){
     chrome.storage.local.get('TimeFormat', function(data) {
@@ -947,10 +968,9 @@ if(navigator.onLine) {
 
   version_manifest = chrome.runtime.getManifest().version;
   document.querySelector("#title_version_home").textContent = "Version " + version_manifest;
-  document.querySelector("#title_version_setting").textContent = "Version " + version_manifest;
 
 
-  document.querySelector("#setting_defualt_button_u").addEventListener("click", (e) => { 
+  document.querySelector("#setting_defualt_button_u_all").addEventListener("click", (e) => { 
       setSettingUT = "u";
       chrome.storage.local.set({'setSettingUT': 'u'});
         if(b.uv1>9) {
@@ -981,11 +1001,13 @@ if(navigator.onLine) {
                   }
                });
         }        
-      document.getElementById("setting_defualt_button_u").disabled = true;
-      document.getElementById("setting_defualt_button_t").disabled = false;
+      document.getElementById("setting_defualt_button_u_all").disabled = true;
+      document.getElementById("setting_defualt_button_t_all").disabled = false;
+      document.getElementById("setting_defualt_button_u").checked = true;
+      document.getElementById("setting_defualt_button_t").checked = false;
   });
   
-  document.querySelector("#setting_defualt_button_t").addEventListener("click", (e) => { 
+  document.querySelector("#setting_defualt_button_t_all").addEventListener("click", (e) => { 
       setSettingUT = "t";
       chrome.storage.local.set({'setSettingUT': 't'});
           if (setSettingFC == "f") {
@@ -1016,10 +1038,13 @@ if(navigator.onLine) {
                       }
                    });
           }
-      document.getElementById("setting_defualt_button_t").disabled = true;
-      document.getElementById("setting_defualt_button_u").disabled = false;
+      document.getElementById("setting_defualt_button_t_all").disabled = true;
+      document.getElementById("setting_defualt_button_u_all").disabled = false;
+      document.getElementById("setting_defualt_button_t").checked = true;
+      document.getElementById("setting_defualt_button_u").checked = false;
   });
-  document.querySelector("#setting_defualt_button_c").addEventListener("click", (e) => { 
+
+  document.querySelector("#setting_defualt_button_c_all").addEventListener("click", (e) => { 
       setSettingFC = "c";
       chrome.storage.local.set({'setSettingFC': 'c'});
       if(setSettingUT == "t") {
@@ -1039,7 +1064,7 @@ if(navigator.onLine) {
       ctemp();
    });
 
-document.querySelector("#setting_defualt_button_f").addEventListener("click", (e) => { 
+document.querySelector("#setting_defualt_button_f_all").addEventListener("click", (e) => { 
       setSettingFC = "f";
       chrome.storage.local.set({'setSettingFC': 'f'});
       if(setSettingUT == "t") {   
@@ -1344,6 +1369,19 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
     currentSubMenu.classList.add("sub_menu_current_Class");    
   });
 
+  document.querySelector("#setting_popup_close").addEventListener("click", (e) => {
+    closeAllPopup();
+    removeClassIcons();
+    var element = document.getElementById("home_icon_popup_page");
+    element.classList.add("sub_menu_icon_active_Class");
+
+    var currentIcon = document.getElementById("home_icon_popup_page");
+    currentIcon.classList.add("sub_menu_current_icon_Class");
+
+    var currentSubMenu = document.getElementById("sub_menu_home");
+    currentSubMenu.classList.add("sub_menu_current_Class");    
+  });
+
   document.querySelector("#search_popup_close").addEventListener("click", (e) => {
 
     document.getElementById("search_popup_close").style.transition = "all 0s";
@@ -1455,14 +1493,8 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
       } 
     });
      
-    // if (document.getElementById('geocoderID').children.length === 0){
-    //   document.getElementById('geocoderID').appendChild(geocoder.onAdd(map));
-    // }
     map.addControl(geocoder);
 	map.addControl(new mapboxgl.NavigationControl());
-	
-    //var nav = new mapboxgl.NavigationControl();
-    //map.addControl(nav, 'bottom-right');
 
     map.on('load', function() {
       map.addSource('single-point', {
@@ -1694,7 +1726,7 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
 
 
 
-  document.querySelector("#setting_defualt_button_12h").addEventListener("click", (e) => {
+  document.querySelector("#setting_defualt_button_12h_all").addEventListener("click", (e) => {
       chrome.storage.local.set({'TimeFormat': '12h'});
       document.getElementById("setting_defualt_button_12h").disabled = true;
       document.getElementById("setting_defualt_button_24h").disabled = false;
@@ -1702,7 +1734,7 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
       refreshPopup();
   });
 
-  document.querySelector("#setting_defualt_button_24h").addEventListener("click", (e) => {
+  document.querySelector("#setting_defualt_button_24h_all").addEventListener("click", (e) => {
       chrome.storage.local.set({'TimeFormat': '24h'});
       document.getElementById("setting_defualt_button_24h").disabled = true;
       document.getElementById("setting_defualt_button_12h").disabled = false;
@@ -1742,6 +1774,30 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
   });
 
 
+  document.querySelector("#setting_defualt_button_60_all").addEventListener("click", (e) => { 
+      chrome.storage.local.set({'IntervalUpdate': '60'});
+      document.getElementById("setting_defualt_button_120").disabled = false;
+      document.getElementById("setting_defualt_button_90").disabled = false;
+      document.getElementById("setting_defualt_button_60").disabled = true;
+      document.getElementById("setting_defualt_button_60").checked = true;
+      setTimeout(function() {
+        window.open("https://uvweather.net/donate");
+      }, 1000);
+    })
+  document.querySelector("#setting_defualt_button_90_all").addEventListener("click", (e) => { 
+      chrome.storage.local.set({'IntervalUpdate': '90'});
+      document.getElementById("setting_defualt_button_120").disabled = false;
+      document.getElementById("setting_defualt_button_60").disabled = false;
+      document.getElementById("setting_defualt_button_90").disabled = true;
+      document.getElementById("setting_defualt_button_90").checked = true;
+    })
+  document.querySelector("#setting_defualt_button_120_all").addEventListener("click", (e) => { 
+      chrome.storage.local.set({'IntervalUpdate': '120'});
+      document.getElementById("setting_defualt_button_60").disabled = false;
+      document.getElementById("setting_defualt_button_90").disabled = false;
+      document.getElementById("setting_defualt_button_120").disabled = true;
+      document.getElementById("setting_defualt_button_120").checked = true;
+    })
 
   function refreshPopup() {
   

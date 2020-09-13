@@ -13,25 +13,20 @@
   <link rel="stylesheet" href="/popup.css" media="screen" />
   <script type="text/javascript" src="/library/gtm.js"></script>
   
-  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.js'></script>
-  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.css' rel='stylesheet' />
+  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.js'></script>
+  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.css' rel='stylesheet' />
 
   <noscript>
     <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N9SQMMN" height="0" width="0" style="display:none;visibility:hidden"></iframe>
   </noscript>
-
-  <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-analytics.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-firestore.js"></script>  
 </head>
 
 <body>
   
-  <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.min.js"></script>
+  <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script>
   <link
   rel="stylesheet"
-  href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.css"
+  href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css"
   type="text/css"
   />
 
@@ -70,7 +65,7 @@
 
       <li>
           <div class="theme-switch-wrapper">
-              <sp><img src="images/moon-fill.svg" class="sidebar_icon_Class"/>Enable Dark Mode</sp>
+              <sp><img src="images/moon-fill.svg" class="sidebar_icon_Class"/><span style="pointer-events: none!important;">Enable Dark Mode</span></sp>
                <label class="theme-switch" for="checkbox">
                 <input type="checkbox" id="checkbox" />
                 <div class="slider round"></div>
@@ -89,7 +84,23 @@
       <a href="https://chrome.google.com/webstore/detail/uv-weather/ngeokhpbgoadbpdpnplcminbjhdecjeb/reviews" target="_blank" class="whitelink"><li><img src="images/like-fill.svg" class="sidebar_icon_Class"/>Write a Review</li></a>
         <hr class="hr_forecast_menu">
       <a href="https://uvweather.net/donate/" target="_blank" class="whitelink"><li><img src="images/crown-donate.svg" class="sidebar_icon_Class"/>Donate</li></a>                
+
+
+    <div class="madein_Class">
+    	<div class="madein_text1_Class">
+
+    		<span>MADE WITH </span>
+    		<span class="madein_heart_Class">  </span>
+			<span>IN CANADA </span>
+    		<span class="madein_flag_Class">  </span>
+
+    	</div>    
+    </div>
+
+
     </ul>
+
+
   </div>
 
 
@@ -1728,115 +1739,131 @@
 
 
     <!-- Setting Page -->
-    <div id="setting_popup" class="modal">
+    <div id="setting_popup" class="modal_setting">
+          <div id="setting_popup_close" class="modal_close"></div>
 
-        <div id="title_solar" class="title_uv_group_Class_setting">
-            <div id="title_solar_text" class="title_page_Class">
-              Settings
-            </div>
-            <div id="title_version_setting" class="title_subtitle_modal_Class">
-             Version 1.0.10
-            </div>
-        </div>
 
-        <!-- <div id="text_setting" class="text_setting_Class">
-            Select your default temperature unit and the notification icon on the browser's toolbar.
-        </div> -->
+            <div class="setting_section_unit_Class">
+              <div class="setting_title_section_general_Class"  id="setting_badge">GENERAL</div>
+                <span class="setting_title_section_unit_Class" id="setting_unit_badge">Temperature Unit</span>
+                          <span class="setting_temp_section_Class">
+                              <span id="setting_defualt_button_f_all" class="setting_section_iner_Class">
+                                <input type="radio" id="setting_defualt_button_f" name="radioTemp" />
+                                <span class="check"></span>
+                                <label for="setting_defualt_button_f">°F</label>
+                              </span>
+                              
+                              <span id="setting_defualt_button_c_all" class="setting_section_iner_Class">
+                                <input type="radio" id="setting_defualt_button_c" name="radioTemp" />
+                                <span class="check"></span>
+                                <label for="setting_defualt_button_c">°C</label>
+                              </span>
+                          </span>
+              <div class="setting_title_section_time_Class">            
+                <span id="setting_time_badge">Time Format</span>
+                  <span class="setting_time_section_Class">
+                      <span id="setting_defualt_button_12h_all" class="setting_section_iner_Class">
+                        <input type="radio" id="setting_defualt_button_12h" name="radioTime" />
+                        <span class="check"></span>
+                        <label for="setting_defualt_button_12h">12H</label>
+                      </span>
+                      
+                      <span id="setting_defualt_button_24h_all" class="setting_section_iner_Class">
+                        <input type="radio" id="setting_defualt_button_24h" name="radioTime" />
+                        <span class="check"></span>
+                        <label for="setting_defualt_button_24h">24H</label>
+                      </span>
+                  </span>
+              </div>
+       <hr class="hr_forecast_setting">
+      </div>
 
-        <div class="setting_unit_badge_Class">
+            
 
-            <div id="setting_unit_badge" class="setting_title_section_unit_Class">TEMP. UNIT</div>
-                    <div class="setting_section_Class">
-                      <ul>
-                        <li>
-                          <input type="radio" id="setting_defualt_button_f" name="radioTemp">
-                          <label for="setting_defualt_button_f">°F</label>
-                          <div class="check"></div>
-                        </li>
-                        
-                        <li>
-                          <input type="radio" id="setting_defualt_button_c" name="radioTemp">
-                          <label for="setting_defualt_button_c">°C</label>
-                          <div class="check"><div class="inside"></div></div>
-                        </li>
-                      </ul>
+                    
+            <div class="setting_section_badge_Class">
+                <div class="setting_title_section_badge_Class" id="setting_badge">BROWSER NOTIFICATION BADGE</div>
+                      <div>
+                          <span id="setting_defualt_button_u_all" class="setting_section_iner_Class">
+                            <input type="radio" id="setting_defualt_button_u" name="radioBadge" />
+                            <span class="check"></span>
+                            <label for="setting_defualt_button_u">UV Index</label>
+                          </span>
+                          
+                          <span id="setting_defualt_button_t_all" class="setting_section_iner_Class">
+                            <input type="radio" id="setting_defualt_button_t" name="radioBadge" />
+                            <span class="check"></span>
+                            <label for="setting_defualt_button_t">Temperature</label>
+                          </span>
                     </div>
 
+                  <div class="setting_section_badge_size_Class">
+                      <sp class="setting_title_section_badge_size_Class">Large Number</sp>
+                       <label class="badge_size_switch_setting" for="checkbox_largIcon">
+                        <input type="checkbox" id="checkbox_largIcon" />
+                        <div class="slider_setting round"></div>
+                      </label>
+                  </div>
 
-            <div id="setting_time_badge" class="setting_title_section_time_Class">TIME FORMAT</div>
-                    <div class="setting_section_Class">
-                      <ul>
-                        <li>
-                          <input type="radio" id="setting_defualt_button_12h" name="radioTime">
-                          <label for="setting_defualt_button_12h">12H</label>
-                          <div class="check"></div>
-                        </li>
-                        
-                        <li>
-                          <input type="radio" id="setting_defualt_button_24h" name="radioTime">
-                          <label for="setting_defualt_button_24h">24H</label>
-                          <div class="check"><div class="inside"></div></div>
-                        </li>
-                      </ul>
+                  <div class="setting_section_badge_interval_Class">
+                      <span class="setting_title_section_badge_interval_Class">Update Interval (min)</span>
+                        <span class="setting_interval_section_Class">
+                            <span id="setting_defualt_button_60_all" class="setting_section_iner_Class">
+                              <input type="radio" id="setting_defualt_button_60" name="radioInterval" />
+                              <span class="check"></span>
+                              <label for="setting_defualt_button_60">60</label>
+                            </span>
+                            
+                            <span id="setting_defualt_button_90_all" class="setting_section_iner_Class">
+                              <input type="radio" id="setting_defualt_button_90" name="radioInterval" />
+                              <span class="check"></span>
+                              <label for="setting_defualt_button_90">90</label>
+                            </span>
+
+                            <span id="setting_defualt_button_120_all" class="setting_section_iner_Class">
+                              <input type="radio" id="setting_defualt_button_120" name="radioInterval" />
+                              <span class="check"></span>
+                              <label for="setting_defualt_button_120">120</label>
+                            </span>
+                          </span>                  
                     </div>
-
-
-            <div id="setting_badge" class="setting_title_section_badge_Class">BROWSER NOTIFICATION ICON</div>
-                  <div class="setting_section_Class" >
-                    <ul class="setting_section_badge_Class">
-                      <li>
-                        <input type="radio" id="setting_defualt_button_u" name="radioBadge">
-                        <label for="setting_defualt_button_u">UV Index</label>
-                        <div class="check"></div>
-                      </li>
-                      
-                      <li>
-                        <input type="radio" id="setting_defualt_button_t" name="radioBadge">
-                        <label for="setting_defualt_button_t">Temperature</label>
-                        <div class="check"><div class="inside"></div></div>
-                      </li>
-                    </ul>
-                </div>
-
-              <div class="setting_section_badge_size_Class">
-                  <sp class="setting_title_section_badge_size_Class">Large Number Badge</sp>
-                   <label class="badge_size_switch_setting" for="checkbox_largIcon">
-                    <input type="checkbox" id="checkbox_largIcon" />
-                    <div class="slider_setting round"></div>
-                  </label>
+              <hr class="hr_forecast_setting">
               </div>
 
-            <div id="setting_badge" class="setting_title_section_theme_Class">APPEARANCE</div>
-                  <div class="setting_section_Class">
-                    <ul class="setting_section_theme_Class">
-                      <li>
-                        <input type="radio" id="setting_defualt_theme_d" name="radioBadgeColor">
-                        <label for="setting_defualt_theme_d">Dark Theme</label>
-                        <div class="check"></div>
-                      </li>
-                      
-                      <li>
-                        <input type="radio" id="setting_defualt_theme_l" name="radioBadgeColor">
-                        <label for="setting_defualt_theme_l" class="setting_defualt_theme_l_Class">Light Theme</label>
-                        <div class="check"><div class="inside"></div></div>
-                      </li>
-                    </ul>
+
+
+
+            <div class="setting_section_theme_Class">
+              <div class="setting_title_section_theme_Class" id="setting_badge">APPEARANCE</div>
+                    <div>
+                        <span id="setting_defualt_theme_d_all" class="setting_section_iner_Class">
+                          <input type="radio" id="setting_defualt_theme_d" name="radioBadgeColor" />
+                          <span class="check"></span>
+                          <label for="setting_defualt_theme_d">Dark Theme</label>
+                        </span>
+                        
+                        <span id="setting_defualt_theme_l_all" class="setting_section_iner_Class">
+                          <input type="radio" id="setting_defualt_theme_l" name="radioBadgeColor" />
+                          <span class="check"></span>
+                          <label for="setting_defualt_theme_l" class="setting_defualt_theme_l_Class">Light Theme</label>
+                        </span>
+                  </div>
+
+                <div class="setting_section_badge_color_Class">
+                    <sp class="setting_title_section_badge_color_Class">White Icon on the Browser's Toolbar</sp>
+                     <label class="theme-switch_setting" for="checkbox_whiteIcon">
+                      <input type="checkbox" id="checkbox_whiteIcon" />
+                      <div class="slider_setting round"></div>
+                    </label>
                 </div>
 
-              <div class="setting_section_badge_color_Class">
-                  <sp class="setting_title_section_badge_color_Class">White Icon on the Browser's Toolbar</sp>
-                   <label class="theme-switch_setting" for="checkbox_whiteIcon">
-                    <input type="checkbox" id="checkbox_whiteIcon" />
-                    <div class="slider_setting round"></div>
-                  </label>
-              </div>
-
-              <div class="setting_section_auto_dark_Class">
-                  <sp class="setting_section_title_auto_dark_Class">Auto Switch to Dark Mode at Night</sp>
-                   <label class="theme-switch_setting_auto_dark" for="checkbox_autoDark">
-                    <input type="checkbox" id="checkbox_autoDark" />
-                    <div class="slider_setting round"></div>
-                  </label>
+                <div class="setting_section_auto_dark_Class">
+                    <sp class="setting_section_title_auto_dark_Class">Auto Switch to Dark Mode at Night</sp>
+                     <label class="theme-switch_setting_auto_dark" for="checkbox_autoDark">
+                      <input type="checkbox" id="checkbox_autoDark" />
+                      <div class="slider_setting round"></div>
+                    </label>
+                </div>
               </div>
 
         </div>
