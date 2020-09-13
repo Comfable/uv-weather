@@ -2,7 +2,7 @@ var b = chrome.extension.getBackgroundPage();
 document.addEventListener("DOMContentLoaded", function(event) {
 
 const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
-
+const options = {duration: 0.9,};
 mapStyleLight = 'mapbox://styles/comfable/ck540l8q22n1n1cpb2uceu4we';
 weathermapStyleLight = 'mapbox://styles/mapbox/light-v10';
 mapStyleDark = 'mapbox://styles/comfable/ck53akus306vq1cn1vqcqmlbt';
@@ -21,6 +21,7 @@ chrome.storage.local.get('closeAds', function(data) {
       donateCard.style.display = "none";
     }
 });
+
 
 
 chrome.storage.local.get(['theme', 'autoDark'], function(data) {
@@ -718,7 +719,9 @@ if(navigator.onLine) {
           b.current_tempC_min = b.temperatureCbadge
         }
       document.querySelector("#current_report_dewPoint").textContent = b.dewPointC + "° C";
-      document.querySelector("#current_temp").textContent = b.temperatureCbadge;
+      const countUptemperatureCbadge = new CountUp('current_temp', b.temperatureCbadge, options);
+      countUptemperatureCbadge.start();
+      //document.querySelector("#current_temp").textContent = b.temperatureCbadge;
       document.querySelector("#current_report_temp").textContent = b.temperatureCbadge + "° C";
       document.querySelector("#current_accufeel").textContent = "AccuFeel " + accufeelResultC + "°";
       document.querySelector("#current_report_accufeel").textContent = accufeelResultC + "° C";
@@ -787,7 +790,9 @@ if(navigator.onLine) {
         b.current_tempF_min = b.temperatureFbadge
       }
     document.querySelector("#current_report_dewPoint").textContent = b.dewPointF + "° F";
-    document.querySelector("#current_temp").textContent = b.temperatureFbadge;
+    const countUptemperatureFbadge = new CountUp('current_temp', b.temperatureFbadge, options);
+    countUptemperatureFbadge.start();
+    //document.querySelector("#current_temp").textContent = b.temperatureFbadge;
     document.querySelector("#current_report_temp").textContent = b.temperatureFbadge + "° F";
     document.querySelector("#current_accufeel").textContent = "AccuFeel " + accufeelResultF + "°";
     document.querySelector("#current_report_accufeel").textContent = accufeelResultF + "° F";    
@@ -1705,10 +1710,7 @@ document.querySelector("#setting_defualt_button_f_all").addEventListener("click"
 
       });
 
-
-
       geocoder.on('result', function(ev) {
-          map.getSource('single-point').setData(ev.result.geometry);
           updateGeocoderProximity();
           var fullname = ev.result.place_name;
           var cityAPI = ev.result.text;
