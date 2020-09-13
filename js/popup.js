@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
 
 mapStyle = 'mapbox://styles/mapbox/outdoors-v11';
+weathermapStyle = 'mapbox://styles/mapbox/light-v10';
 
 chrome.storage.local.get(['theme', 'autoDark'], function(data) {
     const currentTheme = data.theme;
@@ -137,6 +138,7 @@ chrome.storage.local.get(['theme', 'autoDark'], function(data) {
   function darkDisplay() {
     document.documentElement.setAttribute('data-theme', 'dark');
     mapStyle = 'mapbox://styles/mapbox/dark-v10';
+    weathermapStyle = 'mapbox://styles/mapbox/dark-v10';
     document.getElementById("setting_defualt_theme_d").checked = true;
     document.getElementById("checkbox").checked = true;
     chrome.storage.local.set({'theme': 'dark'});
@@ -145,6 +147,7 @@ chrome.storage.local.get(['theme', 'autoDark'], function(data) {
   function lightDisplay() {
     document.documentElement.setAttribute('data-theme', 'light');
     mapStyle = 'mapbox://styles/mapbox/outdoors-v11';
+    weathermapStyle = 'mapbox://styles/mapbox/light-v10';
     document.getElementById("setting_defualt_theme_l").checked = true;
     document.getElementById("checkbox").checked = false;
     chrome.storage.local.set({'theme': 'light'}); 
@@ -957,7 +960,7 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
 
     mapTitle.style.visibility = "visible";
     mapInner.style.visibility = "visible";
-    weatherMap();
+    weatherMap(weathermapStyle);
 
     var currentIcon = document.getElementById("home_icon_popup_page");
     currentIcon.classList.add("sub_menu_current_icon_Class");
@@ -1195,10 +1198,10 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
   function searchMap(mapStyle) {
     
     var element = document.getElementById("mapSearch");
-    element.classList.add("blur");
+    element.classList.add("blurIn");
     setTimeout(function() {
-      element.classList.remove("blur");
-    }, 3000);
+      element.classList.add("blurOut");
+    }, 2000);
 
     mapboxgl.accessToken = 'pk.eyJ1IjoiY29tZmFibGUiLCJhIjoiY2sybTF6Z3FpMGRkeTNscWxhMnNybnU3cyJ9.VDvM0a0jaMlLMwlqBI8kUw';
     if(typeof ((b.latandlong.split('"'))[1]) !== 'undefined') {
@@ -1221,10 +1224,6 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
 
     map.dragRotate.disable();
     map.touchZoomRotate.disableRotation();
-
-    // var marker = new mapboxgl.Marker({ "color": "#ff662b" })
-    //   .setLngLat(latandlongMapBox)
-    //   .addTo(map);
 
     map.on('load', updateGeocoderProximity);
     map.on('moveend', updateGeocoderProximity);
@@ -1252,6 +1251,7 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
     });
     //document.getElementById('geocoderID').appendChild(geocoder.onAdd(map)); 
     map.addControl(geocoder);
+    map.addControl(new mapboxgl.NavigationControl());
 
     map.on('load', function() {
       map.addSource('single-point', {
@@ -1394,7 +1394,7 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
 
 
 
-  function weatherMap() {
+  function weatherMap(weathermapStyle) {
     mapboxgl.accessToken = 'pk.eyJ1IjoiY29tZmFibGUiLCJhIjoiY2sybTF6Z3FpMGRkeTNscWxhMnNybnU3cyJ9.VDvM0a0jaMlLMwlqBI8kUw';
     if(typeof ((b.latandlong.split('"'))[1]) !== 'undefined') {
       latandlongMapBox = ((b.latandlong.split('"'))[1]).split(',').reverse().join(',');
@@ -1406,7 +1406,7 @@ document.querySelector("#setting_defualt_button_f").addEventListener("click", (e
    
     var mapWeather = new mapboxgl.Map({
         container: 'mapWeather',
-        style: 'mapbox://styles/mapbox/light-v10',
+        style: weathermapStyle,
         center: latandlongMapBox,
         minZoom: 2,
         maxZoom: 7,
