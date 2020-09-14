@@ -1,6 +1,6 @@
 //
 document.addEventListener("DOMContentLoaded", function() {
-
+    popupOpen = '1';
     const options = {
         duration: 0.9,
     };
@@ -2366,12 +2366,16 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     setTimeout(function() {
-	    if (navigator.onLine) {
-	        document.querySelector("#noInternet_popup").style.visibility = "hidden";
-	    } else {
-	        document.querySelector("#noInternet_popup").style.visibility = "visible";
-	    }
-    }, 3500);
+    	chrome.storage.local.get('failedHTTP_NO', function(data) {
+	        if (navigator.onLine && data.failedHTTP_NO == '1') {
+	                document.querySelector("#overloaded_popup").style.visibility = "visible";
+	            }
+		    if (!navigator.onLine) {
+		        document.querySelector("#noInternet_popup").style.visibility = "visible";
+		    }
+		});
+    }, 6500);
+
 
 
 });

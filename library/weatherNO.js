@@ -539,11 +539,7 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
 
 
         }).catch(function(err) {
-
             //console.log('no err ' + err);
-            if (navigator.onLine) {
-                document.querySelector("#overloaded_popup").style.visibility = "visible";
-            }
             chrome.storage.local.set({
                 'failedHTTP_NO': '1'
             });
