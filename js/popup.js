@@ -1299,6 +1299,7 @@ document.addEventListener("DOMContentLoaded", function() {
         document.querySelector("#current_report_cloud").textContent = cloudCoverBadge + "%";
         //document.querySelector("#current_report_ozone").textContent = ozone + " du";
         document.querySelector("#current_report_precipitation").textContent = precipProbability
+        document.querySelector("#current_report_precipitation_unit").textContent = precipProbabilityUnit
     };
 
     function trackSunExposure() {

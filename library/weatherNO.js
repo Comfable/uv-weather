@@ -112,8 +112,10 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
             next_1_hours_precipitation_NO = resultNO.properties.timeseries[0].data.next_1_hours.details.hasOwnProperty('precipitation_amount') ? resultNO.properties.timeseries[0].data.next_1_hours.details.precipitation_amount : '';
             if (next_1_hours_precipitation_NO !== "NA" && next_1_hours_precipitation_NO !== "" && next_1_hours_precipitation_NO !== null && next_1_hours_precipitation_NO !== "NULL") {
                 precipProbability = (next_1_hours_precipitation_NO);
-                if (precipProbability = '0') {
-                    precipProbability = 'No precipitation'
+                	precipProbabilityUnit = 'mm';
+                if (precipProbability == '0') {
+                	precipProbability = '';
+                    precipProbabilityUnit = 'No precipitation';
                 } 
             } else {
                 next_1_hours_precipitation_NO = "NA";
