@@ -1,3 +1,4 @@
+//
 document.addEventListener("DOMContentLoaded", function() {
 
 const options = {duration: 0.9,};
@@ -21,7 +22,7 @@ var searchTitle = document.getElementById("search_popup_title");
 //var searchOnMap = document.getElementById("click_on_map");
 var modalCurrent = document.getElementById("currentReport_popup");
 var modalSearch = document.getElementById("search_popup");
-var F_C_display = document.getElementById("F_C");
+var F_C_display = document.getElementById("F_C"); 
 
 var C_sign_elementStyle = document.getElementById('C_sign').style;
 var F_sign_elementStyle = document.getElementById('F_sign').style;
@@ -148,7 +149,7 @@ function popupPage(city,latandlong,country) {
           windGustKMH = Math.round(windGustMPH * 1.609334);
           windGustMS = Math.round(windGustMPH * 0.4470389 * 10) / 10;
 
-          ghiSolarClearSki = result.hourly.data[0].hasOwnProperty('solar') ? result.hourly.data[0].solar.ghi : '-'; //GHI = DHI + DNI * cos (θ)
+          ghiSolarClearSki = result.hourly.data[0].hasOwnProperty('solar') ? result.hourly.data[0].solar.ghi : '-'; //GHI = DHI + DNI * cos (Î¸)
 
             if(result.currently.windSpeed > 0) {
               windBearing = Math.round(result.currently.windBearing); //true north at 0° and progressing clockwise
@@ -337,10 +338,10 @@ chrome.storage.local.get(['theme', 'autoDark'], function(data) {
     }
   })
 
-mapStyleLight = 'mapbox://styles/comfable/ck540l8q22n1n1cpb2uceu4we';
+mapStyleLight = 'mapbox://styles/mapbox/light-v10';
 weathermapStyleLight = 'mapbox://styles/mapbox/light-v10';
-mapStyleDark = 'mapbox://styles/comfable/ck53akus306vq1cn1vqcqmlbt';
-weathermapStyleDark = 'mapbox://styles/comfable/ck53akus306vq1cn1vqcqmlbt';
+mapStyleDark = 'mapbox://styles/mapbox/dark-v10';
+weathermapStyleDark = 'mapbox://styles/mapbox/dark-v10';
 
 mapStyle = mapStyleLight;
 weathermapStyle = weathermapStyleLight;
@@ -1924,9 +1925,6 @@ chrome.storage.local.get('closeAds', function(data) {
       donateButton.style.display = "none";
       donateClose.style.display = "none";
       donateCard.style.display = "none";
-      // setTimeout(function() {
-      //   window.open("https://uvweather.net/donate");
-      // }, 1000);
   });
 
   document.querySelector("#setting_defualt_button_12h_all").addEventListener("click", (e) => {
@@ -1989,7 +1987,7 @@ chrome.storage.local.get('closeAds', function(data) {
       element.classList.add("blurOut");
     }, 400);
 
-    mapboxgl.accessToken = 'pk.eyJ1IjoiY29tZmFibGUiLCJhIjoiY2sybTF6Z3FpMGRkeTNscWxhMnNybnU3cyJ9.VDvM0a0jaMlLMwlqBI8kUw';
+    mapboxgl.accessToken = 'pk.eyJ1IjoidXZ3IiwiYSI6ImNrOTY4dzRiMTAyMnUzZXBheHppanV2MXIifQ.jFdHCvYe2u-LUw-_9mcw_g';
     if(typeof ((latandlong.split('"'))[1]) !== 'undefined') {
       latandlongMapBox = ((latandlong.split('"'))[1]).split(',').reverse().join(',');
       latandlongMapBox = JSON.parse("[" + latandlongMapBox + "]");
@@ -2073,7 +2071,7 @@ chrome.storage.local.get('closeAds', function(data) {
           latlong =  '"' + latClick + ',' + lngClick + '"';
           latandlongbyClick = [lngClick,latClick];
 
-          token = 'pk.eyJ1IjoiY29tZmFibGUiLCJhIjoiY2sybTF6Z3FpMGRkeTNscWxhMnNybnU3cyJ9.VDvM0a0jaMlLMwlqBI8kUw';
+          token = 'pk.eyJ1IjoidXZ3IiwiYSI6ImNrOTY4dzRiMTAyMnUzZXBheHppanV2MXIifQ.jFdHCvYe2u-LUw-_9mcw_g';
           fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${latandlongbyClick}.json?types=place,locality&limit=1&access_token=${token}`)
             .then((resp) => resp.json())
              .then(function(result) {
@@ -2198,7 +2196,7 @@ chrome.storage.local.get('closeAds', function(data) {
 
 
   function weatherMap(weathermapStyle) {
-    mapboxgl.accessToken = 'pk.eyJ1IjoiY29tZmFibGUiLCJhIjoiY2sybTF6Z3FpMGRkeTNscWxhMnNybnU3cyJ9.VDvM0a0jaMlLMwlqBI8kUw';
+    mapboxgl.accessToken = 'pk.eyJ1IjoidXZ3IiwiYSI6ImNrOTY4dzRiMTAyMnUzZXBheHppanV2MXIifQ.jFdHCvYe2u-LUw-_9mcw_g';
     if(typeof ((latandlong.split('"'))[1]) !== 'undefined') {
       latandlongMapBox = ((latandlong.split('"'))[1]).split(',').reverse().join(',');
       latandlongMapBox = JSON.parse("[" + latandlongMapBox + "]");
@@ -2230,8 +2228,7 @@ chrome.storage.local.get('closeAds', function(data) {
           },
         "source": {
           "type": "raster",
-          "tiles": ["https://tile.openweathermap.org/map/precipitation/{z}/{x}/{y}.png?appid=a080c7a5e8cbf016d7fa32f33f975880"],
-          //"tiles": ['http://maps.openweathermap.org/maps/2.0/weather/TA2/{z}/{x}/{y}?date=1527811200&opacity=0.9&fill_bound=true&appid=a080c7a5e8cbf016d7fa32f33f975880'],
+          "tiles": ["https://tile.openweathermap.org/map/precipitation/{z}/{x}/{y}.png?appid=6761dd7f8d0c3c216f9af6813064f867"],
           "tileSize": 256
         },
         "minzoom": 1,
