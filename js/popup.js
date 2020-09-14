@@ -184,7 +184,7 @@ document.addEventListener("DOMContentLoaded", function() {
         toggleSwitchBadgeSize.addEventListener('change', switchBadgeSize, false);
     });
 
-    sidebarMenu
+
 
     const toggleSwitchAnimatedIcon = document.querySelector('.theme-switch_setting_animated_icon input[type="checkbox"]');
     chrome.storage.local.get('animatedIcon', function(data) {
@@ -360,72 +360,44 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function popup() {
 
-        chrome.storage.local.get(['latlong', 'citys', 'country', 'setSettingUT', 'timeZoneBadge'], function(data) {
+        chrome.storage.local.get(['latlong', 'citys', 'country', 'timeZoneBadge', 'failedHTTP'], function(data) {
             latlong = data.latlong;
             country = data.country;
             citys = data.citys;
-            setSettingUT = data.setSettingUT;
+            failedHTTP = data.failedHTTP;
+            timeZoneBadge = data.timeZoneBadge;
 
-            if (setSettingUT == "u" && navigator.onLine) {
-                var promise = new Promise(function(resolve, reject) {
-                    weatherDS(latlong, citys, country, resolve);
-                });
-                Promise.all([promise]).then(function() {
-                    accufeelCalc(ghiSolarClearSki, iconDS, cloudCoverBadge, temperatureCbadge, humidity, windSpeedMS);
-                }).then(function() {
-                    UTFC();
-                    refreshPopup();
-                    updateBadge();
-                });
-            }
-
-            else if ((typeof setSettingUT === 'undefined' || setSettingUT == "t" || setSettingUT == "u") && navigator.onLine) {
-
-                if (country == "CA" || country == "ca" || country == "Canada") {
-                    var promise = new Promise(function(resolve, reject) {
-                        weatherCA(latlong, citys, resolve);
+                    var promise = () => new Promise( resolve => {
+                    	if (country == "CA" || country == "ca" || country == "Canada") {
+                        	weatherCA(latlong, citys, resolve);
+                        }
+                        else if(country == "US" || country == "us" || country == "United States of America") {
+                        	weatherUS2(latlong, citys, resolve);
+                        }
+                        else{
+                        	resolve && resolve( 'result of Promise()' );
+                        }
                     });
-                    var promise2 = new Promise(function(resolve, reject) {
-                        weatherDS(latlong, citys, country, resolve);
-                    });
-                    Promise.all([promise, promise2]).then(function() {
-                        accufeelCalc(ghiSolarClearSki, cloudCoverBadge, temperatureCbadge, humidity, windSpeedMS);
-                    }).then(function() {
-                        UTFC();
-                        refreshPopup();
-                        updateBadge();
+                    var promise2 = () => new Promise( resolve => {
+                    	if(failedHTTP !== '1' || (country !== "US" && country !== "us" && country !== "United States of America" && country !== "CA" && country !== "ca" && country !== "Canada")) {
+                            weatherNO(latlong, citys, timeZoneBadge, resolve);
+                    	}
+                    	else{
+                    		resolve && resolve( 'result of NO()' );
+                    	}
                     });
 
-                } else if (country == "US" || country == "us" || country == "United States of America") {
-
-                    var promise = new Promise(function(resolve, reject) {
-                        weatherUS2(latlong, citys, resolve);
-                    });
-                    var promise2 = new Promise(function(resolve, reject) {
-                        weatherDS(latlong, citys, country, resolve);
-                    });
-                    Promise.all([promise, promise2]).then(function() {
-                        accufeelCalc(ghiSolarClearSki, cloudCoverBadge, temperatureCbadge, humidity, windSpeedMS);
-                    }).then(function() {
-                        UTFC();
-                        refreshPopup();
-                        updateBadge();
-                    });
-
-                } else {
-                    var promise = new Promise(function(resolve, reject) {
-                        weatherNO(latlong, citys, timeZoneBadge, resolve);
-                    });
-                    Promise.all([promise]).then(function() {
-                        accufeelCalc(ghiSolarClearSki, cloudCoverBadge, temperatureCbadge, humidity, windSpeedMS);
-                    }).then(function() {
-                        UTFC();
-                        refreshPopup();
-                        updateBadge();
-                    });
-                }
-
-            }
+					promise().then( ( ) => {
+					    promise2().then( ( ) => {
+						        } ).then(function() {
+				                        UTFC();
+				                        refreshPopup();
+				                        updateBadge();
+						        })
+					} )
+					.catch( ( error ) => {
+					    //alert( 'promise error: ', error );
+					} );
 
         });
 
@@ -519,11 +491,6 @@ document.addEventListener("DOMContentLoaded", function() {
     };
 
     function refreshPopup() {
-        i_er = 1; //weatherUS
-        // chrome.storage.local.set({
-        //     'failedHTTP_NO': '0'
-        // });
-
         chrome.storage.local.get(['verUpdate'], function(data) {
             if (data.verUpdate == 1) {
                 chrome.storage.local.set({
@@ -612,38 +579,7 @@ document.addEventListener("DOMContentLoaded", function() {
         reportFunction();
         trackSunExposure();
         refreshWindSpeedUnit();
-        loadingIconBadge();
-    };
-
-    function accufeelCalc(ghiSolarClearSki, cloudCoverBadge, temperatureCbadge, humidity, windSpeedMS) {
-        if(cloudCoverBadge == '-' || temperatureCbadge == '-' || humidity == '-' || windSpeedMS == '-') {
-            accufeelResultC = '-';
-            accufeelResultF = '-';
-        }
-        else{
-            if(ghiSolarClearSki !== '-') {
-                if(ghiSolarClearSki >= 250) {
-                    cloudAdj = cloudAdjUV2(cloudCoverBadge);
-                    ghiSolarCloud = ghiSolarClearSki * cloudAdj;
-                    TglobeC = 0.01498 * ghiSolarCloud + 1.184 * temperatureCbadge - 0.0789 * humidity - 2.739; //day
-                } else { //Low GHI
-                    TglobeC = temperatureCbadge;
-                }
-            } else {
-                TglobeC = temperatureCbadge; //night
-            };
-
-            Tmrta = Math.pow(TglobeC + 273.15, 4) + (2.5 * 100000000 * Math.pow(windSpeedMS, 0.60) * (TglobeC - temperatureCbadge));
-            TmrtC = Math.pow(Tmrta, 1 / 4) - 273.15;
-
-            accufeelC = accufeel(temperatureCbadge, TmrtC, windSpeedMS, humidity);
-
-            if(Math.abs(accufeelC - temperatureCbadge) > 4) {
-                (accufeelC > temperatureCbadge) ? (accufeelC = temperatureCbadge + 4) : (accufeelC = temperatureCbadge - 4);
-            }
-            accufeelResultC = Math.round(accufeelC);
-            accufeelResultF = Math.round(c2f(accufeelC));
-        }
+        //loadingIconBadge();
     };
 
     function groundCurrent() {
@@ -859,6 +795,7 @@ document.addEventListener("DOMContentLoaded", function() {
     };
 
     function iconCurrent_animated() {
+
         switch (iconBadge) {
             case 'clear-day':
                 if (isDay) {
@@ -905,6 +842,7 @@ document.addEventListener("DOMContentLoaded", function() {
     };
 
     function iconCurrent() {
+
         switch (iconBadge) {
             case 'clear-day':
                 document.querySelector('.current_icon_update').style.backgroundImage = 'url("images/weather_icon/wi_sun.svg")';
@@ -985,24 +923,9 @@ document.addEventListener("DOMContentLoaded", function() {
         document.querySelector('#forecast_60_temp_min').textContent = daily_tempC_min_6 + "°";
         document.querySelector('#forecast_70_temp_min').textContent = daily_tempC_min_7 + "°";
 
-        chrome.storage.local.get( ['setSettingUT', 'failedHTTP_NO', 'country'], function(data) {
-
-            if(data.setSettingUT == 'u' || data.failedHTTP_NO == '1' || (data.country == "CA" || data.country == "ca" || data.country == "Canada" || data.country == "US" || data.country == "us" || data.country == "United States of America")) {
-
-              for (i=1;i<49;i++){
-                  document.querySelector(`#forecast_${i}_hours_temp`).textContent = Math.round(f2c(resultDS.hourly.data[i].temperature)) + "°";
-              }
-                
-            }
-            else{
-
-              for (i=1;i<49;i++){
-                  document.querySelector(`#forecast_${i}_hours_temp`).textContent = Math.round(resultNO.properties.timeseries[i].data.instant.details.air_temperature) + "°";
-              }
-                
-            }
-
-        });
+        for (i=1;i<49;i++){
+            document.querySelector(`#forecast_${i}_hours_temp`).textContent = Math.round(resultNO.properties.timeseries[i].data.instant.details.air_temperature) + "°";
+        }
 
         document.querySelector("#summery_next7_text").textContent = summaryDailyC;
         document.querySelector("#summery_next48_text").textContent = summaryHourlyC;
@@ -1101,22 +1024,13 @@ document.addEventListener("DOMContentLoaded", function() {
         document.querySelector('#forecast_60_temp_min').textContent = daily_tempF_min_6 + "°";
         document.querySelector('#forecast_70_temp_min').textContent = daily_tempF_min_7 + "°";        
 
-        chrome.storage.local.get(['setSettingUT','failedHTTP_NO', 'country'], function(data) {
-            if(data.setSettingUT == 'u' || data.failedHTTP_NO == '1' || (data.country == "CA" || data.country == "ca" || data.country == "Canada" || data.country == "US" || data.country == "us" || data.country == "United States of America")) {
-                for(i=1;i<49;i++) {
-                    document.querySelector(`#forecast_${i}_hours_temp`).textContent = Math.round(resultDS.hourly.data[i].temperature) + "°";
-                }
-            }
-            else{
-                for(i=1;i<8;i++) {
-                    document.querySelector(`#forecast_${i*10}_temp`).textContent = Math.round(c2f(resultNO.properties.timeseries[i].data.instant.details.air_temperature)) + "°";
-                    document.querySelector(`#forecast_${i*10}_temp_min`).textContent = Math.round(c2f(resultNO.properties.timeseries[i].data.instant.details.air_temperature)) + "°";
-                }
-                for(i=1;i<49;i++) {
-                    document.querySelector(`#forecast_${i}_hours_temp`).textContent = Math.round(c2f(resultNO.properties.timeseries[i].data.instant.details.air_temperature)) + "°";
-                }  
-            }
-        });
+        for(i=1;i<8;i++) {
+            document.querySelector(`#forecast_${i*10}_temp`).textContent = Math.round(c2f(resultNO.properties.timeseries[i].data.instant.details.air_temperature)) + "°";
+            document.querySelector(`#forecast_${i*10}_temp_min`).textContent = Math.round(c2f(resultNO.properties.timeseries[i].data.instant.details.air_temperature)) + "°";
+        }
+        for(i=1;i<49;i++) {
+            document.querySelector(`#forecast_${i}_hours_temp`).textContent = Math.round(c2f(resultNO.properties.timeseries[i].data.instant.details.air_temperature)) + "°";
+        }  
 
         document.querySelector("#summery_next7_text").textContent = summaryDailyF;
         document.querySelector("#summery_next48_text").textContent = summaryHourlyF;
@@ -1193,22 +1107,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 document.querySelector("#next48_update_date").textContent = moment.unix(updateTimeBadge + offsetUnix).format('MMM DD, HH:mm') + ' (LT)';
 
 
-            chrome.storage.local.get(['setSettingUT', 'failedHTTP_NO','country'], function(data) {
-            if(data.setSettingUT == 'u' || data.failedHTTP_NO == '1' || (data.country == "CA" || data.country == "ca" || data.country == "Canada" || data.country == "US" || data.country == "us" || data.country == "United States of America")) {
-                  for(i=1;i<49;i++) {
-                      document.querySelector(`#forecast_${i}_hours`).textContent = moment.unix(resultDS.hourly.data[i].time + offsetUnix).format('HH')+':00';
-                      document.querySelector(`#forecast_${i}_hours_uv`).textContent = "UVI " + Math.round((resultDS.hourly.data[i].uvIndex) * uv_adj_daily(resultDS.hourly.data[i].cloudCover));
-                      document.querySelector(`#forecast_${i}_hours_rain`).textContent = Math.round(((resultDS.hourly.data[i].precipProbability) * 100)/5)*5 + "%";
-                  }
-                }
-                else{
-                  for(i=1;i<49;i++) {
-                      document.querySelector(`#forecast_${i}_hours`).textContent = moment.unix(moment(resultNO.properties.timeseries[i].time).unix() + offsetUnix).format('HH')+':00';
-                      document.querySelector(`#forecast_${i}_hours_uv`).textContent = "UVI " + Math.round((resultNO.properties.timeseries[i].data.instant.details.ultraviolet_index_clear_sky) * uv_adj_daily(resultNO.properties.timeseries[i].data.instant.details.cloud_area_fraction));
-                      document.querySelector(`#forecast_${i}_hours_rain`).textContent = (resultNO.properties.timeseries[i].data.next_1_hours.details.precipitation_amount) + " mm";
-                  }                    
-                }
-            });
+                for(i=1;i<49;i++) {
+                    document.querySelector(`#forecast_${i}_hours`).textContent = moment.unix(moment(resultNO.properties.timeseries[i].time).unix() + offsetUnix).format('HH')+':00';
+                    document.querySelector(`#forecast_${i}_hours_uv`).textContent = "UVI " + Math.round((resultNO.properties.timeseries[i].data.instant.details.ultraviolet_index_clear_sky) * uv_adj_daily(resultNO.properties.timeseries[i].data.instant.details.cloud_area_fraction));
+                    document.querySelector(`#forecast_${i}_hours_rain`).textContent = (resultNO.properties.timeseries[i].data.next_1_hours.details.precipitation_amount);
+                    document.querySelector(`#forecast_${i}_hours_rain_unit`).textContent = "mm";                      
+                }                    
 
                 document.querySelector("#map_popup_title").textContent = 'PRECIPITATION FORECAST | UV WEATHER | ' + moment.unix(updateTimeBadge + offsetUnix).format('MMMM DD, YYYY HH:mm') + ' (LT)';
                 document.getElementById("setting_defualt_button_24h").checked = true;
@@ -1222,24 +1126,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 document.querySelector("#report_update_date").textContent = moment.unix(updateTimeBadge + offsetUnix).format('MMM DD, h:mm A') + ' (LT)';
                 document.querySelector("#next48_update_date").textContent = moment.unix(updateTimeBadge + offsetUnix).format('MMM DD, h:mm A') + ' (LT)';
 
-
-
-            chrome.storage.local.get(['setSettingUT', 'failedHTTP_NO','country'], function(data) {
-            if(data.setSettingUT == 'u' || data.failedHTTP_NO == '1' || (data.country == "CA" || data.country == "ca" || data.country == "Canada" || data.country == "US" || data.country == "us" || data.country == "United States of America")) {
-                  for(i=1;i<49;i++) {
-                      document.querySelector(`#forecast_${i}_hours`).textContent = moment.unix(resultDS.hourly.data[i].time + offsetUnix).format('h A');
-                      document.querySelector(`#forecast_${i}_hours_uv`).textContent = "UVI " + Math.round((resultDS.hourly.data[i].uvIndex) * uv_adj_daily(resultDS.hourly.data[i].cloudCover));
-                      document.querySelector(`#forecast_${i}_hours_rain`).textContent = Math.round(((resultDS.hourly.data[i].precipProbability) * 100)/5)*5 + "%";
-                  }
-                }
-                else{
-                  for(i=1;i<49;i++) {
-                      document.querySelector(`#forecast_${i}_hours`).textContent = moment.unix(moment(resultNO.properties.timeseries[i].time).unix() + offsetUnix).format('h A');
-                      document.querySelector(`#forecast_${i}_hours_uv`).textContent = "UVI " + Math.round((resultNO.properties.timeseries[i].data.instant.details.ultraviolet_index_clear_sky) * uv_adj_daily(resultNO.properties.timeseries[i].data.instant.details.cloud_area_fraction));
-                      document.querySelector(`#forecast_${i}_hours_rain`).textContent = (resultNO.properties.timeseries[i].data.next_1_hours.details.precipitation_amount) + " mm";
-                  }
-                }
-            });
+              for(i=1;i<49;i++) {
+                  document.querySelector(`#forecast_${i}_hours`).textContent = moment.unix(moment(resultNO.properties.timeseries[i].time).unix() + offsetUnix).format('h A');
+                  document.querySelector(`#forecast_${i}_hours_uv`).textContent = "UVI " + Math.round((resultNO.properties.timeseries[i].data.instant.details.ultraviolet_index_clear_sky) * uv_adj_daily(resultNO.properties.timeseries[i].data.instant.details.cloud_area_fraction));
+                  document.querySelector(`#forecast_${i}_hours_rain`).textContent = (resultNO.properties.timeseries[i].data.next_1_hours.details.precipitation_amount);
+                  document.querySelector(`#forecast_${i}_hours_rain_unit`).textContent = "mm";                      
+              }
 
                 document.querySelector("#map_popup_title").textContent = 'PRECIPITATION FORECAST | UV WEATHER | ' + moment.unix(updateTimeBadge + offsetUnix).format('MMMM DD, YYYY h:mm A') + ' (LT)';
                 document.getElementById("setting_defualt_button_12h").checked = true;
@@ -1323,15 +1215,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     function next48Function() {
-        chrome.storage.local.get(['setSettingUT', 'failedHTTP_NO', 'country'], function(data) {
         for (i = 1; i < 49; i++) {            
-            if(data.setSettingUT == 'u' || data.failedHTTP_NO == '1' || (data.country == "CA" || data.country == "ca" || data.country == "Canada" || data.country == "US" || data.country == "us" || data.country == "United States of America")) {
-                forecast_hours_icon = resultDS.hourly.data[i].icon;
-            }
-            else{
-                forecast_hours_icon_no = resultNO.properties.timeseries[i].data.next_1_hours.summary.symbol_code;
-                forecast_hours_icon = iconBadgeConvertNO_hourly((forecast_hours_icon_no).split('_')[0], (forecast_hours_icon_no).split('_')[1]);
-            }
+
+            forecast_hours_icon_no = resultNO.properties.timeseries[i].data.next_1_hours.summary.symbol_code;
+            forecast_hours_icon = iconBadgeConvertNO_hourly((forecast_hours_icon_no).split('_')[0], (forecast_hours_icon_no).split('_')[1]);
+
             switch (forecast_hours_icon) {
                 case 'clear-day':
                     document.querySelector('.forecast_' + i + '_hours_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_sun.svg")';
@@ -1368,7 +1256,6 @@ document.addEventListener("DOMContentLoaded", function() {
                     break;
             }
         }
-        })  
     };
 
     function next7Function() {
@@ -1438,95 +1325,17 @@ document.addEventListener("DOMContentLoaded", function() {
         // }
         document.querySelector('#forecast_70_wind_arrow').style.transform = 'rotate(' + daily_windBearing_7 + 'deg)';
 
+        document.querySelector('.forecast_10_homePage_icon_Class').style.backgroundImage = daily_icon_url[1];
+        document.querySelector('.forecast_20_homePage_icon_Class').style.backgroundImage = daily_icon_url[2];
 
-        chrome.storage.local.get(['setSettingUT', 'failedHTTP_NO', 'country'], function(data) {
-            if(data.setSettingUT == 'u' || data.failedHTTP_NO == '1' || (data.country == "CA" || data.country == "ca" || data.country == "Canada" || data.country == "US" || data.country == "us" || data.country == "United States of America")) {
-                for (i = 1; i < 8; i++) {  
-                    forecast_icon = resultDS.daily.data[i].icon;
-                    switch (forecast_icon) {
-                        case 'clear-day':
-                            document.querySelector('.forecast_' + i + '_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_sun.svg")';
-                            if (i < 3) {
-                                document.querySelector('.forecast_' + i * 10 + '_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_sun.svg")';
-                            }
-                            break;
-                        case 'clear-night':
-                            document.querySelector('.forecast_' + i + '_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_moon.svg")';
-                            if (i < 3) {
-                                document.querySelector('.forecast_' + i * 10 + '_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_moon.svg")';
-                            }
-                            break;
-                        case 'rain':
-                            document.querySelector('.forecast_' + i + '_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_rain.svg")';
-                            if (i < 3) {
-                                document.querySelector('.forecast_' + i * 10 + '_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_rain.svg")';
-                            }
-                            break;
-                        case 'snow':
-                            document.querySelector('.forecast_' + i + '_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_snow.svg")';
-                            if (i < 3) {
-                                document.querySelector('.forecast_' + i * 10 + '_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_snow.svg")';
-                            }
-                            break;
-                        case 'sleet':
-                            document.querySelector('.forecast_' + i + '_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_snow_alt.svg")';
-                            if (i < 3) {
-                                document.querySelector('.forecast_' + i * 10 + '_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_snow_alt.svg")';
-                            }
-                            break;
-                        case 'wind':
-                            document.querySelector('.forecast_' + i + '_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_wind.svg")';
-                            if (i < 3) {
-                                document.querySelector('.forecast_' + i * 10 + '_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_wind.svg")';
-                            }
-                            break;
-                        case 'fog':
-                            document.querySelector('.forecast_' + i + '_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_fog_alt.svg")';
-                            if (i < 3) {
-                                document.querySelector('.forecast_' + i * 10 + '_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_fog_alt.svg")';
-                            }
-                            break;
-                        case 'cloudy':
-                            document.querySelector('.forecast_' + i + '_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud.svg")';
-                            if (i < 3) {
-                                document.querySelector('.forecast_' + i * 10 + '_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud.svg")';
-                            }
-                            break;
-                        case 'partly-cloudy-day':
-                            document.querySelector('.forecast_' + i + '_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_sun.svg")';
-                            if (i < 3) {
-                                document.querySelector('.forecast_' + i * 10 + '_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_sun.svg")';
-                            }
-                            break;
-                        case 'partly-cloudy-night':
-                            document.querySelector('.forecast_' + i + '_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_moon.svg")';
-                            if (i < 3) {
-                                document.querySelector('.forecast_' + i * 10 + '_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_moon.svg")';
-                            }
-                            break;
-                        default:
-                            document.querySelector('.forecast_' + i + '_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_sun.svg")';
-                            if (i < 3) {
-                                document.querySelector('.forecast_' + i * 10 + '_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_sun.svg")';
-                            }
-                            break;
-                    }
-                }
-            }
-            else{
-                    document.querySelector('.forecast_10_homePage_icon_Class').style.backgroundImage = daily_icon_url[1];
-                    document.querySelector('.forecast_20_homePage_icon_Class').style.backgroundImage = daily_icon_url[2];
+        document.querySelector('.forecast_1_icon_Class').style.backgroundImage = daily_icon_url[1];
+        document.querySelector('.forecast_2_icon_Class').style.backgroundImage = daily_icon_url[2];
+        document.querySelector('.forecast_3_icon_Class').style.backgroundImage = daily_icon_url[3];
+        document.querySelector('.forecast_4_icon_Class').style.backgroundImage = daily_icon_url[4];
+        document.querySelector('.forecast_5_icon_Class').style.backgroundImage = daily_icon_url[5];
+        document.querySelector('.forecast_6_icon_Class').style.backgroundImage = daily_icon_url[6];
+        document.querySelector('.forecast_7_icon_Class').style.backgroundImage = daily_icon_url[7];
 
-                    document.querySelector('.forecast_1_icon_Class').style.backgroundImage = daily_icon_url[1];
-                    document.querySelector('.forecast_2_icon_Class').style.backgroundImage = daily_icon_url[2];
-                    document.querySelector('.forecast_3_icon_Class').style.backgroundImage = daily_icon_url[3];
-                    document.querySelector('.forecast_4_icon_Class').style.backgroundImage = daily_icon_url[4];
-                    document.querySelector('.forecast_5_icon_Class').style.backgroundImage = daily_icon_url[5];
-                    document.querySelector('.forecast_6_icon_Class').style.backgroundImage = daily_icon_url[6];
-                    document.querySelector('.forecast_7_icon_Class').style.backgroundImage = daily_icon_url[7];
-            }                 
-
-        })
     };
 
     function reportFunction() {
@@ -1552,12 +1361,19 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function updateBadge() {
 
-        chrome.storage.local.get(['setSettingFC', 'setSettingUT', 'whiteIcon', 'badgeSize', 'TimeFormat'], function(data) {
+        chrome.storage.local.get(['setSettingFC', 'setSettingUT', 'whiteIcon', 'badgeSize', 'TimeFormat', 'cloudyBadge', 'rainyBadge', 'snowyBadge', 'sunnyDayBadge', 'isDay', 'isNight'], function(data) {
             setSettingFC = data.setSettingFC;
             setSettingUT = data.setSettingUT;
             currentWhiteIcon = data.whiteIcon;
             currentBadgeSize = data.badgeSize;
             TimeFormat = data.TimeFormat;
+            cloudyBadge = data.cloudyBadge;
+            rainyBadge = data.rainyBadge;
+            snowyBadge = data.snowyBadge;
+            sunnyDayBadge = data.sunnyDayBadge;
+            isDay = data.isDay;
+            isNight = data.isNight;
+
             if (currentWhiteIcon == 0 || (typeof currentWhiteIcon == 'undefined') || currentWhiteIcon == 'undefined') {
                 currentWhiteIcon = 0;
             } else {
@@ -1565,31 +1381,32 @@ document.addEventListener("DOMContentLoaded", function() {
             }
             if (setSettingUT == "t" && setSettingFC == "c") {
                 if (currentBadgeSize == 1) {
-                    setTimeout(function() {
+                    //setTimeout(function() {
                         largBadgeNumber(temperatureCbadge, currentWhiteIcon)
-                    }, 550);
+                    //}, 550);
                 } else {
-                    badgeBackgroundColor(currentWhiteIcon);
-                    setTimeout(function() {
+                    badgeBackgroundColor(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, currentWhiteIcon);
+                    //setTimeout(function() {
                         chrome.browserAction.setBadgeText({
                             "text": temperatureCbadge + "°C"
                         });
-                        badgeBackgroundImage();
-                    }, 550);
+                        badgeBackgroundImage(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, currentWhiteIcon);
+                    //}, 550);
                 }
             } else if (setSettingUT == "t" && setSettingFC == "f") {
                 if (currentBadgeSize == 1) {
-                    setTimeout(function() {
+                    //setTimeout(function() {
                         largBadgeNumber(temperatureFbadge, currentWhiteIcon)
-                    }, 550);
-                } else {
-                    badgeBackgroundColor(currentWhiteIcon);
-                    setTimeout(function() {
+                    //}, 550);
+                } else 
+                	{                	
+                    badgeBackgroundColor(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, currentWhiteIcon);
+                    //setTimeout(function() {
                         chrome.browserAction.setBadgeText({
                             "text": temperatureFbadge + "°F"
                         });
-                        badgeBackgroundImage();
-                    }, 550);
+                        badgeBackgroundImage(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, currentWhiteIcon);
+                    //}, 550);
                 }
             } else if (setSettingUT == "u") {
                 chrome.storage.local.set({
@@ -1597,31 +1414,33 @@ document.addEventListener("DOMContentLoaded", function() {
                 });
                 if (uv1 > 9) {
                     if (currentBadgeSize == 1) {
-                        setTimeout(function() {
+                       // setTimeout(function() {
                             largBadgeNumber(uv1, currentWhiteIcon)
-                        }, 550);
-                    } else {
-                        badgeBackgroundColor(currentWhiteIcon);
-                        setTimeout(function() {
+                        //}, 550);
+                    } else 
+                    	{
+                        badgeBackgroundColor(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, currentWhiteIcon);
+                        //setTimeout(function() {
                             chrome.browserAction.setBadgeText({
                                 "text": "UV" + uv1
                             });
-                            badgeBackgroundImage();
-                        }, 550);
+                            badgeBackgroundImage(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, currentWhiteIcon);
+                        //}, 550);
                     }
                 } else {
                     if (currentBadgeSize == 1) {
-                        setTimeout(function() {
+                        //setTimeout(function() {
                             largBadgeNumber(uv1, currentWhiteIcon)
-                        }, 550);
-                    } else {
-                        badgeBackgroundColor(currentWhiteIcon);
-                        setTimeout(function() {
+                        //}, 550);
+                    } else 
+                    	{
+                        badgeBackgroundColor(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, currentWhiteIcon);
+                        //setTimeout(function() {
                             chrome.browserAction.setBadgeText({
                                 "text": "UV " + uv1
                             });
-                            badgeBackgroundImage();
-                        }, 550);
+                            badgeBackgroundImage(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, currentWhiteIcon);
+                        //}, 550);
                     }
                 }
             }
@@ -2417,14 +2236,14 @@ document.addEventListener("DOMContentLoaded", function() {
                                 chrome.storage.local.set({
                                     'country': country
                                 });
-
-                                setTimeout(function() {
-                                    chrome.storage.local.set({
-                                        'IntervalUpdate': '60'
-                                    });
-                                    document.getElementById("setting_defualt_button_60").checked = true;
-                                    popup();
-                                }, 150);
+				                chrome.storage.local.set({
+				                     'timeZoneBadge': timeZoneBadge
+				                });
+                                chrome.storage.local.set({
+                                    'IntervalUpdate': '60'
+                                });
+                                document.getElementById("setting_defualt_button_60").checked = true;
+                                popup();
 
                             }
                         }
@@ -2529,7 +2348,6 @@ document.addEventListener("DOMContentLoaded", function() {
                     timezone = tzlookup(lat,lng);
                 }
                 timeZoneBadge = timezone2offset(timezone);
-
                 latlong = lat + ',' + lng;
                 citys = cityAPI;
 
@@ -2560,20 +2378,20 @@ document.addEventListener("DOMContentLoaded", function() {
                 chrome.storage.local.set({
                     'country': country
                 });
-
-                setTimeout(function() {
-                    chrome.storage.local.set({
-                        'IntervalUpdate': '60'
-                    });
-                    document.getElementById("setting_defualt_button_60").checked = true;
-                    popup();
-                }, 150);
+                chrome.storage.local.set({
+                     'timeZoneBadge': timeZoneBadge
+                });
+                chrome.storage.local.set({
+                    'IntervalUpdate': '60'
+                });
+                document.getElementById("setting_defualt_button_60").checked = true;
+                popup();
 
                 map.flyTo({
                     center: [lng, lat],
                     zoom: 10,
                     speed: .8,
-                    curve: 1.42,
+                    curve: 1,
                     essential: true,
                     easing(t) {
                         return t;

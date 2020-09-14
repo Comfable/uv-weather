@@ -39,7 +39,7 @@
       position: fixed;
       top: 0;
       transition-delay: .4s;
-      transition: opacity 2.75s linear;
+      transition: opacity 3.75s linear;
       width: 100%;
       z-index: 99999;
       opacity: 1;
@@ -1132,7 +1132,7 @@
       display: inline-block;
       text-align: left;
       font-weight: 250;
-      font-size: 14px;
+      font-size: 13px;
   }
 
   .solar_time_Class {
@@ -1142,7 +1142,7 @@
       display: inline-block;
       text-align: right;
       font-weight: 250;
-      font-size: 14px;
+      font-size: 13px;
       padding-left: 10px;
   }
 
@@ -1167,7 +1167,7 @@
       display: inline-block;
       text-align: left;
       font-weight: 250;
-      font-size: 14px;
+      font-size: 13px;
       /*text-transform: uppercase;*/
   }
 
@@ -1178,7 +1178,7 @@
       display: inline-block;
       text-align: left;
       font-weight: 250;
-      font-size: 14px;
+      font-size: 12.5px;
   }
 
   .forecast_uv_modal_Class {
@@ -1188,7 +1188,7 @@
       display: inline-block;
       text-align: left;
       font-weight: 250;
-      font-size: 13px;
+      font-size: 12.5px;
       padding-left: 5px;
   }
 
@@ -1199,7 +1199,7 @@
       display: inline-block;
       text-align: right;
       font-weight: 250;
-      font-size: 14px;
+      font-size: 13px;
       padding-right: 6px;
   }
 
@@ -1210,7 +1210,7 @@
       max-width: 23px;
       text-align: right;
       font-weight: 250;
-      font-size: 14px;
+      font-size: 13px;
   }
 
   .forecast_icon_modal_Class {
@@ -1555,7 +1555,7 @@
   .icon_raindrop_Class {
       width: 10px;
       height: 10px;
-      margin-left: 20px;
+      margin-left: 16px;
       margin-top: 2px;
       margin-right: 0;
       padding-right: 0;
@@ -1564,15 +1564,10 @@
 
   .forecast_rain_modal_Class {
       position: relative;
-      width: 25px;
-      max-width: 25px;
       display: inline-block;
       text-align: left;
       font-weight: 250;
-      font-size: 13px;
-      margin-right: 20px;
-      margin-left: 0;
-      padding-left: 0;
+      font-size: 12.5px;
   }
 
   .forecast_uv_daily_modal_Class {
@@ -2946,4 +2941,17 @@
       color: #000;
       font-family: Helvetica, sans-serif;
       font-size: small;
+  }
+  .forecast_rain_unit_modal_Class {
+    font-size: 10px;
+  }
+
+  .forecast_rain_group_modal_Class {
+    position: relative;
+    width: 30px;
+    display: inline-block;
+    text-align: left;
+    font-weight: 250;
+    font-size: 12px;
+    margin-right: 10px;
   }

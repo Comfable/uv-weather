@@ -1,5 +1,5 @@
 function weatherUS2(latlong, citys, resolve) {
-    
+
     lat = (latlong.split(','))[0];
     lng = (latlong.split(','))[1];
 
@@ -11,7 +11,7 @@ function weatherUS2(latlong, citys, resolve) {
         }
     }
 
-    fetchWithTimeout(`https://uvweather.herokuapp.com/https://forecast.weather.gov/MapClick.php?lat=${lat}&lon=${lng}&unit=0&lg=english&FcstType=json`, optionsUS, 3500)
+    fetchWithTimeout(`https://uvweather.herokuapp.com/https://forecast.weather.gov/MapClick.php?lat=${lat}&lon=${lng}&unit=0&lg=english&FcstType=json`, optionsUS, 2500)
         .then(CheckError)
         .then(function(resultUS2) {
 
@@ -56,9 +56,10 @@ function weatherUS2(latlong, citys, resolve) {
             if (iconUS == "NULL" || tempFus == "NULL" || summaryBadge == "NULL" || iconUS == "" || tempFus == "" || summaryBadge == "" || iconUS == null || tempFus == null || summaryBadge == null || iconUS == "NA" || tempFus == "NA" || summaryBadge == "NA") {
                 throw Error();
             } else {
-                chrome.storage.local.get(['setSettingUT', 'timeZoneBadge'], function(data) {
+                chrome.storage.local.get(['setSettingUT', 'timeZoneBadge', 'latlong'], function(data) {
                     setSettingUT = data.setSettingUT;
                     timeZoneBadge = parseFloat(data.timeZoneBadge);
+                    latlong = data.latlong;
                         if (setSettingUT !== "u") {
                             solarNighDay(timeZoneBadge, latlong);
                             iconBadgeConvertUS(iconUS);
@@ -71,10 +72,14 @@ function weatherUS2(latlong, citys, resolve) {
 
 
         }).catch(function(err) {
+            //console.log('us ' + err);
             chrome.storage.local.set({
                 'failedHTTP': '1'
             });
-            weatherDS(latlong, citys, country, resolve);
+            chrome.storage.local.get('timeZoneBadge', function(data) {
+                timeZoneBadge = data.timeZoneBadge;
+                weatherNO(latlong, citys, timeZoneBadge, resolve);
+            });
         });
 
 

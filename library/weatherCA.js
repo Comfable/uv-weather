@@ -1,5 +1,5 @@
 function weatherCA(latlong, citys, resolve) {
-
+    
     lat = (latlong.split(','))[0];
     lng = (latlong.split(','))[1];
 
@@ -25,7 +25,7 @@ function weatherCA(latlong, citys, resolve) {
                 }
             }
 
-            fetchWithTimeout(`https://uvweather.herokuapp.com/https://dd.weather.gc.ca/citypage_weather/xml/${stateCA_code}/${cityCA_code}_e.xml`, optionsCA, 3500)
+            fetchWithTimeout(`https://uvweather.herokuapp.com/https://dd.weather.gc.ca/citypage_weather/xml/${stateCA_code}/${cityCA_code}_e.xml`, optionsCA, 2500)
                 .then((resp) => resp.text())
                 .then(function(resultCA) {
                     
@@ -74,25 +74,31 @@ function weatherCA(latlong, citys, resolve) {
                         tempCca == "NA" || iconCodeCA == "NA" || summaryBadge == "NA") {
                         throw Error();
                     } else {
-                        chrome.storage.local.get(['setSettingUT', 'timeZoneBadge'], function(data) {
+                        chrome.storage.local.get(['setSettingUT', 'timeZoneBadge', 'latlong'], function(data) {
                             setSettingUT = data.setSettingUT;
                             timeZoneBadge = parseFloat(data.timeZoneBadge);
+                            latlong = data.latlong;
                             if (setSettingUT !== "u") {
                                 solarNighDay(timeZoneBadge, latlong);
                                 iconBadgeConvertCA(iconCodeCA);
                                 badgeGeneral(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, temperatureCbadge, updateTimeBadge, citys);
                             }   
-
                         });
-
-                        resolve && resolve(resultCA);
+                        
+                        resolve && resolve( 'result of CA()' );
                     }
 
                 }).catch(function(err) {
+                    //console.log('ca ' + err);
                     chrome.storage.local.set({
                         'failedHTTP': '1'
                     });                    
-                        weatherDS(latlong, citys, country, resolve);
+
+			         chrome.storage.local.get('timeZoneBadge', function(data) {
+			                timeZoneBadge = data.timeZoneBadge;
+			                weatherNO(latlong, citys, timeZoneBadge, resolve);
+			            });
+
                 });
 
 

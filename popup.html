@@ -8,21 +8,17 @@
  <head>
      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
      <title>UV Weather</title>
-     <link rel="preconnect" href="https://api.openweathermap.org" />
-     <link rel="preconnect" href="https://uv-weather.herokuapp.com" />
-     <link rel="preconnect" href="https://forecast.weather.gov" />
 
      <link rel="stylesheet" href="/popup.css" media="screen" />
      <link rel="preload" href="/js/popup.js" as="script" />
 
      <script src="/library/suncalc.js"></script>
      <script src="/library/util.js"></script>
-     <script src="/library/accufeel.min.js"></script>
+     <script src="/library/acc.js"></script>
      <script src="/js/background.js"></script>
      <script rel="preload" src="/js/popup.js"></script>
      <script src="/library/toastify.js"></script>
      <script src="/library/weatherCA.js"></script>
-     <script src="/library/weatherDS.js"></script>
      <script src="/library/weatherUS2.js"></script>
      <script src="/library/weatherNO.js"></script>     
      <script src="/library/papaparse.min.js"></script>
@@ -34,8 +30,8 @@
      <script type="text/javascript" src="/library/gtm.js" defer></script>
      
 
-     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.js' defer></script>
-     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.css' rel='stylesheet' />
+     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.js' defer></script>
+     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.css' rel='stylesheet' />
      <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js" defer></script>
      <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css" type="text/css" />
      <noscript>
@@ -447,9 +443,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_1_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_1_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_1_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_1_hours_icon" class="forecast_1_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -465,9 +464,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_2_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_2_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_2_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>                    
                      <span id="forecast_2_hours_icon" class="forecast_2_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -483,9 +485,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_3_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_3_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_3_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>                    
                      <span id="forecast_3_hours_icon" class="forecast_3_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -501,9 +506,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_4_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_4_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_4_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>                    
                      <span id="forecast_4_hours_icon" class="forecast_4_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -519,9 +527,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_5_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_5_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_5_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>                    
                      <span id="forecast_5_hours_icon" class="forecast_5_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -537,9 +548,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_6_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_6_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_6_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>                    
                      <span id="forecast_6_hours_icon" class="forecast_6_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -555,9 +569,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_7_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_7_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_7_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_7_hours_icon" class="forecast_7_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -573,9 +590,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_8_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_8_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_8_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_8_hours_icon" class="forecast_8_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -591,9 +611,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_9_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_9_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_9_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_9_hours_icon" class="forecast_9_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -609,9 +632,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_10_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_10_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_10_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_10_hours_icon" class="forecast_10_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -627,9 +653,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_11_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_11_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_11_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_11_hours_icon" class="forecast_11_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -645,9 +674,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_12_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_12_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_12_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_12_hours_icon" class="forecast_12_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -663,9 +695,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_13_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_13_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_13_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_13_hours_icon" class="forecast_13_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -681,9 +716,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_14_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_14_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_14_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_14_hours_icon" class="forecast_14_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -699,9 +737,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_15_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_15_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_15_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_15_hours_icon" class="forecast_15_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -717,9 +758,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_16_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_16_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_16_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_16_hours_icon" class="forecast_16_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -735,9 +779,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_17_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_17_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_17_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_17_hours_icon" class="forecast_17_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -753,9 +800,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_18_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_18_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_18_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_18_hours_icon" class="forecast_18_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -771,9 +821,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_19_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_19_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_19_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_19_hours_icon" class="forecast_19_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -789,9 +842,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_20_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_20_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_20_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_20_hours_icon" class="forecast_20_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -807,9 +863,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_21_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_21_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_21_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_21_hours_icon" class="forecast_21_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -825,9 +884,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_22_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_22_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_22_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_22_hours_icon" class="forecast_22_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -843,9 +905,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_23_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_23_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_23_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_23_hours_icon" class="forecast_23_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -861,9 +926,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_24_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_24_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_24_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_24_hours_icon" class="forecast_24_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -879,9 +947,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_25_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_25_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_25_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_25_hours_icon" class="forecast_25_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -897,9 +968,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_26_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_26_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_26_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_26_hours_icon" class="forecast_26_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -915,9 +989,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_27_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_27_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_27_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_27_hours_icon" class="forecast_27_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -933,9 +1010,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_28_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_28_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_28_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_28_hours_icon" class="forecast_28_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -951,9 +1031,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_29_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_29_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_29_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_29_hours_icon" class="forecast_29_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -969,9 +1052,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_30_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_30_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_30_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_30_hours_icon" class="forecast_30_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -987,9 +1073,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_31_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_31_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_31_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_31_hours_icon" class="forecast_31_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -1005,9 +1094,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_32_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_32_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_32_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_32_hours_icon" class="forecast_32_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -1023,9 +1115,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_33_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_33_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_33_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_33_hours_icon" class="forecast_33_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -1041,9 +1136,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_34_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_34_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_34_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_34_hours_icon" class="forecast_34_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -1059,9 +1157,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_35_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_35_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_35_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_35_hours_icon" class="forecast_35_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -1077,9 +1178,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_36_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_36_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_36_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_36_hours_icon" class="forecast_36_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -1095,9 +1199,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_37_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_37_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_37_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_37_hours_icon" class="forecast_37_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -1113,9 +1220,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_38_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_38_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_38_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_38_hours_icon" class="forecast_38_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -1131,9 +1241,12 @@
                          2-°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_39_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_39_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_39_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_39_hours_icon" class="forecast_39_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -1149,9 +1262,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_40_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_40_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_40_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_40_hours_icon" class="forecast_40_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -1167,9 +1283,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_41_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_41_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_41_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_41_hours_icon" class="forecast_41_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -1185,9 +1304,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_42_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_42_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_42_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_42_hours_icon" class="forecast_42_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -1203,9 +1325,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_43_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_43_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_43_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_43_hours_icon" class="forecast_43_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -1221,9 +1346,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_44_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_44_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_44_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_44_hours_icon" class="forecast_44_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -1239,9 +1367,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_45_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_45_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_45_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_45_hours_icon" class="forecast_45_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -1257,9 +1388,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_46_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_46_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_46_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_46_hours_icon" class="forecast_46_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -1275,9 +1409,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_47_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_47_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_47_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_47_hours_icon" class="forecast_47_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -1293,9 +1430,12 @@
                          -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
-                     <span id="forecast_48_hours_rain" class="forecast_rain_modal_Class">
-                         -%
-                     </span>
+                      <span class="forecast_rain_group_modal_Class">
+                         <span id="forecast_48_hours_rain" class="forecast_rain_modal_Class">
+                         </span>
+                         <span id="forecast_48_hours_rain_unit" class="forecast_rain_unit_modal_Class">
+                         </span>
+                      </span>
                      <span id="forecast_48_hours_icon" class="forecast_48_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
@@ -1802,13 +1942,13 @@
                          <span id="setting_defualt_button_f_all" class="setting_section_iner_Class">
                              <input type="radio" id="setting_defualt_button_f" name="radioTemp" />
                              <span class="check"></span>
-                             <label for="setting_defualt_button_f">°F</label>
+                             <label for="setting_defualt_button_f_label">°F</label>
                          </span>
 
                          <span id="setting_defualt_button_c_all" class="setting_section_iner_Class">
                              <input type="radio" id="setting_defualt_button_c" name="radioTemp" />
                              <span class="check"></span>
-                             <label for="setting_defualt_button_c">°C</label>
+                             <label for="setting_defualt_button_c_label">°C</label>
                          </span>
                      </span>
                  </div>
@@ -1819,19 +1959,19 @@
                          <span id="setting_defualt_button_mph_all" class="setting_section_iner_Class">
                              <input type="radio" id="setting_defualt_button_mph" name="radioWind" />
                              <span class="check"></span>
-                             <label for="setting_defualt_button_mph">mph</label>
+                             <label for="setting_defualt_button_mph_label">mph</label>
                          </span>
 
                          <span id="setting_defualt_button_kmh_all" class="setting_section_iner_Class">
                              <input type="radio" id="setting_defualt_button_kmh" name="radioWind" />
                              <span class="check"></span>
-                             <label for="setting_defualt_button_kmh">km/h</label>
+                             <label for="setting_defualt_button_kmh_label">km/h</label>
                          </span>
 
                          <span id="setting_defualt_button_ms_all" class="setting_section_iner_Class">
                              <input type="radio" id="setting_defualt_button_ms" name="radioWind" />
                              <span class="check"></span>
-                             <label for="setting_defualt_button_ms">m/s</label>
+                             <label for="setting_defualt_button_ms_label">m/s</label>
                          </span>
                      </span>
                  </div>
@@ -1842,13 +1982,13 @@
                          <span id="setting_defualt_button_12h_all" class="setting_section_iner_Class">
                              <input type="radio" id="setting_defualt_button_12h" name="radioTime" />
                              <span class="check"></span>
-                             <label for="setting_defualt_button_12h">12H</label>
+                             <label for="setting_defualt_button_12h_label">12H</label>
                          </span>
 
                          <span id="setting_defualt_button_24h_all" class="setting_section_iner_Class">
                              <input type="radio" id="setting_defualt_button_24h" name="radioTime" />
                              <span class="check"></span>
-                             <label for="setting_defualt_button_24h">24H</label>
+                             <label for="setting_defualt_button_24h_label">24H</label>
                          </span>
                      </span>
                  </div>
@@ -1864,13 +2004,13 @@
                      <span id="setting_defualt_button_u_all" class="setting_section_iner_Class">
                          <input type="radio" id="setting_defualt_button_u" name="radioBadge" />
                          <span class="check"></span>
-                         <label for="setting_defualt_button_u">UV Index</label>
+                         <label for="setting_defualt_button_u_label">UV Index</label>
                      </span>
 
                      <span id="setting_defualt_button_t_all" class="setting_section_iner_Class">
                          <input type="radio" id="setting_defualt_button_t" name="radioBadge" />
                          <span class="check"></span>
-                         <label for="setting_defualt_button_t">Temperature</label>
+                         <label for="setting_defualt_button_t_label">Temperature</label>
                      </span>
                  </div>
 
@@ -1932,13 +2072,13 @@
                      <span id="setting_defualt_theme_d_all" class="setting_section_iner_Class">
                          <input type="radio" id="setting_defualt_theme_d" name="radioBadgeColor" />
                          <span class="check"></span>
-                         <label for="setting_defualt_theme_d">Dark Theme</label>
+                         <label for="setting_defualt_theme_d_label">Dark Theme</label>
                      </span>
 
                      <span id="setting_defualt_theme_l_all" class="setting_section_iner_Class">
                          <input type="radio" id="setting_defualt_theme_l" name="radioBadgeColor" />
                          <span class="check"></span>
-                         <label for="setting_defualt_theme_l" class="setting_defualt_theme_l_Class">Light Theme</label>
+                         <label for="setting_defualt_theme_l_label" class="setting_defualt_theme_l_Class">Light Theme</label>
                      </span>
                  </div>
 

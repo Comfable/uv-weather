@@ -235,18 +235,18 @@ function badgeGeneral(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, sn
                 currentWhiteIcon = 1;
             }
             if (currentBadgeSize == 1) {
-                setTimeout(function() {
+                //setTimeout(function() {
                     largBadgeNumber(temperatureCbadge, currentWhiteIcon)
-                }, 550);
+                //}, 550);
             } else {
                 chrome.browserAction.setBadgeText({
                     "text": temperatureCbadge + "°C"
                 });
 
-                badgeBackgroundColor(currentWhiteIcon);
-                setTimeout(function() {
-                    badgeBackgroundImage();
-                }, 550);
+                badgeBackgroundColor(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, currentWhiteIcon);
+                //setTimeout(function() {
+                    badgeBackgroundImage(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, currentWhiteIcon);
+                //}, 550);
             }
         });
     };
@@ -261,17 +261,17 @@ function badgeGeneral(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, sn
                 currentWhiteIcon = 1;
             }
             if (currentBadgeSize == 1) {
-                setTimeout(function() {
+                //setTimeout(function() {
                     largBadgeNumber(temperatureFbadge, currentWhiteIcon)
-                }, 550);
+                //}, 550);
             } else {
                 chrome.browserAction.setBadgeText({
                     "text": temperatureFbadge + "°F"
                 });
-                badgeBackgroundColor(currentWhiteIcon);
-                setTimeout(function() {
-                    badgeBackgroundImage();
-                }, 550);
+                badgeBackgroundColor(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, currentWhiteIcon);
+               //setTimeout(function() {
+                    badgeBackgroundImage(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, currentWhiteIcon);
+                //}, 550);
             }
         });
     };
@@ -286,9 +286,9 @@ function badgeGeneral(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, sn
                 currentWhiteIcon = 1;
             }
             if (currentBadgeSize == 1) {
-                setTimeout(function() {
+                //setTimeout(function() {
                     largBadgeNumber(uv1, currentWhiteIcon)
-                }, 550);
+                //}, 550);
             } else {
                 if (uv1 > 9) {
                     chrome.browserAction.setBadgeText({
@@ -299,10 +299,10 @@ function badgeGeneral(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, sn
                         "text": "UV " + uv1
                     });
                 }
-                badgeBackgroundColor(currentWhiteIcon);
-                setTimeout(function() {
-                    badgeBackgroundImage();
-                }, 550);
+                badgeBackgroundColor(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, currentWhiteIcon);
+                //setTimeout(function() {
+                    badgeBackgroundImage(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, currentWhiteIcon);
+                //}, 550);
             }
         });
 
@@ -414,7 +414,7 @@ function badgeTemp(latlong, citys, country, timeZoneBadge) {
 };
 
 function badgeUV(latlong, citys, country, timeZoneBadge) {
-    weatherDS(latlong, citys, country);
+    weatherNO(latlong, citys, timeZoneBadge);
 };
 
 chrome.runtime.onInstalled.addListener(function(details) {

@@ -25,6 +25,7 @@ function solarNighDay(timeZoneBadge, latlong) {
     sunnyDayBadge = false;
     rainyBadge = false;
     snowyBadge = false;
+    windyBadge = false;
     lat = (latlong.split(','))[0];
     lng = (latlong.split(','))[1];
 
@@ -77,8 +78,12 @@ function solarNighDay(timeZoneBadge, latlong) {
 
     if (localTimeString >= dawnDayjs && localTimeString <= duskDayjs) {
         isDay = true;
+        chrome.storage.local.set({'isDay': true});
+        chrome.storage.local.set({'isNight': false});        
     } else {
         isNight = true;
+        chrome.storage.local.set({'isNight': true});
+        chrome.storage.local.set({'isDay': false});
     }
 };
 
@@ -256,72 +261,110 @@ function code2description_no(iconCodeNO) {
 
 };
 
+
 function iconBadgeConvertDS(iconBadge) {
+    chrome.storage.local.set({'cloudyBadge': false});
+    chrome.storage.local.set({'rainyBadge': false});
+    chrome.storage.local.set({'snowyBadge': false});
+    chrome.storage.local.set({'sunnyDayBadge': false});
+
     if (iconBadge === "cloudy" || iconBadge === "partly-cloudy-day" || iconBadge === "partly-cloudy-night" || iconBadge === "fog") {
         cloudyBadge = true;
+        chrome.storage.local.set({'cloudyBadge': true});
     } else if (iconBadge === "rain") {
         rainyBadge = true;
+        chrome.storage.local.set({'rainyBadge': true});
     } else if (iconBadge === "snow" || iconBadge === "sleet") {
         snowyBadge = true;
+        chrome.storage.local.set({'snowyBadge': true});
     } else {
         sunnyDayBadge = true;
+        chrome.storage.local.set({'sunnyDayBadge': true});
     };
 };
 
-function iconBadgeConvertNO(iconNO,nightNO) {
+function iconBadgeConvertNO(iconNO, nightNO) {
+    chrome.storage.local.set({'cloudyBadge': false});
+    chrome.storage.local.set({'rainyBadge': false});
+    chrome.storage.local.set({'snowyBadge': false});
+    chrome.storage.local.set({'sunnyDayBadge': false});
+    chrome.storage.local.set({'clearNightBadge': false});
 
     if (iconNO == "cloudy") {
         iconBadge = 'cloudy';
+        cloudyBadge = true;
+        chrome.storage.local.set({'cloudyBadge': true});
     } else if (iconNO == "fog") {
         iconBadge = 'fog';
+        cloudyBadge = true;
+        chrome.storage.local.set({'cloudyBadge': true});
     } else if (iconNO == "rainandthunder" || iconNO == "heavyrain" || iconNO == "lightrainshowers" || iconNO == "lightrain" || iconNO == "lightrainshowersandthunder" || iconNO == "lightrainandthunder" || iconNO == "heavyrainshowersandthunder" || iconNO == "lightssnowshowersandthunder" || iconNO == "rainshowersandthunder" || iconNO == "rainshowers" || iconNO == "heavyrainandthunder" || iconNO == "heavyrainshowers" || iconNO == "rain") {
         iconBadge = 'rain';
+        rainyBadge = true;
+        chrome.storage.local.set({'rainyBadge': true});
     } else if (iconNO == "snowshowers" || iconNO == "snowandthunder" || iconNO == "heavysnow" || iconNO == "heavysnowshowersandthunder" || iconNO == "snowshowersandthunder" || iconNO == "lightsnow" || iconNO == "lightsnowshowers" || iconNO == "lightsnowandthunder" || iconNO == "snow" || iconNO == "heavysnowshowers" || iconNO == "heavysnowandthunder") {
         iconBadge = 'snow';
+        snowyBadge = true;
+        chrome.storage.local.set({'snowyBadge': true});
     } else if (iconNO == "lightsleet" || iconNO == "lightsleetshowers" || iconNO == "sleet" || iconNO == "heavysleetandthunder" || iconNO == "sleetshowersandthunder" || iconNO == "heavysleetshowersHeavy" || iconNO == "lightssleetshowersandthunder" || iconNO == "sleetandthunder" || iconNO == "lightsleetandthunder" || iconNO == "heavysleetshowersandthunder" || iconNO == "sleetshowers" || iconNO == "heavysleet") {
         iconBadge = 'sleet';
+        snowyBadge = true;
+        chrome.storage.local.set({'snowyBadge': true});
     } else if ((iconNO == "partlycloudy") && (nightNO !== 'night')) {
         iconBadge = 'partly-cloudy-day';
+        cloudyBadge = true;
+        chrome.storage.local.set({'cloudyBadge': true});
     } else if ((iconNO == "partlycloudy") && (nightNO == 'night')) {
         iconBadge = 'partly-cloudy-night';
+        cloudyBadge = true;
+        chrome.storage.local.set({'cloudyBadge': true});
     } else if ((iconNO == "clearsky" || iconNO == "fair") && (nightNO == 'night')) {
         iconBadge = 'clear-night';
+        clearNightBadge = true;
+        chrome.storage.local.set({'clearNightBadge': true});
     } else if ((iconNO == "clearsky" || iconNO == "fair") && (nightNO !== 'night')) {
         iconBadge = 'clear-day';
-    } else {
+        sunnyDayBadge = true;
+        chrome.storage.local.set({'sunnyDayBadge': true});
+    } 
+    else {
         if (nightNO == 'night') {
             iconBadge = 'clear-night';
+            clearNightBadge = true;
+        chrome.storage.local.set({'clearNightBadge': true});
         } else {
             iconBadge = 'clear-day';
+            sunnyDayBadge = true;
+            chrome.storage.local.set({'sunnyDayBadge': true});
         }
     }
 
-    iconBadgeConvertDS(iconBadge);
-
-    return iconBadge;
+    //return iconBadge;
 };
 
-function iconBadgeConvertNO_hourly(iconNO,nightNO) {
+function iconBadgeConvertNO_hourly(iconNO, nightNO) {
 
     if (iconNO == "cloudy") {
-        iconBadge = 'cloudy';
+        iconBadgeNO_hourly = 'cloudy';
     } else if (iconNO == "fog") {
-        iconBadge = 'fog';
+        iconBadgeNO_hourly = 'fog';
     } else if (iconNO == "rainandthunder" || iconNO == "heavyrain" || iconNO == "lightrainshowers" || iconNO == "lightrain" || iconNO == "lightrainshowersandthunder" || iconNO == "lightrainandthunder" || iconNO == "heavyrainshowersandthunder" || iconNO == "lightssnowshowersandthunder" || iconNO == "rainshowersandthunder" || iconNO == "rainshowers" || iconNO == "heavyrainandthunder" || iconNO == "heavyrainshowers" || iconNO == "rain") {
-        iconBadge = 'rain';
+        iconBadgeNO_hourly = 'rain';
     } else if (iconNO == "snowshowers" || iconNO == "snowandthunder" || iconNO == "heavysnow" || iconNO == "heavysnowshowersandthunder" || iconNO == "snowshowersandthunder" || iconNO == "lightsnow" || iconNO == "lightsnowshowers" || iconNO == "lightsnowandthunder" || iconNO == "snow" || iconNO == "heavysnowshowers" || iconNO == "heavysnowandthunder") {
-        iconBadge = 'snow';
+        iconBadgeNO_hourly = 'snow';
     } else if (iconNO == "lightsleet" || iconNO == "lightsleetshowers" || iconNO == "sleet" || iconNO == "heavysleetandthunder" || iconNO == "sleetshowersandthunder" || iconNO == "heavysleetshowersHeavy" || iconNO == "lightssleetshowersandthunder" || iconNO == "sleetandthunder" || iconNO == "lightsleetandthunder" || iconNO == "heavysleetshowersandthunder" || iconNO == "sleetshowers" || iconNO == "heavysleet") {
-        iconBadge = 'sleet';
+        iconBadgeNO_hourly = 'sleet';
     } else if ((iconNO == "partlycloudy") && (nightNO !== 'night')) {
-        iconBadge = 'partly-cloudy-day';
+        iconBadgeNO_hourly = 'partly-cloudy-day';
     } else if ((iconNO == "partlycloudy") && (nightNO == 'night')) {
-        iconBadge = 'partly-cloudy-night';
+        iconBadgeNO_hourly = 'partly-cloudy-night';
     } else if ((iconNO == "clearsky" || iconNO == "fair") && (nightNO == 'night')) {
-        iconBadge = 'clear-night';
+        iconBadgeNO_hourly = 'clear-night';
     } else if ((iconNO == "clearsky" || iconNO == "fair") && (nightNO !== 'night')) {
-        iconBadge = 'clear-day';
-    } else {
+        iconBadgeNO_hourly = 'clear-day';
+    } 
+
+    else {
         if (nightNO == 'night') {
             iconBadge = 'clear-night';
         } else {
@@ -329,112 +372,137 @@ function iconBadgeConvertNO_hourly(iconNO,nightNO) {
         }
     }
 
-    return iconBadge;
+    return iconBadgeNO_hourly;
 };
 
 function iconBadgeConvertCA(iconCodeCA) {
+    chrome.storage.local.set({'cloudyBadge': false});
+    chrome.storage.local.set({'rainyBadge': false});
+    chrome.storage.local.set({'snowyBadge': false});
+    chrome.storage.local.set({'sunnyDayBadge': false});
+    chrome.storage.local.set({'clearNightBadge': false});
+    chrome.storage.local.set({'windyBadge': false});
+
     if (iconCodeCA == "03" || iconCodeCA == "10" || iconCodeCA == "33") {
         iconBadge = 'cloudy';
+        cloudyBadge = true;
+        chrome.storage.local.set({'cloudyBadge': true});
     } else if (iconCodeCA == "23" || iconCodeCA == "24" || iconCodeCA == "44" || iconCodeCA == "45" || iconCodeCA == "48") {
         iconBadge = 'fog';
+        cloudyBadge = true;
+        chrome.storage.local.set({'cloudyBadge': true});
     } else if (iconCodeCA == "06" || iconCodeCA == "07" || iconCodeCA == "11" || iconCodeCA == "12" || iconCodeCA == "13" || iconCodeCA == "19" || iconCodeCA == "28" || iconCodeCA == "36" || iconCodeCA == "37" || iconCodeCA == "38" || iconCodeCA == "39" || iconCodeCA == "46" || iconCodeCA == "47") {
         iconBadge = 'rain';
+        rainyBadge = true;
+        chrome.storage.local.set({'rainyBadge': true});
     } else if (iconCodeCA == "08" || iconCodeCA == "16" || iconCodeCA == "17" || iconCodeCA == "18" || iconCodeCA == "25" || iconCodeCA == "40") {
         iconBadge = 'snow';
+        snowyBadge = true;
+        chrome.storage.local.set({'snowyBadge': true});
     } else if (iconCodeCA == "41" || iconCodeCA == "42" || iconCodeCA == "43") {
         iconBadge = 'wind';
+        windyBadge = true;
+        chrome.storage.local.set({'windyBadge': true});
     } else if (iconCodeCA == "14" || iconCodeCA == "15" || iconCodeCA == "26" || iconCodeCA == "27") {
         iconBadge = 'sleet';
+        snowyBadge = true;
+        chrome.storage.local.set({'snowyBadge': true});
     } else if ((iconCodeCA == "02" || iconCodeCA == "32") && isDay) {
         iconBadge = 'partly-cloudy-day';
+        cloudyBadge = true;
+        chrome.storage.local.set({'cloudyBadge': true});
     } else if ((iconCodeCA == "02" || iconCodeCA == "32") && isNight) {
         iconBadge = 'partly-cloudy-night';
+        cloudyBadge = true;
+        chrome.storage.local.set({'cloudyBadge': true});
     } else if ((iconCodeCA == "00" || iconCodeCA == "01" || iconCodeCA == "30" || iconCodeCA == "31" || iconCodeCA == "") && isNight) {
         iconBadge = 'clear-night';
+        clearNightBadge = true;
+        chrome.storage.local.set({'clearNightBadge': true});
     } else if ((iconCodeCA == "00" || iconCodeCA == "01" || iconCodeCA == "30" || iconCodeCA == "31" || iconCodeCA == "") && isDay) {
         iconBadge = 'clear-day';
+        sunnyDayBadge = true;
+        chrome.storage.local.set({'sunnyDayBadge': true});
     } else {
         if (isNight) {
             iconBadge = 'clear-night';
+            clearNightBadge = true;
+            chrome.storage.local.set({'clearNightBadge': true});
         } else {
             iconBadge = 'clear-day';
+            sunnyDayBadge = true;
+            chrome.storage.local.set({'sunnyDayBadge': true});
         }
     }
 
-    iconBadgeConvertDS(iconBadge);
-
-    return iconBadge;
-};
-
-function iconBadgeConvert(summaryBadge, summaryBadgeMain) {
-    if (summaryBadge === "overcast clouds" || summaryBadge === "broken clouds") {
-        iconBadge = 'cloudy';
-    } else if (summaryBadgeMain === "Ash" || summaryBadgeMain === "Sand" || summaryBadgeMain === "Fog" || summaryBadgeMain === "Dust" || summaryBadgeMain === "Haze" || summaryBadgeMain === "Smoke" || summaryBadgeMain === "Mist") {
-        iconBadge = 'fog';
-    } else if (summaryBadgeMain === "Rain" || summaryBadgeMain === "Thunderstorm" || summaryBadgeMain === "Drizzle") {
-        iconBadge = 'rain';
-    } else if (summaryBadgeMain === "Snow") {
-        iconBadge = 'snow';
-    } else if (summaryBadgeMain === "Squall" || summaryBadgeMain === "Tornado") {
-        iconBadge = 'wind';
-    } else if (summaryBadge === "Sleet") {
-        iconBadge = 'sleet';
-    } else if ((summaryBadge === "few clouds" || summaryBadge === "scattered clouds") && isDay) {
-        iconBadge = 'partly-cloudy-day';
-    } else if ((summaryBadge === "few clouds" || summaryBadge === "scattered clouds") && isNight) {
-        iconBadge = 'partly-cloudy-night';
-    } else if ((summaryBadgeMain === "Clear" && isNight)) {
-        iconBadge = 'clear-night';
-    } else if (summaryBadgeMain === "Clear" && isDay) {
-        iconBadge = 'clear-day';
-    } else {
-        if (isNight) {
-            iconBadge = 'clear-night';
-        } else {
-            iconBadge = 'clear-day';
-        }
-    }
-
-    iconBadgeConvertDS(iconBadge);
-
-    return iconBadge;
+    //return iconBadge;
 };
 
 function iconBadgeConvertUS(iconUS) {
+    chrome.storage.local.set({'cloudyBadge': false});
+    chrome.storage.local.set({'rainyBadge': false});
+    chrome.storage.local.set({'snowyBadge': false});
+    chrome.storage.local.set({'sunnyDayBadge': false});
+    chrome.storage.local.set({'clearNightBadge': false});
+    chrome.storage.local.set({'windyBadge': false});
+
     if (iconUS === "scttsra" || iconUS === "nscttsra" || iconUS === "hi_tsra" || iconUS === "hi_ntsra" || iconUS === "fc" || iconUS === "nfc" || iconUS === "wind_ovc" || iconUS === "nwind_ovc" || iconUS === "bkn" || iconUS === "ovc" || iconUS === "novc" || iconUS === "nbkn" || iconUS === "wind_bkn" || iconUS === "nwind_bkn" || iconUS === "wind_ovc" || iconUS === "nwind_ovc" || iconUS === "tsra" || iconUS === "tsra_sct") {
         iconBadge = 'cloudy';
+        cloudyBadge = true;
+        chrome.storage.local.set({'cloudyBadge': true});
     } else if (iconUS === "dust" || iconUS === "smoke" || iconUS === "haze" || iconUS === "fog" || iconUS === "du" || iconUS === "ndu" || iconUS === "fu" || iconUS === "nfu" || iconUS === "hz" || iconUS === "fg" || iconUS === "nfg") {
         iconBadge = 'fog';
+        cloudyBadge = true;
+        chrome.storage.local.set({'cloudyBadge': true});        
     } else if (iconUS === "minus_ra" || iconUS === "shra" || iconUS === "nshra" || iconUS === "hi_shwrs" || iconUS === "hi_nshwrs" || iconUS === "rain_snow" || iconUS === "tsra" || iconUS === "ntsra" || iconUS === "rain_fzra" || iconUS === "ra_sn" || iconUS === "nra_sn" || iconUS === "rain" || iconUS === "rain_showers" || iconUS === "rain_showers_hi" || iconUS === "ra" || iconUS === "nra") {
         iconBadge = 'rain';
+        rainyBadge = true;
+        chrome.storage.local.set({'rainyBadge': true});        
     } else if (iconUS === "snow" || iconUS === "snow_fzra" || iconUS === "blizzard" || iconUS === "nblizzard" || iconUS === "sn" || iconUS === "nsn") {
         iconBadge = 'snow';
+        snowyBadge = true;
+        chrome.storage.local.set({'snowyBadge': true});        
     } else if (iconUS === "hur_warn" || iconUS === "hur_watch" || iconUS === "ts_warn" || iconUS === "ts_watch" || iconUS === "ts_nowarn" || iconUS === "wind_skc" || iconUS === "nwind_skc" || iconUS === "wind_few" || iconUS === "nwind_few" || iconUS === "tsra_hi" || iconUS === "tornado" || iconUS === "tor" || iconUS === "ntor" || iconUS === "hurricane" || iconUS === "tropical_storm") {
         iconBadge = 'wind';
+        windyBadge = true;
+        chrome.storage.local.set({'windyBadge': true});        
     } else if (iconUS === "ip" || iconUS === "nip" || iconUS === "snip" || iconUS === "nsnip" || iconUS === "fzra_sn" || iconUS === "nfzra_sn" || iconUS === "raip" || iconUS === "nraip" || iconUS === "rain_sleet" || iconUS === "fzra" || iconUS === "nfzra" || iconUS === "ra_fzra" || iconUS === "nra_fzra" || iconUS === "snow_sleet" || iconUS === "sleet") {
         iconBadge = 'sleet';
+        snowyBadge = true;
+        chrome.storage.local.set({'snowyBadge': true});        
     } else if ((iconUS === "wind_sct" || iconUS === "nwind_sct" || iconUS === "sct" || iconUS === "nsct") && isDay) {
         iconBadge = 'partly-cloudy-day';
+        cloudyBadge = true;
+        chrome.storage.local.set({'cloudyBadge': true});        
     } else if ((iconUS === "wind_sct" || iconUS === "nwind_sct" || iconUS === "sct" || iconUS === "nsct") && isNight) {
         iconBadge = 'partly-cloudy-night';
+        cloudyBadge = true;
+        chrome.storage.local.set({'cloudyBadge': true});        
     } else if ((iconUS === "skc" || iconUS === "nskc" || iconUS === "few" || iconUS === "nfew" || iconUS === "hot" || iconUS === "cold" || iconUS === "") && isNight) {
         iconBadge = 'clear-night';
+        clearNightBadge = true;
+        chrome.storage.local.set({'clearNightBadge': true});         
     } else if ((iconUS === "skc" || iconUS === "nskc" || iconUS === "few" || iconUS === "nfew" || iconUS === "hot" || iconUS === "cold" || iconUS === "") && isDay) {
         iconBadge = 'clear-day';
+        sunnyDayBadge = true;
+        chrome.storage.local.set({'sunnyDayBadge': true});
     } else {
         if (isNight) {
             iconBadge = 'clear-night';
+            clearNightBadge = true;
+            chrome.storage.local.set({'clearNightBadge': true});
         } else {
             iconBadge = 'clear-day';
+            sunnyDayBadge = true;
+            chrome.storage.local.set({'sunnyDayBadge': true});
         }
     }
     
-    iconBadgeConvertDS(iconBadge);
-
-    return iconBadge;
+    //return iconBadge;
 };
 
-function badgeBackgroundImage() {
+function badgeBackgroundImage(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, currentWhiteIcon) {
+
     if (isDay && sunnyDayBadge && temperatureFbadge >= 50 && currentWhiteIcon == 0) {
         chrome.browserAction.setIcon({
             path: {
@@ -481,6 +549,12 @@ function badgeBackgroundImage() {
         chrome.browserAction.setIcon({
             path: {
                 "128": "images/badge/snow-night-128.png"
+            }
+        });
+    } else if (windyBadge && currentWhiteIcon == 0) {
+        chrome.browserAction.setIcon({
+            path: {
+                "128": "images/badge/wind-128.png"
             }
         });
     } else if (currentWhiteIcon == 0) {
@@ -537,6 +611,12 @@ function badgeBackgroundImage() {
                 "128": "images/badge/snow-dark-128.png"
             }
         });
+    } else if (windyBadge && currentWhiteIcon == 1) {
+        chrome.browserAction.setIcon({
+            path: {
+                "128": "images/badge/wind-dark-128.png"
+            }
+        });        
     } else if (currentWhiteIcon == 1) {
         chrome.browserAction.setIcon({
             path: {
@@ -546,7 +626,8 @@ function badgeBackgroundImage() {
     }
 };
 
-function badgeBackgroundColor(currentWhiteIcon) {
+function badgeBackgroundColor(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, currentWhiteIcon) {
+
 
     if (isDay && sunnyDayBadge && temperatureFbadge >= 50) {
         chrome.browserAction.setBadgeBackgroundColor({
@@ -556,31 +637,31 @@ function badgeBackgroundColor(currentWhiteIcon) {
         chrome.browserAction.setBadgeBackgroundColor({
             color: '#ffa25b'
         });
-    } else if (isDay && cloudyBadge && currentWhiteIcon == 0) {
+    } else if (isDay && cloudyBadge) {
         chrome.browserAction.setBadgeBackgroundColor({
             color: '#549dd0'
         });
-    } else if (isNight && cloudyBadge && currentWhiteIcon == 0) {
+    } else if (isNight && cloudyBadge) {
         chrome.browserAction.setBadgeBackgroundColor({
             color: '#000000'
         });
-    } else if (isDay && rainyBadge && currentWhiteIcon == 0) {
+    } else if (isDay && rainyBadge) {
         chrome.browserAction.setBadgeBackgroundColor({
             color: '#549dd0'
         });
-    } else if (isNight && rainyBadge && currentWhiteIcon == 0) {
+    } else if (isNight && rainyBadge) {
         chrome.browserAction.setBadgeBackgroundColor({
             color: '#000000'
         });
-    } else if (isDay && snowyBadge && currentWhiteIcon == 0) {
+    } else if (isDay && snowyBadge) {
         chrome.browserAction.setBadgeBackgroundColor({
             color: '#549dd0'
         });
-    } else if (isNight && snowyBadge && currentWhiteIcon == 0) {
+    } else if (isNight && snowyBadge) {
         chrome.browserAction.setBadgeBackgroundColor({
             color: '#000000'
         });
-    } else if (currentWhiteIcon == 0) {
+    } else {
         chrome.browserAction.setBadgeBackgroundColor({
             color: '#000000'
         });
@@ -900,10 +981,10 @@ function mode(arr){
 
 function solarcalc(lat,localTimeMoment) {
     latituteInRadians = lat * Math.PI / 180;
-
     numberOfDaysSinceFirstOfJanuary = localTimeMoment.dayOfYear();
     mmtMidnight = localTimeMoment.clone().startOf('day');
     numberOfMinutesThisDay = localTimeMoment.diff(mmtMidnight, 'minutes');
+    
     if(moment(localTimeMoment).isLeapYear()) {
         dayNumberOfYear = 366;
     }
@@ -924,4 +1005,23 @@ function solarcalc(lat,localTimeMoment) {
         ghiSolarClearSki = 0;
     }
     return ghiSolarClearSki;
+};
+
+function mode2(arr) {
+    const nMap = [];
+    for (var i of a) {
+        var check = false;
+        for (var j of nMap) {
+            if (j['key'] === i) {
+                check = true;
+                j['frequency'] += 1;
+            }
+        }
+
+        if (!check) {
+            nMap.push({ key: i, frequency: 1 })
+        }
+    }
+    const nMap2 = nMap.filter(e => e.key !== '' && e.key !== null && e.key !== undefined);
+    nMap2.sort((e1, e2) => e2.frequency - e1.f);
 };
