@@ -1,4 +1,5 @@
 function weatherNO(latlong, citys, timeZoneBadge, resolve) {
+    //console.log('no');
 
     lat = (latlong.split(','))[0];
     lng = (latlong.split(','))[1];
@@ -579,7 +580,7 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
 
 
         }).catch(function(err) {
-            //console.log('no ' + err);
+            console.log('no err ' + err);
                 chrome.storage.local.set({'failedHTTP_NO': '1'});
 
           });

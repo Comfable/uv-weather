@@ -36,13 +36,13 @@ document.addEventListener("DOMContentLoaded", function() {
     const toggleSwitchBadgeSize = document.querySelector('.badge_size_switch_setting input[type="checkbox"]');
     var loadingIconBadgeDelay = 1;
 
-    var mapStyleLight = 'mapbox://styles/mapbox/light-v10';
-    var weathermapStyleLight = 'mapbox://styles/mapbox/light-v10';
-    var mapStyleDark = 'mapbox://styles/mapbox/dark-v10';
-    var weathermapStyleDark = 'mapbox://styles/mapbox/dark-v10';
+    var mapStyleLight = 'mapbox://styles/mapbox/light-v10?optimize=true';
+    var weathermapStyleLight = 'mapbox://styles/mapbox/light-v10?optimize=true';
+    var mapStyleDark = 'mapbox://styles/mapbox/dark-v10?optimize=true';
+    var weathermapStyleDark = 'mapbox://styles/mapbox/dark-v10?optimize=true';
 
-    mapStyle = 'mapbox://styles/mapbox/light-v10';
-    weathermapStyle = 'mapbox://styles/mapbox/light-v10';
+    mapStyle = 'mapbox://styles/mapbox/light-v10?optimize=true';
+    weathermapStyle = 'mapbox://styles/mapbox/light-v10?optimize=true';
 
     var locationToast = Toastify({
         className: "locationToast",
@@ -81,32 +81,17 @@ document.addEventListener("DOMContentLoaded", function() {
         'firstTimeSaerchPopupInSession': 0
     });
 
-    chrome.storage.local.get(['IntervalUpdate', 'setSettingUT', 'country'], function(data) {
-        if (data.country == "US" || data.country == "us" || data.country == "United States of America" || data.country == "CA" || data.country == "ca" || data.country == "Canada") {
-            document.querySelector(".setting_defualt_button_15_sub").style.opacity = "1";
-            document.querySelector(".setting_defualt_button_15_sub_label").style.opacity = "1";
-            document.getElementById("setting_defualt_button_15_all").style.pointerEvents = "auto";
-        } else {
-            document.querySelector(".setting_defualt_button_15_sub_label").style.opacity = ".3";
-            document.querySelector(".setting_defualt_button_15_sub").style.opacity = ".3";
-        }
-
+    chrome.storage.local.get(['IntervalUpdate', 'setSettingUT'], function(data) {
         if (data.IntervalUpdate == "120") {
             document.getElementById("setting_defualt_button_120").checked = true;
         } else if (data.IntervalUpdate == "90") {
             document.getElementById("setting_defualt_button_90").checked = true;
         } else if (data.IntervalUpdate == "60") {
             document.getElementById("setting_defualt_button_60").checked = true;
-        } else if (data.IntervalUpdate == "30" && data.setSettingUT == 't') {
+        } else if (data.IntervalUpdate == "30") {
             document.getElementById("setting_defualt_button_30").checked = true;
-            document.querySelector(".setting_defualt_button_30_sub").style.opacity = "1";
-            document.querySelector(".setting_defualt_button_30_sub_label").style.opacity = "1";
-            document.getElementById("setting_defualt_button_30_all").style.pointerEvents = "auto";
-        } else if (data.IntervalUpdate == "15" && data.setSettingUT == 't' && (data.country == "US" || data.country == "us" || data.country == "United States of America" || data.country == "CA" || data.country == "ca" || data.country == "Canada")) {
+        } else if (data.IntervalUpdate == "15") {
             document.getElementById("setting_defualt_button_15").checked = true;
-            document.querySelector(".setting_defualt_button_15_sub").style.opacity = "1";
-            document.querySelector(".setting_defualt_button_15_sub_label").style.opacity = "1";
-            document.getElementById("setting_defualt_button_15_all").style.pointerEvents = "auto";
         }
     })
 
@@ -347,6 +332,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     function popup() {
+        
+        //console.log('popup');
 
         chrome.storage.local.get(['latlong', 'citys', 'country', 'timeZoneBadge', 'failedHTTP'], function(data) {
             latlong = data.latlong;
@@ -457,25 +444,25 @@ document.addEventListener("DOMContentLoaded", function() {
     function delayButtonDarkmode() {
         setTimeout(function() {
             document.getElementById("checkbox").disabled = false;
-        }, 1500);
+        }, 1000);
     };
 
     function delayButtonAutoDarkmode() {
         setTimeout(function() {
             document.getElementById("checkbox_autoDark").disabled = false;
-        }, 1500);
+        }, 1000);
     };
 
     function delayButtonWhiteIcon() {
         setTimeout(function() {
             document.getElementById("checkbox_whiteIcon").disabled = false;
-        }, 1500);
+        }, 1000);
     };
 
     function delayButtonAnimatedIcon() {
         setTimeout(function() {
             document.getElementById("checkbox_animatedIcon").disabled = false;
-        }, 1500);
+        }, 1000);
     };
 
     function loadingIconBadge() {
@@ -525,13 +512,13 @@ document.addEventListener("DOMContentLoaded", function() {
             var img = new Image();
             img.src = url_flags;
             img.addEventListener("error", function() {
-                document.querySelector('.countryflagsClass').style.backgroundImage = 'url("images/heart.svg")';
+                document.querySelector('.countryflagsClass').style.backgroundImage = 'url("images/blank.svg")';
             });
             img.addEventListener("load", function() {
                 document.querySelector('.countryflagsClass').style.backgroundImage = 'url(' + url_flags + ')';
             });
         } else {
-            document.querySelector('.countryflagsClass').style.backgroundImage = 'url("images/heart.svg")';
+            document.querySelector('.countryflagsClass').style.backgroundImage = 'url("images/blank.svg")';
         }
 
         chrome.storage.local.get('animatedIcon', function(data) {
@@ -540,37 +527,6 @@ document.addEventListener("DOMContentLoaded", function() {
             } else {
                 iconCurrent();
             }
-        });
-
-        chrome.storage.local.get(['country', 'setSettingUT'], function(data) {
-            if (data.setSettingUT == 'u') {
-                document.querySelector(".tooltip-bottom-interval-display-15").style.display = "none";
-                document.querySelector(".tooltip-bottom-interval-display-30").style.display = "none";
-                document.querySelector(".setting_defualt_button_30_sub").style.opacity = ".3";
-                document.querySelector(".setting_defualt_button_15_sub").style.opacity = ".3";
-                document.querySelector(".setting_defualt_button_30_sub_label").style.opacity = ".3";
-                document.querySelector(".setting_defualt_button_15_sub_label").style.opacity = ".3";
-            } else if (data.setSettingUT == 't' && (data.country == "US" || data.country == "us" || data.country == "United States of America" || data.country == "CA" || data.country == "ca" || data.country == "Canada")) {
-                document.querySelector(".setting_defualt_button_15_sub").style.opacity = "1";
-                document.querySelector(".setting_defualt_button_15_sub_label").style.opacity = "1";
-                document.getElementById("setting_defualt_button_15_all").style.pointerEvents = "auto";
-                document.querySelector(".tooltip-bottom-interval-display-15").style.display = "none";
-                document.querySelector(".tooltip-bottom-interval-display-30").style.display = "none";
-            } else if (data.setSettingUT == 't') {
-                document.querySelector(".setting_defualt_button_15_sub").style.opacity = ".3";
-                document.querySelector(".setting_defualt_button_15_sub_label").style.opacity = ".3";
-                document.getElementById("setting_defualt_button_15_all").style.pointerEvents = "none";
-                document.querySelector(".tooltip-bottom-interval-display-15").style.display = "none";
-                document.querySelector(".tooltip-bottom-interval-display-30").style.display = "none";                
-            } 
-                // chrome.storage.local.set({
-                //     'IntervalUpdate': '60'
-                // });
-                // chrome.runtime.sendMessage({
-                //     msg: "intervalUpdateMessage"
-                // });
-                // document.getElementById("setting_defualt_button_60").checked = true;
-
         });
 
         uvRecommendation();
@@ -1053,8 +1009,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function darkDisplay() {
         document.documentElement.setAttribute('data-theme', 'dark');
-        mapStyle = 'mapbox://styles/mapbox/dark-v10';
-        weathermapStyle = 'mapbox://styles/mapbox/dark-v10';
+        mapStyle = 'mapbox://styles/mapbox/dark-v10?optimize=true';
+        weathermapStyle = 'mapbox://styles/mapbox/dark-v10?optimize=true';
         document.getElementById("setting_defualt_theme_d").checked = true;
         document.getElementById("checkbox").checked = true;
         chrome.storage.local.set({
@@ -1064,8 +1020,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function lightDisplay() {
         document.documentElement.setAttribute('data-theme', 'light');
-        mapStyle = 'mapbox://styles/mapbox/light-v10';
-        weathermapStyle = 'mapbox://styles/mapbox/light-v10';
+        mapStyle = 'mapbox://styles/mapbox/light-v10?optimize=true';
+        weathermapStyle = 'mapbox://styles/mapbox/light-v10?optimize=true';
         document.getElementById("setting_defualt_theme_l").checked = true;
         document.getElementById("checkbox").checked = false;
         chrome.storage.local.set({
@@ -1522,7 +1478,7 @@ document.addEventListener("DOMContentLoaded", function() {
     function delayButtonBadgeSize() {
         setTimeout(function() {
             document.getElementById("checkbox_largIcon").disabled = false;
-        }, 1500);
+        }, 1000);
     };
 
     function delayButtonIntervalUpdate() {
@@ -1548,7 +1504,7 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById("setting_defualt_button_kmh_all").style.pointerEvents = "auto";
             document.getElementById("setting_defualt_button_ms_all").style.pointerEvents = "auto";
 
-        }, 1500);
+        }, 1000);
     };
 
     function delayButtonSetting() {
@@ -1596,22 +1552,6 @@ document.addEventListener("DOMContentLoaded", function() {
         updateBadge();
         document.getElementById("setting_defualt_button_u").checked = true;
         document.getElementById("setting_defualt_button_t").checked = false;
-
-        document.querySelector(".setting_defualt_button_30_sub_label").style.opacity = ".3";
-        document.querySelector(".setting_defualt_button_15_sub_label").style.opacity = ".3";
-        document.querySelector(".setting_defualt_button_30_sub").style.opacity = ".3";
-        document.querySelector(".setting_defualt_button_15_sub").style.opacity = ".3";
-        document.querySelector(".tooltip-bottom-interval-display-15").style.display = "none";
-        document.querySelector(".tooltip-bottom-interval-display-30").style.display = "none";
-
-        chrome.storage.local.set({
-            'IntervalUpdate': '60'
-        });
-        chrome.runtime.sendMessage({
-            msg: "intervalUpdateMessage"
-        });
-        document.getElementById("setting_defualt_button_60").checked = true;
-
         delayReleaseButtonSetting();
     });
 
@@ -1624,24 +1564,6 @@ document.addEventListener("DOMContentLoaded", function() {
         updateBadge();
         document.getElementById("setting_defualt_button_t").checked = true;
         document.getElementById("setting_defualt_button_u").checked = false;
-        chrome.storage.local.get('country', function(data) {
-            if (data.country == "US" || data.country == "us" || data.country == "United States of America" || data.country == "CA" || data.country == "ca" || data.country == "Canada") {
-                document.querySelector(".setting_defualt_button_30_sub_label").style.opacity = "1";
-                document.querySelector(".setting_defualt_button_15_sub_label").style.opacity = "1";
-                document.querySelector(".setting_defualt_button_30_sub").style.opacity = "1";
-                document.querySelector(".setting_defualt_button_15_sub").style.opacity = "1";
-                document.getElementById("setting_defualt_button_30_all").style.pointerEvents = "auto";
-                document.getElementById("setting_defualt_button_15_all").style.pointerEvents = "auto";
-                document.querySelector(".tooltip-bottom-interval-display-15").style.display = "none";
-                document.querySelector(".tooltip-bottom-interval-display-30").style.display = "none";
-            } else {
-                document.querySelector(".setting_defualt_button_30_sub_label").style.opacity = "1";
-                document.querySelector(".setting_defualt_button_30_sub").style.opacity = "1";
-                document.getElementById("setting_defualt_button_30_all").style.pointerEvents = "auto";
-                document.querySelector(".tooltip-bottom-interval-display-15").style.display = "block";
-                document.querySelector(".tooltip-bottom-interval-display-30").style.display = "none";
-            }
-        });
         delayReleaseButtonSetting();
     });
 
@@ -2066,43 +1988,35 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     document.querySelector("#setting_defualt_button_15_all").addEventListener("click", (e) => {
-        chrome.storage.local.get(['setSettingUT', 'country'], function(data) {
-            if (data.setSettingUT == 't' && (data.country == "US" || data.country == "us" || data.country == "United States of America" || data.country == "CA" || data.country == "ca" || data.country == "Canada")) {
-                chrome.storage.local.set({
-                    'IntervalUpdate': '15'
-                });
-                chrome.runtime.sendMessage({
-                    msg: "intervalUpdateMessage"
-                });
-                document.querySelector("#setting_defualt_button_15_all").style.pointerEvents = "none";
-                document.querySelector("#setting_defualt_button_30_all").style.pointerEvents = "none";
-                document.querySelector("#setting_defualt_button_60_all").style.pointerEvents = "none";
-                document.querySelector("#setting_defualt_button_90_all").style.pointerEvents = "none";
-                document.querySelector("#setting_defualt_button_120_all").style.pointerEvents = "none";
-                document.getElementById("setting_defualt_button_15").checked = true;
-                delayButtonIntervalUpdate();
-            }
-        })
+        chrome.storage.local.set({
+            'IntervalUpdate': '15'
+        });
+        chrome.runtime.sendMessage({
+            msg: "intervalUpdateMessage"
+        });
+        document.querySelector("#setting_defualt_button_15_all").style.pointerEvents = "none";
+        document.querySelector("#setting_defualt_button_30_all").style.pointerEvents = "none";
+        document.querySelector("#setting_defualt_button_60_all").style.pointerEvents = "none";
+        document.querySelector("#setting_defualt_button_90_all").style.pointerEvents = "none";
+        document.querySelector("#setting_defualt_button_120_all").style.pointerEvents = "none";
+        document.getElementById("setting_defualt_button_15").checked = true;
+        delayButtonIntervalUpdate();
     })
 
     document.querySelector("#setting_defualt_button_30_all").addEventListener("click", (e) => {
-        chrome.storage.local.get(['setSettingUT', 'country'], function(data) {
-            if (data.setSettingUT == 't') {
-                chrome.storage.local.set({
-                    'IntervalUpdate': '30'
-                });
-                chrome.runtime.sendMessage({
-                    msg: "intervalUpdateMessage"
-                });
-                document.querySelector("#setting_defualt_button_15_all").style.pointerEvents = "none";
-                document.querySelector("#setting_defualt_button_30_all").style.pointerEvents = "none";
-                document.querySelector("#setting_defualt_button_60_all").style.pointerEvents = "none";
-                document.querySelector("#setting_defualt_button_90_all").style.pointerEvents = "none";
-                document.querySelector("#setting_defualt_button_120_all").style.pointerEvents = "none";
-                document.getElementById("setting_defualt_button_30").checked = true;
-                delayButtonIntervalUpdate();
-            }
-        })
+        chrome.storage.local.set({
+            'IntervalUpdate': '30'
+        });
+        chrome.runtime.sendMessage({
+            msg: "intervalUpdateMessage"
+        });
+        document.querySelector("#setting_defualt_button_15_all").style.pointerEvents = "none";
+        document.querySelector("#setting_defualt_button_30_all").style.pointerEvents = "none";
+        document.querySelector("#setting_defualt_button_60_all").style.pointerEvents = "none";
+        document.querySelector("#setting_defualt_button_90_all").style.pointerEvents = "none";
+        document.querySelector("#setting_defualt_button_120_all").style.pointerEvents = "none";
+        document.getElementById("setting_defualt_button_30").checked = true;
+        delayButtonIntervalUpdate();
     })
 
     document.querySelector("#setting_defualt_button_60_all").addEventListener("click", (e) => {
@@ -2254,6 +2168,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         var map = new mapboxgl.Map({
             container: 'mapSearch',
+            animate: false,
             style: mapStyle,
             center: latandlongMapBox,
             minZoom: 2,
@@ -2262,8 +2177,8 @@ document.addEventListener("DOMContentLoaded", function() {
             interactive: true
         });
 
-        map.dragRotate.disable();
-        map.touchZoomRotate.disableRotation();
+        //map.dragRotate.disable();
+        //map.touchZoomRotate.disableRotation();
 
         map.on('load', updateGeocoderProximity);
         map.on('moveend', updateGeocoderProximity);
@@ -2274,8 +2189,8 @@ document.addEventListener("DOMContentLoaded", function() {
             accessToken: mapboxgl.accessToken,
             mapboxgl: mapboxgl,
             marker: false,
-            flyTo: true,
-            essential: true,
+            flyTo: false,
+            essential: false, //If true , then the animation is considered essential
             types: 'place, locality, postcode',
             limit: 8,
             placeholder: 'Enter the city or ZIP code',
@@ -2288,16 +2203,16 @@ document.addEventListener("DOMContentLoaded", function() {
                 draggable: true
             },
 
-            // render: function(item) {
-            //   console.log(item);
-            // return (
-            // "<div class='geocoder-dropdown-item'>" +
-            //   item.text +
-            // "<div class='geocoder-dropdown-text'>" +
-            //   item.place_name +
-            // '</div></div>'
-            // );
-            // },      
+            render: function(item) {
+
+            return (
+            "<div class='geocoder-dropdown-item'>" +
+              item.text +
+            "<div class='geocoder-dropdown-text'>" +
+              (((item.place_name).split(', ')).slice(1).join(', ')).slice(0, 38) + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+            '</div></div>'
+            );
+            },      
 
         });
 
@@ -2341,6 +2256,15 @@ document.addEventListener("DOMContentLoaded", function() {
                 var lat = ev.result.geometry.coordinates[1];
                 var lng = ev.result.geometry.coordinates[0];
 
+                setTimeout(function() {
+
+                    map.jumpTo({
+                      center: ev.result.center,
+                      zoom: 10
+                    });
+
+                }, 1000);
+
                 // Special case the north pole. tz-lookup
                 if(lat >= 90) {
                     timezone = "Etc/GMT";
@@ -2358,12 +2282,17 @@ document.addEventListener("DOMContentLoaded", function() {
                     countryFull = ((ev.result.place_name).split(','))[1];
                 }
 
-                for (var i = 0; i <= ev.result.context.length; i++) {
-                    if (ev.result.context[i].hasOwnProperty('short_code')) {
-                        country = (ev.result.context[i].short_code).substring(0, 2);
-                        break;
-                    }
-                }
+                if(ev.result.hasOwnProperty('context')){
+	                for (var i = 0; i <= ev.result.context.length; i++) {
+	                    if (ev.result.context[i].hasOwnProperty('short_code')) {
+	                        country = (ev.result.context[i].short_code).substring(0, 2);
+	                        break;
+	                    }
+	                }
+            	}
+            	else{
+            		country = ' ';
+            	}
 
                 marker.remove();
 
@@ -2382,22 +2311,19 @@ document.addEventListener("DOMContentLoaded", function() {
                 chrome.storage.local.set({
                      'timeZoneBadge': timeZoneBadge
                 });
-                chrome.storage.local.set({
-                    'IntervalUpdate': '60'
-                });
-                document.getElementById("setting_defualt_button_60").checked = true;
+
                 popup();
 
-                map.flyTo({
-                    center: [lng, lat],
-                    zoom: 10,
-                    speed: .8,
-                    curve: 1,
-                    essential: true,
-                    easing(t) {
-                        return t;
-                    }
-                });
+                // map.flyTo({
+                //     center: [lng, lat],
+                //     zoom: 10,
+                //     speed: .8,
+                //     curve: 1,
+                //     essential: true,
+                //     easing(t) {
+                //         return t;
+                //     }
+                // });
 
                 map.on('moveend', function(e) {
                     searchMap(mapStyle);

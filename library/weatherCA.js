@@ -1,4 +1,5 @@
 function weatherCA(latlong, citys, resolve) {
+    //console.log('ca');
     
     lat = (latlong.split(','))[0];
     lng = (latlong.split(','))[1];
@@ -89,7 +90,7 @@ function weatherCA(latlong, citys, resolve) {
                     }
 
                 }).catch(function(err) {
-                    //console.log('ca ' + err);
+                    console.log('ca err ' + err);
                     chrome.storage.local.set({
                         'failedHTTP': '1'
                     });                    

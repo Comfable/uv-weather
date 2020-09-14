@@ -1,5 +1,6 @@
 function weatherUS2(latlong, citys, resolve) {
-
+    //console.log('us');
+    
     lat = (latlong.split(','))[0];
     lng = (latlong.split(','))[1];
 
@@ -72,7 +73,7 @@ function weatherUS2(latlong, citys, resolve) {
 
 
         }).catch(function(err) {
-            //console.log('us ' + err);
+            console.log('us err ' + err);
             chrome.storage.local.set({
                 'failedHTTP': '1'
             });

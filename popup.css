@@ -2935,9 +2935,9 @@
   }
 
   .geocoder-dropdown-text {
-      color: #000;
+      color: #808080;
       font-family: Helvetica, sans-serif;
-      font-size: small;
+      font-size: 12px !important;
   }
   .forecast_rain_unit_modal_Class {
     font-size: 10px;
