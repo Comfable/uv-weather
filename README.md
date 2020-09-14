@@ -1,5 +1,6 @@
+UV WEATHER
 
-UV Weather - Live Weather for Real Life
+Live Weather for Real Life
 This worldwide weather extension helps you plan your day and keep yourself safe under the sun. It automatically displays the UV Index / Temperature of your current location, or enter city name to get forecasts for cities around the world. Click the icon and you will get detailed weather data.
 
 ------------------------------------------------------------------------
