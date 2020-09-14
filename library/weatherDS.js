@@ -465,15 +465,12 @@ function weatherDS(latlong, citys, country, resolve) {
             hourly_cloudCover_48 = result.hourly.data[48].cloudCover;
             hourly_precipProbability_48 = result.hourly.data[48].precipProbability;
 
-
-            uvCurrently = result.currently.hasOwnProperty('uvIndex') ? result.currently.uvIndex : '-'
+            uvCurrently = result.currently.hasOwnProperty('uvIndex') ? result.currently.uvIndex : '0'
 
             uv1 = Math.floor(uvCurrently * cloudAdjUV(iconDS, cloudCover));
 
-            systemTime = new Date();
             utcSystemTime = new Date(new Date().toUTCString()).toISOString();
             updateTimeBadge = toTimestamp(utcSystemTime);
-
 
             chrome.storage.local.get(['setSettingUT', 'failedHTTP', 'country'], function(data) {
                 setSettingUT = data.setSettingUT;

@@ -25,7 +25,7 @@ function weatherCA(latlong, citys, resolve) {
                 }
             }
 
-            fetchWithTimeout(`https://uvweather.herokuapp.com/https://dd.weather.gc.ca/citypage_weather/xml/${stateCA_code}/${cityCA_code}_e.xml`, optionsCA, 1500)
+            fetchWithTimeout(`https://uvweather.herokuapp.com/https://dd.weather.gc.ca/citypage_weather/xml/${stateCA_code}/${cityCA_code}_e.xml`, optionsCA, 3000)
                 .then((resp) => resp.text())
                 .then(function(resultCA) {
 
@@ -35,46 +35,45 @@ function weatherCA(latlong, citys, resolve) {
                     const parser = new DOMParser();
                     const srcDOM = parser.parseFromString(resultCA, "application/xml");
 
-                    systemTime = new Date();
                     utcSystemTime = new Date(new Date().toUTCString()).toISOString();
                     updateTimeBadge = toTimestamp(utcSystemTime);
 
-                    timeZoneBadge = 3600 * (srcDOM.getElementsByTagName("dateTime")[1].getAttribute('UTCOffset'));
-                    chrome.storage.local.set({
-                        'timeZoneBadge': timeZoneBadge
-                    });
-
                     srcDOMJsonCA = xml2json(srcDOM);
                     //console.log(JSON.stringify(srcDOMJsonCA));
-                    temperatureCbadge = srcDOMJsonCA.siteData.currentConditions.hasOwnProperty('temperature') ? Math.round(parseFloat(srcDOMJsonCA.siteData.currentConditions.temperature)) : '';
-                    temperatureFbadge = srcDOMJsonCA.siteData.currentConditions.hasOwnProperty('temperature') ? Math.round((1.8 * temperatureCbadge) + 32) : '';
-                    summaryBadge = srcDOMJsonCA.siteData.currentConditions.hasOwnProperty('condition') ? srcDOMJsonCA.siteData.currentConditions.condition : '';
-                    iconCodeCA = srcDOMJsonCA.siteData.currentConditions.hasOwnProperty('iconCode') ? srcDOMJsonCA.siteData.currentConditions.iconCode : '';
 
-                    iconCodeGroupCA = srcDOMJsonCA.siteData.hourlyForecastGroup.hourlyForecast[0].iconCode;
-                    temperatureC_GroupCA = Math.round(parseFloat(srcDOMJsonCA.siteData.hourlyForecastGroup.hourlyForecast[0].temperature));
-                    temperatureF_GroupCA = Math.round((1.8 * temperatureC_GroupCA) + 32);
-                    summaryGroupCA = srcDOMJsonCA.siteData.hourlyForecastGroup.hourlyForecast[0].condition;
-                    if (iconCodeCA == "") {
-                        iconCodeCA = iconCodeGroupCA
-                    };
-                    if (temperatureCbadge == "") {
-                        temperatureCbadge = temperatureC_GroupCA;
-                        temperatureFbadge = temperatureF_GroupCA
-                    };
-                    if (summaryBadge == "") {
-                        summaryBadge = summaryGroupCA
-                    };
+                    tempCca = srcDOMJsonCA.siteData.currentConditions.hasOwnProperty('temperature') ? srcDOMJsonCA.siteData.currentConditions.temperature : srcDOMJsonCA.siteData.hourlyForecastGroup.hourlyForecast[0].temperature;
+                    if (tempCca !== "NA" && tempCca !== "" && tempCca !== null && tempCca !== "NULL") {
+                        temperatureCbadge = Math.round(parseFloat(tempCca));
+                        temperatureFbadge = Math.round((parseFloat(tempCca) * 1.8) + 32);
+                    }
+                    else{
+                        tempCca = srcDOMJsonCA.siteData.hourlyForecastGroup.hourlyForecast[0].temperature;
+                        if (tempCca !== "NA" && tempCca !== "" && tempCca !== null && tempCca !== "NULL") {
+                            temperatureCbadge = Math.round(parseFloat(tempCca));
+                            temperatureFbadge = Math.round((parseFloat(tempCca) * 1.8) + 32);
+                        }
+                    }
 
-                    if (iconCodeCA == "" || temperatureCbadge == "" || summaryBadge == "") {
+                    summaryBadge = srcDOMJsonCA.siteData.currentConditions.hasOwnProperty('condition') ? srcDOMJsonCA.siteData.currentConditions.condition : srcDOMJsonCA.siteData.hourlyForecastGroup.hourlyForecast[0].condition;
+                    if (summaryBadge == "NA" || summaryBadge == "" || summaryBadge == null || summaryBadge == "NULL") {
+                        summaryBadge = srcDOMJsonCA.siteData.hourlyForecastGroup.hourlyForecast[0].condition;
+                    }
+
+                    iconCodeCA = srcDOMJsonCA.siteData.currentConditions.hasOwnProperty('iconCode') ? srcDOMJsonCA.siteData.currentConditions.iconCode : srcDOMJsonCA.siteData.hourlyForecastGroup.hourlyForecast[0].iconCode;
+                    if (iconCodeCA == "NA" || iconCodeCA == "" || iconCodeCA == null || iconCodeCA == "NULL") {
+                        iconCodeCA = srcDOMJsonCA.siteData.hourlyForecastGroup.hourlyForecast[0].iconCode;
+                    }
+
+                    if (iconCodeCA == "" || tempCca == "" || summaryBadge == "" || iconCodeCA == "NULL" || tempCca == "NULL" || summaryBadge == "NULL" || iconCodeCA == null || tempCca == null || summaryBadge == null || tempCca == "NA" || iconCodeCA == "NA" || summaryBadge == "NA") {
                         throw Error();
                     } else {
-                        chrome.storage.local.get('setSettingUT', function(data) {
+                        chrome.storage.local.get(['setSettingUT', 'timeZoneBadge'], function(data) {
                             setSettingUT = data.setSettingUT;
+                            timeZoneBadge = parseFloat(data.timeZoneBadge);
+
                             if (setSettingUT !== "u") {
                                 solarNighDay(timeZoneBadge, latlong);
                                 iconBadgeConvertCA(iconCodeCA);
-                                iconBadgeConvertDS(iconBadge);
                                 badgeGeneral(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, temperatureCbadge, updateTimeBadge, citys);
                             }
                         });
@@ -82,12 +81,11 @@ function weatherCA(latlong, citys, resolve) {
                         resolve && resolve(resultCA);
                     }
 
-
-                }).catch(function() {
+                }).catch(function(err) {
                     chrome.storage.local.set({
                         'failedHTTP': '1'
                     });
-                    weatherDS(latlong, citys, country, resolve);
+                    weatherNO(latlong, citys, resolve);
                 });
 
 

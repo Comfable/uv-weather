@@ -21,12 +21,15 @@ chrome.storage.local.get(['verUpdate'], function(data) {
                     latandlong = JSON.stringify(result.loc);
                     latlong = (latandlong.split('"'))[1];
                     fullname = ((city.split('"'))[1].charAt(0).toUpperCase() + (city.split('"'))[1].slice(1)) + ", " + region.toUpperCase() + ", " + country;
+                    timezone = (JSON.stringify(result.timezone).split('"'))[1];
+                    timeZoneBadge = timezone2offset(timezone);
+
                     chrome.storage.local.set({
                         'citys': citys
                     });
                     chrome.storage.local.set({
                         'latlong': latlong
-                    });
+                    });                   
                     chrome.storage.local.set({
                         'country': country
                     });
@@ -45,7 +48,11 @@ chrome.storage.local.get(['verUpdate'], function(data) {
                     citys = 'Toronto';
                     latandlong = '"43.6629,-79.3987"';
                     latlong = '43.6629,-79.3987';
+                    timezone = 'America/Toronto';
+                    timeZoneBadge = timezone2offset(timeZone);
+                    
                     country = 'CA';
+
                     chrome.storage.local.set({
                         'citys': 'Toronto'
                     });
@@ -70,7 +77,6 @@ chrome.storage.local.get(['verUpdate'], function(data) {
     }
 
 });
-
 
 
 chrome.runtime.onStartup.addListener(function(details) {
@@ -151,9 +157,9 @@ function intervalUpdateFunction() {
     chrome.storage.local.get(['IntervalUpdate', 'setSettingUT'], function(data) {
         intervalUpdateNumber = data.IntervalUpdate;
         if (typeof intervalUpdateNumber == 'undefined') {
-            var intervalUpdateNumber = 90;
+            var intervalUpdateNumber = 60;
             chrome.storage.local.set({
-                'IntervalUpdate': '90'
+                'IntervalUpdate': '60'
             });
         };
         intervalUpdateTime = 1000 * 60 * intervalUpdateNumber; //miliseconds * seconds * minutes
@@ -178,10 +184,6 @@ intervalUpdateFunction();
 
 //badgeDisplay----------------------------------------------------------------------------------
 function badgeGeneral(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, temperatureCbadge, updateTimeBadge, citys, uv1) {
-    // animatedBadgeInterval = setInterval(function() {animatedBadge(isDay,sunnyDayBadge,cloudyBadge,rainyBadge,snowyBadge); }, 1000 / 30);
-    // setTimeout(function(){
-    // 	clearInterval(animatedBadgeInterval);   
-    // }, 485);
     chrome.storage.local.get('whiteIcon', function(data) {
         var currentWhiteIcon = data.whiteIcon;
         if ((window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) && (typeof currentWhiteIcon == 'undefined') || currentWhiteIcon == 'undefined') {
@@ -385,7 +387,7 @@ function badgeTemp(latlong, citys, country) {
     } else if (country == "US" || country == "us" || country == "United States of America") {
         weatherUS2(latlong, citys);
     } else {
-        weatherOWM(latlong, citys)
+        weatherNO(latlong, citys)
     }
 
 };

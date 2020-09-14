@@ -95,16 +95,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
     chrome.storage.local.get(['IntervalUpdate', 'setSettingUT', 'country'], function(data) {
         if (data.country == "US" || data.country == "us" || data.country == "United States of America" || data.country == "CA" || data.country == "ca" || data.country == "Canada") {
-            document.querySelector(".setting_defualt_button_30_sub").style.opacity = "1";
             document.querySelector(".setting_defualt_button_15_sub").style.opacity = "1";
-            document.querySelector(".setting_defualt_button_30_sub_label").style.opacity = "1";
             document.querySelector(".setting_defualt_button_15_sub_label").style.opacity = "1";
-            document.getElementById("setting_defualt_button_30_all").style.pointerEvents = "auto";
             document.getElementById("setting_defualt_button_15_all").style.pointerEvents = "auto";
         } else {
-            document.querySelector(".setting_defualt_button_30_sub_label").style.opacity = ".3";
             document.querySelector(".setting_defualt_button_15_sub_label").style.opacity = ".3";
-            document.querySelector(".setting_defualt_button_30_sub").style.opacity = ".3";
             document.querySelector(".setting_defualt_button_15_sub").style.opacity = ".3";
         }
 
@@ -114,7 +109,7 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById("setting_defualt_button_90").checked = true;
         } else if (data.IntervalUpdate == "60") {
             document.getElementById("setting_defualt_button_60").checked = true;
-        } else if (data.IntervalUpdate == "30" && data.setSettingUT == 't' && (data.country == "US" || data.country == "us" || data.country == "United States of America" || data.country == "CA" || data.country == "ca" || data.country == "Canada")) {
+        } else if (data.IntervalUpdate == "30" && data.setSettingUT == 't') {
             document.getElementById("setting_defualt_button_30").checked = true;
             document.querySelector(".setting_defualt_button_30_sub").style.opacity = "1";
             document.querySelector(".setting_defualt_button_30_sub_label").style.opacity = "1";
@@ -418,7 +413,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     });
                 } else {
                     var promise = new Promise(function(resolve, reject) {
-                        weatherOWM(latlong, citys, resolve);
+                        weatherNO(latlong, citys, resolve);
                     });
                     var promise2 = new Promise(function(resolve, reject) {
                         weatherDS(latlong, citys, country, resolve);
@@ -590,34 +585,28 @@ document.addEventListener("DOMContentLoaded", function() {
                 document.querySelector(".setting_defualt_button_30_sub_label").style.opacity = ".3";
                 document.querySelector(".setting_defualt_button_15_sub_label").style.opacity = ".3";
             } else if (data.setSettingUT == 't' && (data.country == "US" || data.country == "us" || data.country == "United States of America" || data.country == "CA" || data.country == "ca" || data.country == "Canada")) {
-                document.querySelector(".setting_defualt_button_30_sub").style.opacity = "1";
                 document.querySelector(".setting_defualt_button_15_sub").style.opacity = "1";
-                document.querySelector(".setting_defualt_button_30_sub_label").style.opacity = "1";
                 document.querySelector(".setting_defualt_button_15_sub_label").style.opacity = "1";
-                document.getElementById("setting_defualt_button_30_all").style.pointerEvents = "auto";
                 document.getElementById("setting_defualt_button_15_all").style.pointerEvents = "auto";
                 document.querySelector(".tooltip-bottom-interval-display-15").style.display = "none";
                 document.querySelector(".tooltip-bottom-interval-display-30").style.display = "none";
-            } else {
-                document.querySelector(".setting_defualt_button_30_sub").style.opacity = ".3";
+            } else if (data.setSettingUT == 't') {
                 document.querySelector(".setting_defualt_button_15_sub").style.opacity = ".3";
-                document.querySelector(".setting_defualt_button_30_sub_label").style.opacity = ".3";
                 document.querySelector(".setting_defualt_button_15_sub_label").style.opacity = ".3";
-                document.querySelector(".tooltip-bottom-interval-display-15").style.display = "block";
-                document.querySelector(".tooltip-bottom-interval-display-30").style.display = "block";
-
-                chrome.storage.local.set({
-                    'IntervalUpdate': '60'
-                });
-                chrome.runtime.sendMessage({
-                    msg: "intervalUpdateMessage"
-                });
-                document.getElementById("setting_defualt_button_60").checked = true;
-            }
+                document.getElementById("setting_defualt_button_15_all").style.pointerEvents = "none";
+                document.querySelector(".tooltip-bottom-interval-display-15").style.display = "none";
+                document.querySelector(".tooltip-bottom-interval-display-30").style.display = "none";                
+            } 
+                // chrome.storage.local.set({
+                //     'IntervalUpdate': '60'
+                // });
+                // chrome.runtime.sendMessage({
+                //     msg: "intervalUpdateMessage"
+                // });
+                // document.getElementById("setting_defualt_button_60").checked = true;
 
         });
 
-        //accufeelCalc();
         uvRecommendation();
         next48Function();
         next7Function();
@@ -644,8 +633,13 @@ document.addEventListener("DOMContentLoaded", function() {
         Tmrta = Math.pow(TglobeC + 273.15, 4) + (2.5 * 100000000 * Math.pow(windSpeedMS, 0.60) * (TglobeC - temperatureCbadge));
         TmrtC = Math.pow(Tmrta, 1 / 4) - 273.15;
 
-        accufeelResultC = Math.round(accufeel(temperatureCbadge, TmrtC, windSpeedMS, humidity));
-        accufeelResultF = c2f(accufeelResultC);
+        accufeelC = accufeel(temperatureCbadge, TmrtC, windSpeedMS, humidity);
+
+        if(Math.abs(accufeelC - temperatureCbadge) > 4) {
+            (accufeelC > temperatureCbadge) ? (accufeelC = temperatureCbadge + 4) : (accufeelC = temperatureCbadge - 4);
+        }
+        accufeelResultC = Math.round(accufeelC);
+        accufeelResultF = Math.round(c2f(accufeelC));
     };
 
     function groundCurrent() {
@@ -1112,7 +1106,6 @@ document.addEventListener("DOMContentLoaded", function() {
         document.querySelector("#current_report_accufeel").textContent = accufeelResultF + "° F";
         document.querySelector("#current_temp_max").textContent = current_tempF_max + "°";
         document.querySelector("#current_temp_min").textContent = current_tempF_min + "°";
-        // document.querySelector("#forecast_tomorrow").textContent = update_tomorrow_f;
 
         document.querySelector('#forecast_1_temp').textContent = Math.round(daily_tempF_max_1) + "°";
         document.querySelector('#forecast_2_temp').textContent = Math.round(daily_tempF_max_2) + "°";
@@ -2032,8 +2025,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 document.querySelector(".tooltip-bottom-interval-display-15").style.display = "none";
                 document.querySelector(".tooltip-bottom-interval-display-30").style.display = "none";
             } else {
+                document.querySelector(".setting_defualt_button_30_sub_label").style.opacity = "1";
+                document.querySelector(".setting_defualt_button_30_sub").style.opacity = "1";
+                document.getElementById("setting_defualt_button_30_all").style.pointerEvents = "auto";
                 document.querySelector(".tooltip-bottom-interval-display-15").style.display = "block";
-                document.querySelector(".tooltip-bottom-interval-display-30").style.display = "block";
+                document.querySelector(".tooltip-bottom-interval-display-30").style.display = "none";
             }
         });
         delayReleaseButtonSetting();
@@ -2481,7 +2477,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     document.querySelector("#setting_defualt_button_30_all").addEventListener("click", (e) => {
         chrome.storage.local.get(['setSettingUT', 'country'], function(data) {
-            if (data.setSettingUT == 't' && (data.country == "US" || data.country == "us" || data.country == "United States of America" || data.country == "CA" || data.ountry == "ca" || data.country == "Canada")) {
+            if (data.setSettingUT == 't') {
                 chrome.storage.local.set({
                     'IntervalUpdate': '30'
                 });
@@ -2593,6 +2589,15 @@ document.addEventListener("DOMContentLoaded", function() {
                                 var fullname = result.features[0].place_name;
                                 var cityAPI = result.features[0].text;
                                 latlong = latClick + ',' + lngClick;
+
+                                if(lat >= 90) {
+                                    timezone = "Etc/GMT";
+                                }
+                                else{
+                                    timezone = tzlookup(latClick,lngClick);
+                                }
+                                timeZoneBadge = timezone2offset(timezone);
+
                                 citys = cityAPI;
 
                                 if (((result.features[0].place_name).split(','))[2]) {
@@ -2624,6 +2629,10 @@ document.addEventListener("DOMContentLoaded", function() {
                                 });
 
                                 setTimeout(function() {
+                                    chrome.storage.local.set({
+                                        'IntervalUpdate': '60'
+                                    });
+                                    document.getElementById("setting_defualt_button_60").checked = true;
                                     popup();
                                 }, 150);
 
@@ -2716,10 +2725,20 @@ document.addEventListener("DOMContentLoaded", function() {
 
             geocoder.on('result', function(ev) {
                 updateGeocoderProximity();
+
                 var fullname = ev.result.place_name;
                 var cityAPI = ev.result.text;
                 var lat = ev.result.geometry.coordinates[1];
                 var lng = ev.result.geometry.coordinates[0];
+
+                // Special case the north pole. tz-lookup
+                if(lat >= 90) {
+                    timezone = "Etc/GMT";
+                }
+                else{
+                    timezone = tzlookup(lat,lng);
+                }
+                timeZoneBadge = timezone2offset(timezone);
 
                 latlong = lat + ',' + lng;
                 citys = cityAPI;
@@ -2753,6 +2772,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 });
 
                 setTimeout(function() {
+                    chrome.storage.local.set({
+                        'IntervalUpdate': '60'
+                    });
+                    document.getElementById("setting_defualt_button_60").checked = true;
                     popup();
                 }, 150);
 

@@ -8,7 +8,15 @@ var lines = 16,
 const capitalize = (s) => {
     if (typeof s !== 'string') return ''
     return s.charAt(0).toUpperCase() + s.slice(1)
-}
+};
+
+function timezone2offset(timeZone) {
+    utcSystemTime = new Date(new Date().toUTCString()).toISOString();   
+    var utcSystemTimeM = moment(utcSystemTime);
+    timeZoneBadge = (utcSystemTimeM.tz(timeZone).utcOffset())*60;
+    chrome.storage.local.set({'timeZoneBadge': timeZoneBadge});
+    return timeZoneBadge;
+};
 
 function solarNighDay(timeZoneBadge, latlong) {
     isDay = false;
@@ -73,6 +81,223 @@ function solarNighDay(timeZoneBadge, latlong) {
     }
 };
 
+function code2description_no(iconCodeNO) {
+    switch (iconCodeNO) {
+        case 'lightssnowshowersandthunder':
+            summaryBadge = 'Lights snow showers and thunder'
+            break;
+
+        case 'heavysleetshowers':
+            summaryBadge = 'Heavy sleet showers';
+            break;
+
+        case 'rainshowersandthunder':
+            summaryBadge = 'Rain showers and thunder';
+            break;
+
+        case 'lightssleetshowersandthunder':
+            summaryBadge = 'Lights sleet showers and thunder';
+            break;
+
+        case 'cloudy':
+            summaryBadge = 'Cloudy';
+            break;
+
+        case 'rainshowers':
+            summaryBadge = 'Rain showers';
+            break;
+
+        case 'lightsnow':
+            summaryBadge = 'Light snow';
+            break;
+
+        case 'sleetandthunder':
+            summaryBadge = 'Sleet and thunder';
+            break;
+
+        case 'lightsleetandthunder':
+            summaryBadge = 'Light sleet and thunder';
+            break;
+
+        case 'heavyrainandthunder':
+            summaryBadge = 'Heavy rain and thunder';
+            break;
+
+        case 'heavysleetshowersandthunder':
+            summaryBadge = 'Heavy sleet showers and thunder';
+            break;
+
+        case 'sleetshowers':
+            summaryBadge = 'Sleet showers';
+            break;
+
+        case 'clearsky':
+            summaryBadge = 'Clear sky';
+            break;
+
+        case 'lightsnowshowers':
+            summaryBadge = 'Light snow showers';
+            break;
+
+        case 'heavyrainshowers':
+            summaryBadge = 'Heavy rain showers';
+            break;
+
+        case 'lightsnowandthunder':
+            summaryBadge = 'Light snow and thunder';
+            break;
+
+        case 'snow':
+            summaryBadge = 'Snow';
+            break;
+
+        case 'heavysnowshowers':
+            summaryBadge = 'Heavy snow showers';
+            break;
+
+        case 'heavysleet':
+            summaryBadge = 'Heavy sleet';
+            break;
+
+        case 'rain':
+            summaryBadge = 'Rain';
+            break;
+
+        case 'heavysnowandthunder':
+            summaryBadge = 'Heavy snow and thunder';
+            break;
+
+        case 'lightrainshowers':
+            summaryBadge = 'Light rain showers';
+            break;
+
+        case 'fair':
+            summaryBadge = 'Fair';
+            break;
+
+        case 'lightrain':
+            summaryBadge = 'Light rain';
+            break;
+
+        case 'lightsleet':
+            summaryBadge = 'Light sleet';
+            break;
+
+        case 'snowshowers':
+            summaryBadge = 'Snow showers';
+            break;
+
+        case 'lightsleetshowers':
+            summaryBadge = 'Light sleet showers';
+            break;
+
+        case 'partlycloudy':
+            summaryBadge = 'Partly cloudy';
+            break;
+
+        case 'lightrainshowersandthunder':
+            summaryBadge = 'Light rain showers and thunder';
+            break;
+
+        case 'lightrainandthunder':
+            summaryBadge = 'Light rain and thunder';
+            break;
+
+        case 'heavyrainshowersandthunder':
+            summaryBadge = 'Heavy rain showers and thunder';
+            break;
+
+        case 'fog':
+            summaryBadge = 'Fog';
+            break;
+
+        case 'snowandthunder':
+            summaryBadge = 'Snow and thunder';
+            break;
+
+        case 'rainandthunder':
+            summaryBadge = 'Rain and thunder';
+            break;
+
+        case 'sleet':
+            summaryBadge = 'Sleet';
+            break;
+
+        case 'snowshowersandthunder':
+            summaryBadge = 'Snow showers and thunder';
+            break;
+
+        case 'heavyrain':
+            summaryBadge = 'Heavy rain';
+            break;
+
+        case 'heavysleetandthunder':
+            summaryBadge = 'Heavy sleet and thunder';
+            break;
+
+        case 'heavysnowshowersandthunder':
+            summaryBadge = 'Heavy snow showers and thunder';
+            break;
+
+        case 'heavysnow':
+            summaryBadge = 'Heavy snow';
+            break;
+
+        case 'sleetshowersandthunder':
+            summaryBadge = 'Sleet showers and thunder';
+            break;
+        default:
+            summaryBadge = 'Fair';
+            break;
+    }
+
+    return summaryBadge;
+
+};
+
+function iconBadgeConvertDS(iconBadge) {
+    if (iconBadge === "cloudy" || iconBadge === "partly-cloudy-day" || iconBadge === "partly-cloudy-night" || iconBadge === "fog") {
+        cloudyBadge = true;
+    } else if (iconBadge === "rain") {
+        rainyBadge = true;
+    } else if (iconBadge === "snow" || iconBadge === "sleet") {
+        snowyBadge = true;
+    } else {
+        sunnyDayBadge = true;
+    };
+};
+
+function iconBadgeConvertNO(iconNO) {
+    if (iconNO == "cloudy") {
+        iconBadge = 'cloudy';
+    } else if (iconNO == "fog") {
+        iconBadge = 'fog';
+    } else if (iconNO == "rainandthunder" || iconNO == "heavyrain" || iconNO == "lightrainshowers" || iconNO == "lightrain" || iconNO == "lightrainshowersandthunder" || iconNO == "lightrainandthunder" || iconNO == "heavyrainshowersandthunder" || iconNO == "lightssnowshowersandthunder" || iconNO == "rainshowersandthunder" || iconNO == "rainshowers" || iconNO == "heavyrainandthunder" || iconNO == "heavyrainshowers" || iconNO == "rain") {
+        iconBadge = 'rain';
+    } else if (iconNO == "snowshowers" || iconNO == "snowandthunder" || iconNO == "heavysnow" || iconNO == "heavysnowshowersandthunder" || iconNO == "snowshowersandthunder" || iconNO == "lightsnow" || iconNO == "lightsnowshowers" || iconNO == "lightsnowandthunder" || iconNO == "snow" || iconNO == "heavysnowshowers" || iconNO == "heavysnowandthunder") {
+        iconBadge = 'snow';
+    } else if (iconNO == "lightsleet" || iconNO == "lightsleetshowers" || iconNO == "sleet" || iconNO == "heavysleetandthunder" || iconNO == "sleetshowersandthunder" || iconNO == "heavysleetshowersHeavy" || iconNO == "lightssleetshowersandthunder" || iconNO == "sleetandthunder" || iconNO == "lightsleetandthunder" || iconNO == "heavysleetshowersandthunder" || iconNO == "sleetshowers" || iconNO == "heavysleet") {
+        iconBadge = 'sleet';
+    } else if ((iconNO == "partlycloudy") && isDay) {
+        iconBadge = 'partly-cloudy-day';
+    } else if ((iconNO == "partlycloudy") && isNight) {
+        iconBadge = 'partly-cloudy-night';
+    } else if ((iconNO == "clearsky" || iconNO == "fair") && isNight) {
+        iconBadge = 'clear-night';
+    } else if ((iconNO == "clearsky" || iconNO == "fair") && isDay) {
+        iconBadge = 'clear-day';
+    } else {
+        if (isNight) {
+            iconBadge = 'clear-night';
+        } else {
+            iconBadge = 'clear-day';
+        }
+    }
+
+    iconBadgeConvertDS(iconBadge);
+
+    return iconBadge;
+};
 
 function iconBadgeConvertCA(iconCodeCA) {
     if (iconCodeCA == "03" || iconCodeCA == "10" || iconCodeCA == "33") {
@@ -102,11 +327,11 @@ function iconBadgeConvertCA(iconCodeCA) {
             iconBadge = 'clear-day';
         }
     }
+
+    iconBadgeConvertDS(iconBadge);
+
     return iconBadge;
-
 };
-
-
 
 function iconBadgeConvert(summaryBadge, summaryBadgeMain) {
     if (summaryBadge === "overcast clouds" || summaryBadge === "broken clouds") {
@@ -136,23 +361,11 @@ function iconBadgeConvert(summaryBadge, summaryBadgeMain) {
             iconBadge = 'clear-day';
         }
     }
+
+    iconBadgeConvertDS(iconBadge);
+
     return iconBadge;
-
 };
-
-
-function iconBadgeConvertDS(iconBadge) {
-    if (iconBadge === "cloudy" || iconBadge === "partly-cloudy-day" || iconBadge === "partly-cloudy-night" || iconBadge === "fog") {
-        cloudyBadge = true;
-    } else if (iconBadge === "rain") {
-        rainyBadge = true;
-    } else if (iconBadge === "snow" || iconBadge === "sleet") {
-        snowyBadge = true;
-    } else {
-        sunnyDayBadge = true;
-    };
-};
-
 
 function iconBadgeConvertUS(iconUS) {
     if (iconUS === "scttsra" || iconUS === "nscttsra" || iconUS === "hi_tsra" || iconUS === "hi_ntsra" || iconUS === "fc" || iconUS === "nfc" || iconUS === "wind_ovc" || iconUS === "nwind_ovc" || iconUS === "bkn" || iconUS === "ovc" || iconUS === "novc" || iconUS === "nbkn" || iconUS === "wind_bkn" || iconUS === "nwind_bkn" || iconUS === "wind_ovc" || iconUS === "nwind_ovc" || iconUS === "tsra" || iconUS === "tsra_sct") {
@@ -182,10 +395,11 @@ function iconBadgeConvertUS(iconUS) {
             iconBadge = 'clear-day';
         }
     }
+    
+    iconBadgeConvertDS(iconBadge);
+
     return iconBadge;
-
 };
-
 
 function badgeBackgroundImage() {
     if (isDay && sunnyDayBadge && temperatureFbadge >= 50 && currentWhiteIcon == 0) {
@@ -339,7 +553,6 @@ function badgeBackgroundColor(currentWhiteIcon) {
     }
 };
 
-
 function animatedBadge() {
     var rotation = parseInt(((new Date() - start) / 1000) * lines) / lines;
     context.save();
@@ -374,7 +587,6 @@ function animatedBadge() {
     context.restore();
 };
 
-
 function largBadgeNumber(displayNumber, lightBadge) {
     var ctx = document.createElement('canvas').getContext('2d');
     ctx.font = 'bold 18px Helvetica';
@@ -405,12 +617,10 @@ function f2c(TempF) {
     return TempC;
 };
 
-
 function c2f(TempC) {
     var TempF = Math.round((1.8 * Number(TempC)) + 32);
     return TempF;
 };
-
 
 function summaryUnitConvertor(summaryString) {
     var result = '';
@@ -438,7 +648,6 @@ function summaryUnitConvertor(summaryString) {
     return result;
 };
 
-
 function iconTitleWeather(icon) {
     if (icon == 'clear-day' || icon == 'clear-night') {
         iconTitle = 'Clear'
@@ -462,7 +671,6 @@ function iconTitleWeather(icon) {
     return iconTitle;
 };
 
-
 function uv_adj_daily(icon, cloudCover) {
     if (icon === "rain" || icon === "sleet" || icon === "snow") {
         cloudAdj_daily = 0.73;
@@ -481,7 +689,6 @@ function uv_adj_daily(icon, cloudCover) {
     return (cloudAdj_daily);
 };
 
-
 function degToCompass(num) {
     while (num < 0) num += 360;
     while (num >= 360) num -= 360;
@@ -491,8 +698,6 @@ function degToCompass(num) {
     ];
     return arr[Math.abs(val)];
 };
-
-
 
 function compareValues(key, order = 'asc') {
     return function innerSort(a, b) {
@@ -518,7 +723,6 @@ function compareValues(key, order = 'asc') {
     };
 };
 
-
 function xml2json(srcDOM) {
     let children = [...srcDOM.children];
     if (!children.length) {
@@ -541,7 +745,6 @@ function xml2json(srcDOM) {
     return jsonResult;
 };
 
-
 function closestLocation(targetLocation, locationData) {
     function vectorDistance(dx, dy) {
         return Math.sqrt(dx * dx + dy * dy);
@@ -561,7 +764,6 @@ function closestLocation(targetLocation, locationData) {
     });
 };
 
-
 function cloudAdjUV(iconBadge, cloudCoverBadge) {
     if (iconBadge === "rain" || iconBadge === "sleet" || iconBadge === "snow") {
         cloudAdj = 0.31;
@@ -578,7 +780,6 @@ function cloudAdjUV(iconBadge, cloudCoverBadge) {
     }
     return cloudAdj;
 };
-
 
 function uv_note(uv1) {
     if (isNight) {
@@ -597,7 +798,6 @@ function uv_note(uv1) {
     return current_uv_note;
 };
 
-
 function toTimestamp(strDate) {
     var datum = Date.parse(strDate);
     return datum / 1000;
@@ -610,7 +810,6 @@ function CheckError(resp) {
         throw Error(resp.statusText);
     }
 };
-
 
 const fetchWithTimeout = (uri, options = {}, time = 5000) => {
 

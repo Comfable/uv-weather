@@ -2176,7 +2176,7 @@
   .setting_section_badge_Class {
       position: absolute;
       left: 25px;
-      top: 180px;
+      top: 190px;
       width: 260px;
       margin-top: 10px;
   }
@@ -2199,7 +2199,7 @@
   .setting_section_theme_Class {
       position: absolute;
       left: 25px;
-      top: 315px;
+      top: 335px;
   }
 
   .setting_unit_row_2 {
@@ -2454,7 +2454,7 @@
 
   .setting_title_section_time_Class {
       position: relative;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
       margin-top: 10px;
   }
 
@@ -2626,7 +2626,7 @@
       margin-right: 25px;
       padding-right: 25px;
       margin-top: 10px;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
   }
 
   .hr_forecast_setting {
