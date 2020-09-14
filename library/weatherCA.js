@@ -43,16 +43,27 @@ function weatherCA(latlong, citys, resolve) {
                     srcDOMJsonCA = xml2json(srcDOM);
                     //console.log(JSON.stringify(srcDOMJsonCA));
 
-                    tempCca = srcDOMJsonCA.siteData.currentConditions.hasOwnProperty('temperature') ? srcDOMJsonCA.siteData.currentConditions.temperature : srcDOMJsonCA.siteData.hourlyForecastGroup.hourlyForecast[0].temperature;
-                    if (tempCca !== "NA" && tempCca !== "" && tempCca !== null && tempCca !== "NULL") {
-                        temperatureCbadge = Math.round(parseFloat(tempCca));
-                        temperatureFbadge = Math.round((parseFloat(tempCca) * 1.8) + 32);
-                    } else {
-                        tempCca = srcDOMJsonCA.siteData.hourlyForecastGroup.hourlyForecast[0].temperature;
-                        if (tempCca !== "NA" && tempCca !== "" && tempCca !== null && tempCca !== "NULL") {
-                            temperatureCbadge = Math.round(parseFloat(tempCca));
-                            temperatureFbadge = Math.round((parseFloat(tempCca) * 1.8) + 32);
-                        }
+                    tempCCca = srcDOMJsonCA.siteData.currentConditions.hasOwnProperty('temperature') ? srcDOMJsonCA.siteData.currentConditions.temperature : "NA";
+                    tempC0ca = srcDOMJsonCA.siteData.hourlyForecastGroup.hourlyForecast[0].hasOwnProperty('temperature') ? srcDOMJsonCA.siteData.currentConditions.temperature : "NA";
+                    
+
+                    if (tempCCca !== "NA" && tempCCca !== "" && tempCCca !== null && tempCCca !== "NULL" && tempC0ca !== "NA" && tempC0ca !== "" && tempC0ca !== null && tempC0ca !== "NULL") 
+                    {
+                        temperatureCbadge = Math.round( (parseFloat(tempCCca) + parseFloat(tempC0ca) ) / 2);
+                        temperatureFbadge = Math.round( (((parseFloat(tempCCca) * 1.8) + 32) + ((parseFloat(tempC0ca) * 1.8) + 32)) / 2);
+                    } 
+                    else if (tempCCca !== "NA" && tempCCca !== "" && tempCCca !== null && tempCCca !== "NULL")
+                    {
+                        temperatureCbadge = Math.round(parseFloat(tempCCca));
+                        temperatureFbadge = Math.round((parseFloat(tempCCca) * 1.8) + 32);
+                    }
+                    else if (tempC0ca !== "NA" && tempC0ca !== "" && tempC0ca !== null && tempC0ca !== "NULL")
+                    {
+                        temperatureCbadge = Math.round(parseFloat(tempC0ca));
+                        temperatureFbadge = Math.round((parseFloat(tempC0ca) * 1.8) + 32);
+                    }
+                    else{
+                       tempCca = "NA";
                     }
 
                     summaryBadge = srcDOMJsonCA.siteData.currentConditions.hasOwnProperty('condition') ? srcDOMJsonCA.siteData.currentConditions.condition : srcDOMJsonCA.siteData.hourlyForecastGroup.hourlyForecast[0].condition;
