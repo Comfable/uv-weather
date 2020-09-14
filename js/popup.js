@@ -1871,7 +1871,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if ( isValidEmail && isValidName && isValidMessage) {
             submitFeedback.disabled = false;
             submitFeedback.style.cursor = "pointer";
-            submitFeedback.style.color = "#000000";
+            submitFeedback.style.color = "#ff662b";
             submitFeedback.style.fontWeight = "500";
 
         } else {

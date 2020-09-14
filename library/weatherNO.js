@@ -4,14 +4,7 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
     lat = (latlong.split(','))[0];
     lng = (latlong.split(','))[1];
 
-    const optionsNO = {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json',
-            'User-Agent': 'uvweather.net (info@uvweather.net)'
-        }
-    }
-    
+   
     chrome.storage.local.get(['country', 'timeZoneBadge', 'failedHTTP', 'setSettingUT'], function(data) {
 
         country = data.country;
@@ -19,13 +12,21 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
         setSettingUT = data.setSettingUT;
         country = data.country;
 
-        if(country == 'IR' || country == 'ir' || country == 'Iran' || country == 'iran' ) {
+        if(country == "CA" || country == "ca" || country == "Canada" || country == "US" || country == "us" || country == "United States of America" || country == 'IR' || country == 'ir' || country == 'Iran' || country == 'iran' ) {
             corsAPI = 'https://uvweather.herokuapp.com/'
         }
         else{
             corsAPI = 'https://www.uvw.workers.dev/?'
         }
 
+
+    const optionsNO = {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'User-Agent': 'uvweather.net (info@uvweather.net)'
+        }
+    }
 
     fetchWithTimeout(`${corsAPI}https://api.met.no/weatherapi/locationforecast/2.0/?lat=${lat}&lon=${lng}`, optionsNO, 4000)
         .then(CheckError)
