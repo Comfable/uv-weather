@@ -18,7 +18,14 @@ function weatherCA(latlong,citys,resolve) {
             cityCA_code = closest.code;
             stateCA_code = closest.state;
 
-            fetch(`https://uv-weather.herokuapp.com/https://dd.weather.gc.ca/citypage_weather/xml/${stateCA_code}/${cityCA_code}_e.xml`)
+            const optionsCA = {
+                method: 'GET',
+                headers: {
+                    'Accept' : 'application/xml'
+                }
+            }
+
+            fetchWithTimeout(`https://uv-weather.herokuapp.com/https://dd.weather.gc.ca/citypage_weather/xml/${stateCA_code}/${cityCA_code}_e.xml`, optionsCA, 750)
             .then((resp) => resp.text())
             .then(function(result) {
 
@@ -52,18 +59,18 @@ function weatherCA(latlong,citys,resolve) {
                     throw Error();
                   } 
                   else {
-                    chrome.storage.local.get('setSettingUT', function(data) {
-                      setSettingUT = data.setSettingUT;    
-                      if(setSettingUT !== "u") {
-                        solarNighDay(timeZoneBadge,latlong);
-                        iconBadgeConvertCA(iconCodeCA);                      
-                        badgeGeneral(isDay,isNight,sunnyDayBadge,cloudyBadge,rainyBadge,snowyBadge,temperatureFbadge,temperatureCbadge,updateTimeBadge,citys);
-                      }
-                    });
-                    
+                      chrome.storage.local.get('setSettingUT', function(data) {
+                        setSettingUT = data.setSettingUT;    
+                        if(setSettingUT !== "u") {
+                          solarNighDay(timeZoneBadge,latlong);
+                          iconBadgeConvertCA(iconCodeCA);                      
+                          badgeGeneral(isDay,isNight,sunnyDayBadge,cloudyBadge,rainyBadge,snowyBadge,temperatureFbadge,temperatureCbadge,updateTimeBadge,citys);
+                        }
+                      });
+                   
+                      resolve && resolve(result);
                   }
 
-                  resolve && resolve(result);
 
             }).catch(function() {
                 chrome.storage.local.set({'failedHTTP': '1'});

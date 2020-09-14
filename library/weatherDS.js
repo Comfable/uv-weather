@@ -6,8 +6,8 @@ function weatherDS(latlong,citys,country,resolve) {
     window.result = result;
 
     updateTime = result.currently.time;
-    temperatureF =  Math.round(parseFloat(result.currently.temperature));
-    temperatureC =  Math.round(f2c(parseFloat(result.currently.temperature)));
+    temperatureF = Math.round(parseFloat(result.currently.temperature));
+    temperatureC = Math.round(f2c(parseFloat(result.currently.temperature)));
 
     humidity = Math.round(100 * (parseFloat(result.currently.humidity)));
     dewPointF = Math.round(parseFloat(result.currently.dewPoint));

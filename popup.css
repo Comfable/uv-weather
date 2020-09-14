@@ -36,7 +36,7 @@
   left: 0;
   position: fixed;
   top: 0;
-  transition-delay: .25s;
+  transition-delay: .4s;
   transition: opacity 2.75s linear;
   width: 100%;
   z-index: 99999;
@@ -45,7 +45,7 @@
 }
 
 .preloader.loaded{
-  transition-delay: .125s;
+  transition-delay: .4s;
   opacity: 0;
   pointer-events: none;
 }
@@ -316,8 +316,8 @@ html {
    	background-color: var(--bg-color);
 }
 .sidebarMenuInner{
-    margin:45px 0 0 0;
-    padding:0;
+    margin: 45px 0 0 0;
+    padding: 0;
 }
 .sidebarMenuInner li{
     list-style: none;
@@ -2778,4 +2778,10 @@ ul li {
 }*/
 .mapboxgl-popup-content-wrapper {
   padding: 10%;
+}
+
+.geocoder-dropdown-text {
+	color: #000;
+	font-family: Helvetica, sans-serif;
+	font-size: small;
 }

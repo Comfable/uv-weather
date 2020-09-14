@@ -69,7 +69,7 @@ chrome.storage.local.get('firstTimePopup', function(data) {
   if(data.firstTimePopup == 0) {
     setTimeout(function() {
       locationToast.showToast();
-    }, 400);
+    }, 1500);
     chrome.storage.local.set({'firstTimePopup': 1}); 
 
   }
@@ -2207,7 +2207,19 @@ function refreshWindSpeedUnit() {
       marker: {
         color: '#ff662b',
         draggable: true
-      }
+      },
+
+      // render: function(item) {
+      //   console.log(item);
+      // return (
+      // "<div class='geocoder-dropdown-item'>" +
+      //   item.text +
+      // "<div class='geocoder-dropdown-text'>" +
+      //   item.place_name +
+      // '</div></div>'
+      // );
+      // },      
+
     });
 
     var marker = new mapboxgl.Marker({

@@ -1,6 +1,5 @@
 i_er = 1;
 function weatherUS(latlong,citys,resolve) {
-
       lat = (latlong.split(','))[0];
       lng = (latlong.split(','))[1];
 
@@ -34,8 +33,9 @@ function weatherUS(latlong,citys,resolve) {
                 }
             }
 
-            fetch(`https://uv-weather.herokuapp.com/https://api.weather.gov/stations/${station_id}/observations/latest`, optionsUS)
-            .then((resp) => resp.json())
+            fetchWithTimeout(`https://uv-weather.herokuapp.com/https://api.weather.gov/stations/${station_id}/observations/latest`, optionsUS, 750)
+            .then(CheckError)
+            //.then((resp) => resp.json())
             .then(function(result) {
                 status = result.status;
                 chrome.storage.local.set({'failedHTTP': '0'});
@@ -46,7 +46,7 @@ function weatherUS(latlong,citys,resolve) {
                 updateTimeBadge = toTimestamp(utcSystemTime);
 
                 var utcSystemTimeM = moment(utcSystemTime);
-                timeZoneBadge = (utcSystemTimeM.tz(timeZone).utcOffset())*60;   
+                timeZoneBadge = (utcSystemTimeM.tz(timeZone).utcOffset())*60;
                 chrome.storage.local.set({'timeZoneBadge': timeZoneBadge});
 
                 summaryBadge = result.properties.hasOwnProperty('textDescription') ? result.properties.textDescription : '';
@@ -58,10 +58,10 @@ function weatherUS(latlong,citys,resolve) {
 
                 if(iconUrlUS == "" || temperatureCbadge == "" || summaryBadge == "" || iconUrlUS == null || isNaN(temperatureCbadge) || summaryBadge == null) {
                    throw Error();
-                } 
+                }
                 else{
                     chrome.storage.local.get('setSettingUT', function(data) {
-                        setSettingUT = data.setSettingUT;    
+                        setSettingUT = data.setSettingUT;
                         if(setSettingUT !== "u") {
                             solarNighDay(timeZoneBadge,latlong);
                             iconBadgeConvertUS(iconUS);
@@ -74,12 +74,13 @@ function weatherUS(latlong,citys,resolve) {
                               
 
             }).catch(function() {
-                if(i_er <=3) {
+                if(i_er <=2) {
                     i_er = i_er + 1;
                     csvData_filtered =  csvData.filter(function(csvD) {
                         return csvD.latitude !== station_lat;
                     });
                     weatherUS(station_latlong,citys,resolve);
+
                 }
                 else{
                     chrome.storage.local.set({'failedHTTP': '1'});
