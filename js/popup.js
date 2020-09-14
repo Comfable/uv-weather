@@ -338,13 +338,13 @@ chrome.storage.local.get(['theme', 'autoDark'], function(data) {
     }
   })
 
-mapStyleLight = 'mapbox://styles/mapbox/light-v10';
-weathermapStyleLight = 'mapbox://styles/mapbox/light-v10';
-mapStyleDark = 'mapbox://styles/mapbox/dark-v10';
-weathermapStyleDark = 'mapbox://styles/mapbox/dark-v10';
+var mapStyleLight = 'mapbox://styles/mapbox/light-v10';
+var weathermapStyleLight = 'mapbox://styles/mapbox/light-v10';
+var mapStyleDark = 'mapbox://styles/mapbox/dark-v10';
+var weathermapStyleDark = 'mapbox://styles/mapbox/dark-v10';
 
-mapStyle = mapStyleLight;
-weathermapStyle = weathermapStyleLight;
+mapStyle = 'mapbox://styles/mapbox/light-v10';
+weathermapStyle = 'mapbox://styles/mapbox/light-v10';
 
 chrome.storage.local.get('closeAds', function(data) {
     if(data.closeAds == 1) {
@@ -958,6 +958,7 @@ chrome.storage.local.get('closeAds', function(data) {
 
       for (i=1;i<3;i++){
           document.querySelector(`#forecast_${i}_temp`).textContent = f2c(Math.round(result.daily.data[i].temperatureMax)) + "°";
+          document.querySelector(`#forecast_${i}_temp_min`).textContent = f2c(Math.round(result.daily.data[i].temperatureMin)) + "°";
       }
 
       for(i=1;i<8;i++){
@@ -1072,6 +1073,7 @@ chrome.storage.local.get('closeAds', function(data) {
 
     for(i=1;i<3;i++) {
         document.querySelector(`#forecast_${i}_temp`).textContent = Math.round(result.daily.data[i].temperatureMax) + "°";
+        document.querySelector(`#forecast_${i}_temp_min`).textContent = Math.round(result.daily.data[i].temperatureMin) + "°";
     }
 
     for(i=1;i<8;i++) {
@@ -1102,8 +1104,8 @@ chrome.storage.local.get('closeAds', function(data) {
 
   function darkDisplay() {
     document.documentElement.setAttribute('data-theme', 'dark');
-    mapStyle = mapStyleDark;
-    weathermapStyle = weathermapStyleDark;
+    mapStyle = 'mapbox://styles/mapbox/dark-v10';
+    weathermapStyle = 'mapbox://styles/mapbox/dark-v10';
     document.getElementById("setting_defualt_theme_d").checked = true;
     document.getElementById("checkbox").checked = true;
     chrome.storage.local.set({'theme': 'dark'});
@@ -1111,8 +1113,8 @@ chrome.storage.local.get('closeAds', function(data) {
 
   function lightDisplay() {
     document.documentElement.setAttribute('data-theme', 'light');
-    mapStyle = mapStyleLight;
-    weathermapStyle = weathermapStyleLight;
+    mapStyle = 'mapbox://styles/mapbox/light-v10';
+    weathermapStyle = 'mapbox://styles/mapbox/light-v10';
     document.getElementById("setting_defualt_theme_l").checked = true;
     document.getElementById("checkbox").checked = false;
     chrome.storage.local.set({'theme': 'light'}); 
@@ -1226,12 +1228,16 @@ chrome.storage.local.get('closeAds', function(data) {
   function next7Function(){
     for(i=1;i<3;i++) {
         document.querySelector(`#forecast_${i}_day`).textContent = dayjs.unix(result.daily.data[i].time).format('dddd');
-        document.querySelector(`#forecast_${i}_uv`).textContent = "UVI " + (Math.round ((result.daily.data[i].uvIndex) * uv_adj_daily(result.daily.data[i].icon)));
+        document.querySelector(`#forecast_${i}_wind`).textContent = Math.round(result.daily.data[i].windSpeed);
+        document.querySelector(`#forecast_${i}_wind_arrow`).style.transform = 'rotate(' + result.daily.data[i].windBearing + 'deg)';        
+        //document.querySelector(`#forecast_${i}_uv`).textContent = "UVI " + (Math.round ((result.daily.data[i].uvIndex) * uv_adj_daily(result.daily.data[i].icon)));        
     }
 
     for(i=1;i<8;i++) {
-        document.querySelector(`#forecast_${i*10}_day`).textContent = dayjs.unix(result.daily.data[i].time).format('dddd');
+        document.querySelector(`#forecast_${i*10}_day`).textContent = dayjs.unix(result.daily.data[i].time).format('ddd');
         document.querySelector(`#forecast_${i*10}_uv`).textContent = "UVI " + (Math.round ((result.daily.data[i].uvIndex) * uv_adj_daily(result.daily.data[i].icon)));
+        document.querySelector(`#forecast_${i*10}_wind`).textContent = Math.round(result.daily.data[i].windSpeed);
+        document.querySelector(`#forecast_${i*10}_wind_arrow`).style.transform = 'rotate(' + result.daily.data[i].windBearing + 'deg)';        
     }
 
     var i;
@@ -2112,11 +2118,11 @@ chrome.storage.local.get('closeAds', function(data) {
                         var autoDarkTheme = data.autoDark;
                           if(autoDarkTheme == '1' && isNight) {
                               darkDisplay();
-                              map.setStyle(mapStyleDark);
+                              map.setStyle('mapbox://styles/mapbox/dark-v10');
                           }
                            else if(autoDarkTheme == '1' && isDay) {
                               lightDisplay();
-                              map.setStyle(mapStyleLight);
+                              map.setStyle('mapbox://styles/mapbox/light-v10');
                           }
                         });
 
@@ -2166,11 +2172,11 @@ chrome.storage.local.get('closeAds', function(data) {
                 var autoDarkTheme = data.autoDark;
                   if(autoDarkTheme == '1' && isNight) {
                       darkDisplay();
-                      map.setStyle(mapStyleDark);
+                      map.setStyle('mapbox://styles/mapbox/dark-v10');
                   }
                    else if(autoDarkTheme == '1' && isDay) {
                       lightDisplay();
-                      map.setStyle(mapStyleLight);
+                      map.setStyle('mapbox://styles/mapbox/light-v10');
                   }
                 });
 
