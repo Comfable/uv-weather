@@ -1166,7 +1166,7 @@ document.addEventListener("DOMContentLoaded", function() {
         for (i = 1; i < 49; i++) {
 
             forecast_hours_icon_no = resultNO.properties.timeseries[i].data.next_1_hours.summary.symbol_code;
-            forecast_hours_icon = iconBadgeConvertNO_hourly((forecast_hours_icon_no).split('_')[0], (forecast_hours_icon_no).split('_')[1]);
+            forecast_hours_icon = iconConvertNO_HD((forecast_hours_icon_no).split('_')[0], (forecast_hours_icon_no).split('_')[1]);
 
             switch (forecast_hours_icon) {
                 case 'clear-day':
@@ -1226,6 +1226,7 @@ document.addEventListener("DOMContentLoaded", function() {
         // else{
         //     document.querySelector('#forecast_20_uv').textContent = "UVI -";
         // }
+
         document.querySelector('#forecast_20_wind_arrow').style.transform = 'rotate(' + daily_windBearing_2 + 'deg)';
 
         document.querySelector('#forecast_30_day').textContent = moment.unix(daily_date_3).format('dddd');

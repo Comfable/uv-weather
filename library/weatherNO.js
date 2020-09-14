@@ -287,13 +287,77 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
 
             daily_icon = [];
             daily_icon_url = [];
-            daily_icon[1] = iconBadgeConvertNO_hourly(mode(daily_icon_1), 'day');
-            daily_icon[2] = iconBadgeConvertNO_hourly(mode(daily_icon_2), 'day');
-            daily_icon[3] = iconBadgeConvertNO_hourly(mode(daily_icon_3), 'day');
-            daily_icon[4] = iconBadgeConvertNO_hourly(mode(daily_icon_4), 'day');
-            daily_icon[5] = iconBadgeConvertNO_hourly(mode(daily_icon_5), 'day');
-            daily_icon[6] = iconBadgeConvertNO_hourly(mode(daily_icon_6), 'day');
-            daily_icon[7] = iconBadgeConvertNO_hourly(mode(daily_icon_7), 'day');
+
+            if((daily_icon_1).length > 0) {
+	            if (mode2(daily_icon_1).length > 1 && (iconConvertNO_HD(mode2(daily_icon_1)[1].key, 'day') == 'rain' || iconConvertNO_HD(mode2(daily_icon_1)[1].key, 'day') == 'snow' || iconConvertNO_HD(mode2(daily_icon_1)[1].key, 'day') == 'sleet')) {
+	            	daily_icon[1] = iconConvertNO_HD(mode2(daily_icon_1)[1].key, 'day');
+	            } else {
+	            	daily_icon[1] = iconConvertNO_HD(mode2(daily_icon_1)[0].key, 'day');
+	            }
+	        } else {
+	        	daily_icon[1] = 'partly-cloudy-day';
+	        }
+
+            if((daily_icon_2).length > 0) {
+	            if (mode2(daily_icon_2).length > 1 && (iconConvertNO_HD(mode2(daily_icon_2)[1].key, 'day') == 'rain' || iconConvertNO_HD(mode2(daily_icon_2)[1].key, 'day') == 'snow' || iconConvertNO_HD(mode2(daily_icon_2)[1].key, 'day') == 'sleet')) {
+	            	daily_icon[2] = iconConvertNO_HD(mode2(daily_icon_2)[1].key, 'day');
+	            } else {
+	            	daily_icon[2] = iconConvertNO_HD(mode2(daily_icon_2)[0].key, 'day');
+	            }
+	        } else {
+	        	daily_icon[2] = 'partly-cloudy-day';
+	        }
+
+            if((daily_icon_3).length > 0) {
+	            if (mode2(daily_icon_3).length > 1 && (iconConvertNO_HD(mode2(daily_icon_3)[1].key, 'day') == 'rain' || iconConvertNO_HD(mode2(daily_icon_3)[1].key, 'day') == 'snow' || iconConvertNO_HD(mode2(daily_icon_3)[1].key, 'day') == 'sleet')) {
+	            	daily_icon[3] = iconConvertNO_HD(mode2(daily_icon_3)[1].key, 'day');
+	            } else {
+	            	daily_icon[3] = iconConvertNO_HD(mode2(daily_icon_3)[0].key, 'day');
+	            }
+	        } else {
+	        	daily_icon[3] = 'partly-cloudy-day';
+	        }
+
+            if((daily_icon_4).length > 0) {
+	            if (mode2(daily_icon_4).length > 1 && (iconConvertNO_HD(mode2(daily_icon_4)[1].key, 'day') == 'rain' || iconConvertNO_HD(mode2(daily_icon_4)[1].key, 'day') == 'snow' || iconConvertNO_HD(mode2(daily_icon_4)[1].key, 'day') == 'sleet')) {
+	            	daily_icon[4] = iconConvertNO_HD(mode2(daily_icon_4)[1].key, 'day');
+	            } else {
+	            	daily_icon[4] = iconConvertNO_HD(mode2(daily_icon_4)[0].key, 'day');
+	            }
+	        } else {
+	        	daily_icon[4] = 'partly-cloudy-day';
+	        }
+
+            if((daily_icon_5).length > 0) {
+	            if (mode2(daily_icon_5).length > 1 && (iconConvertNO_HD(mode2(daily_icon_5)[1].key, 'day') == 'rain' || iconConvertNO_HD(mode2(daily_icon_5)[1].key, 'day') == 'snow' || iconConvertNO_HD(mode2(daily_icon_5)[1].key, 'day') == 'sleet')) {
+	            	daily_icon[5] = iconConvertNO_HD(mode2(daily_icon_5)[1].key, 'day');
+	            } else {
+	            	daily_icon[5] = iconConvertNO_HD(mode2(daily_icon_5)[0].key, 'day');
+	            }
+	        } else {
+	        	daily_icon[5] = 'partly-cloudy-day';
+	        }
+
+            if((daily_icon_6).length > 0) {
+	            if (mode2(daily_icon_6).length > 1 && (iconConvertNO_HD(mode2(daily_icon_6)[1].key, 'day') == 'rain' || iconConvertNO_HD(mode2(daily_icon_6)[1].key, 'day') == 'snow' || iconConvertNO_HD(mode2(daily_icon_6)[1].key, 'day') == 'sleet')) {
+	            	daily_icon[6] = iconConvertNO_HD(mode2(daily_icon_6)[1].key, 'day');
+	            } else {
+	            	daily_icon[6] = iconConvertNO_HD(mode2(daily_icon_6)[0].key, 'day');
+	            }
+	        } else {
+	        	daily_icon[6] = 'partly-cloudy-day';
+	        }
+
+            if((daily_icon_7).length > 0) {
+	            if (mode2(daily_icon_7).length > 1 && (iconConvertNO_HD(mode2(daily_icon_7)[1].key, 'day') == 'rain' || iconConvertNO_HD(mode2(daily_icon_7)[1].key, 'day') == 'snow' || iconConvertNO_HD(mode2(daily_icon_7)[1].key, 'day') == 'sleet')) {
+	            	daily_icon[7] = iconConvertNO_HD(mode2(daily_icon_7)[1].key, 'day');
+	            } else {
+	            	daily_icon[7] = iconConvertNO_HD(mode2(daily_icon_7)[0].key, 'day');
+	            }                        
+	        } else {
+	        	daily_icon[7] = 'partly-cloudy-day';
+	        }
+
 
             for (i = 1; i < 8; i++) {
                 forecast_icon = daily_icon[i];
@@ -384,13 +448,15 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
             daily_uv_6.length > 0 ? daily_uvIndex_6 = (daily_uv_6).max() : daily_uvIndex_6 = '-';
             daily_uv_7.length > 0 ? daily_uvIndex_7 = (daily_uv_7).max() : daily_uvIndex_7 = '-';
 
-            daily_wind_dir_1.length > 0 ? daily_windBearing_1 = daily_wind_dir_1[daily_wind_speed_1.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0)] : daily_windBearing_1 = '-';
-            daily_wind_dir_2.length > 0 ? daily_windBearing_2 = daily_wind_dir_2[daily_wind_speed_2.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0)] : daily_windBearing_2 = '-';
-            daily_wind_dir_3.length > 0 ? daily_windBearing_3 = daily_wind_dir_3[daily_wind_speed_3.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0)] : daily_windBearing_3 = '-';
-            daily_wind_dir_4.length > 0 ? daily_windBearing_4 = daily_wind_dir_4[daily_wind_speed_4.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0)] : daily_windBearing_4 = '-';
-            daily_wind_dir_5.length > 0 ? daily_windBearing_5 = daily_wind_dir_5[daily_wind_speed_5.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0)] : daily_windBearing_5 = '-';
-            daily_wind_dir_6.length > 0 ? daily_windBearing_6 = daily_wind_dir_6[daily_wind_speed_6.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0)] : daily_windBearing_6 = '-';
-            daily_wind_dir_7.length > 0 ? daily_windBearing_7 = daily_wind_dir_7[daily_wind_speed_7.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0)] : daily_windBearing_7 = '-';
+
+            //daily_wind_dir_1.length > 0 ? daily_windBearing_1 = (daily_wind_dir_1[daily_wind_speed_1.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0)] - 180) : daily_windBearing_1 = 0;
+            daily_wind_dir_1.length > 0 ? daily_windBearing_1 = ((daily_wind_dir_1.reduce((previous, current) => current += previous) / daily_wind_dir_1.length) - 180) : daily_windBearing_1 = 0;
+            daily_wind_dir_2.length > 0 ? daily_windBearing_2 = ((daily_wind_dir_2.reduce((previous, current) => current += previous) / daily_wind_dir_2.length) - 180) : daily_windBearing_2 = 0;
+            daily_wind_dir_3.length > 0 ? daily_windBearing_3 = ((daily_wind_dir_3.reduce((previous, current) => current += previous) / daily_wind_dir_3.length) - 180) : daily_windBearing_3 = 0;
+            daily_wind_dir_4.length > 0 ? daily_windBearing_4 = ((daily_wind_dir_4.reduce((previous, current) => current += previous) / daily_wind_dir_4.length) - 180) : daily_windBearing_4 = 0;
+            daily_wind_dir_5.length > 0 ? daily_windBearing_5 = ((daily_wind_dir_5.reduce((previous, current) => current += previous) / daily_wind_dir_5.length) - 180) : daily_windBearing_5 = 0;
+            daily_wind_dir_6.length > 0 ? daily_windBearing_6 = ((daily_wind_dir_6.reduce((previous, current) => current += previous) / daily_wind_dir_6.length) - 180) : daily_windBearing_6 = 0;
+            daily_wind_dir_7.length > 0 ? daily_windBearing_7 = ((daily_wind_dir_7.reduce((previous, current) => current += previous) / daily_wind_dir_7.length) - 180) : daily_windBearing_7 = 0;
 
             daily_wind_speed_1.length > 0 ? daily_wind_1 = ((daily_wind_speed_1).max()) * 2.236937 : daily_wind_1 = '-';
             daily_wind_speed_2.length > 0 ? daily_wind_2 = ((daily_wind_speed_2).max()) * 2.236937 : daily_wind_2 = '-';
@@ -541,7 +607,7 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
 
 
         }).catch(function(err) {
-            //console.log('no err ' + err);
+            console.log('no err ' + err);
             chrome.storage.local.set({
                 'failedHTTP_NO': '1'
             });
