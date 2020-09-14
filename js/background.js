@@ -312,11 +312,11 @@ function badgeGeneral(isDay,isNight,sunnyDayBadge,cloudyBadge,rainyBadge,snowyBa
 					chrome.browserAction.setTitle({title: toolTipBadge});
 					}
 				else if(setSettingUT == "t" && setSettingFC == "f") {
-					toolTipBadge = temperatureFbadge + "° " + capital_letter(summaryBadge) + " - " + citys  + "\n" + "Updated at " + updateTimeRelativeBadge;
+					toolTipBadge = temperatureFbadge + "° " + capitalize(summaryBadge) + " - " + citys  + "\n" + "Updated at " + updateTimeRelativeBadge;
 					chrome.browserAction.setTitle({title: toolTipBadge});
 					}
 				else if(setSettingUT == "t" && setSettingFC == "c") {
-					toolTipBadge = temperatureCbadge + "° " + capital_letter(summaryBadge) + " - " + citys + "\n"  + "Updated at " + updateTimeRelativeBadge;
+					toolTipBadge = temperatureCbadge + "° " + capitalize(summaryBadge) + " - " + citys + "\n"  + "Updated at " + updateTimeRelativeBadge;
 					chrome.browserAction.setTitle({title: toolTipBadge});
 					};						
 			});
@@ -335,7 +335,7 @@ function badgeTemp(latlong,citys,country) {
      }
 
     else if(country == "US" || country == "us" || country == "United States of America") {
-	  	weatherUS(latlong,citys);
+	  	weatherUS2(latlong,citys);
     }
     
     else{

@@ -5,13 +5,10 @@ var lines = 16,
 cW = 40,
 cH = 40;
 
-function capital_letter(str) {
-    str = str.split(" ");
-    for (var i = 0, x = str.length; i < x; i++) {
-        str[i] = str[i][0].toUpperCase() + str[i].substr(1);
-    }
-    return str.join(" ");
-};
+const capitalize = (s) => {
+  if (typeof s !== 'string') return ''
+  return s.charAt(0).toUpperCase() + s.slice(1)
+}
 
 function solarNighDay(timeZoneBadge,latlong) {
 	isDay = false;
@@ -167,35 +164,35 @@ function iconBadgeConvertDS(iconBadge) {
 
 
 function iconBadgeConvertUS(iconUS) {
-	if(iconUS === "bkn" || iconUS === "ovc" || iconUS === "wind_bkn" || iconUS === "wind_ovc" || iconUS === "tsra" || iconUS === "tsra_sct") {
-		iconBadge = 'cloudy';							
+	if(iconUS === "scttsra" || iconUS === "nscttsra" || iconUS === "hi_tsra" || iconUS === "hi_ntsra" || iconUS === "fc" || iconUS === "nfc" || iconUS === "wind_ovc" || iconUS === "nwind_ovc" ||iconUS === "bkn" || iconUS === "ovc" || iconUS === "novc" || iconUS === "nbkn" || iconUS === "wind_bkn" || iconUS === "nwind_bkn" || iconUS === "wind_ovc" || iconUS === "nwind_ovc" || iconUS === "tsra" || iconUS === "tsra_sct") {
+		iconBadge = 'cloudy';						
 	}
-	else if(iconUS === "dust" || iconUS === "smoke" || iconUS === "haze" || iconUS === "fog") {
-		iconBadge = 'fog';							
+	else if(iconUS === "dust" || iconUS === "smoke" || iconUS === "haze" || iconUS === "fog" || iconUS === "du" || iconUS === "ndu" || iconUS === "fu" || iconUS === "nfu" || iconUS === "hz" || iconUS === "fg" || iconUS === "nfg") {
+		iconBadge = 'fog';					
 	}
-	else if(iconUS === "rain_snow" || iconUS === "rain_fzra" || iconUS === "rain" || iconUS === "rain_showers" || iconUS === "rain_showers_hi") {
-		iconBadge = 'rain'; 
+	else if(iconUS === "minus_ra" || iconUS === "shra" || iconUS === "nshra" || iconUS === "hi_shwrs" || iconUS === "hi_nshwrs" || iconUS === "rain_snow" || iconUS === "tsra" || iconUS === "ntsra" || iconUS === "rain_fzra" || iconUS === "ra_sn" || iconUS === "nra_sn" || iconUS === "rain" || iconUS === "rain_showers" || iconUS === "rain_showers_hi" || iconUS === "ra" || iconUS === "nra") {
+		iconBadge = 'rain';
 	}
-	else if(iconUS === "snow" || iconUS === "snow_fzra" || iconUS === "blizzard") {
-		iconBadge = 'snow'; 
+	else if(iconUS === "snow" || iconUS === "snow_fzra" || iconUS === "blizzard" || iconUS === "nblizzard" || iconUS === "sn" || iconUS === "nsn") {
+		iconBadge = 'snow';
 	}
-	else if(iconUS === "wind_skc" || iconUS === "wind_few" || iconUS === "tsra_hi" || iconUS === "tornado" || iconUS === "hurricane" || iconUS === "tropical_storm") {
-		iconBadge = 'wind'; 
+	else if(iconUS === "hur_warn" || iconUS === "hur_watch" || iconUS === "ts_warn" || iconUS === "ts_watch" || iconUS === "ts_nowarn" || iconUS === "wind_skc" || iconUS === "nwind_skc" || iconUS === "wind_few" || iconUS === "nwind_few" || iconUS === "tsra_hi" || iconUS === "tornado" || iconUS === "tor" || iconUS === "ntor" || iconUS === "hurricane" || iconUS === "tropical_storm") {
+		iconBadge = 'wind';
 	}
-	else if(iconUS === "rain_sleet" || iconUS === "fzra" || iconUS === "snow_sleet" || iconUS === "sleet") {
-		iconBadge = 'sleet'; 
+	else if(iconUS === "ip" || iconUS === "nip" || iconUS === "snip" || iconUS === "nsnip" || iconUS === "fzra_sn" || iconUS === "nfzra_sn" || iconUS === "raip" || iconUS === "nraip" || iconUS === "rain_sleet" || iconUS === "fzra" || iconUS === "nfzra"  || iconUS === "ra_fzra" || iconUS === "nra_fzra" || iconUS === "snow_sleet" || iconUS === "sleet") {
+		iconBadge = 'sleet';
 	}
-	else if((iconUS === "wind_sct" || iconUS === "sct") && isDay) {
-		iconBadge = 'partly-cloudy-day'; 
+	else if((iconUS === "wind_sct" || iconUS === "nwind_sct" || iconUS === "sct" || iconUS === "nsct") && isDay) {
+		iconBadge = 'partly-cloudy-day';
 	}
-	else if((iconUS === "wind_sct" || iconUS === "sct") && isNight) {
-		iconBadge = 'partly-cloudy-night'; 
+	else if((iconUS === "wind_sct" || iconUS === "nwind_sct" || iconUS === "sct" || iconUS === "nsct") && isNight) {
+		iconBadge = 'partly-cloudy-night';
 	}
-	else if((iconUS === "skc" || iconUS === "few" || iconUS === "hot" || iconUS === "cold" || iconUS === "") && isNight) {
-		iconBadge = 'clear-night'; 
+	else if((iconUS === "skc" || iconUS === "nskc" || iconUS === "few" || iconUS === "nfew" || iconUS === "hot" || iconUS === "cold" || iconUS === "") && isNight) {
+		iconBadge = 'clear-night';
 	}
-	else if((iconUS === "skc" || iconUS === "few" || iconUS === "hot" || iconUS === "cold" || iconUS === "") && isDay) {
-		iconBadge = 'clear-day'; 
+	else if((iconUS === "skc" || iconUS === "nskc" || iconUS === "few" || iconUS === "nfew" || iconUS === "hot" || iconUS === "cold" || iconUS === "") && isDay) {
+		iconBadge = 'clear-day';
 	}
 
 	return iconBadge;

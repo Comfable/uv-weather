@@ -10,13 +10,17 @@ function weatherOWM(latlong,citys,resolve) {
 
     chrome.storage.local.set({'failedHTTP': '0'});
 
+    systemTime = new Date();
+    utcSystemTime = new Date(new Date().toUTCString()).toISOString();
+    updateTimeBadge = toTimestamp(utcSystemTime);
+
     temperatureCbadge = Math.round((resultOWM.main.temp) - 273.15);
     temperatureFbadge = Math.round((1.8*temperatureCbadge) + 32);
     if(temperatureCbadge == '-0') {temperatureCbadge = 0};
     if(temperatureFbadge == '-0') {temperatureFbadge = 0};
     summaryBadgeMain = resultOWM.weather[0].main;
     summaryBadge = resultOWM.weather[0].description;
-    updateTimeBadge = resultOWM.dt;
+    //updateTimeBadge = resultOWM.dt;
     timeZoneBadge = resultOWM.timezone;
     chrome.storage.local.set({'timeZoneBadge': timeZoneBadge});
     cloudCoverBadge = resultOWM.clouds.all;
@@ -30,7 +34,7 @@ function weatherOWM(latlong,citys,resolve) {
         badgeGeneral(isDay,isNight,sunnyDayBadge,cloudyBadge,rainyBadge,snowyBadge,temperatureFbadge,temperatureCbadge,updateTimeBadge,citys);
       }
     }); 
-  
+
     resolve && resolve(resultOWM);
 
   }).catch(function() {

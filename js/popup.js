@@ -374,13 +374,7 @@ function popup() {
                   weatherDS(latlong,citys,country,resolve);
           });
           Promise.all([promise, promise2]).then(function () {
-                  if(typeof iconCodeCA !== 'undefined') {
-                    iconBadgeConvertCA(iconCodeCA);
-                  }
-                  else{
-                    iconBadgeConvertDS(iconBadge);
-                  }
-                  accufeelCalc(ghiSolarClearSki,iconBadge,cloudCoverBadge,temperatureCbadge,humidity,windSpeedMS);
+                  accufeelCalc(ghiSolarClearSki,iconDS,cloudCoverBadge,temperatureCbadge,humidity,windSpeedMS);
                 }).then(function () {
                       UTFC();
                       refreshPopup();
@@ -389,20 +383,15 @@ function popup() {
       }
       
       else if(country == "US" || country == "us" || country == "United States of America") {
+
           var promise = new Promise(function (resolve, reject) {
-                  weatherUS(latlong,citys,resolve);
+                  weatherUS2(latlong,citys,resolve);
           });
           var promise2 = new Promise(function (resolve, reject) {
                   weatherDS(latlong,citys,country,resolve);
           });      
           Promise.all([promise, promise2]).then(function () {
-                  if(typeof iconUS !== 'undefined') {
-                    iconBadgeConvertUS(iconUS);
-                  }
-                  else{
-                    iconBadgeConvertDS(iconBadge);
-                  }
-                  accufeelCalc(ghiSolarClearSki,iconBadge,cloudCoverBadge,temperatureCbadge,humidity,windSpeedMS);
+                  accufeelCalc(ghiSolarClearSki,iconDS,cloudCoverBadge,temperatureCbadge,humidity,windSpeedMS);
                 }).then(function () {
                       UTFC();
                       refreshPopup();
@@ -418,13 +407,7 @@ function popup() {
                   weatherDS(latlong,citys,country,resolve);
           });
           Promise.all([promise, promise2]).then(function () {
-                  if(typeof summaryBadge !== 'undefined') {
-                    iconBadgeConvert(summaryBadge,summaryBadgeMain);
-                  }
-                  else{
-                    iconBadgeConvertDS(iconBadge);
-                  }
-                  accufeelCalc(ghiSolarClearSki,iconBadge,cloudCoverBadge,temperatureCbadge,humidity,windSpeedMS);
+                  accufeelCalc(ghiSolarClearSki,iconDS,cloudCoverBadge,temperatureCbadge,humidity,windSpeedMS);
                 }).then(function () {
                       UTFC();
                       refreshPopup();
@@ -622,10 +605,10 @@ popup();
       loadingIconBadge();
   };
 
-  function accufeelCalc(ghiSolarClearSki,iconBadge,cloudCoverBadge,temperatureCbadge,humidity,windSpeedMS) {
+  function accufeelCalc(ghiSolarClearSki,iconDS,cloudCoverBadge,temperatureCbadge,humidity,windSpeedMS) {
     if(ghiSolarClearSki !== '-') {
       if (ghiSolarClearSki >=250) { 
-        cloudAdj_hourly = uv_adj_daily(iconBadge,cloudCoverBadge);
+        cloudAdj_hourly = uv_adj_daily(iconDS,cloudCoverBadge);
         ghiSolarCloud = ghiSolarClearSki * cloudAdj_hourly;
         TglobeC = 0.01498*ghiSolarCloud + 1.184*temperatureCbadge - 0.0789*humidity - 2.739; //day
       }
@@ -1877,11 +1860,11 @@ function refreshWindSpeedUnit() {
           chrome.browserAction.setTitle({title: toolTipBadge});
           }
         else if(setSettingUT == "t" && setSettingFC == "f") {
-          toolTipBadge = temperatureFbadge + "° " + capital_letter(summaryBadge) + " - " + citys  + "\n" + "Updated at " + updateTimeRelativeBadge;
+          toolTipBadge = temperatureFbadge + "° " + capitalize(summaryBadge) + " - " + citys  + "\n" + "Updated at " + updateTimeRelativeBadge;
           chrome.browserAction.setTitle({title: toolTipBadge});
           }
         else if(setSettingUT == "t" && setSettingFC == "c") {
-          toolTipBadge = temperatureCbadge + "° " + capital_letter(summaryBadge) + " - " + citys + "\n"  + "Updated at " + updateTimeRelativeBadge;
+          toolTipBadge = temperatureCbadge + "° " + capitalize(summaryBadge) + " - " + citys + "\n"  + "Updated at " + updateTimeRelativeBadge;
           chrome.browserAction.setTitle({title: toolTipBadge});
           };            
     });

@@ -25,7 +25,7 @@ function weatherCA(latlong,citys,resolve) {
                 }
             }
 
-            fetchWithTimeout(`https://uv-weather.herokuapp.com/https://dd.weather.gc.ca/citypage_weather/xml/${stateCA_code}/${cityCA_code}_e.xml`, optionsCA, 750)
+            fetchWithTimeout(`https://uv-weather.herokuapp.com/https://dd.weather.gc.ca/citypage_weather/xml/${stateCA_code}/${cityCA_code}_e.xml`, optionsCA, 1500)
             .then((resp) => resp.text())
             .then(function(resultCA) {
 

@@ -25,7 +25,7 @@ function weatherDS(latlong,citys,country,resolve) {
     windGustMS = Math.round(windGustMPH * 0.4470389 * 10) / 10;
     cloudCover = Math.round(result.currently.cloudCover * 100);
     cloudCoverBadge = Math.round(result.currently.cloudCover * 100);
-    icon = result.currently.icon;
+    iconDS = result.currently.icon;
 
     ghiSolarClearSki = result.hourly.data[0].hasOwnProperty('solar') ? result.hourly.data[0].solar.ghi : '-'; //GHI = DHI + DNI * cos (Î¸)
 
@@ -470,7 +470,7 @@ function weatherDS(latlong,citys,country,resolve) {
 
     uvCurrently = result.currently.hasOwnProperty('uvIndex') ? result.currently.uvIndex : '-'
     
-    uv1 = Math.floor(uvCurrently * cloudAdjUV(icon,cloudCover));
+    uv1 = Math.floor(uvCurrently * cloudAdjUV(iconDS,cloudCover));
 
     systemTime = new Date();
     utcSystemTime = new Date(new Date().toUTCString()).toISOString();
@@ -483,7 +483,7 @@ function weatherDS(latlong,citys,country,resolve) {
         country = data.country;
        
         if((setSettingUT == 'u' && failedHTTP == '0') || (failedHTTP == '1')) {
-          iconBadge = icon;
+          iconBadge = iconDS;
           timeZone = result.offset * 3600;
           summaryBadge = summary;
           temperatureCbadge = temperatureC;
@@ -493,6 +493,7 @@ function weatherDS(latlong,citys,country,resolve) {
           iconBadgeConvertDS(iconBadge);
           badgeGeneral(isDay,isNight,sunnyDayBadge,cloudyBadge,rainyBadge,snowyBadge,temperatureFbadge,temperatureCbadge,updateTimeBadge,citys,uv1);
         }
+
         resolve && resolve(result["currently"]["uvIndex"]);
     });
 
