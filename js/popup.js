@@ -53,24 +53,6 @@ document.addEventListener("DOMContentLoaded", function() {
     document.querySelector("#title_version_setting").textContent = 'Version ' + version_manifest;
     document.getElementById("preload_body").style.display = "block";
 
-    chrome.storage.local.get('firstTimePopup', function(data) {
-        if (typeof data.firstTimePopup == 'undefined') {
-            chrome.storage.local.set({
-                'firstTimePopup': 1
-            });
-        }
-        if (data.firstTimePopup == 0) {
-            setTimeout(function() {
-                locationToast.showToast();
-            }, 1500);
-            chrome.storage.local.set({
-                'firstTimePopup': 1
-            });
-
-        }
-    });
-
-
     chrome.storage.local.set({
         'firstTimeSaerchPopupInSession': 0
     });
@@ -372,6 +354,21 @@ document.addEventListener("DOMContentLoaded", function() {
                                 clearInterval(fadeEffect);
                             }
                         }, 50);
+
+
+                        chrome.storage.local.get('firstTimePopup', function(data) {
+                            if (typeof data.firstTimePopup == 'undefined') {
+                                chrome.storage.local.set({
+                                    'firstTimePopup': 1
+                                });
+                            }
+                            if (data.firstTimePopup == 0) {
+                                locationToast.showToast();
+                                chrome.storage.local.set({
+                                    'firstTimePopup': 1
+                                });
+                            }
+                        });
 
                     })
                 })
@@ -2300,17 +2297,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 popup();
 
-                // map.flyTo({
-                //     center: [lng, lat],
-                //     zoom: 10,
-                //     speed: .8,
-                //     curve: 1,
-                //     essential: true,
-                //     easing(t) {
-                //         return t;
-                //     }
-                // });
-
                 map.on('moveend', function(e) {
                     searchMap(mapStyle);
                 });
@@ -2326,6 +2312,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     function weatherMap(weathermapStyle) {
+
         mapboxgl.accessToken = 'pk.eyJ1IjoidXZ3IiwiYSI6ImNrOTY4dzRiMTAyMnUzZXBheHppanV2MXIifQ.jFdHCvYe2u-LUw-_9mcw_g';
         if (typeof(latlong) !== 'undefined') {
             latandlongMapBox = (latlong).split(',').reverse().join(',');
@@ -2364,7 +2351,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 "maxzoom": 8
             });
         });
+    
     };
+
 
 
     setTimeout(function() {

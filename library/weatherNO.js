@@ -12,7 +12,7 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
         }
     }
 
-    fetchWithTimeout(`https://uvweather.herokuapp.com/https://api.met.no/weatherapi/locationforecast/2.0/?lat=${lat}&lon=${lng}`, optionsNO, 4000)
+    fetchWithTimeout(`https://www.uvw.workers.dev/?https://api.met.no/weatherapi/locationforecast/2.0/?lat=${lat}&lon=${lng}`, optionsNO, 4000)
         .then(CheckError)
         .then(function(resultNO) {
             window.resultNO = resultNO;

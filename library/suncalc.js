@@ -19,7 +19,7 @@ function fromJulian(j)  { return new Date((j + 0.5 - J1970) * dayMs); }
 function toDays(date)   { return toJulian(date) - J2000; }
 
 
-var e = rad * 23.4397; // obliquity of the Earth
+var e = rad * 23.4397;
 
 function rightAscension(l, b) { return atan(sin(l) * cos(e) - tan(b) * sin(e), cos(l)); }
 function declination(l, b)    { return asin(sin(b) * cos(e) + cos(b) * sin(e) * sin(l)); }
@@ -30,8 +30,8 @@ function altitude(H, phi, dec) { return asin(sin(phi) * sin(dec) + cos(phi) * co
 function siderealTime(d, lw) { return rad * (280.16 + 360.9856235 * d) - lw; }
 
 function astroRefraction(h) {
-    if (h < 0) // the following formula works for positive altitudes only.
-        h = 0; // if h = -0.08901179 a div/0 would occur.
+    if (h < 0)
+        h = 0;
     return 0.0002967 / Math.tan(h + 0.00312536 / (h + 0.08901179));
 }
 
@@ -40,7 +40,7 @@ function solarMeanAnomaly(d) { return rad * (357.5291 + 0.98560028 * d); }
 function eclipticLongitude(M) {
 
     var C = rad * (1.9148 * sin(M) + 0.02 * sin(2 * M) + 0.0003 * sin(3 * M)), // equation of center
-        P = rad * 102.9372; // perihelion of the Earth
+        P = rad * 102.9372;
 
     return M + C + P + PI;
 }
@@ -84,8 +84,6 @@ var times = SunCalc.times = [
     [   -18, 'nightEnd',      'night'       ],
     [     6, 'goldenHourEnd', 'goldenHour'  ]
 ];
-
-// adds a custom time to the times config
 
 SunCalc.addTime = function (angle, riseName, setName) {
     times.push([angle, riseName, setName]);
@@ -151,15 +149,15 @@ SunCalc.getTimes = function (date, lat, lng, height) {
 };
 
 
-function moonCoords(d) { // geocentric ecliptic coordinates of the moon
+function moonCoords(d) {
 
-    var L = rad * (218.316 + 13.176396 * d), // ecliptic longitude
-        M = rad * (134.963 + 13.064993 * d), // mean anomaly
-        F = rad * (93.272 + 13.229350 * d),  // mean distance
+    var L = rad * (218.316 + 13.176396 * d),
+        M = rad * (134.963 + 13.064993 * d),
+        F = rad * (93.272 + 13.229350 * d),
 
-        l  = L + rad * 6.289 * sin(M), // longitude
-        b  = rad * 5.128 * sin(F),     // latitude
-        dt = 385001 - 20905 * cos(M);  // distance to the moon in km
+        l  = L + rad * 6.289 * sin(M),
+        b  = rad * 5.128 * sin(F),
+        dt = 385001 - 20905 * cos(M);
 
     return {
         ra: rightAscension(l, b),
@@ -179,7 +177,7 @@ SunCalc.getMoonPosition = function (date, lat, lng) {
         h = altitude(H, phi, c.dec),
         pa = atan(sin(H), tan(phi) * cos(c.dec) - sin(c.dec) * cos(H));
 
-    h = h + astroRefraction(h); // altitude correction for refraction
+    h = h + astroRefraction(h);
 
     return {
         azimuth: azimuth(H, phi, c.dec),
@@ -195,7 +193,7 @@ SunCalc.getMoonIllumination = function (date) {
         s = sunCoords(d),
         m = moonCoords(d),
 
-        sdist = 149598000, // distance from Earth to Sun in km
+        sdist = 149598000,
 
         phi = acos(sin(s.dec) * sin(m.dec) + cos(s.dec) * cos(m.dec) * cos(s.ra - m.ra)),
         inc = atan(sdist * sin(phi), m.dist - sdist * cos(phi)),
@@ -223,7 +221,6 @@ SunCalc.getMoonTimes = function (date, lat, lng, inUTC) {
         h0 = SunCalc.getMoonPosition(t, lat, lng).altitude - hc,
         h1, h2, rise, set, a, b, xe, ye, d, roots, x1, x2, dx;
 
-    // go in 2-hour chunks, each time seeing if a 3-point quadratic curve crosses zero (which means rise or set)
     for (var i = 1; i <= 24; i += 2) {
         h1 = SunCalc.getMoonPosition(hoursLater(t, i), lat, lng).altitude - hc;
         h2 = SunCalc.getMoonPosition(hoursLater(t, i + 1), lat, lng).altitude - hc;
