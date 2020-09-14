@@ -360,12 +360,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function popup() {
 
-        chrome.storage.local.get(['latlong', 'citys', 'country', 'failedHTTP', 'setSettingUT'], function(data) {
+        chrome.storage.local.get(['latlong', 'citys', 'country', 'setSettingUT', 'timeZoneBadge'], function(data) {
             latlong = data.latlong;
             country = data.country;
             citys = data.citys;
             setSettingUT = data.setSettingUT;
-            failedHTTP = data.failedHTTP;
 
             if (setSettingUT == "u" && navigator.onLine) {
                 var promise = new Promise(function(resolve, reject) {
@@ -380,7 +379,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 });
             }
 
-            if ((typeof setSettingUT === 'undefined' || setSettingUT == "t") && navigator.onLine) {
+            else if ((typeof setSettingUT === 'undefined' || setSettingUT == "t" || setSettingUT == "u") && navigator.onLine) {
 
                 if (country == "CA" || country == "ca" || country == "Canada") {
                     var promise = new Promise(function(resolve, reject) {
@@ -390,12 +389,13 @@ document.addEventListener("DOMContentLoaded", function() {
                         weatherDS(latlong, citys, country, resolve);
                     });
                     Promise.all([promise, promise2]).then(function() {
-                        accufeelCalc(ghiSolarClearSki, iconDS, cloudCoverBadge, temperatureCbadge, humidity, windSpeedMS);
+                        accufeelCalc(ghiSolarClearSki, cloudCoverBadge, temperatureCbadge, humidity, windSpeedMS);
                     }).then(function() {
                         UTFC();
                         refreshPopup();
                         updateBadge();
                     });
+
                 } else if (country == "US" || country == "us" || country == "United States of America") {
 
                     var promise = new Promise(function(resolve, reject) {
@@ -405,21 +405,19 @@ document.addEventListener("DOMContentLoaded", function() {
                         weatherDS(latlong, citys, country, resolve);
                     });
                     Promise.all([promise, promise2]).then(function() {
-                        accufeelCalc(ghiSolarClearSki, iconDS, cloudCoverBadge, temperatureCbadge, humidity, windSpeedMS);
+                        accufeelCalc(ghiSolarClearSki, cloudCoverBadge, temperatureCbadge, humidity, windSpeedMS);
                     }).then(function() {
                         UTFC();
                         refreshPopup();
                         updateBadge();
                     });
+
                 } else {
                     var promise = new Promise(function(resolve, reject) {
-                        weatherNO(latlong, citys, resolve);
+                        weatherNO(latlong, citys, timeZoneBadge, resolve);
                     });
-                    var promise2 = new Promise(function(resolve, reject) {
-                        weatherDS(latlong, citys, country, resolve);
-                    });
-                    Promise.all([promise, promise2]).then(function() {
-                        accufeelCalc(ghiSolarClearSki, iconDS, cloudCoverBadge, temperatureCbadge, humidity, windSpeedMS);
+                    Promise.all([promise]).then(function() {
+                        accufeelCalc(ghiSolarClearSki, cloudCoverBadge, temperatureCbadge, humidity, windSpeedMS);
                     }).then(function() {
                         UTFC();
                         refreshPopup();
@@ -522,9 +520,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function refreshPopup() {
         i_er = 1; //weatherUS
-        chrome.storage.local.set({
-            'failedHTTP': '0'
-        });
+        // chrome.storage.local.set({
+        //     'failedHTTP_NO': '0'
+        // });
 
         chrome.storage.local.get(['verUpdate'], function(data) {
             if (data.verUpdate == 1) {
@@ -617,29 +615,35 @@ document.addEventListener("DOMContentLoaded", function() {
         loadingIconBadge();
     };
 
-    function accufeelCalc(ghiSolarClearSki, iconDS, cloudCoverBadge, temperatureCbadge, humidity, windSpeedMS) {
-        if (ghiSolarClearSki !== '-') {
-            if (ghiSolarClearSki >= 250) {
-                cloudAdj_hourly = uv_adj_daily(iconDS, cloudCoverBadge);
-                ghiSolarCloud = ghiSolarClearSki * cloudAdj_hourly;
-                TglobeC = 0.01498 * ghiSolarCloud + 1.184 * temperatureCbadge - 0.0789 * humidity - 2.739; //day
-            } else { //Low GHI
-                TglobeC = temperatureCbadge;
-            }
-        } else {
-            TglobeC = temperatureCbadge; //night
-        };
-
-        Tmrta = Math.pow(TglobeC + 273.15, 4) + (2.5 * 100000000 * Math.pow(windSpeedMS, 0.60) * (TglobeC - temperatureCbadge));
-        TmrtC = Math.pow(Tmrta, 1 / 4) - 273.15;
-
-        accufeelC = accufeel(temperatureCbadge, TmrtC, windSpeedMS, humidity);
-
-        if(Math.abs(accufeelC - temperatureCbadge) > 4) {
-            (accufeelC > temperatureCbadge) ? (accufeelC = temperatureCbadge + 4) : (accufeelC = temperatureCbadge - 4);
+    function accufeelCalc(ghiSolarClearSki, cloudCoverBadge, temperatureCbadge, humidity, windSpeedMS) {
+        if(cloudCoverBadge == '-' || temperatureCbadge == '-' || humidity == '-' || windSpeedMS == '-') {
+            accufeelResultC = '-';
+            accufeelResultF = '-';
         }
-        accufeelResultC = Math.round(accufeelC);
-        accufeelResultF = Math.round(c2f(accufeelC));
+        else{
+            if(ghiSolarClearSki !== '-') {
+                if(ghiSolarClearSki >= 250) {
+                    cloudAdj = cloudAdjUV2(cloudCoverBadge);
+                    ghiSolarCloud = ghiSolarClearSki * cloudAdj;
+                    TglobeC = 0.01498 * ghiSolarCloud + 1.184 * temperatureCbadge - 0.0789 * humidity - 2.739; //day
+                } else { //Low GHI
+                    TglobeC = temperatureCbadge;
+                }
+            } else {
+                TglobeC = temperatureCbadge; //night
+            };
+
+            Tmrta = Math.pow(TglobeC + 273.15, 4) + (2.5 * 100000000 * Math.pow(windSpeedMS, 0.60) * (TglobeC - temperatureCbadge));
+            TmrtC = Math.pow(Tmrta, 1 / 4) - 273.15;
+
+            accufeelC = accufeel(temperatureCbadge, TmrtC, windSpeedMS, humidity);
+
+            if(Math.abs(accufeelC - temperatureCbadge) > 4) {
+                (accufeelC > temperatureCbadge) ? (accufeelC = temperatureCbadge + 4) : (accufeelC = temperatureCbadge - 4);
+            }
+            accufeelResultC = Math.round(accufeelC);
+            accufeelResultF = Math.round(c2f(accufeelC));
+        }
     };
 
     function groundCurrent() {
@@ -959,78 +963,46 @@ document.addEventListener("DOMContentLoaded", function() {
 
         document.querySelector("#current_temp_min").textContent = current_tempC_min + "°";
 
-        document.querySelector('#forecast_1_temp').textContent = Math.round(f2c(daily_tempF_max_1)) + "°";
-        document.querySelector('#forecast_2_temp').textContent = Math.round(f2c(daily_tempF_max_2)) + "°";
+        document.querySelector('#forecast_1_temp').textContent = daily_tempC_max_1 + "°";
+        document.querySelector('#forecast_2_temp').textContent = daily_tempC_max_2 + "°";
 
-        document.querySelector('#forecast_1_temp_min').textContent = Math.round(f2c(daily_tempF_min_1)) + "°";
-        document.querySelector('#forecast_2_temp_min').textContent = Math.round(f2c(daily_tempF_min_2)) + "°";
+        document.querySelector('#forecast_1_temp_min').textContent = daily_tempC_min_1 + "°";
+        document.querySelector('#forecast_2_temp_min').textContent = daily_tempC_min_2 + "°";
 
+        document.querySelector('#forecast_10_temp').textContent = daily_tempC_max_1 + "°";
+        document.querySelector('#forecast_20_temp').textContent = daily_tempC_max_2 + "°";
+        document.querySelector('#forecast_30_temp').textContent = daily_tempC_max_3 + "°";
+        document.querySelector('#forecast_40_temp').textContent = daily_tempC_max_4 + "°";
+        document.querySelector('#forecast_50_temp').textContent = daily_tempC_max_5 + "°";
+        document.querySelector('#forecast_60_temp').textContent = daily_tempC_max_6 + "°";
+        document.querySelector('#forecast_70_temp').textContent = daily_tempC_max_7 + "°";
 
-        document.querySelector('#forecast_10_temp').textContent = Math.round(f2c(daily_tempF_max_1)) + "°";
-        document.querySelector('#forecast_20_temp').textContent = Math.round(f2c(daily_tempF_max_2)) + "°";
-        document.querySelector('#forecast_30_temp').textContent = Math.round(f2c(daily_tempF_max_3)) + "°";
-        document.querySelector('#forecast_40_temp').textContent = Math.round(f2c(daily_tempF_max_4)) + "°";
-        document.querySelector('#forecast_50_temp').textContent = Math.round(f2c(daily_tempF_max_5)) + "°";
-        document.querySelector('#forecast_60_temp').textContent = Math.round(f2c(daily_tempF_max_6)) + "°";
-        document.querySelector('#forecast_70_temp').textContent = Math.round(f2c(daily_tempF_max_7)) + "°";
+        document.querySelector('#forecast_10_temp_min').textContent = daily_tempC_min_1 + "°";
+        document.querySelector('#forecast_20_temp_min').textContent = daily_tempC_min_2 + "°";
+        document.querySelector('#forecast_30_temp_min').textContent = daily_tempC_min_3 + "°";
+        document.querySelector('#forecast_40_temp_min').textContent = daily_tempC_min_4 + "°";
+        document.querySelector('#forecast_50_temp_min').textContent = daily_tempC_min_5 + "°";
+        document.querySelector('#forecast_60_temp_min').textContent = daily_tempC_min_6 + "°";
+        document.querySelector('#forecast_70_temp_min').textContent = daily_tempC_min_7 + "°";
 
-        document.querySelector('#forecast_10_temp_min').textContent = Math.round(f2c(daily_tempF_min_1)) + "°";
-        document.querySelector('#forecast_20_temp_min').textContent = Math.round(f2c(daily_tempF_min_2)) + "°";
-        document.querySelector('#forecast_30_temp_min').textContent = Math.round(f2c(daily_tempF_min_3)) + "°";
-        document.querySelector('#forecast_40_temp_min').textContent = Math.round(f2c(daily_tempF_min_4)) + "°";
-        document.querySelector('#forecast_50_temp_min').textContent = Math.round(f2c(daily_tempF_min_5)) + "°";
-        document.querySelector('#forecast_60_temp_min').textContent = Math.round(f2c(daily_tempF_min_6)) + "°";
-        document.querySelector('#forecast_70_temp_min').textContent = Math.round(f2c(daily_tempF_min_7)) + "°";
+        chrome.storage.local.get( ['setSettingUT', 'failedHTTP_NO', 'country'], function(data) {
 
+            if(data.setSettingUT == 'u' || data.failedHTTP_NO == '1' || (data.country == "CA" || data.country == "ca" || data.country == "Canada" || data.country == "US" || data.country == "us" || data.country == "United States of America")) {
 
-        document.querySelector('#forecast_1_hours_temp').textContent = Math.round(f2c(hourly_tempF_1)) + "°";
-        document.querySelector('#forecast_2_hours_temp').textContent = Math.round(f2c(hourly_tempF_2)) + "°";
-        document.querySelector('#forecast_3_hours_temp').textContent = Math.round(f2c(hourly_tempF_3)) + "°";
-        document.querySelector('#forecast_4_hours_temp').textContent = Math.round(f2c(hourly_tempF_4)) + "°";
-        document.querySelector('#forecast_5_hours_temp').textContent = Math.round(f2c(hourly_tempF_5)) + "°";
-        document.querySelector('#forecast_6_hours_temp').textContent = Math.round(f2c(hourly_tempF_6)) + "°";
-        document.querySelector('#forecast_7_hours_temp').textContent = Math.round(f2c(hourly_tempF_7)) + "°";
-        document.querySelector('#forecast_8_hours_temp').textContent = Math.round(f2c(hourly_tempF_8)) + "°";
-        document.querySelector('#forecast_9_hours_temp').textContent = Math.round(f2c(hourly_tempF_9)) + "°";
-        document.querySelector('#forecast_10_hours_temp').textContent = Math.round(f2c(hourly_tempF_10)) + "°";
-        document.querySelector('#forecast_11_hours_temp').textContent = Math.round(f2c(hourly_tempF_11)) + "°";
-        document.querySelector('#forecast_12_hours_temp').textContent = Math.round(f2c(hourly_tempF_12)) + "°";
-        document.querySelector('#forecast_13_hours_temp').textContent = Math.round(f2c(hourly_tempF_13)) + "°";
-        document.querySelector('#forecast_14_hours_temp').textContent = Math.round(f2c(hourly_tempF_14)) + "°";
-        document.querySelector('#forecast_15_hours_temp').textContent = Math.round(f2c(hourly_tempF_15)) + "°";
-        document.querySelector('#forecast_16_hours_temp').textContent = Math.round(f2c(hourly_tempF_16)) + "°";
-        document.querySelector('#forecast_17_hours_temp').textContent = Math.round(f2c(hourly_tempF_17)) + "°";
-        document.querySelector('#forecast_18_hours_temp').textContent = Math.round(f2c(hourly_tempF_18)) + "°";
-        document.querySelector('#forecast_19_hours_temp').textContent = Math.round(f2c(hourly_tempF_19)) + "°";
-        document.querySelector('#forecast_20_hours_temp').textContent = Math.round(f2c(hourly_tempF_20)) + "°";
-        document.querySelector('#forecast_21_hours_temp').textContent = Math.round(f2c(hourly_tempF_21)) + "°";
-        document.querySelector('#forecast_22_hours_temp').textContent = Math.round(f2c(hourly_tempF_22)) + "°";
-        document.querySelector('#forecast_23_hours_temp').textContent = Math.round(f2c(hourly_tempF_23)) + "°";
-        document.querySelector('#forecast_24_hours_temp').textContent = Math.round(f2c(hourly_tempF_24)) + "°";
-        document.querySelector('#forecast_25_hours_temp').textContent = Math.round(f2c(hourly_tempF_25)) + "°";
-        document.querySelector('#forecast_26_hours_temp').textContent = Math.round(f2c(hourly_tempF_26)) + "°";
-        document.querySelector('#forecast_27_hours_temp').textContent = Math.round(f2c(hourly_tempF_27)) + "°";
-        document.querySelector('#forecast_28_hours_temp').textContent = Math.round(f2c(hourly_tempF_28)) + "°";
-        document.querySelector('#forecast_29_hours_temp').textContent = Math.round(f2c(hourly_tempF_29)) + "°";
-        document.querySelector('#forecast_30_hours_temp').textContent = Math.round(f2c(hourly_tempF_30)) + "°";
-        document.querySelector('#forecast_31_hours_temp').textContent = Math.round(f2c(hourly_tempF_31)) + "°";
-        document.querySelector('#forecast_32_hours_temp').textContent = Math.round(f2c(hourly_tempF_32)) + "°";
-        document.querySelector('#forecast_33_hours_temp').textContent = Math.round(f2c(hourly_tempF_33)) + "°";
-        document.querySelector('#forecast_34_hours_temp').textContent = Math.round(f2c(hourly_tempF_34)) + "°";
-        document.querySelector('#forecast_35_hours_temp').textContent = Math.round(f2c(hourly_tempF_35)) + "°";
-        document.querySelector('#forecast_36_hours_temp').textContent = Math.round(f2c(hourly_tempF_36)) + "°";
-        document.querySelector('#forecast_37_hours_temp').textContent = Math.round(f2c(hourly_tempF_37)) + "°";
-        document.querySelector('#forecast_38_hours_temp').textContent = Math.round(f2c(hourly_tempF_38)) + "°";
-        document.querySelector('#forecast_39_hours_temp').textContent = Math.round(f2c(hourly_tempF_39)) + "°";
-        document.querySelector('#forecast_40_hours_temp').textContent = Math.round(f2c(hourly_tempF_40)) + "°";
-        document.querySelector('#forecast_41_hours_temp').textContent = Math.round(f2c(hourly_tempF_41)) + "°";
-        document.querySelector('#forecast_42_hours_temp').textContent = Math.round(f2c(hourly_tempF_42)) + "°";
-        document.querySelector('#forecast_43_hours_temp').textContent = Math.round(f2c(hourly_tempF_43)) + "°";
-        document.querySelector('#forecast_44_hours_temp').textContent = Math.round(f2c(hourly_tempF_44)) + "°";
-        document.querySelector('#forecast_45_hours_temp').textContent = Math.round(f2c(hourly_tempF_45)) + "°";
-        document.querySelector('#forecast_46_hours_temp').textContent = Math.round(f2c(hourly_tempF_46)) + "°";
-        document.querySelector('#forecast_47_hours_temp').textContent = Math.round(f2c(hourly_tempF_47)) + "°";
-        document.querySelector('#forecast_48_hours_temp').textContent = Math.round(f2c(hourly_tempF_48)) + "°";
+              for (i=1;i<49;i++){
+                  document.querySelector(`#forecast_${i}_hours_temp`).textContent = Math.round(f2c(resultDS.hourly.data[i].temperature)) + "°";
+              }
+                
+            }
+            else{
+
+              for (i=1;i<49;i++){
+                  document.querySelector(`#forecast_${i}_hours_temp`).textContent = Math.round(resultNO.properties.timeseries[i].data.instant.details.air_temperature) + "°";
+              }
+                
+            }
+
+        });
 
         document.querySelector("#summery_next7_text").textContent = summaryDailyC;
         document.querySelector("#summery_next48_text").textContent = summaryHourlyC;
@@ -1107,76 +1079,44 @@ document.addEventListener("DOMContentLoaded", function() {
         document.querySelector("#current_temp_max").textContent = current_tempF_max + "°";
         document.querySelector("#current_temp_min").textContent = current_tempF_min + "°";
 
-        document.querySelector('#forecast_1_temp').textContent = Math.round(daily_tempF_max_1) + "°";
-        document.querySelector('#forecast_2_temp').textContent = Math.round(daily_tempF_max_2) + "°";
+        document.querySelector('#forecast_1_temp').textContent = daily_tempF_max_1 + "°";
+        document.querySelector('#forecast_2_temp').textContent = daily_tempF_max_2 + "°";
 
-        document.querySelector('#forecast_1_temp_min').textContent = Math.round(daily_tempF_min_1) + "°";
-        document.querySelector('#forecast_2_temp_min').textContent = Math.round(daily_tempF_min_2) + "°";
+        document.querySelector('#forecast_1_temp_min').textContent = daily_tempF_min_1 + "°";
+        document.querySelector('#forecast_2_temp_min').textContent = daily_tempF_min_2 + "°";
 
-        document.querySelector('#forecast_10_temp').textContent = Math.round(daily_tempF_max_1) + "°";
-        document.querySelector('#forecast_20_temp').textContent = Math.round(daily_tempF_max_2) + "°";
-        document.querySelector('#forecast_30_temp').textContent = Math.round(daily_tempF_max_3) + "°";
-        document.querySelector('#forecast_40_temp').textContent = Math.round(daily_tempF_max_4) + "°";
-        document.querySelector('#forecast_50_temp').textContent = Math.round(daily_tempF_max_5) + "°";
-        document.querySelector('#forecast_60_temp').textContent = Math.round(daily_tempF_max_6) + "°";
-        document.querySelector('#forecast_70_temp').textContent = Math.round(daily_tempF_max_7) + "°";
+        document.querySelector('#forecast_10_temp').textContent = daily_tempF_max_1 + "°";
+        document.querySelector('#forecast_20_temp').textContent = daily_tempF_max_2 + "°";
+        document.querySelector('#forecast_30_temp').textContent = daily_tempF_max_3 + "°";
+        document.querySelector('#forecast_40_temp').textContent = daily_tempF_max_4 + "°";
+        document.querySelector('#forecast_50_temp').textContent = daily_tempF_max_5 + "°";
+        document.querySelector('#forecast_60_temp').textContent = daily_tempF_max_6 + "°";
+        document.querySelector('#forecast_70_temp').textContent = daily_tempF_max_7 + "°";
 
-        document.querySelector('#forecast_10_temp_min').textContent = Math.round(daily_tempF_min_1) + "°";
-        document.querySelector('#forecast_20_temp_min').textContent = Math.round(daily_tempF_min_2) + "°";
-        document.querySelector('#forecast_30_temp_min').textContent = Math.round(daily_tempF_min_3) + "°";
-        document.querySelector('#forecast_40_temp_min').textContent = Math.round(daily_tempF_min_4) + "°";
-        document.querySelector('#forecast_50_temp_min').textContent = Math.round(daily_tempF_min_5) + "°";
-        document.querySelector('#forecast_60_temp_min').textContent = Math.round(daily_tempF_min_6) + "°";
-        document.querySelector('#forecast_70_temp_min').textContent = Math.round(daily_tempF_min_7) + "°";
+        document.querySelector('#forecast_10_temp_min').textContent = daily_tempF_min_1 + "°";
+        document.querySelector('#forecast_20_temp_min').textContent = daily_tempF_min_2 + "°";
+        document.querySelector('#forecast_30_temp_min').textContent = daily_tempF_min_3 + "°";
+        document.querySelector('#forecast_40_temp_min').textContent = daily_tempF_min_4 + "°";
+        document.querySelector('#forecast_50_temp_min').textContent = daily_tempF_min_5 + "°";
+        document.querySelector('#forecast_60_temp_min').textContent = daily_tempF_min_6 + "°";
+        document.querySelector('#forecast_70_temp_min').textContent = daily_tempF_min_7 + "°";        
 
-        document.querySelector('#forecast_1_hours_temp').textContent = Math.round(hourly_tempF_1) + "°";
-        document.querySelector('#forecast_2_hours_temp').textContent = Math.round(hourly_tempF_2) + "°";
-        document.querySelector('#forecast_3_hours_temp').textContent = Math.round(hourly_tempF_3) + "°";
-        document.querySelector('#forecast_4_hours_temp').textContent = Math.round(hourly_tempF_4) + "°";
-        document.querySelector('#forecast_5_hours_temp').textContent = Math.round(hourly_tempF_5) + "°";
-        document.querySelector('#forecast_6_hours_temp').textContent = Math.round(hourly_tempF_6) + "°";
-        document.querySelector('#forecast_7_hours_temp').textContent = Math.round(hourly_tempF_7) + "°";
-        document.querySelector('#forecast_8_hours_temp').textContent = Math.round(hourly_tempF_8) + "°";
-        document.querySelector('#forecast_9_hours_temp').textContent = Math.round(hourly_tempF_9) + "°";
-        document.querySelector('#forecast_10_hours_temp').textContent = Math.round(hourly_tempF_10) + "°";
-        document.querySelector('#forecast_11_hours_temp').textContent = Math.round(hourly_tempF_11) + "°";
-        document.querySelector('#forecast_12_hours_temp').textContent = Math.round(hourly_tempF_12) + "°";
-        document.querySelector('#forecast_13_hours_temp').textContent = Math.round(hourly_tempF_13) + "°";
-        document.querySelector('#forecast_14_hours_temp').textContent = Math.round(hourly_tempF_14) + "°";
-        document.querySelector('#forecast_15_hours_temp').textContent = Math.round(hourly_tempF_15) + "°";
-        document.querySelector('#forecast_16_hours_temp').textContent = Math.round(hourly_tempF_16) + "°";
-        document.querySelector('#forecast_17_hours_temp').textContent = Math.round(hourly_tempF_17) + "°";
-        document.querySelector('#forecast_18_hours_temp').textContent = Math.round(hourly_tempF_18) + "°";
-        document.querySelector('#forecast_19_hours_temp').textContent = Math.round(hourly_tempF_19) + "°";
-        document.querySelector('#forecast_20_hours_temp').textContent = Math.round(hourly_tempF_20) + "°";
-        document.querySelector('#forecast_21_hours_temp').textContent = Math.round(hourly_tempF_21) + "°";
-        document.querySelector('#forecast_22_hours_temp').textContent = Math.round(hourly_tempF_22) + "°";
-        document.querySelector('#forecast_23_hours_temp').textContent = Math.round(hourly_tempF_23) + "°";
-        document.querySelector('#forecast_24_hours_temp').textContent = Math.round(hourly_tempF_24) + "°";
-        document.querySelector('#forecast_25_hours_temp').textContent = Math.round(hourly_tempF_25) + "°";
-        document.querySelector('#forecast_26_hours_temp').textContent = Math.round(hourly_tempF_26) + "°";
-        document.querySelector('#forecast_27_hours_temp').textContent = Math.round(hourly_tempF_27) + "°";
-        document.querySelector('#forecast_28_hours_temp').textContent = Math.round(hourly_tempF_28) + "°";
-        document.querySelector('#forecast_29_hours_temp').textContent = Math.round(hourly_tempF_29) + "°";
-        document.querySelector('#forecast_30_hours_temp').textContent = Math.round(hourly_tempF_30) + "°";
-        document.querySelector('#forecast_31_hours_temp').textContent = Math.round(hourly_tempF_31) + "°";
-        document.querySelector('#forecast_32_hours_temp').textContent = Math.round(hourly_tempF_32) + "°";
-        document.querySelector('#forecast_33_hours_temp').textContent = Math.round(hourly_tempF_33) + "°";
-        document.querySelector('#forecast_34_hours_temp').textContent = Math.round(hourly_tempF_34) + "°";
-        document.querySelector('#forecast_35_hours_temp').textContent = Math.round(hourly_tempF_35) + "°";
-        document.querySelector('#forecast_36_hours_temp').textContent = Math.round(hourly_tempF_36) + "°";
-        document.querySelector('#forecast_37_hours_temp').textContent = Math.round(hourly_tempF_37) + "°";
-        document.querySelector('#forecast_38_hours_temp').textContent = Math.round(hourly_tempF_38) + "°";
-        document.querySelector('#forecast_39_hours_temp').textContent = Math.round(hourly_tempF_39) + "°";
-        document.querySelector('#forecast_40_hours_temp').textContent = Math.round(hourly_tempF_40) + "°";
-        document.querySelector('#forecast_41_hours_temp').textContent = Math.round(hourly_tempF_41) + "°";
-        document.querySelector('#forecast_42_hours_temp').textContent = Math.round(hourly_tempF_42) + "°";
-        document.querySelector('#forecast_43_hours_temp').textContent = Math.round(hourly_tempF_43) + "°";
-        document.querySelector('#forecast_44_hours_temp').textContent = Math.round(hourly_tempF_44) + "°";
-        document.querySelector('#forecast_45_hours_temp').textContent = Math.round(hourly_tempF_45) + "°";
-        document.querySelector('#forecast_46_hours_temp').textContent = Math.round(hourly_tempF_46) + "°";
-        document.querySelector('#forecast_47_hours_temp').textContent = Math.round(hourly_tempF_47) + "°";
-        document.querySelector('#forecast_48_hours_temp').textContent = Math.round(hourly_tempF_48) + "°";
+        chrome.storage.local.get(['setSettingUT','failedHTTP_NO', 'country'], function(data) {
+            if(data.setSettingUT == 'u' || data.failedHTTP_NO == '1' || (data.country == "CA" || data.country == "ca" || data.country == "Canada" || data.country == "US" || data.country == "us" || data.country == "United States of America")) {
+                for(i=1;i<49;i++) {
+                    document.querySelector(`#forecast_${i}_hours_temp`).textContent = Math.round(resultDS.hourly.data[i].temperature) + "°";
+                }
+            }
+            else{
+                for(i=1;i<8;i++) {
+                    document.querySelector(`#forecast_${i*10}_temp`).textContent = Math.round(c2f(resultNO.properties.timeseries[i].data.instant.details.air_temperature)) + "°";
+                    document.querySelector(`#forecast_${i*10}_temp_min`).textContent = Math.round(c2f(resultNO.properties.timeseries[i].data.instant.details.air_temperature)) + "°";
+                }
+                for(i=1;i<49;i++) {
+                    document.querySelector(`#forecast_${i}_hours_temp`).textContent = Math.round(c2f(resultNO.properties.timeseries[i].data.instant.details.air_temperature)) + "°";
+                }  
+            }
+        });
 
         document.querySelector("#summery_next7_text").textContent = summaryDailyF;
         document.querySelector("#summery_next48_text").textContent = summaryHourlyF;
@@ -1252,114 +1192,54 @@ document.addEventListener("DOMContentLoaded", function() {
                 document.querySelector("#report_update_date").textContent = moment.unix(updateTimeBadge + offsetUnix).format('MMM DD, HH:mm') + ' (LT)';
                 document.querySelector("#next48_update_date").textContent = moment.unix(updateTimeBadge + offsetUnix).format('MMM DD, HH:mm') + ' (LT)';
 
-                document.querySelector('#forecast_1_hours').textContent = moment.unix(hourly_time_1 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_2_hours').textContent = moment.unix(hourly_time_2 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_3_hours').textContent = moment.unix(hourly_time_3 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_4_hours').textContent = moment.unix(hourly_time_4 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_5_hours').textContent = moment.unix(hourly_time_5 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_6_hours').textContent = moment.unix(hourly_time_6 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_7_hours').textContent = moment.unix(hourly_time_7 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_8_hours').textContent = moment.unix(hourly_time_8 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_9_hours').textContent = moment.unix(hourly_time_9 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_10_hours').textContent = moment.unix(hourly_time_10 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_11_hours').textContent = moment.unix(hourly_time_11 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_12_hours').textContent = moment.unix(hourly_time_12 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_13_hours').textContent = moment.unix(hourly_time_13 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_14_hours').textContent = moment.unix(hourly_time_14 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_15_hours').textContent = moment.unix(hourly_time_15 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_16_hours').textContent = moment.unix(hourly_time_16 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_17_hours').textContent = moment.unix(hourly_time_17 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_18_hours').textContent = moment.unix(hourly_time_18 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_19_hours').textContent = moment.unix(hourly_time_19 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_20_hours').textContent = moment.unix(hourly_time_20 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_21_hours').textContent = moment.unix(hourly_time_21 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_22_hours').textContent = moment.unix(hourly_time_22 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_23_hours').textContent = moment.unix(hourly_time_23 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_24_hours').textContent = moment.unix(hourly_time_24 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_25_hours').textContent = moment.unix(hourly_time_25 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_26_hours').textContent = moment.unix(hourly_time_26 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_27_hours').textContent = moment.unix(hourly_time_27 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_28_hours').textContent = moment.unix(hourly_time_28 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_29_hours').textContent = moment.unix(hourly_time_29 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_30_hours').textContent = moment.unix(hourly_time_30 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_31_hours').textContent = moment.unix(hourly_time_31 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_32_hours').textContent = moment.unix(hourly_time_32 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_33_hours').textContent = moment.unix(hourly_time_33 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_34_hours').textContent = moment.unix(hourly_time_34 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_35_hours').textContent = moment.unix(hourly_time_35 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_36_hours').textContent = moment.unix(hourly_time_36 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_37_hours').textContent = moment.unix(hourly_time_37 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_38_hours').textContent = moment.unix(hourly_time_38 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_39_hours').textContent = moment.unix(hourly_time_39 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_40_hours').textContent = moment.unix(hourly_time_40 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_41_hours').textContent = moment.unix(hourly_time_41 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_42_hours').textContent = moment.unix(hourly_time_42 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_43_hours').textContent = moment.unix(hourly_time_43 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_44_hours').textContent = moment.unix(hourly_time_44 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_45_hours').textContent = moment.unix(hourly_time_45 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_46_hours').textContent = moment.unix(hourly_time_46 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_47_hours').textContent = moment.unix(hourly_time_47 + offsetUnix).format('HH') + ':00';
-                document.querySelector('#forecast_48_hours').textContent = moment.unix(hourly_time_48 + offsetUnix).format('HH') + ':00';
+
+            chrome.storage.local.get(['setSettingUT', 'failedHTTP_NO','country'], function(data) {
+            if(data.setSettingUT == 'u' || data.failedHTTP_NO == '1' || (data.country == "CA" || data.country == "ca" || data.country == "Canada" || data.country == "US" || data.country == "us" || data.country == "United States of America")) {
+                  for(i=1;i<49;i++) {
+                      document.querySelector(`#forecast_${i}_hours`).textContent = moment.unix(resultDS.hourly.data[i].time + offsetUnix).format('HH')+':00';
+                      document.querySelector(`#forecast_${i}_hours_uv`).textContent = "UVI " + Math.round((resultDS.hourly.data[i].uvIndex) * uv_adj_daily(resultDS.hourly.data[i].cloudCover));
+                      document.querySelector(`#forecast_${i}_hours_rain`).textContent = Math.round(((resultDS.hourly.data[i].precipProbability) * 100)/5)*5 + "%";
+                  }
+                }
+                else{
+                  for(i=1;i<49;i++) {
+                      document.querySelector(`#forecast_${i}_hours`).textContent = moment.unix(moment(resultNO.properties.timeseries[i].time).unix() + offsetUnix).format('HH')+':00';
+                      document.querySelector(`#forecast_${i}_hours_uv`).textContent = "UVI " + Math.round((resultNO.properties.timeseries[i].data.instant.details.ultraviolet_index_clear_sky) * uv_adj_daily(resultNO.properties.timeseries[i].data.instant.details.cloud_area_fraction));
+                      document.querySelector(`#forecast_${i}_hours_rain`).textContent = (resultNO.properties.timeseries[i].data.next_1_hours.details.precipitation_amount) + " mm";
+                  }                    
+                }
+            });
 
                 document.querySelector("#map_popup_title").textContent = 'PRECIPITATION FORECAST | UV WEATHER | ' + moment.unix(updateTimeBadge + offsetUnix).format('MMMM DD, YYYY HH:mm') + ' (LT)';
                 document.getElementById("setting_defualt_button_24h").checked = true;
                 document.getElementById("setting_defualt_button_12h").checked = false;
                 document.getElementById("setting_defualt_button_24h").disabled = true;
                 document.getElementById("setting_defualt_button_12h").disabled = false;
-            } else {
+            } 
+            else {
                 solarFunction12H();
                 document.querySelector("#next7_update_date").textContent = moment.unix(updateTimeBadge + offsetUnix).format('MMM DD, h:mm A') + ' (LT)';
                 document.querySelector("#report_update_date").textContent = moment.unix(updateTimeBadge + offsetUnix).format('MMM DD, h:mm A') + ' (LT)';
                 document.querySelector("#next48_update_date").textContent = moment.unix(updateTimeBadge + offsetUnix).format('MMM DD, h:mm A') + ' (LT)';
 
-                document.querySelector('#forecast_1_hours').textContent = moment.unix(hourly_time_1 + offsetUnix).format('h A');
-                document.querySelector('#forecast_2_hours').textContent = moment.unix(hourly_time_2 + offsetUnix).format('h A');
-                document.querySelector('#forecast_3_hours').textContent = moment.unix(hourly_time_3 + offsetUnix).format('h A');
-                document.querySelector('#forecast_4_hours').textContent = moment.unix(hourly_time_4 + offsetUnix).format('h A');
-                document.querySelector('#forecast_5_hours').textContent = moment.unix(hourly_time_5 + offsetUnix).format('h A');
-                document.querySelector('#forecast_6_hours').textContent = moment.unix(hourly_time_6 + offsetUnix).format('h A');
-                document.querySelector('#forecast_7_hours').textContent = moment.unix(hourly_time_7 + offsetUnix).format('h A');
-                document.querySelector('#forecast_8_hours').textContent = moment.unix(hourly_time_8 + offsetUnix).format('h A');
-                document.querySelector('#forecast_9_hours').textContent = moment.unix(hourly_time_9 + offsetUnix).format('h A');
-                document.querySelector('#forecast_10_hours').textContent = moment.unix(hourly_time_10 + offsetUnix).format('h A');
-                document.querySelector('#forecast_11_hours').textContent = moment.unix(hourly_time_11 + offsetUnix).format('h A');
-                document.querySelector('#forecast_12_hours').textContent = moment.unix(hourly_time_12 + offsetUnix).format('h A');
-                document.querySelector('#forecast_13_hours').textContent = moment.unix(hourly_time_13 + offsetUnix).format('h A');
-                document.querySelector('#forecast_14_hours').textContent = moment.unix(hourly_time_14 + offsetUnix).format('h A');
-                document.querySelector('#forecast_15_hours').textContent = moment.unix(hourly_time_15 + offsetUnix).format('h A');
-                document.querySelector('#forecast_16_hours').textContent = moment.unix(hourly_time_16 + offsetUnix).format('h A');
-                document.querySelector('#forecast_17_hours').textContent = moment.unix(hourly_time_17 + offsetUnix).format('h A');
-                document.querySelector('#forecast_18_hours').textContent = moment.unix(hourly_time_18 + offsetUnix).format('h A');
-                document.querySelector('#forecast_19_hours').textContent = moment.unix(hourly_time_19 + offsetUnix).format('h A');
-                document.querySelector('#forecast_20_hours').textContent = moment.unix(hourly_time_20 + offsetUnix).format('h A');
-                document.querySelector('#forecast_21_hours').textContent = moment.unix(hourly_time_21 + offsetUnix).format('h A');
-                document.querySelector('#forecast_22_hours').textContent = moment.unix(hourly_time_22 + offsetUnix).format('h A');
-                document.querySelector('#forecast_23_hours').textContent = moment.unix(hourly_time_23 + offsetUnix).format('h A');
-                document.querySelector('#forecast_24_hours').textContent = moment.unix(hourly_time_24 + offsetUnix).format('h A');
-                document.querySelector('#forecast_25_hours').textContent = moment.unix(hourly_time_25 + offsetUnix).format('h A');
-                document.querySelector('#forecast_26_hours').textContent = moment.unix(hourly_time_26 + offsetUnix).format('h A');
-                document.querySelector('#forecast_27_hours').textContent = moment.unix(hourly_time_27 + offsetUnix).format('h A');
-                document.querySelector('#forecast_28_hours').textContent = moment.unix(hourly_time_28 + offsetUnix).format('h A');
-                document.querySelector('#forecast_29_hours').textContent = moment.unix(hourly_time_29 + offsetUnix).format('h A');
-                document.querySelector('#forecast_30_hours').textContent = moment.unix(hourly_time_30 + offsetUnix).format('h A');
-                document.querySelector('#forecast_31_hours').textContent = moment.unix(hourly_time_31 + offsetUnix).format('h A');
-                document.querySelector('#forecast_32_hours').textContent = moment.unix(hourly_time_32 + offsetUnix).format('h A');
-                document.querySelector('#forecast_33_hours').textContent = moment.unix(hourly_time_33 + offsetUnix).format('h A');
-                document.querySelector('#forecast_34_hours').textContent = moment.unix(hourly_time_34 + offsetUnix).format('h A');
-                document.querySelector('#forecast_35_hours').textContent = moment.unix(hourly_time_35 + offsetUnix).format('h A');
-                document.querySelector('#forecast_36_hours').textContent = moment.unix(hourly_time_36 + offsetUnix).format('h A');
-                document.querySelector('#forecast_37_hours').textContent = moment.unix(hourly_time_37 + offsetUnix).format('h A');
-                document.querySelector('#forecast_38_hours').textContent = moment.unix(hourly_time_38 + offsetUnix).format('h A');
-                document.querySelector('#forecast_39_hours').textContent = moment.unix(hourly_time_39 + offsetUnix).format('h A');
-                document.querySelector('#forecast_40_hours').textContent = moment.unix(hourly_time_40 + offsetUnix).format('h A');
-                document.querySelector('#forecast_41_hours').textContent = moment.unix(hourly_time_41 + offsetUnix).format('h A');
-                document.querySelector('#forecast_42_hours').textContent = moment.unix(hourly_time_42 + offsetUnix).format('h A');
-                document.querySelector('#forecast_43_hours').textContent = moment.unix(hourly_time_43 + offsetUnix).format('h A');
-                document.querySelector('#forecast_44_hours').textContent = moment.unix(hourly_time_44 + offsetUnix).format('h A');
-                document.querySelector('#forecast_45_hours').textContent = moment.unix(hourly_time_45 + offsetUnix).format('h A');
-                document.querySelector('#forecast_46_hours').textContent = moment.unix(hourly_time_46 + offsetUnix).format('h A');
-                document.querySelector('#forecast_47_hours').textContent = moment.unix(hourly_time_47 + offsetUnix).format('h A');
-                document.querySelector('#forecast_48_hours').textContent = moment.unix(hourly_time_48 + offsetUnix).format('h A');
+
+
+            chrome.storage.local.get(['setSettingUT', 'failedHTTP_NO','country'], function(data) {
+            if(data.setSettingUT == 'u' || data.failedHTTP_NO == '1' || (data.country == "CA" || data.country == "ca" || data.country == "Canada" || data.country == "US" || data.country == "us" || data.country == "United States of America")) {
+                  for(i=1;i<49;i++) {
+                      document.querySelector(`#forecast_${i}_hours`).textContent = moment.unix(resultDS.hourly.data[i].time + offsetUnix).format('h A');
+                      document.querySelector(`#forecast_${i}_hours_uv`).textContent = "UVI " + Math.round((resultDS.hourly.data[i].uvIndex) * uv_adj_daily(resultDS.hourly.data[i].cloudCover));
+                      document.querySelector(`#forecast_${i}_hours_rain`).textContent = Math.round(((resultDS.hourly.data[i].precipProbability) * 100)/5)*5 + "%";
+                  }
+                }
+                else{
+                  for(i=1;i<49;i++) {
+                      document.querySelector(`#forecast_${i}_hours`).textContent = moment.unix(moment(resultNO.properties.timeseries[i].time).unix() + offsetUnix).format('h A');
+                      document.querySelector(`#forecast_${i}_hours_uv`).textContent = "UVI " + Math.round((resultNO.properties.timeseries[i].data.instant.details.ultraviolet_index_clear_sky) * uv_adj_daily(resultNO.properties.timeseries[i].data.instant.details.cloud_area_fraction));
+                      document.querySelector(`#forecast_${i}_hours_rain`).textContent = (resultNO.properties.timeseries[i].data.next_1_hours.details.precipitation_amount) + " mm";
+                  }
+                }
+            });
 
                 document.querySelector("#map_popup_title").textContent = 'PRECIPITATION FORECAST | UV WEATHER | ' + moment.unix(updateTimeBadge + offsetUnix).format('MMMM DD, YYYY h:mm A') + ' (LT)';
                 document.getElementById("setting_defualt_button_12h").checked = true;
@@ -1368,157 +1248,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 document.getElementById("setting_defualt_button_24h").disabled = false;
             }
 
-            document.querySelector('#forecast_1_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_1) * uv_adj_daily(hourly_icon_1, hourly_cloudCover_1));
-            document.querySelector('#forecast_1_hours_rain').textContent = Math.round(((hourly_precipProbability_1) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_2_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_2) * uv_adj_daily(hourly_icon_2, hourly_cloudCover_2));
-            document.querySelector('#forecast_2_hours_rain').textContent = Math.round(((hourly_precipProbability_2) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_3_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_3) * uv_adj_daily(hourly_icon_3, hourly_cloudCover_3));
-            document.querySelector('#forecast_3_hours_rain').textContent = Math.round(((hourly_precipProbability_3) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_4_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_4) * uv_adj_daily(hourly_icon_4, hourly_cloudCover_4));
-            document.querySelector('#forecast_4_hours_rain').textContent = Math.round(((hourly_precipProbability_4) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_5_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_5) * uv_adj_daily(hourly_icon_5, hourly_cloudCover_5));
-            document.querySelector('#forecast_5_hours_rain').textContent = Math.round(((hourly_precipProbability_5) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_6_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_6) * uv_adj_daily(hourly_icon_6, hourly_cloudCover_6));
-            document.querySelector('#forecast_6_hours_rain').textContent = Math.round(((hourly_precipProbability_6) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_7_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_7) * uv_adj_daily(hourly_icon_7, hourly_cloudCover_7));
-            document.querySelector('#forecast_7_hours_rain').textContent = Math.round(((hourly_precipProbability_7) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_8_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_8) * uv_adj_daily(hourly_icon_8, hourly_cloudCover_8));
-            document.querySelector('#forecast_8_hours_rain').textContent = Math.round(((hourly_precipProbability_8) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_9_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_9) * uv_adj_daily(hourly_icon_9, hourly_cloudCover_9));
-            document.querySelector('#forecast_9_hours_rain').textContent = Math.round(((hourly_precipProbability_9) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_10_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_10) * uv_adj_daily(hourly_icon_10, hourly_cloudCover_10));
-            document.querySelector('#forecast_10_hours_rain').textContent = Math.round(((hourly_precipProbability_10) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_11_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_11) * uv_adj_daily(hourly_icon_11, hourly_cloudCover_11));
-            document.querySelector('#forecast_11_hours_rain').textContent = Math.round(((hourly_precipProbability_11) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_12_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_12) * uv_adj_daily(hourly_icon_12, hourly_cloudCover_12));
-            document.querySelector('#forecast_12_hours_rain').textContent = Math.round(((hourly_precipProbability_12) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_13_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_13) * uv_adj_daily(hourly_icon_13, hourly_cloudCover_13));
-            document.querySelector('#forecast_13_hours_rain').textContent = Math.round(((hourly_precipProbability_13) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_14_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_14) * uv_adj_daily(hourly_icon_14, hourly_cloudCover_14));
-            document.querySelector('#forecast_14_hours_rain').textContent = Math.round(((hourly_precipProbability_14) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_15_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_15) * uv_adj_daily(hourly_icon_15, hourly_cloudCover_15));
-            document.querySelector('#forecast_15_hours_rain').textContent = Math.round(((hourly_precipProbability_15) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_16_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_16) * uv_adj_daily(hourly_icon_16, hourly_cloudCover_16));
-            document.querySelector('#forecast_16_hours_rain').textContent = Math.round(((hourly_precipProbability_16) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_17_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_17) * uv_adj_daily(hourly_icon_17, hourly_cloudCover_17));
-            document.querySelector('#forecast_17_hours_rain').textContent = Math.round(((hourly_precipProbability_17) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_18_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_18) * uv_adj_daily(hourly_icon_18, hourly_cloudCover_18));
-            document.querySelector('#forecast_18_hours_rain').textContent = Math.round(((hourly_precipProbability_18) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_19_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_19) * uv_adj_daily(hourly_icon_19, hourly_cloudCover_19));
-            document.querySelector('#forecast_19_hours_rain').textContent = Math.round(((hourly_precipProbability_19) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_20_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_20) * uv_adj_daily(hourly_icon_20, hourly_cloudCover_20));
-            document.querySelector('#forecast_20_hours_rain').textContent = Math.round(((hourly_precipProbability_20) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_21_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_21) * uv_adj_daily(hourly_icon_21, hourly_cloudCover_21));
-            document.querySelector('#forecast_21_hours_rain').textContent = Math.round(((hourly_precipProbability_21) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_22_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_22) * uv_adj_daily(hourly_icon_22, hourly_cloudCover_22));
-            document.querySelector('#forecast_22_hours_rain').textContent = Math.round(((hourly_precipProbability_22) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_23_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_23) * uv_adj_daily(hourly_icon_23, hourly_cloudCover_23));
-            document.querySelector('#forecast_23_hours_rain').textContent = Math.round(((hourly_precipProbability_23) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_24_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_24) * uv_adj_daily(hourly_icon_24, hourly_cloudCover_24));
-            document.querySelector('#forecast_24_hours_rain').textContent = Math.round(((hourly_precipProbability_24) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_25_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_25) * uv_adj_daily(hourly_icon_25, hourly_cloudCover_25));
-            document.querySelector('#forecast_25_hours_rain').textContent = Math.round(((hourly_precipProbability_25) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_26_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_26) * uv_adj_daily(hourly_icon_26, hourly_cloudCover_26));
-            document.querySelector('#forecast_26_hours_rain').textContent = Math.round(((hourly_precipProbability_26) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_27_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_27) * uv_adj_daily(hourly_icon_27, hourly_cloudCover_27));
-            document.querySelector('#forecast_27_hours_rain').textContent = Math.round(((hourly_precipProbability_27) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_28_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_28) * uv_adj_daily(hourly_icon_28, hourly_cloudCover_28));
-            document.querySelector('#forecast_28_hours_rain').textContent = Math.round(((hourly_precipProbability_28) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_29_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_29) * uv_adj_daily(hourly_icon_29, hourly_cloudCover_29));
-            document.querySelector('#forecast_29_hours_rain').textContent = Math.round(((hourly_precipProbability_29) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_30_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_30) * uv_adj_daily(hourly_icon_30, hourly_cloudCover_30));
-            document.querySelector('#forecast_30_hours_rain').textContent = Math.round(((hourly_precipProbability_30) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_31_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_31) * uv_adj_daily(hourly_icon_31, hourly_cloudCover_31));
-            document.querySelector('#forecast_31_hours_rain').textContent = Math.round(((hourly_precipProbability_31) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_32_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_32) * uv_adj_daily(hourly_icon_32, hourly_cloudCover_32));
-            document.querySelector('#forecast_32_hours_rain').textContent = Math.round(((hourly_precipProbability_32) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_33_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_33) * uv_adj_daily(hourly_icon_33, hourly_cloudCover_33));
-            document.querySelector('#forecast_33_hours_rain').textContent = Math.round(((hourly_precipProbability_33) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_34_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_34) * uv_adj_daily(hourly_icon_34, hourly_cloudCover_34));
-            document.querySelector('#forecast_34_hours_rain').textContent = Math.round(((hourly_precipProbability_34) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_35_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_35) * uv_adj_daily(hourly_icon_35, hourly_cloudCover_35));
-            document.querySelector('#forecast_35_hours_rain').textContent = Math.round(((hourly_precipProbability_35) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_36_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_36) * uv_adj_daily(hourly_icon_36, hourly_cloudCover_36));
-            document.querySelector('#forecast_36_hours_rain').textContent = Math.round(((hourly_precipProbability_36) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_37_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_37) * uv_adj_daily(hourly_icon_37, hourly_cloudCover_37));
-            document.querySelector('#forecast_37_hours_rain').textContent = Math.round(((hourly_precipProbability_37) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_38_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_38) * uv_adj_daily(hourly_icon_38, hourly_cloudCover_38));
-            document.querySelector('#forecast_38_hours_rain').textContent = Math.round(((hourly_precipProbability_38) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_39_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_39) * uv_adj_daily(hourly_icon_39, hourly_cloudCover_39));
-            document.querySelector('#forecast_39_hours_rain').textContent = Math.round(((hourly_precipProbability_39) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_40_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_40) * uv_adj_daily(hourly_icon_40, hourly_cloudCover_40));
-            document.querySelector('#forecast_40_hours_rain').textContent = Math.round(((hourly_precipProbability_40) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_41_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_41) * uv_adj_daily(hourly_icon_41, hourly_cloudCover_41));
-            document.querySelector('#forecast_41_hours_rain').textContent = Math.round(((hourly_precipProbability_41) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_42_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_42) * uv_adj_daily(hourly_icon_42, hourly_cloudCover_42));
-            document.querySelector('#forecast_42_hours_rain').textContent = Math.round(((hourly_precipProbability_42) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_43_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_43) * uv_adj_daily(hourly_icon_43, hourly_cloudCover_43));
-            document.querySelector('#forecast_43_hours_rain').textContent = Math.round(((hourly_precipProbability_43) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_44_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_44) * uv_adj_daily(hourly_icon_44, hourly_cloudCover_44));
-            document.querySelector('#forecast_44_hours_rain').textContent = Math.round(((hourly_precipProbability_44) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_45_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_45) * uv_adj_daily(hourly_icon_45, hourly_cloudCover_45));
-            document.querySelector('#forecast_45_hours_rain').textContent = Math.round(((hourly_precipProbability_45) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_46_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_46) * uv_adj_daily(hourly_icon_46, hourly_cloudCover_46));
-            document.querySelector('#forecast_46_hours_rain').textContent = Math.round(((hourly_precipProbability_46) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_47_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_47) * uv_adj_daily(hourly_icon_47, hourly_cloudCover_47));
-            document.querySelector('#forecast_47_hours_rain').textContent = Math.round(((hourly_precipProbability_47) * 100) / 5) * 5 + "%";
-
-            document.querySelector('#forecast_48_hours_uv').textContent = "UVI " + Math.round((hourly_uvIndex_48) * uv_adj_daily(hourly_icon_48, hourly_cloudCover_48));
-            document.querySelector('#forecast_48_hours_rain').textContent = Math.round(((hourly_precipProbability_48) * 100) / 5) * 5 + "%";
         });
     };
 
 
     function windFunctionMPH() {
         document.querySelector("#current_report_wind").textContent = windSpeedMPH + " mph";
-        document.querySelector("#current_report_windGust").textContent = windGustMPH + " mph";
-        document.querySelector("#current_report_windGust").textContent = windGustMPH + " mph";
 
         document.querySelector('#forecast_10_wind').textContent = Math.round(daily_wind_1);
         document.querySelector('#forecast_10_wind_unit').textContent = 'mph';
@@ -1538,8 +1273,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function windFunctionKMH() {
         document.querySelector("#current_report_wind").textContent = windSpeedKMH + " km/h";
-        document.querySelector("#current_report_windGust").textContent = windGustKMH + " km/h";
-        document.querySelector("#current_report_windGust").textContent = windGustKMH + " km/h";
 
         document.querySelector('#forecast_10_wind').textContent = Math.round((daily_wind_1) * 1.609334);
         document.querySelector('#forecast_10_wind_unit').textContent = 'km/h';
@@ -1558,9 +1291,7 @@ document.addEventListener("DOMContentLoaded", function() {
     };
 
     function windFunctionMS() {
-        document.querySelector("#current_report_wind").textContent = windSpeedMS10R + " m/s";
-        document.querySelector("#current_report_windGust").textContent = windSpeedMS10R + " m/s";
-        document.querySelector("#current_report_windGust").textContent = windSpeedMS10R + " m/s";
+        document.querySelector("#current_report_wind").textContent = windSpeedMS + " m/s";
 
         document.querySelector('#forecast_10_wind').textContent = Math.round((daily_wind_1) * 0.4470389);
         document.querySelector('#forecast_10_wind_unit').textContent = 'm/s';
@@ -1592,9 +1323,15 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     function next48Function() {
-        var i;
-        for (i = 1; i < 49; i++) {
-            forecast_hours_icon = resultDS.hourly.data[i].icon;
+        chrome.storage.local.get(['setSettingUT', 'failedHTTP_NO', 'country'], function(data) {
+        for (i = 1; i < 49; i++) {            
+            if(data.setSettingUT == 'u' || data.failedHTTP_NO == '1' || (data.country == "CA" || data.country == "ca" || data.country == "Canada" || data.country == "US" || data.country == "us" || data.country == "United States of America")) {
+                forecast_hours_icon = resultDS.hourly.data[i].icon;
+            }
+            else{
+                forecast_hours_icon_no = resultNO.properties.timeseries[i].data.next_1_hours.summary.symbol_code;
+                forecast_hours_icon = iconBadgeConvertNO_hourly((forecast_hours_icon_no).split('_')[0], (forecast_hours_icon_no).split('_')[1]);
+            }
             switch (forecast_hours_icon) {
                 case 'clear-day':
                     document.querySelector('.forecast_' + i + '_hours_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_sun.svg")';
@@ -1631,112 +1368,165 @@ document.addEventListener("DOMContentLoaded", function() {
                     break;
             }
         }
+        })  
     };
 
     function next7Function() {
         document.querySelector('#forecast_1_day').textContent = moment.unix(daily_date_1).format('dddd');
         document.querySelector('#forecast_2_day').textContent = moment.unix(daily_date_2).format('dddd');
 
-        document.querySelector('#forecast_10_day').textContent = moment.unix(daily_date_1).format('ddd');
-        document.querySelector('#forecast_10_uv').textContent = "UVI " + (Math.round((daily_uvIndex_1) * uv_adj_daily(daily_icon_1)));
+        document.querySelector('#forecast_10_day').textContent = moment.unix(daily_date_1).format('dddd');
+        // if(daily_uvIndex_1 !== '-'){
+        //     document.querySelector('#forecast_10_uv').textContent = "UVI " + (Math.round((daily_uvIndex_1) * uv_adj_daily(daily_icon_1)));
+        // }
+        // else{
+        //     document.querySelector('#forecast_10_uv').textContent = "UVI -";
+        // }
         document.querySelector('#forecast_10_wind_arrow').style.transform = 'rotate(' + daily_windBearing_1 + 'deg)';
 
-        document.querySelector('#forecast_20_day').textContent = moment.unix(daily_date_2).format('ddd');
-        document.querySelector('#forecast_20_uv').textContent = "UVI " + (Math.round((daily_uvIndex_2) * uv_adj_daily(daily_icon_2)));
+        document.querySelector('#forecast_20_day').textContent = moment.unix(daily_date_2).format('dddd');
+        // if(daily_uvIndex_2 !== '-'){
+        //     document.querySelector('#forecast_20_uv').textContent = "UVI " + (Math.round((daily_uvIndex_2) * uv_adj_daily(daily_icon_2)));
+        // }
+        // else{
+        //     document.querySelector('#forecast_20_uv').textContent = "UVI -";
+        // }
         document.querySelector('#forecast_20_wind_arrow').style.transform = 'rotate(' + daily_windBearing_2 + 'deg)';
 
-        document.querySelector('#forecast_30_day').textContent = moment.unix(daily_date_3).format('ddd');
-        document.querySelector('#forecast_30_uv').textContent = "UVI " + (Math.round((daily_uvIndex_3) * uv_adj_daily(daily_icon_3)));
+        document.querySelector('#forecast_30_day').textContent = moment.unix(daily_date_3).format('dddd');
+        // if(daily_uvIndex_3 !== '-'){
+        //     document.querySelector('#forecast_30_uv').textContent = "UVI " + (Math.round((daily_uvIndex_3) * uv_adj_daily(daily_icon_3)));
+        // }
+        // else{
+        //     document.querySelector('#forecast_30_uv').textContent = "UVI -";
+        // }
         document.querySelector('#forecast_30_wind_arrow').style.transform = 'rotate(' + daily_windBearing_3 + 'deg)';
 
-        document.querySelector('#forecast_40_day').textContent = moment.unix(daily_date_4).format('ddd');
-        document.querySelector('#forecast_40_uv').textContent = "UVI " + (Math.round((daily_uvIndex_4) * uv_adj_daily(daily_icon_4)));
+        document.querySelector('#forecast_40_day').textContent = moment.unix(daily_date_4).format('dddd');
+        // if(daily_uvIndex_4 !== '-'){
+        //     document.querySelector('#forecast_40_uv').textContent = "UVI " + (Math.round((daily_uvIndex_4) * uv_adj_daily(daily_icon_4)));
+        // }
+        // else{
+        //     document.querySelector('#forecast_40_uv').textContent = "UVI -";
+        // }
         document.querySelector('#forecast_40_wind_arrow').style.transform = 'rotate(' + daily_windBearing_4 + 'deg)';
 
-        document.querySelector('#forecast_50_day').textContent = moment.unix(daily_date_5).format('ddd');
-        document.querySelector('#forecast_50_uv').textContent = "UVI " + (Math.round((daily_uvIndex_5) * uv_adj_daily(daily_icon_5)));
+        document.querySelector('#forecast_50_day').textContent = moment.unix(daily_date_5).format('dddd');
+        // if(daily_uvIndex_5 !== '-'){
+        //     document.querySelector('#forecast_50_uv').textContent = "UVI " + (Math.round((daily_uvIndex_5) * uv_adj_daily(daily_icon_5)));
+        // }
+        // else{
+        //     document.querySelector('#forecast_50_uv').textContent = "UVI -";
+        // }
         document.querySelector('#forecast_50_wind_arrow').style.transform = 'rotate(' + daily_windBearing_5 + 'deg)';
 
-        document.querySelector('#forecast_60_day').textContent = moment.unix(daily_date_6).format('ddd');
-        document.querySelector('#forecast_60_uv').textContent = "UVI " + (Math.round((daily_uvIndex_6) * uv_adj_daily(daily_icon_6)));
+        document.querySelector('#forecast_60_day').textContent = moment.unix(daily_date_6).format('dddd');
+        // if(daily_uvIndex_6 !== '-'){
+        //     document.querySelector('#forecast_60_uv').textContent = "UVI " + (Math.round((daily_uvIndex_6) * uv_adj_daily(daily_icon_6)));
+        // }
+        // else{
+        //     document.querySelector('#forecast_60_uv').textContent = "UVI -";
+        // }
         document.querySelector('#forecast_60_wind_arrow').style.transform = 'rotate(' + daily_windBearing_6 + 'deg)';
 
-        document.querySelector('#forecast_70_day').textContent = moment.unix(daily_date_7).format('ddd');
-        document.querySelector('#forecast_70_uv').textContent = "UVI " + (Math.round((daily_uvIndex_7) * uv_adj_daily(daily_icon_7)));
+        document.querySelector('#forecast_70_day').textContent = moment.unix(daily_date_7).format('dddd');
+        // if(daily_uvIndex_7 !== '-'){
+        //     document.querySelector('#forecast_70_uv').textContent = "UVI " + (Math.round((daily_uvIndex_7) * uv_adj_daily(daily_icon_7)));
+        // }
+        // else{
+        //     document.querySelector('#forecast_70_uv').textContent = "UVI -";
+        // }
         document.querySelector('#forecast_70_wind_arrow').style.transform = 'rotate(' + daily_windBearing_7 + 'deg)';
 
-        var i;
-        for (i = 1; i < 8; i++) {
-            forecast_icon = resultDS.daily.data[i].icon;
-            switch (forecast_icon) {
-                case 'clear-day':
-                    document.querySelector('.forecast_' + i + '_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_sun.svg")';
-                    if (i < 3) {
-                        document.querySelector('.forecast_' + i * 10 + '_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_sun.svg")';
+
+        chrome.storage.local.get(['setSettingUT', 'failedHTTP_NO', 'country'], function(data) {
+            if(data.setSettingUT == 'u' || data.failedHTTP_NO == '1' || (data.country == "CA" || data.country == "ca" || data.country == "Canada" || data.country == "US" || data.country == "us" || data.country == "United States of America")) {
+                for (i = 1; i < 8; i++) {  
+                    forecast_icon = resultDS.daily.data[i].icon;
+                    switch (forecast_icon) {
+                        case 'clear-day':
+                            document.querySelector('.forecast_' + i + '_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_sun.svg")';
+                            if (i < 3) {
+                                document.querySelector('.forecast_' + i * 10 + '_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_sun.svg")';
+                            }
+                            break;
+                        case 'clear-night':
+                            document.querySelector('.forecast_' + i + '_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_moon.svg")';
+                            if (i < 3) {
+                                document.querySelector('.forecast_' + i * 10 + '_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_moon.svg")';
+                            }
+                            break;
+                        case 'rain':
+                            document.querySelector('.forecast_' + i + '_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_rain.svg")';
+                            if (i < 3) {
+                                document.querySelector('.forecast_' + i * 10 + '_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_rain.svg")';
+                            }
+                            break;
+                        case 'snow':
+                            document.querySelector('.forecast_' + i + '_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_snow.svg")';
+                            if (i < 3) {
+                                document.querySelector('.forecast_' + i * 10 + '_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_snow.svg")';
+                            }
+                            break;
+                        case 'sleet':
+                            document.querySelector('.forecast_' + i + '_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_snow_alt.svg")';
+                            if (i < 3) {
+                                document.querySelector('.forecast_' + i * 10 + '_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_snow_alt.svg")';
+                            }
+                            break;
+                        case 'wind':
+                            document.querySelector('.forecast_' + i + '_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_wind.svg")';
+                            if (i < 3) {
+                                document.querySelector('.forecast_' + i * 10 + '_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_wind.svg")';
+                            }
+                            break;
+                        case 'fog':
+                            document.querySelector('.forecast_' + i + '_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_fog_alt.svg")';
+                            if (i < 3) {
+                                document.querySelector('.forecast_' + i * 10 + '_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_fog_alt.svg")';
+                            }
+                            break;
+                        case 'cloudy':
+                            document.querySelector('.forecast_' + i + '_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud.svg")';
+                            if (i < 3) {
+                                document.querySelector('.forecast_' + i * 10 + '_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud.svg")';
+                            }
+                            break;
+                        case 'partly-cloudy-day':
+                            document.querySelector('.forecast_' + i + '_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_sun.svg")';
+                            if (i < 3) {
+                                document.querySelector('.forecast_' + i * 10 + '_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_sun.svg")';
+                            }
+                            break;
+                        case 'partly-cloudy-night':
+                            document.querySelector('.forecast_' + i + '_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_moon.svg")';
+                            if (i < 3) {
+                                document.querySelector('.forecast_' + i * 10 + '_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_moon.svg")';
+                            }
+                            break;
+                        default:
+                            document.querySelector('.forecast_' + i + '_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_sun.svg")';
+                            if (i < 3) {
+                                document.querySelector('.forecast_' + i * 10 + '_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_sun.svg")';
+                            }
+                            break;
                     }
-                    break;
-                case 'clear-night':
-                    document.querySelector('.forecast_' + i + '_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_moon.svg")';
-                    if (i < 3) {
-                        document.querySelector('.forecast_' + i * 10 + '_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_moon.svg")';
-                    }
-                    break;
-                case 'rain':
-                    document.querySelector('.forecast_' + i + '_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_rain.svg")';
-                    if (i < 3) {
-                        document.querySelector('.forecast_' + i * 10 + '_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_rain.svg")';
-                    }
-                    break;
-                case 'snow':
-                    document.querySelector('.forecast_' + i + '_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_snow.svg")';
-                    if (i < 3) {
-                        document.querySelector('.forecast_' + i * 10 + '_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_snow.svg")';
-                    }
-                    break;
-                case 'sleet':
-                    document.querySelector('.forecast_' + i + '_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_snow_alt.svg")';
-                    if (i < 3) {
-                        document.querySelector('.forecast_' + i * 10 + '_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_snow_alt.svg")';
-                    }
-                    break;
-                case 'wind':
-                    document.querySelector('.forecast_' + i + '_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_wind.svg")';
-                    if (i < 3) {
-                        document.querySelector('.forecast_' + i * 10 + '_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_wind.svg")';
-                    }
-                    break;
-                case 'fog':
-                    document.querySelector('.forecast_' + i + '_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_fog_alt.svg")';
-                    if (i < 3) {
-                        document.querySelector('.forecast_' + i * 10 + '_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_fog_alt.svg")';
-                    }
-                    break;
-                case 'cloudy':
-                    document.querySelector('.forecast_' + i + '_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud.svg")';
-                    if (i < 3) {
-                        document.querySelector('.forecast_' + i * 10 + '_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud.svg")';
-                    }
-                    break;
-                case 'partly-cloudy-day':
-                    document.querySelector('.forecast_' + i + '_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_sun.svg")';
-                    if (i < 3) {
-                        document.querySelector('.forecast_' + i * 10 + '_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_sun.svg")';
-                    }
-                    break;
-                case 'partly-cloudy-night':
-                    document.querySelector('.forecast_' + i + '_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_moon.svg")';
-                    if (i < 3) {
-                        document.querySelector('.forecast_' + i * 10 + '_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_cloud_moon.svg")';
-                    }
-                    break;
-                default:
-                    document.querySelector('.forecast_' + i + '_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_sun.svg")';
-                    if (i < 3) {
-                        document.querySelector('.forecast_' + i * 10 + '_homePage_icon_Class').style.backgroundImage = 'url("images/weather_icon/b_sun.svg")';
-                    }
-                    break;
+                }
             }
-        }
+            else{
+                    document.querySelector('.forecast_10_homePage_icon_Class').style.backgroundImage = daily_icon_url[1];
+                    document.querySelector('.forecast_20_homePage_icon_Class').style.backgroundImage = daily_icon_url[2];
+
+                    document.querySelector('.forecast_1_icon_Class').style.backgroundImage = daily_icon_url[1];
+                    document.querySelector('.forecast_2_icon_Class').style.backgroundImage = daily_icon_url[2];
+                    document.querySelector('.forecast_3_icon_Class').style.backgroundImage = daily_icon_url[3];
+                    document.querySelector('.forecast_4_icon_Class').style.backgroundImage = daily_icon_url[4];
+                    document.querySelector('.forecast_5_icon_Class').style.backgroundImage = daily_icon_url[5];
+                    document.querySelector('.forecast_6_icon_Class').style.backgroundImage = daily_icon_url[6];
+                    document.querySelector('.forecast_7_icon_Class').style.backgroundImage = daily_icon_url[7];
+            }                 
+
+        })
     };
 
     function reportFunction() {
@@ -1745,11 +1535,11 @@ document.addEventListener("DOMContentLoaded", function() {
         document.querySelector("#current_report_uv").textContent = uv1 + " " + uv_note(uv1);
         document.querySelector("#current_report_windBearing").textContent = windBearing + "° (" + windCompass + ")";
         document.querySelector("#current_report_humidity").textContent = humidity + "%";
-        document.querySelector("#current_report_visibility").textContent = visibility + " mi (" + visibilityKM + " km)";
+        //document.querySelector("#current_report_visibility").textContent = visibility + " mi (" + visibilityKM + " km)";
         document.querySelector("#current_report_pressure").textContent = pressure + " mb (hPa)";
         document.querySelector("#current_report_cloud").textContent = cloudCoverBadge + "%";
-        document.querySelector("#current_report_ozone").textContent = ozone + " du";
-        document.querySelector("#current_report_precipitation").textContent = precipProbability + "%";
+        //document.querySelector("#current_report_ozone").textContent = ozone + " du";
+        document.querySelector("#current_report_precipitation").textContent = precipProbability
     };
 
     function trackSunExposure() {

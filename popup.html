@@ -15,7 +15,7 @@
      <link rel="stylesheet" href="/popup.css" media="screen" />
      <link rel="preload" href="/js/popup.js" as="script" />
 
-     <script src="/library/suncalc.min.js"></script>
+     <script src="/library/suncalc.js"></script>
      <script src="/library/util.js"></script>
      <script src="/library/accufeel.min.js"></script>
      <script src="/js/background.js"></script>
@@ -28,11 +28,12 @@
      <script src="/library/papaparse.min.js"></script>
      <script src="/library/moment.js"></script>
      <script src="/library/moment-timezone-with-data-10-year-range.js"></script>
-
      <script src="/library/countup.js"></script>
      
      <script type="text/javascript" src="/library/tz.js" defer></script>
      <script type="text/javascript" src="/library/gtm.js" defer></script>
+     
+
      <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.js' defer></script>
      <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.css' rel='stylesheet' />
      <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js" defer></script>
@@ -867,7 +868,7 @@
                          .
                      </span>
                  </div>
-                 <hr class="hr_forecast hr_forecast_bold">
+                  <hr class="hr_forecast hr_forecast_bold">
                  <div id="25_hours" class="25_hours_Class"> <span id="forecast_25_hours" class="forecast_hour_modal_Class">
                          -
                      </span>
@@ -1430,16 +1431,16 @@
 
                      <hr class="hr_forecast">
 
-                     <div id="report_13" class="report_model_Class">
+<!--                      <div id="report_13" class="report_model_Class">
                          <span id="current_report_title_13" class="current_report_title_Class">
                              Wind Gust
                          </span>
                          <span id="current_report_windGust" class="current_report_value_Class">
                              value
                          </span>
-                     </div>
+                     </div> -->
 
-                     <hr class="hr_forecast">
+                     <!-- <hr class="hr_forecast"> -->
 
                      <div id="report_9" class="report_model_Class">
                          <span id="current_report_title_9" class="current_report_title_Class">
@@ -1450,27 +1451,27 @@
                          </span>
                      </div>
 
-                     <hr class="hr_forecast">
+                     <!-- <hr class="hr_forecast"> -->
 
-                     <div id="report_8" class="report_model_Class">
+<!--                      <div id="report_8" class="report_model_Class">
                          <span id="current_report_title_8" class="current_report_title_Class">
                              Visibility
                          </span>
                          <span id="current_report_visibility" class="current_report_value_Class">
                              value
                          </span>
-                     </div>
+                     </div> -->
 
-                     <hr class="hr_forecast">
+                     <!-- <hr class="hr_forecast"> -->
 
-                     <div id="report_11" class="report_model_Class">
+<!--                      <div id="report_11" class="report_model_Class">
                          <span id="current_report_title_11" class="current_report_title_Class">
                              Ozone
                          </span>
                          <span id="current_report_ozone" class="current_report_value_Class">
                              value
                          </span>
-                     </div>
+                     </div> -->
                      <br>
                      <br>
                  </div>
@@ -1494,10 +1495,10 @@
                  <div id="one_day" class="one_day_Class"> <span id="forecast_10_day" class="forecast_day_modal_Class">
                          -
                      </span>
-
+<!-- 
                      <span id="forecast_10_uv" class="forecast_uv_daily_modal_Class">
                          UVI -
-                     </span>
+                     </span> -->
 
                      <span class="forecast_wind_group_Class">
                          <span class="forecast_wind_group_sub_Class">
@@ -1522,9 +1523,9 @@
                          -
                      </span>
 
-                     <span id="forecast_20_uv" class="forecast_uv_daily_modal_Class">
+<!--                      <span id="forecast_20_uv" class="forecast_uv_daily_modal_Class">
                          UVI -
-                     </span>
+                     </span> -->
 
                      <span class="forecast_wind_group_Class">
                          <span class="forecast_wind_group_sub_Class">
@@ -1549,9 +1550,9 @@
                          -
                      </span>
 
-                     <span id="forecast_30_uv" class="forecast_uv_daily_modal_Class">
+<!--                      <span id="forecast_30_uv" class="forecast_uv_daily_modal_Class">
                          UVI -
-                     </span>
+                     </span> -->
 
                      <span class="forecast_wind_group_Class">
                          <span class="forecast_wind_group_sub_Class">
@@ -1575,10 +1576,10 @@
                      <span id="forecast_40_day" class="forecast_day_modal_Class">
                          -
                      </span>
-
+<!-- 
                      <span id="forecast_40_uv" class="forecast_uv_daily_modal_Class">
                          UVI -
-                     </span>
+                     </span> -->
                      <span class="forecast_wind_group_Class">
                          <span class="forecast_wind_group_sub_Class">
                              <span id="forecast_40_wind" class="forecast_wind_Class"> </span>
@@ -1601,9 +1602,9 @@
                      <span id="forecast_50_day" class="forecast_day_modal_Class">
                          -
                      </span>
-                     <span id="forecast_50_uv" class="forecast_uv_daily_modal_Class">
+<!--                      <span id="forecast_50_uv" class="forecast_uv_daily_modal_Class">
                          UVI -
-                     </span>
+                     </span> -->
                      <span class="forecast_wind_group_Class">
                          <span class="forecast_wind_group_sub_Class">
                              <span id="forecast_50_wind" class="forecast_wind_Class"> </span>
@@ -1626,9 +1627,9 @@
                      <span id="forecast_60_day" class="forecast_day_modal_Class">
                          -
                      </span>
-                     <span id="forecast_60_uv" class="forecast_uv_daily_modal_Class">
+<!--                      <span id="forecast_60_uv" class="forecast_uv_daily_modal_Class">
                          UVI -
-                     </span>
+                     </span> -->
                      <span class="forecast_wind_group_Class">
                          <span class="forecast_wind_group_sub_Class">
                              <span id="forecast_60_wind" class="forecast_wind_Class"> </span>
@@ -1651,9 +1652,9 @@
                      <span id="forecast_70_day" class="forecast_day_modal_Class">
                          -
                      </span>
-                     <span id="forecast_70_uv" class="forecast_uv_daily_modal_Class">
+<!--                      <span id="forecast_70_uv" class="forecast_uv_daily_modal_Class">
                          UVI -
-                     </span>
+                     </span> -->
 
                      <span class="forecast_wind_group_Class">
                          <span class="forecast_wind_group_sub_Class">

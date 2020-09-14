@@ -1,13 +1,13 @@
    {
     "name": "UV Weather",
-    "version": "1.1.2",
+    "version": "1.1.3",
     "description": "Live Weather for Real Life",
     "permissions": [ "activeTab","storage"],
     "background": {
-    "scripts": ["/library/papaparse.min.js", "/library/suncalc.min.js",  "/library/moment.js", "/library/tz.js", "/library/moment-timezone-with-data-10-year-range.js", "/library/util.js", "/library/weatherNO.js", "/library/weatherCA.js", "/library/weatherUS2.js", "/library/weatherDS.js", "/js/background.js", "/library/accufeel.min.js"],
+    "scripts": ["/library/papaparse.min.js", "/library/suncalc.js",  "/library/moment.js", "/library/tz.js", "/library/moment-timezone-with-data-10-year-range.js", "/library/util.js", "/library/weatherNO.js", "/library/weatherCA.js", "/library/weatherUS2.js", "/library/weatherDS.js", "/js/background.js", "/library/accufeel.min.js"],
     "persistent":true
     },
-    "content_security_policy":"script-src 'self' https://www.gstatic.com https://www.google-analytics.com https://www.googletagmanager.com https://api.tiles.mapbox.com https://api.mapbox.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; object-src 'self'",
+    "content_security_policy":"script-src 'self' https://sdk.clarifai.com https://www.gstatic.com https://www.google-analytics.com https://www.googletagmanager.com https://api.tiles.mapbox.com https://api.mapbox.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; object-src 'self'",
     "browser_action": {
     "default_title": "UV Weather",
       "default_popup": "popup.html",

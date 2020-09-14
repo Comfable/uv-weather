@@ -1,5 +1,5 @@
 function weatherUS2(latlong, citys, resolve) {
-
+    
     lat = (latlong.split(','))[0];
     lng = (latlong.split(','))[1];
 
@@ -11,7 +11,7 @@ function weatherUS2(latlong, citys, resolve) {
         }
     }
 
-    fetchWithTimeout(`https://uvweather.herokuapp.com/https://forecast.weather.gov/MapClick.php?lat=${lat}&lon=${lng}&unit=0&lg=english&FcstType=json`, optionsUS, 3000)
+    fetchWithTimeout(`https://uvweather.herokuapp.com/https://forecast.weather.gov/MapClick.php?lat=${lat}&lon=${lng}&unit=0&lg=english&FcstType=json`, optionsUS, 3500)
         .then(CheckError)
         .then(function(resultUS2) {
 
@@ -37,6 +37,7 @@ function weatherUS2(latlong, citys, resolve) {
 
             if (resultUS2.currentobservation.hasOwnProperty('Weather')) {
                 summaryBadge = resultUS2.currentobservation.Weather;
+                summaryMinutely = summaryBadge;
             } else {
                 summaryBadge = "NA";
             }
@@ -57,12 +58,13 @@ function weatherUS2(latlong, citys, resolve) {
             } else {
                 chrome.storage.local.get(['setSettingUT', 'timeZoneBadge'], function(data) {
                     setSettingUT = data.setSettingUT;
-                    timeZoneBadge = data.timeZoneBadge;
-                    if (setSettingUT !== "u") {
-                        solarNighDay(timeZoneBadge, latlong);
-                        iconBadgeConvertUS(iconUS);
-                        badgeGeneral(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, temperatureCbadge, updateTimeBadge, citys);
-                    }
+                    timeZoneBadge = parseFloat(data.timeZoneBadge);
+                        if (setSettingUT !== "u") {
+                            solarNighDay(timeZoneBadge, latlong);
+                            iconBadgeConvertUS(iconUS);
+                            badgeGeneral(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, temperatureCbadge, updateTimeBadge, citys);
+                        }
+
                 });
                 resolve && resolve(resultUS2);
             }
@@ -72,7 +74,7 @@ function weatherUS2(latlong, citys, resolve) {
             chrome.storage.local.set({
                 'failedHTTP': '1'
             });
-            weatherNO(latlong, citys, resolve);
+            weatherDS(latlong, citys, country, resolve);
         });
 
 

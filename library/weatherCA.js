@@ -25,13 +25,14 @@ function weatherCA(latlong, citys, resolve) {
                 }
             }
 
-            fetchWithTimeout(`https://uvweather.herokuapp.com/https://dd.weather.gc.ca/citypage_weather/xml/${stateCA_code}/${cityCA_code}_e.xml`, optionsCA, 3000)
+            fetchWithTimeout(`https://uvweather.herokuapp.com/https://dd.weather.gc.ca/citypage_weather/xml/${stateCA_code}/${cityCA_code}_e.xml`, optionsCA, 3500)
                 .then((resp) => resp.text())
                 .then(function(resultCA) {
-
+                    
                     chrome.storage.local.set({
                         'failedHTTP': '0'
                     });
+
                     const parser = new DOMParser();
                     const srcDOM = parser.parseFromString(resultCA, "application/xml");
 
@@ -55,8 +56,11 @@ function weatherCA(latlong, citys, resolve) {
                     }
 
                     summaryBadge = srcDOMJsonCA.siteData.currentConditions.hasOwnProperty('condition') ? srcDOMJsonCA.siteData.currentConditions.condition : srcDOMJsonCA.siteData.hourlyForecastGroup.hourlyForecast[0].condition;
+                    summaryMinutely = srcDOMJsonCA.siteData.currentConditions.hasOwnProperty('condition') ? srcDOMJsonCA.siteData.currentConditions.condition : srcDOMJsonCA.siteData.hourlyForecastGroup.hourlyForecast[0].condition;
+
                     if (summaryBadge == "NA" || summaryBadge == "" || summaryBadge == null || summaryBadge == "NULL") {
                         summaryBadge = srcDOMJsonCA.siteData.hourlyForecastGroup.hourlyForecast[0].condition;
+                        summaryMinutely = summaryBadge;
                     }
 
                     iconCodeCA = srcDOMJsonCA.siteData.currentConditions.hasOwnProperty('iconCode') ? srcDOMJsonCA.siteData.currentConditions.iconCode : srcDOMJsonCA.siteData.hourlyForecastGroup.hourlyForecast[0].iconCode;
@@ -64,18 +68,21 @@ function weatherCA(latlong, citys, resolve) {
                         iconCodeCA = srcDOMJsonCA.siteData.hourlyForecastGroup.hourlyForecast[0].iconCode;
                     }
 
-                    if (iconCodeCA == "" || tempCca == "" || summaryBadge == "" || iconCodeCA == "NULL" || tempCca == "NULL" || summaryBadge == "NULL" || iconCodeCA == null || tempCca == null || summaryBadge == null || tempCca == "NA" || iconCodeCA == "NA" || summaryBadge == "NA") {
+                    if (iconCodeCA == "" || tempCca == "" || summaryBadge == "" || 
+                        iconCodeCA == "NULL" || tempCca == "NULL" || summaryBadge == "NULL" || 
+                        iconCodeCA == null || tempCca == null || summaryBadge == null || 
+                        tempCca == "NA" || iconCodeCA == "NA" || summaryBadge == "NA") {
                         throw Error();
                     } else {
                         chrome.storage.local.get(['setSettingUT', 'timeZoneBadge'], function(data) {
                             setSettingUT = data.setSettingUT;
                             timeZoneBadge = parseFloat(data.timeZoneBadge);
-
                             if (setSettingUT !== "u") {
                                 solarNighDay(timeZoneBadge, latlong);
                                 iconBadgeConvertCA(iconCodeCA);
                                 badgeGeneral(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, temperatureCbadge, updateTimeBadge, citys);
-                            }
+                            }   
+
                         });
 
                         resolve && resolve(resultCA);
@@ -84,8 +91,8 @@ function weatherCA(latlong, citys, resolve) {
                 }).catch(function(err) {
                     chrome.storage.local.set({
                         'failedHTTP': '1'
-                    });
-                    weatherNO(latlong, citys, resolve);
+                    });                    
+                        weatherDS(latlong, citys, country, resolve);
                 });
 
 

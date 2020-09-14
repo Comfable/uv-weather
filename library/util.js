@@ -35,12 +35,13 @@ function solarNighDay(timeZoneBadge, latlong) {
     offsetTime = DeviceTimeDifferenceFromGMT + timeZoneBadge / 3600;
     offsetUnix = offsetTime * 3600;
     localTimeUnix = Math.round(systemTimeUnix + offsetUnix);
-    timesSolar = SunCalc.getTimes(localTimeUnix, lat, lng);
-    sunriseTimeSolar = timesSolar.sunrise;
-    sunsetTimeSolar = timesSolar.sunset;
-    solarNoon = timesSolar.solarNoon;
-    goldenHourEnd = timesSolar.goldenHourEnd;
-    goldenHour = timesSolar.goldenHour;
+    localTimeDate = moment.unix(localTimeUnix);
+    timesSolar = SunCalc.getTimes(localTimeDate, lat, lng);
+    sunriseTimeSolar = moment(timesSolar.sunrise).unix();
+    sunsetTimeSolar = moment(timesSolar.sunset).unix();
+    solarNoon = moment(timesSolar.solarNoon).unix();
+    goldenHourEnd = moment(timesSolar.goldenHourEnd).unix();
+    goldenHour = moment(timesSolar.goldenHour).unix();
     totalSeconds = moment(moment.unix(sunsetTimeSolar)).diff(moment(moment.unix(sunriseTimeSolar)), 'second');
     dayLengthHours = totalSeconds / 3600;
     totalHours = Math.floor(totalSeconds / (60 * 60));
@@ -54,10 +55,10 @@ function solarNighDay(timeZoneBadge, latlong) {
     };
     dayLength = totalHours + ":" + totalMinutes + " HH:MM";
 
-    dawn = timesSolar.dawn;
-    dusk = timesSolar.dusk;
-    nightStarts = timesSolar.night;
-    nightEnds = timesSolar.nightEnd;
+    dawn = moment(timesSolar.dawn).unix();
+    dusk = moment(timesSolar.dusk).unix();
+    nightStarts = moment(timesSolar.night).unix();
+    nightEnds = moment(timesSolar.nightEnd).unix();
 
 
     localTimeUnixDD = moment.unix(systemTimeUnix + offsetUnix).format('DD');
@@ -267,7 +268,8 @@ function iconBadgeConvertDS(iconBadge) {
     };
 };
 
-function iconBadgeConvertNO(iconNO) {
+function iconBadgeConvertNO(iconNO,nightNO) {
+
     if (iconNO == "cloudy") {
         iconBadge = 'cloudy';
     } else if (iconNO == "fog") {
@@ -278,16 +280,16 @@ function iconBadgeConvertNO(iconNO) {
         iconBadge = 'snow';
     } else if (iconNO == "lightsleet" || iconNO == "lightsleetshowers" || iconNO == "sleet" || iconNO == "heavysleetandthunder" || iconNO == "sleetshowersandthunder" || iconNO == "heavysleetshowersHeavy" || iconNO == "lightssleetshowersandthunder" || iconNO == "sleetandthunder" || iconNO == "lightsleetandthunder" || iconNO == "heavysleetshowersandthunder" || iconNO == "sleetshowers" || iconNO == "heavysleet") {
         iconBadge = 'sleet';
-    } else if ((iconNO == "partlycloudy") && isDay) {
+    } else if ((iconNO == "partlycloudy") && (nightNO !== 'night')) {
         iconBadge = 'partly-cloudy-day';
-    } else if ((iconNO == "partlycloudy") && isNight) {
+    } else if ((iconNO == "partlycloudy") && (nightNO == 'night')) {
         iconBadge = 'partly-cloudy-night';
-    } else if ((iconNO == "clearsky" || iconNO == "fair") && isNight) {
+    } else if ((iconNO == "clearsky" || iconNO == "fair") && (nightNO == 'night')) {
         iconBadge = 'clear-night';
-    } else if ((iconNO == "clearsky" || iconNO == "fair") && isDay) {
+    } else if ((iconNO == "clearsky" || iconNO == "fair") && (nightNO !== 'night')) {
         iconBadge = 'clear-day';
     } else {
-        if (isNight) {
+        if (nightNO == 'night') {
             iconBadge = 'clear-night';
         } else {
             iconBadge = 'clear-day';
@@ -295,6 +297,37 @@ function iconBadgeConvertNO(iconNO) {
     }
 
     iconBadgeConvertDS(iconBadge);
+
+    return iconBadge;
+};
+
+function iconBadgeConvertNO_hourly(iconNO,nightNO) {
+
+    if (iconNO == "cloudy") {
+        iconBadge = 'cloudy';
+    } else if (iconNO == "fog") {
+        iconBadge = 'fog';
+    } else if (iconNO == "rainandthunder" || iconNO == "heavyrain" || iconNO == "lightrainshowers" || iconNO == "lightrain" || iconNO == "lightrainshowersandthunder" || iconNO == "lightrainandthunder" || iconNO == "heavyrainshowersandthunder" || iconNO == "lightssnowshowersandthunder" || iconNO == "rainshowersandthunder" || iconNO == "rainshowers" || iconNO == "heavyrainandthunder" || iconNO == "heavyrainshowers" || iconNO == "rain") {
+        iconBadge = 'rain';
+    } else if (iconNO == "snowshowers" || iconNO == "snowandthunder" || iconNO == "heavysnow" || iconNO == "heavysnowshowersandthunder" || iconNO == "snowshowersandthunder" || iconNO == "lightsnow" || iconNO == "lightsnowshowers" || iconNO == "lightsnowandthunder" || iconNO == "snow" || iconNO == "heavysnowshowers" || iconNO == "heavysnowandthunder") {
+        iconBadge = 'snow';
+    } else if (iconNO == "lightsleet" || iconNO == "lightsleetshowers" || iconNO == "sleet" || iconNO == "heavysleetandthunder" || iconNO == "sleetshowersandthunder" || iconNO == "heavysleetshowersHeavy" || iconNO == "lightssleetshowersandthunder" || iconNO == "sleetandthunder" || iconNO == "lightsleetandthunder" || iconNO == "heavysleetshowersandthunder" || iconNO == "sleetshowers" || iconNO == "heavysleet") {
+        iconBadge = 'sleet';
+    } else if ((iconNO == "partlycloudy") && (nightNO !== 'night')) {
+        iconBadge = 'partly-cloudy-day';
+    } else if ((iconNO == "partlycloudy") && (nightNO == 'night')) {
+        iconBadge = 'partly-cloudy-night';
+    } else if ((iconNO == "clearsky" || iconNO == "fair") && (nightNO == 'night')) {
+        iconBadge = 'clear-night';
+    } else if ((iconNO == "clearsky" || iconNO == "fair") && (nightNO !== 'night')) {
+        iconBadge = 'clear-day';
+    } else {
+        if (nightNO == 'night') {
+            iconBadge = 'clear-night';
+        } else {
+            iconBadge = 'clear-day';
+        }
+    }
 
     return iconBadge;
 };
@@ -514,6 +547,7 @@ function badgeBackgroundImage() {
 };
 
 function badgeBackgroundColor(currentWhiteIcon) {
+
     if (isDay && sunnyDayBadge && temperatureFbadge >= 50) {
         chrome.browserAction.setBadgeBackgroundColor({
             color: '#fc923b'
@@ -671,10 +705,8 @@ function iconTitleWeather(icon) {
     return iconTitle;
 };
 
-function uv_adj_daily(icon, cloudCover) {
-    if (icon === "rain" || icon === "sleet" || icon === "snow") {
-        cloudAdj_daily = 0.73;
-    } else if (cloudCover < 20) {
+function uv_adj_daily(cloudCover) {
+    if (cloudCover < 20) {
         cloudAdj_daily = 1;
     } else if (cloudCover >= 20 && cloudCover < 70) {
         cloudAdj_daily = 0.89;
@@ -781,6 +813,21 @@ function cloudAdjUV(iconBadge, cloudCoverBadge) {
     return cloudAdj;
 };
 
+function cloudAdjUV2(cloudCoverBadge) {
+   if (cloudCoverBadge < 20) {
+        cloudAdj = 1;
+    } else if (cloudCoverBadge >= 20 && cloudCoverBadge < 70) {
+        cloudAdj = 0.89;
+    } else if (cloudCoverBadge >= 70 && cloudCoverBadge < 90) {
+        cloudAdj = 0.73;
+    } else if (cloudCoverBadge >= 90) {
+        cloudAdj = 0.31;
+    } else {
+        cloudAdj = 1;
+    }
+    return cloudAdj;
+};
+
 function uv_note(uv1) {
     if (isNight) {
         current_uv_note = (" (night)");
@@ -834,4 +881,47 @@ const fetchWithTimeout = (uri, options = {}, time = 5000) => {
             }
             throw new Error(error.message)
         })
+};
+
+Array.prototype.max = function() {
+  return Math.max.apply(null, this);
+};
+
+Array.prototype.min = function() {
+  return Math.min.apply(null, this);
+};
+
+function mode(arr){
+    return arr.sort((a,b) =>
+          arr.filter(v => v===a).length
+        - arr.filter(v => v===b).length
+    ).pop();
+};
+
+function solarcalc(lat,localTimeMoment) {
+    latituteInRadians = lat * Math.PI / 180;
+
+    numberOfDaysSinceFirstOfJanuary = localTimeMoment.dayOfYear();
+    mmtMidnight = localTimeMoment.clone().startOf('day');
+    numberOfMinutesThisDay = localTimeMoment.diff(mmtMidnight, 'minutes');
+    if(moment(localTimeMoment).isLeapYear()) {
+        dayNumberOfYear = 366;
+    }
+    else{
+        dayNumberOfYear = 365;
+    }
+
+    declanationOfTheSun = Math.asin(-0.39795 * Math.cos(2.0 * Math.PI * (numberOfDaysSinceFirstOfJanuary + 10.0) / 365.0));
+    sinSunPosition = Math.sin(latituteInRadians) * Math.sin(declanationOfTheSun);
+    cosSunPosition = Math.cos(latituteInRadians) * Math.cos(declanationOfTheSun);
+    sinSunHeight = sinSunPosition + cosSunPosition * Math.cos(2.0 * Math.PI * (numberOfMinutesThisDay + 720.0) / 1440.0) + 0.08;
+    sunCorrection = 1370.0 * (1.0 + (0.033 * Math.cos(2.0 * Math.PI * dayNumberOfYear)));
+
+    if((sinSunHeight > 0.0) && Math.abs(0.25 / sinSunHeight) < 50.0) {
+        ghiSolarClearSki = sunCorrection * sinSunHeight * Math.exp(-0.25 / sinSunHeight);
+    }
+    else{
+        ghiSolarClearSki = 0;
+    }
+    return ghiSolarClearSki;
 };

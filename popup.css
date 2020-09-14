@@ -919,8 +919,8 @@
 
   .forecast_day_Class {
       position: relative;
-      width: 144px;
-      max-width: 144px;
+      width: 140px;
+      max-width: 140px;
       display: inline-block;
       text-align: left;
       font-weight: 250;
@@ -975,8 +975,8 @@
       width: 65px;
       max-width: 65px;
       display: inline-block;
-      padding-right: 20px;
-      padding-left: 5px;
+      padding-right: 25px;
+      padding-left: 0px;
   }
 
   .forecast_temp_Class {
@@ -1003,7 +1003,7 @@
       background-size: cover;
       border: 0px solid transparent;
       filter: var(--icon-color);
-      margin-left: 5px;
+      margin-left: 9px;
   }
 
   .link_text_app_Class {
@@ -1162,19 +1162,19 @@
 
   .forecast_day_modal_Class {
       position: relative;
-      width: 30px;
-      max-width: 30px;
+      width: 75px;
+      max-width: 75px;
       display: inline-block;
       text-align: left;
       font-weight: 250;
       font-size: 14px;
-      text-transform: uppercase;
+      /*text-transform: uppercase;*/
   }
 
   .forecast_hour_modal_Class {
       position: relative;
-      width: 60px;
-      max-width: 60px;
+      width: 55px;
+      max-width: 55px;
       display: inline-block;
       text-align: left;
       font-weight: 250;
@@ -1188,7 +1188,7 @@
       display: inline-block;
       text-align: left;
       font-weight: 250;
-      font-size: 14px;
+      font-size: 13px;
       padding-left: 5px;
   }
 
@@ -1200,7 +1200,7 @@
       text-align: right;
       font-weight: 250;
       font-size: 14px;
-      padding-right: 2px;
+      padding-right: 6px;
   }
 
   .forecast_temp_min_modal_Class {
@@ -1555,10 +1555,11 @@
   .icon_raindrop_Class {
       width: 10px;
       height: 10px;
-      margin-left: 25px;
+      margin-left: 20px;
       margin-top: 2px;
       margin-right: 0;
       padding-right: 0;
+      filter: var(--icon-color);
   }
 
   .forecast_rain_modal_Class {
@@ -1569,7 +1570,7 @@
       text-align: left;
       font-weight: 250;
       font-size: 13px;
-      margin-right: 10px;
+      margin-right: 20px;
       margin-left: 0;
       padding-left: 0;
   }

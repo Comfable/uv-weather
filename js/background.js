@@ -23,6 +23,10 @@ chrome.storage.local.get(['verUpdate'], function(data) {
                     fullname = ((city.split('"'))[1].charAt(0).toUpperCase() + (city.split('"'))[1].slice(1)) + ", " + region.toUpperCase() + ", " + country;
                     timezone = (JSON.stringify(result.timezone).split('"'))[1];
                     timeZoneBadge = timezone2offset(timezone);
+                    
+                    chrome.storage.local.set({
+                        'timeZoneBadge': timeZoneBadge
+                    });
 
                     chrome.storage.local.set({
                         'citys': citys
@@ -42,7 +46,7 @@ chrome.storage.local.get(['verUpdate'], function(data) {
                     chrome.storage.local.set({
                         'firstTimePopup': 0
                     });
-                    badgeTemp(latlong, citys, country);
+                    badgeTemp(latlong, citys, country, timeZoneBadge);
                 } else {
                     city = '"Toronto"';
                     citys = 'Toronto';
@@ -52,6 +56,10 @@ chrome.storage.local.get(['verUpdate'], function(data) {
                     timeZoneBadge = timezone2offset(timeZone);
                     
                     country = 'CA';
+
+                    chrome.storage.local.set({
+                        'timeZoneBadge': timeZoneBadge
+                    });
 
                     chrome.storage.local.set({
                         'citys': 'Toronto'
@@ -71,7 +79,7 @@ chrome.storage.local.get(['verUpdate'], function(data) {
                     chrome.storage.local.set({
                         'firstTimePopup': 0
                     });
-                    badgeTemp(latlong, citys, country);
+                    badgeTemp(latlong, citys, country, timeZoneBadge);
                 }
             })
     }
@@ -80,25 +88,26 @@ chrome.storage.local.get(['verUpdate'], function(data) {
 
 
 chrome.runtime.onStartup.addListener(function(details) {
-    chrome.storage.local.get(['latlong', 'country', 'setSettingUT', 'citys'], function(data) {
+    chrome.storage.local.get(['latlong', 'country', 'setSettingUT', 'citys', 'timeZoneBadge', 'setSettingUT'], function(data) {
         latlong = data.latlong;
         country = data.country;
         citys = data.citys;
+        timeZoneBadge = data.timeZoneBadge;
+        setSettingUT = data.setSettingUT;
         if (navigator.onLine) {
             if (data.setSettingUT == 'u') {
-                badgeUV(latlong, citys, country);
+                badgeUV(latlong, citys, country, timeZoneBadge);
             } else {
-                badgeTemp(latlong, citys, country);
+                badgeTemp(latlong, citys, country, timeZoneBadge);
             }
         }
-
     });
 });
 
 
 chrome.runtime.onInstalled.addListener(function(details) {
     if (details.reason == "update" && navigator.onLine) {
-        chrome.storage.local.get(['latlong', 'country', 'setSettingUT', 'citys', 'city', 'windUnit'], function(data) {
+        chrome.storage.local.get(['latlong', 'country', 'citys', 'city', 'windUnit', 'timeZoneBadge', 'setSettingUT'], function(data) {
             if (typeof data.citys !== 'undefined' && data.citys !== 'undefined') {
                 citys = data.citys;
             } else {
@@ -111,16 +120,22 @@ chrome.runtime.onInstalled.addListener(function(details) {
 
             latlong = data.latlong;
             country = data.country;
+            timeZoneBadge = data.timeZoneBadge;
+            setSettingUT = data.setSettingUT;
+
             if (latlong.includes('"')) {
                 latlong = (latlong.split('"'))[1];
                 chrome.storage.local.set({
                     'latlong': latlong
                 });
             }
-            if (data.setSettingUT == 'u') {
-                badgeUV(latlong, citys, country);
-            } else {
-                badgeTemp(latlong, citys, country);
+
+            if (navigator.onLine) {
+                if (data.setSettingUT == 'u') {
+                    badgeUV(latlong, citys, country, timeZoneBadge);
+                } else {
+                    badgeTemp(latlong, citys, country, timeZoneBadge);
+                }
             }
 
             windUnit = data.windUnit;
@@ -166,14 +181,18 @@ function intervalUpdateFunction() {
 
         var intervalUpdateTimes = window.setInterval(_ => {
 
-            chrome.storage.local.get(['latlong', 'country', 'setSettingUT', 'citys'], function(data) {
+            chrome.storage.local.get(['latlong', 'country', 'setSettingUT', 'citys', 'timeZoneBadge', 'setSettingUT'], function(data) {
                 latlong = data.latlong;
                 country = data.country;
                 citys = data.citys;
-                if (data.setSettingUT == 'u') {
-                    badgeUV(latlong, citys, country);
-                } else {
-                    badgeTemp(latlong, citys, country);
+                timeZoneBadge = data.timeZoneBadge;
+                setSettingUT = data.setSettingUT;
+                if (navigator.onLine) {
+                    if (data.setSettingUT == 'u') {
+                        badgeUV(latlong, citys, country, timeZoneBadge);
+                    } else {
+                        badgeTemp(latlong, citys, country, timeZoneBadge);
+                    }
                 }
             });
         }, intervalUpdateTime);
@@ -184,6 +203,7 @@ intervalUpdateFunction();
 
 //badgeDisplay----------------------------------------------------------------------------------
 function badgeGeneral(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, temperatureCbadge, updateTimeBadge, citys, uv1) {
+
     chrome.storage.local.get('whiteIcon', function(data) {
         var currentWhiteIcon = data.whiteIcon;
         if ((window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) && (typeof currentWhiteIcon == 'undefined') || currentWhiteIcon == 'undefined') {
@@ -222,6 +242,7 @@ function badgeGeneral(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, sn
                 chrome.browserAction.setBadgeText({
                     "text": temperatureCbadge + "°C"
                 });
+
                 badgeBackgroundColor(currentWhiteIcon);
                 setTimeout(function() {
                     badgeBackgroundImage();
@@ -381,24 +402,20 @@ function badgeGeneral(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, sn
 };
 
 
-function badgeTemp(latlong, citys, country) {
+function badgeTemp(latlong, citys, country, timeZoneBadge) {
     if (country == "CA" || country == "ca" || country == "Canada") {
         weatherCA(latlong, citys);
     } else if (country == "US" || country == "us" || country == "United States of America") {
         weatherUS2(latlong, citys);
     } else {
-        weatherNO(latlong, citys)
+        weatherNO(latlong, citys, timeZoneBadge);
     }
 
 };
 
-
-function badgeUV(latlong, citys, country) {
-
+function badgeUV(latlong, citys, country, timeZoneBadge) {
     weatherDS(latlong, citys, country);
-
 };
-
 
 chrome.runtime.onInstalled.addListener(function(details) {
     if (details.reason == "install") {
