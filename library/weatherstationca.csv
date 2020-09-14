@@ -1,0 +1,845 @@
+code,city,state,latitude,longitude
+s0000001,Athabasca,AB,54.72,-113.28
+s0000045,Edmonton,AB,53.53,-113.49
+s0000047,Calgary,AB,51.05,-114.06
+s0000066,Highvale,AB,53.45,-114.52
+s0000068,Strathmore,AB,51.05,-113.39
+s0000083,Sundre,AB,51.8,-114.64
+s0000092,Beaverlodge,AB,55.21,-119.43
+s0000093,Brooks,AB,50.57,-111.9
+s0000111,Coronation,AB,52.09,-111.45
+s0000119,Willow Creek (Provincial Park),AB,50.12,-113.77
+s0000120,Claresholm,AB,50.02,-113.58
+s0000126,Calgary (Olympic Park),AB,51.09,-114.23
+s0000129,Drumheller,AB,51.46,-112.72
+s0000156,Elk Island (National Park),AB,53.61,-112.87
+s0000159,Cardston,AB,49.2,-113.3
+s0000167,Garden Creek,AB,58.7,-113.88
+s0000170,Waterton Park,AB,49.05,-113.91
+s0000176,Esther,AB,51.68,-110.26
+s0000179,Three Hills,AB,51.7,-113.27
+s0000217,Hinton,AB,53.41,-117.56
+s0000218,Jasper,AB,52.89,-118.17
+s0000229,Lac La Biche,AB,54.77,-111.98
+s0000263,Kananaskis (Nakiska Ridgetop),AB,51.08,-115.13
+s0000272,Onefour,AB,49.12,-110.47
+s0000277,Breton,AB,53.11,-114.47
+s0000279,Hendrickson Creek,AB,53.77,-118.37
+s0000297,Lacombe,AB,52.46,-113.73
+s0000299,Red Earth Creek,AB,56.54,-115.29
+s0000306,Rocky Mountain House,AB,52.37,-114.92
+s0000310,Crowsnest,AB,49.63,-114.69
+s0000311,Camrose,AB,53.02,-112.82
+s0000312,Wetaskiwin,AB,52.97,-113.38
+s0000313,Milk River,AB,49.15,-112.09
+s0000356,Vegreville,AB,53.5,-112.05
+s0000358,Vauxhall,AB,50.07,-112.11
+s0000359,Taber,AB,49.78,-112.15
+s0000379,Bow Valley (Provincial Park),AB,51.08,-115.07
+s0000382,Bow Island,AB,49.87,-111.38
+s0000383,High River,AB,50.58,-113.87
+s0000384,Stavely,AB,50.16,-113.64
+s0000403,Canmore,AB,51.08,-115.37
+s0000404,Banff,AB,51.18,-115.57
+s0000413,Barrhead,AB,54.12,-114.4
+s0000427,Westlock,AB,54.16,-113.86
+s0000448,Nordegg,AB,52.47,-116.08
+s0000453,Stony Plain,AB,53.53,-114.01
+s0000468,Drayton Valley,AB,53.22,-114.98
+s0000477,Whitecourt,AB,54.14,-115.68
+s0000493,Cochrane,AB,51.21,-114.47
+s0000510,Edmonton (Int'l Aprt),AB,53.34,-113.54
+s0000518,Edson,AB,53.58,-116.43
+s0000523,Mildred Lake,AB,57.03,-111.6
+s0000590,Lloydminster,AB,53.28,-110
+s0000595,Fort McMurray,AB,56.73,-111.38
+s0000619,Cold Lake,AB,54.45,-110.17
+s0000621,High Level,AB,58.52,-117.13
+s0000625,Peace River,AB,56.24,-117.3
+s0000636,Fort Chipewyan,AB,58.71,-111.16
+s0000643,Rainbow Lake,AB,58.5,-119.4
+s0000645,Red Deer,AB,52.27,-113.81
+s0000652,Lethbridge,AB,49.69,-112.84
+s0000661,Grande Prairie,AB,55.17,-118.8
+s0000683,Suffield,AB,50.22,-111.16
+s0000745,Medicine Hat,AB,50.04,-110.68
+s0000767,Okotoks,AB,50.73,-113.98
+s0000768,Airdrie,AB,51.29,-114.01
+s0000781,Grande Cache,AB,53.89,-119.12
+s0000794,Slave Lake,AB,55.28,-114.77
+s0000824,Pincher Creek,AB,49.49,-113.95
+s0000829,Stettler,AB,52.32,-112.7
+s0000833,Wainwright,AB,52.83,-110.86
+s0000002,Clearwater,BC,51.65,-120.03
+s0000003,Valemount,BC,52.83,-119.25
+s0000004,Grand Forks,BC,49.03,-118.43
+s0000005,McBride,BC,53.3,-120.17
+s0000006,Merritt,BC,50.11,-120.79
+s0000007,Masset,BC,54.02,-132.1
+s0000008,Invermere,BC,50.52,-116.03
+s0000009,Dome Creek,BC,53.75,-121.03
+s0000078,Whistler,BC,50.12,-122.97
+s0000106,100 Mile House,BC,51.65,-121.28
+s0000107,Clinton,BC,51.08,-121.58
+s0000132,Estevan Point,BC,49.38,-126.55
+s0000141,Vancouver,BC,49.25,-123.12
+s0000146,Prince George,BC,53.92,-122.75
+s0000155,Gulf Islands (Southern),BC,48.95,-123.53
+s0000173,Pemberton,BC,50.32,-122.8
+s0000175,Sparwood,BC,49.72,-114.9
+s0000212,Creston,BC,49.1,-116.5
+s0000216,Vernon,BC,50.26,-119.27
+s0000222,Lillooet,BC,50.68,-121.93
+s0000224,Malahat,BC,48.55,-123.57
+s0000226,Hope Slide,BC,49.3,-121.27
+s0000227,Dease Lake,BC,58.43,-130.02
+s0000228,Cassiar,BC,59.29,-129.85
+s0000234,Gonzales Point,BC,48.41,-123.29
+s0000242,Lytton,BC,50.23,-121.57
+s0000247,Pitt Meadows,BC,49.22,-122.69
+s0000258,Nelson,BC,49.5,-117.28
+s0000259,Nakusp,BC,50.25,-117.8
+s0000286,Esquimalt,BC,48.45,-123.42
+s0000291,Princeton,BC,49.46,-120.51
+s0000292,Puntzi Mountain,BC,52.17,-124.2
+s0000293,Burns Lake,BC,54.23,-125.75
+s0000294,Port Alberni,BC,49.24,-124.8
+s0000316,Gibsons,BC,49.4,-123.5
+s0000317,Sechelt,BC,49.47,-123.77
+s0000323,Squamish,BC,49.75,-123.13
+s0000324,Salmon Arm,BC,50.7,-119.27
+s0000341,Tetsa River (Provincial Park),BC,58.65,-123.95
+s0000351,Summerland,BC,49.6,-119.67
+s0000373,White Rock,BC,49.02,-122.8
+s0000376,Muncho Lake,BC,58.93,-125.77
+s0000377,Liard River,BC,59.42,-126.08
+s0000390,Victoria (University of),BC,48.46,-123.3
+s0000391,Kootenay (National Park),BC,50.95,-116.03
+s0000392,Yoho (National Park),BC,51.5,-116.5
+s0000396,Rock Creek,BC,49.05,-119
+s0000397,Osoyoos,BC,49.03,-119.45
+s0000398,Chilliwack,BC,49.18,-121.94
+s0000399,Agassiz,BC,49.23,-121.77
+s0000409,Atlin,BC,59.57,-133.7
+s0000465,Tatlayoko Lake,BC,51.72,-124.43
+s0000471,Trail,BC,49.1,-117.7
+s0000481,Tofino,BC,49.12,-125.88
+s0000482,Ucluelet,BC,48.94,-125.55
+s0000485,Bella Coola,BC,52.38,-126.75
+s0000488,Campbell River,BC,50.02,-125.24
+s0000496,Nanaimo,BC,49.17,-123.93
+s0000497,Castlegar,BC,49.3,-117.67
+s0000499,Blue River,BC,52.1,-119.3
+s0000500,Chetwynd,BC,55.7,-121.63
+s0000509,Dawson Creek,BC,55.77,-120.23
+s0000527,Golden,BC,51.3,-116.97
+s0000547,Hope,BC,49.38,-121.44
+s0000568,Kamloops,BC,50.67,-120.33
+s0000569,Cache Creek,BC,50.81,-121.32
+s0000592,Kelowna,BC,49.88,-119.48
+s0000633,Prince Rupert,BC,54.32,-130.32
+s0000634,Powell River,BC,49.85,-124.53
+s0000647,Good Hope Lake,BC,59.28,-129.3
+s0000656,Comox,BC,49.68,-124.93
+s0000657,Courtenay,BC,49.68,-124.98
+s0000671,Quesnel,BC,53,-122.5
+s0000679,Revelstoke,BC,50.98,-118.2
+s0000735,Victoria Harbour,BC,48.42,-123.39
+s0000739,Williams Lake,BC,52.14,-122.14
+s0000741,Cranbrook,BC,49.5,-115.77
+s0000746,Fort St. John,BC,56.25,-120.85
+s0000754,Vanderhoof,BC,54.02,-124.02
+s0000756,Kitimat,BC,54.05,-128.65
+s0000757,Terrace,BC,54.52,-128.6
+s0000758,Abbotsford,BC,49.06,-122.25
+s0000770,Smithers,BC,54.78,-127.17
+s0000771,Fort Nelson,BC,58.81,-122.7
+s0000772,Penticton,BC,49.5,-119.58
+s0000775,Victoria,BC,48.43,-123.37
+s0000792,Victoria (Hartland),BC,48.52,-123.43
+s0000795,Sandspit,BC,53.25,-131.82
+s0000799,Port Hardy,BC,50.7,-127.42
+s0000805,Mackenzie,BC,55.3,-123.17
+s0000828,Stewart,BC,55.93,-129.98
+s0000834,Bella Bella,BC,52.16,-128.14
+s0000845,Cummins Lakes (Provincial Park),BC,52.1,-118.06
+s0000862,Richmond,BC,49.16,-123.16
+s0000863,Duncan,BC,48.78,-123.71
+s0000864,Qualicum Beach,BC,49.35,-124.44
+s0000865,West Vancouver,BC,49.33,-123.16
+s0000866,Langley,BC,49.1,-122.66
+s0000010,Little Grand Rapids,MB,52.04,-95.46
+s0000011,Oxford House,MB,54.95,-95.27
+s0000012,Bissett,MB,51.03,-95.68
+s0000013,Shamattawa,MB,55.85,-92.09
+s0000014,York Factory,MB,57,-92.31
+s0000015,Flin Flon,MB,54.77,-101.86
+s0000091,Bachelors Island,MB,51.75,-99.9
+s0000101,Bloodvein,MB,51.79,-96.71
+s0000102,Berens River,MB,52.37,-97.03
+s0000130,Pinawa,MB,50.15,-95.88
+s0000131,Whiteshell,MB,49.74,-95.2
+s0000135,Virden,MB,49.85,-100.93
+s0000136,Melita,MB,49.27,-101
+s0000137,Turtle Mountain (Provincial Park),MB,49.05,-100.25
+s0000139,Swan River,MB,52.11,-101.27
+s0000150,Morris,MB,49.36,-97.37
+s0000151,Steinbach,MB,49.53,-96.68
+s0000152,Dominion City,MB,49.14,-97.16
+s0000153,Emerson,MB,49.01,-97.21
+s0000154,Vita,MB,49.13,-96.56
+s0000160,Snow Lake,MB,54.88,-100.04
+s0000161,Pukatawagan,MB,55.74,-101.32
+s0000171,Altona,MB,49.1,-97.56
+s0000172,Gretna,MB,49.01,-97.56
+s0000178,Hunters Point,MB,53.03,-100.94
+s0000189,Pine Falls,MB,50.57,-96.22
+s0000190,Victoria Beach,MB,50.7,-96.56
+s0000191,Grand Beach,MB,50.55,-96.63
+s0000193,Winnipeg,MB,49.88,-97.15
+s0000207,Grand Rapids,MB,53.18,-99.26
+s0000256,Deerwood,MB,49.4,-98.39
+s0000257,Carman,MB,49.5,-98
+s0000273,Oak Point,MB,50.51,-98.03
+s0000276,McCreary,MB,50.77,-99.49
+s0000289,Pilot Mound,MB,49.2,-98.89
+s0000337,Sprague,MB,49.04,-95.64
+s0000339,Fisher Branch,MB,51.08,-97.62
+s0000352,Shoal Lake,MB,50.44,-100.59
+s0000375,Wasagaming,MB,50.66,-99.97
+s0000378,Poplar River,MB,52.99,-97.28
+s0000380,Roblin,MB,51.23,-101.36
+s0000401,Carberry,MB,49.87,-99.36
+s0000402,Shilo,MB,49.81,-99.64
+s0000417,Tadoule Lake,MB,58.71,-98.48
+s0000444,Morden,MB,49.19,-98.1
+s0000445,Winkler,MB,49.18,-97.94
+s0000472,Winnipeg (The Forks),MB,49.89,-97.13
+s0000490,Minnedosa,MB,50.25,-99.84
+s0000491,Souris,MB,49.62,-100.26
+s0000492,Brandon,MB,49.85,-99.95
+s0000508,Dauphin,MB,51.15,-100.05
+s0000533,Arnes,MB,50.8,-96.99
+s0000534,Gimli,MB,50.63,-96.99
+s0000543,Gillam,MB,56.35,-94.71
+s0000565,Island Lake,MB,53.86,-94.67
+s0000566,Gods Lake,MB,54.67,-94.25
+s0000616,Norway House,MB,53.99,-97.82
+s0000626,Portage la Prairie,MB,49.97,-98.29
+s0000644,The Pas,MB,53.83,-101.25
+s0000695,Thompson,MB,55.74,-97.86
+s0000734,Richer,MB,49.66,-96.46
+s0000776,Leaf Rapids,MB,56.47,-99.75
+s0000777,Lynn Lake,MB,56.83,-101.08
+s0000778,Brochet,MB,57.88,-101.67
+s0000779,Churchill,MB,58.73,-94.12
+s0000831,Delta,MB,50.19,-98.32
+s0000033,Bouctouche,NB,46.47,-64.74
+s0000034,Richibucto,NB,46.68,-64.88
+s0000035,Rogersville,NB,46.75,-65.5
+s0000036,Miramichi,NB,47,-65.47
+s0000037,Point Escuminac,NB,47.07,-64.8
+s0000038,Kouchibouguac,NB,46.86,-64.98
+s0000043,Edmundston,NB,47.38,-68.29
+s0000198,Mount Carleton (Provincial Park),NB,47.38,-66.83
+s0000199,Saint-Quentin,NB,47.51,-67.39
+s0000200,St. Leonard,NB,47.17,-67.92
+s0000201,Grand Falls,NB,47.05,-67.74
+s0000243,Miscou Island,NB,47.95,-64.57
+s0000250,Fredericton,NB,45.95,-66.67
+s0000285,Point Lepreau,NB,45.07,-66.45
+s0000331,Saint Andrews,NB,45.08,-67.06
+s0000332,St. Stephen,NB,45.22,-67.33
+s0000385,Tracadie-Sheila,NB,47.51,-64.92
+s0000386,Bas-Caraquet,NB,47.8,-64.83
+s0000449,Sackville,NB,45.92,-64.39
+s0000502,Chipman,NB,46.17,-65.89
+s0000503,Doaktown,NB,46.56,-66.12
+s0000521,Oromocto,NB,45.84,-66.48
+s0000522,Woodstock,NB,46.15,-67.6
+s0000622,Grand Manan,NB,44.7,-66.82
+s0000653,Shediac,NB,46.22,-64.53
+s0000654,Moncton,NB,46.12,-64.8
+s0000655,Hopewell,NB,45.83,-64.72
+s0000685,Quispamsis,NB,45.44,-65.94
+s0000686,Sussex,NB,45.72,-65.51
+s0000687,Saint John,NB,45.26,-66.04
+s0000688,Fundy (National Park),NB,45.62,-65.03
+s0000806,Bathurst,NB,47.63,-65.63
+s0000807,Campbellton,NB,47.99,-66.68
+s0000808,Dalhousie,NB,48.05,-66.39
+s0000809,Charlo,NB,47.99,-66.31
+s0000016,Musgrave Harbour,NL,49.45,-53.97
+s0000017,New-Wes-Valley,NL,49.17,-53.57
+s0000018,Bay Roberts,NL,47.6,-53.27
+s0000019,St. Alban's,NL,47.88,-55.85
+s0000032,Burgeo,NL,47.61,-57.62
+s0000039,St. Lawrence,NL,46.92,-55.4
+s0000041,Bonavista,NL,48.65,-53.11
+s0000042,Wreckhouse,NL,47.71,-59.31
+s0000079,La Scie,NL,49.96,-55.59
+s0000082,Placentia,NL,47.3,-53.99
+s0000100,Cartwright,NL,53.71,-57.01
+s0000112,Englee,NL,50.73,-56.1
+s0000114,Port au Choix,NL,50.71,-57.36
+s0000115,Daniel's Harbour,NL,50.24,-57.59
+s0000116,Badger,NL,48.98,-56.04
+s0000117,Buchans,NL,48.82,-56.86
+s0000118,Grand Falls-Windsor,NL,48.94,-55.67
+s0000122,Twillingate,NL,49.65,-54.76
+s0000128,St. Anthony,NL,51.37,-55.59
+s0000162,Nain,NL,56.55,-61.69
+s0000181,Hopedale,NL,55.47,-60.22
+s0000220,Marble Mountain,NL,48.94,-57.84
+s0000221,Corner Brook,NL,48.94,-57.97
+s0000280,St. John's,NL,47.57,-52.73
+s0000298,Cape Race,NL,46.66,-53.07
+s0000400,Channel-Port aux Basques,NL,47.58,-59.14
+s0000456,Rocky Harbour,NL,49.59,-57.92
+s0000457,Gros Morne,NL,49.69,-57.74
+s0000466,Clarenville,NL,48.16,-53.98
+s0000467,Terra Nova (National Park),NL,48.53,-53.93
+s0000473,Winterland,NL,47.16,-55.31
+s0000474,Marystown,NL,47.17,-55.17
+s0000475,Grand Bank,NL,47.1,-55.77
+s0000507,Deer Lake,NL,49.18,-57.43
+s0000526,Makkovik,NL,55.09,-59.18
+s0000567,Stephenville,NL,48.55,-58.58
+s0000594,Mary's Harbour,NL,52.32,-55.83
+s0000667,Gander,NL,48.95,-54.61
+s0000668,Campbellton,NL,49.29,-54.94
+s0000669,Lewisporte,NL,49.25,-55.06
+s0000736,Wabush Lake,NL,53.08,-66.87
+s0000737,Labrador City,NL,52.94,-66.92
+s0000780,Happy Valley-Goose Bay,NL,53.3,-60.31
+s0000832,Churchill Falls,NL,53.55,-64.02
+s0000857,L'Anse-au-Loup,NL,51.52,-56.84
+s0000858,Rigolet,NL,54.1792,-58.43
+s0000859,Cartwright Junction (Trans-Labrador Hwy),NL,53.07,-57.51
+s0000860,Gull Island Rapids (Trans-Labrador Hwy),NL,52.98,-61.47
+s0000020,Fourchu Head,NS,45.72,-60.23
+s0000021,North Mountain (Cape Breton),NS,46.88,-60.58
+s0000040,Parrsboro,NS,45.41,-64.33
+s0000084,Halifax (Shearwater),NS,44.66,-63.59
+s0000089,New Glasgow,NS,45.59,-62.64
+s0000090,Caribou,NS,45.73,-62.72
+s0000096,Beaver Island,NS,44.75,-62.8
+s0000109,Shelburne,NS,43.76,-65.32
+s0000110,Baccaro Point,NS,43.45,-65.47
+s0000223,Kejimkujik (National Park),NS,44.39,-65.29
+s0000264,North East Margaree,NS,46.33,-61.01
+s0000265,Baddeck,NS,46.1,-60.75
+s0000307,St. Peter's,NS,45.66,-60.88
+s0000308,Hart Island,NS,45.35,-60.98
+s0000318,Halifax,NS,44.87,-63.72
+s0000364,Digby,NS,44.62,-65.76
+s0000365,Brier Island,NS,44.27,-66.37
+s0000370,Western Head,NS,43.99,-64.67
+s0000371,Liverpool,NS,44.04,-64.72
+s0000405,Grand Étang,NS,46.55,-61.05
+s0000420,Chéticamp,NS,46.63,-61.01
+s0000433,Ingonish,NS,46.69,-60.37
+s0000438,Windsor,NS,44.99,-64.14
+s0000439,Kentville,NS,45.08,-64.5
+s0000440,Lunenburg,NS,44.38,-64.31
+s0000441,Bridgewater,NS,44.38,-64.52
+s0000446,Sheet Harbour,NS,44.92,-62.54
+s0000447,Malay Falls,NS,44.99,-62.48
+s0000450,Amherst,NS,45.83,-64.21
+s0000460,Port Hawkesbury,NS,45.62,-61.36
+s0000461,Tracadie,NS,45.62,-61.67
+s0000462,Antigonish,NS,45.62,-61.99
+s0000463,Cape George,NS,45.85,-61.93
+s0000464,Guysborough,NS,45.39,-61.5
+s0000649,Yarmouth,NS,43.84,-66.12
+s0000670,Sydney,NS,46.14,-60.2
+s0000802,Annapolis Royal,NS,44.74,-65.52
+s0000803,Greenwood,NS,44.97,-64.93
+s0000804,Bridgetown,NS,44.84,-65.29
+s0000812,Tatamagouche,NS,45.71,-63.29
+s0000813,Truro,NS,45.37,-63.28
+s0000814,Economy,NS,45.38,-63.91
+s0000861,Eskasoni,NS,45.94,-60.62
+s0000164,Colville Lake,NT,67.03,-126.12
+s0000188,Fort Providence,NT,61.35,-117.65
+s0000210,Fort Liard,NT,60.23,-123.47
+s0000249,Whati,NT,63.14,-117.27
+s0000338,Sachs Harbour,NT,71.98,-125.24
+s0000340,Sambaa K'e,NT,60.43,-121.25
+s0000366,Yellowknife,NT,62.46,-114.35
+s0000388,Gameti,NT,64.12,-117.35
+s0000389,Indin River,NT,64.28,-115.07
+s0000423,Deline,NT,65.19,-123.42
+s0000432,Ulukhaktok,NT,70.73,-117.75
+s0000442,Wekweeti,NT,64.19,-114.18
+s0000443,Lutselke,NT,62.41,-110.74
+s0000476,Nahanni Butte,NT,61.03,-123.39
+s0000519,Inuvik,NT,68.36,-133.72
+s0000524,Fort Resolution,NT,61.17,-113.67
+s0000525,Fort Simpson,NT,61.86,-121.35
+s0000560,Enterprise,NT,60.55,-116.13
+s0000561,Hay River,NT,60.82,-115.8
+s0000570,Aklavik,NT,68.22,-135.01
+s0000618,Ekati (Lac de Gras),NT,64.5,-110.5
+s0000690,Fort Smith,NT,60,-111.88
+s0000720,Norman Wells,NT,65.28,-126.83
+s0000740,Wrigley,NT,63.27,-123.61
+s0000759,Paulatuk,NT,69.35,-124.07
+s0000791,Detah,NT,62.41,-114.31
+s0000816,Fort McPherson,NT,67.44,-134.88
+s0000817,Tulita,NT,64.9,-125.57
+s0000818,Fort Good Hope,NT,66.26,-128.64
+s0000830,Tuktoyaktuk,NT,69.45,-133.03
+s0000065,Kugaaruk,NU,68.53,-89.83
+s0000140,Eureka,NU,79.98,-85.95
+s0000177,Grise Fiord,NU,76.42,-82.9
+s0000206,Ennadai,NU,61.13,-100.88
+s0000394,Iqaluit,NU,63.75,-68.52
+s0000412,Arctic Bay,NU,73.03,-85.17
+s0000487,Baker Lake,NU,64.32,-96.02
+s0000495,Cambridge Bay,NU,69.11,-105.05
+s0000498,Kugluktuk,NU,67.83,-115.09
+s0000501,Chesterfield,NU,63.34,-90.7
+s0000504,Clyde River,NU,70.47,-68.59
+s0000511,Arviat,NU,61.11,-94.06
+s0000540,Igloolik,NU,69.38,-81.8
+s0000564,Pond Inlet,NU,72.7,-77.96
+s0000587,Kimmirut,NU,62.85,-69.87
+s0000672,Resolute,NU,74.7,-94.83
+s0000678,Rankin Inlet,NU,62.82,-92.08
+s0000689,Sanikiluaq,NU,56.53,-79.23
+s0000693,Nanisivik,NU,73.03,-84.55
+s0000694,Cape Dorset,NU,64.23,-76.54
+s0000713,Naujaat,NU,66.53,-86.25
+s0000714,Hall Beach,NU,68.79,-81.24
+s0000716,Qikiqtarjuaq,NU,67.55,-64.03
+s0000749,Whale Cove,NU,62.16,-92.57
+s0000750,Pangnirtung,NU,66.14,-65.72
+s0000774,Taloyoak,NU,69.54,-93.52
+s0000798,Coral Harbour,NU,64.13,-83.17
+s0000820,Gjoa Haven,NU,68.63,-95.88
+s0000821,Alert,NU,82.5,-62.37
+s0000022,Marathon,ON,48.72,-86.38
+s0000023,Terrace Bay,ON,48.8,-87.1
+s0000024,Attawapiskat,ON,52.92,-82.43
+s0000025,Gogama,ON,47.67,-81.73
+s0000069,Hawkesbury,ON,45.61,-74.6
+s0000070,Alexandria,ON,45.31,-74.63
+s0000071,Cornwall,ON,45.03,-74.73
+s0000072,Morrisburg,ON,44.9,-75.18
+s0000073,Algonquin Park (Brent),ON,46.03,-78.48
+s0000074,Algonquin Park (Lake of Two Rivers),ON,45.58,-78.48
+s0000075,Oxtongue Lake,ON,45.36,-78.92
+s0000076,Welland,ON,43,-79.23
+s0000077,Winchester,ON,45.09,-75.35
+s0000080,Rondeau (Provincial Park),ON,42.3,-81.89
+s0000088,Killarney,ON,46.06,-80.98
+s0000103,Atikokan,ON,48.76,-91.61
+s0000104,Fort Frances,ON,48.61,-93.39
+s0000105,Mine Centre,ON,48.77,-92.62
+s0000108,Collingwood,ON,44.5,-80.24
+s0000127,Upsala,ON,49.06,-90.5
+s0000165,Goderich,ON,43.74,-81.7
+s0000166,Kincardine,ON,44.17,-81.63
+s0000168,Brockville,ON,44.6,-75.69
+s0000169,Gananoque,ON,44.33,-76.16
+s0000231,Ogoki,ON,51.63,-85.95
+s0000232,Webequie,ON,52.99,-87.36
+s0000233,Lansdowne House,ON,52.22,-87.89
+s0000235,Wingham,ON,43.89,-81.31
+s0000236,Walkerton,ON,44.13,-81.15
+s0000237,Dundalk,ON,44.17,-80.39
+s0000238,North Perth,ON,43.73,-80.97
+s0000239,Shelburne,ON,44.08,-80.2
+s0000240,Mount Forest,ON,43.98,-80.74
+s0000251,Cobourg,ON,43.96,-78.16
+s0000266,Hearst,ON,49.69,-83.65
+s0000267,Hornepayne,ON,49.25,-84.78
+s0000281,Midland,ON,44.75,-79.88
+s0000282,Fort Erie,ON,42.92,-79.02
+s0000283,Port Colborne,ON,42.92,-79.19
+s0000301,Bancroft,ON,45.06,-77.76
+s0000302,Barry's Bay,ON,45.49,-77.68
+s0000303,Haliburton,ON,45.05,-78.51
+s0000304,Apsley,ON,44.76,-78.09
+s0000305,Kaladar,ON,44.65,-77.12
+s0000325,Stratford,ON,43.37,-80.98
+s0000326,London,ON,42.97,-81.23
+s0000327,Woodstock,ON,43.14,-80.74
+s0000328,Strathroy,ON,42.96,-81.62
+s0000329,St. Thomas,ON,42.78,-81.19
+s0000367,Oakville,ON,43.46,-79.71
+s0000368,Burlington,ON,43.37,-79.81
+s0000374,Peawanuck,ON,55.02,-85.42
+s0000395,Gull Bay,ON,49.8,-89.11
+s0000411,Thunder Bay,ON,48.4,-89.27
+s0000414,Orillia,ON,44.6,-79.42
+s0000415,Barrie,ON,44.37,-79.68
+s0000418,Greenstone (Beardmore),ON,49.6,-87.96
+s0000419,Nipigon,ON,48.98,-88.33
+s0000422,Tobermory,ON,45.25,-81.66
+s0000424,Simcoe,ON,42.84,-80.31
+s0000425,Tillsonburg,ON,42.87,-80.73
+s0000426,Norfolk,ON,42.8,-80.41
+s0000428,Ear Falls,ON,50.64,-93.24
+s0000429,New Tecumseth,ON,44.08,-79.77
+s0000430,Ottawa (Kanata - Orléans),ON,45.33,-75.58
+s0000431,Leamington,ON,42.1,-82.56
+s0000434,Smiths Falls,ON,44.9,-76.02
+s0000435,Sharbot Lake,ON,44.77,-76.69
+s0000436,Kemptville,ON,45.02,-75.64
+s0000437,Kirkland Lake,ON,48.15,-80.03
+s0000451,Parry Sound,ON,45.35,-80.04
+s0000452,Dunchurch,ON,45.65,-79.85
+s0000454,Chatham-Kent,ON,42.43,-82.13
+s0000455,Rodney,ON,42.57,-81.68
+s0000458,Toronto,ON,43.74,-79.37
+s0000469,Vineland,ON,43.15,-79.39
+s0000470,Lincoln,ON,43.15,-79.42
+s0000479,Sault Ste. Marie,ON,46.56,-84.35
+s0000489,Alliston,ON,44.15,-79.86
+s0000512,Elliot Lake,ON,46.38,-82.66
+s0000513,Blind River,ON,46.19,-82.96
+s0000517,Fort Severn,ON,56,-87.62
+s0000520,Armstrong,ON,50.3,-89.04
+s0000528,Greater Napanee,ON,44.24,-76.97
+s0000529,Sydenham,ON,44.41,-76.6
+s0000530,Westport,ON,44.68,-76.4
+s0000531,Kingston,ON,44.31,-76.42
+s0000538,Greenstone (Geraldton),ON,49.72,-86.95
+s0000539,Greenstone (Nakina),ON,50.18,-86.71
+s0000546,Dryden,ON,49.78,-92.77
+s0000548,Haldimand County,ON,42.99,-79.85
+s0000549,Hamilton,ON,43.24,-79.99
+s0000550,Brantford,ON,43.16,-80.26
+s0000571,Guelph,ON,43.54,-80.23
+s0000572,Cambridge,ON,43.4,-80.31
+s0000573,Kitchener-Waterloo,ON,43.42,-80.47
+s0000582,Newmarket,ON,44.06,-79.46
+s0000584,Vaughan,ON,43.85,-79.54
+s0000585,Markham,ON,43.88,-79.26
+s0000588,Chapleau,ON,47.84,-83.4
+s0000596,Moosonee,ON,51.33,-80.72
+s0000597,Fort Albany,ON,52.21,-81.68
+s0000623,Ottawa (Richmond - Metcalfe),ON,45.24,-75.47
+s0000628,Pickle Lake,ON,51.47,-90.2
+s0000629,Peterborough,ON,44.3,-78.33
+s0000630,Port Perry,ON,44.1,-78.95
+s0000631,Kawartha Lakes (Lindsay),ON,44.36,-78.74
+s0000632,Kawartha Lakes (Fenelon Falls),ON,44.54,-78.74
+s0000637,Burk's Falls,ON,45.63,-79.4
+s0000638,Gravenhurst,ON,44.87,-79.34
+s0000639,Port Carling,ON,45.12,-79.58
+s0000640,Huntsville,ON,45.31,-79.28
+s0000641,Bracebridge,ON,45.03,-79.19
+s0000642,Muskoka,ON,44.91,-79.37
+s0000646,Windsor,ON,42.3,-82.99
+s0000650,Sioux Narrows,ON,49.41,-94.1
+s0000651,Kenora,ON,49.82,-94.44
+s0000658,Brampton,ON,43.69,-79.76
+s0000659,Kakabeka Falls,ON,48.41,-89.62
+s0000660,Dorion,ON,48.79,-88.65
+s0000676,Red Lake,ON,51.1,-93.72
+s0000677,Pikangikum,ON,51.81,-93.99
+s0000680,Greater Sudbury,ON,46.58,-81.07
+s0000691,St. Catharines,ON,43.17,-79.25
+s0000692,Niagara Falls,ON,43.06,-79.11
+s0000696,Sachigo Lake,ON,53.87,-92.17
+s0000697,Big Trout Lake,ON,53.75,-90
+s0000698,Wunnummin Lake,ON,52.94,-89.3
+s0000700,Stirling,ON,44.3,-77.55
+s0000701,Trenton,ON,44.11,-77.58
+s0000702,Prince Edward (Picton),ON,44.02,-77.26
+s0000703,Belleville,ON,44.26,-77.37
+s0000704,Quinte West,ON,44.2,-77.58
+s0000705,Timmins,ON,48.47,-81.33
+s0000706,Cochrane,ON,49.17,-81.06
+s0000707,Oshawa,ON,43.9,-78.86
+s0000708,Whitby,ON,43.93,-78.95
+s0000710,Pickering,ON,43.91,-79.13
+s0000724,Wiarton,ON,44.74,-81.14
+s0000725,Port Elgin,ON,44.44,-81.39
+s0000726,Saugeen Shores,ON,44.41,-81.37
+s0000727,South Bruce Peninsula,ON,44.71,-81.22
+s0000728,Owen Sound,ON,44.57,-80.93
+s0000729,Petawawa,ON,45.91,-77.27
+s0000730,Pembroke,ON,45.82,-77.11
+s0000731,Renfrew,ON,45.47,-76.68
+s0000732,Deep River,ON,46.05,-77.42
+s0000744,Lambton Shores,ON,43.18,-81.9
+s0000747,Savant Lake,ON,50.24,-90.71
+s0000748,Sioux Lookout,ON,50.09,-92
+s0000752,Earlton,ON,47.71,-79.82
+s0000753,Temiskaming Shores,ON,47.49,-79.72
+s0000761,Wawa,ON,47.99,-84.77
+s0000762,Montreal River Harbour,ON,47.24,-84.65
+s0000763,Lake Superior (Provincial Park),ON,47.6,-84.74
+s0000764,White River,ON,48.58,-85.26
+s0000765,North Bay,ON,46.31,-79.46
+s0000766,West Nipissing,ON,46.45,-80.04
+s0000773,Richmond Hill,ON,43.87,-79.44
+s0000782,Kapuskasing,ON,49.42,-82.42
+s0000785,Toronto Island,ON,43.63,-79.37
+s0000786,Mississauga,ON,43.59,-79.66
+s0000787,Caledon,ON,43.87,-79.86
+s0000789,Halton Hills,ON,43.63,-79.95
+s0000790,Gore Bay,ON,45.92,-82.46
+s0000796,Sarnia,ON,42.98,-82.32
+s0000815,Orangeville,ON,43.92,-80.11
+s0000819,Ignace,ON,49.41,-91.68
+s0000826,Sandy Lake,ON,53.06,-93.32
+s0000843,Sudbury (Greater),ON,46.58,-81.07
+s0000026,Maple Plains,PE,46.28,-63.57
+s0000138,East Point,PE,46.45,-62
+s0000252,North Cape,PE,47.07,-64
+s0000562,Summerside,PE,46.4,-63.79
+s0000583,Charlottetown,PE,46.24,-63.13
+s0000827,St. Peters Bay,PE,46.42,-62.58
+s0000027,Murdochville,QC,48.97,-65.5
+s0000028,Escoumins,QC,48.42,-69.42
+s0000029,Saint-Michel-des-Saints,QC,46.68,-73.92
+s0000044,Beauharnois,QC,45.32,-73.87
+s0000046,Candiac,QC,45.38,-73.52
+s0000048,La Prairie,QC,45.42,-73.5
+s0000049,Saint-Constant,QC,45.37,-73.57
+s0000050,Sainte-Catherine,QC,45.4,-73.58
+s0000051,Saint-Rémi,QC,45.27,-73.62
+s0000052,Granby,QC,45.4,-72.73
+s0000053,Cowansville,QC,45.2,-72.75
+s0000054,Victoriaville,QC,46.05,-71.97
+s0000055,Prévost,QC,45.87,-74.08
+s0000056,Sainte-Sophie,QC,45.82,-73.9
+s0000057,Saint-Lin-Laurentides,QC,45.85,-73.77
+s0000058,Saint-Sauveur,QC,45.9,-74.17
+s0000059,Saint-Hyacinthe,QC,45.62,-72.95
+s0000060,Marieville,QC,45.43,-73.17
+s0000061,Rigaud,QC,45.48,-74.3
+s0000062,Saint-Lazare,QC,45.4,-74.13
+s0000063,Farnham,QC,45.28,-72.98
+s0000064,Thetford Mines,QC,46.1,-71.3
+s0000085,Témiscamingue,QC,47.55,-79.23
+s0000094,Mingan,QC,50.3,-64.03
+s0000097,Port-Menier,QC,49.82,-64.35
+s0000098,Salaberry-de-Valleyfield,QC,45.25,-74.13
+s0000099,Huntingdon,QC,45.08,-74.17
+s0000121,Chevery,QC,50.47,-59.6
+s0000123,Manicouagan,QC,50.64,-68.74
+s0000124,La Tuque,QC,47.43,-72.78
+s0000125,Mauricie,QC,46.8,-72.97
+s0000142,L'Assomption,QC,45.83,-73.42
+s0000143,Berthierville,QC,46.08,-73.18
+s0000144,Contrecoeur,QC,45.85,-73.23
+s0000145,Mascouche,QC,45.75,-73.6
+s0000147,Sorel-Tracy,QC,46.03,-73.12
+s0000148,Tracy,QC,46.03,-73.14
+s0000149,Le Gardeur,QC,45.75,-73.47
+s0000163,Sutton,QC,45.1,-72.62
+s0000174,Îles-de-la-Madeleine,QC,47.4,-61.78
+s0000180,Varennes,QC,45.68,-73.43
+s0000182,Donnacona,QC,46.67,-71.75
+s0000185,Beauceville,QC,46.2,-70.78
+s0000186,Lac-Mégantic,QC,45.58,-70.88
+s0000187,Saint-Georges,QC,46.12,-70.67
+s0000194,Charlevoix,QC,47.48,-70.48
+s0000197,Alma,QC,48.55,-71.65
+s0000202,Saint-Jean-sur-Richelieu,QC,45.32,-73.27
+s0000203,Saint-Luc,QC,45.35,-73.3
+s0000204,Vanier,QC,46.82,-71.26
+s0000205,Bernières,QC,46.69,-71.36
+s0000211,Saguenay,QC,48.42,-71.07
+s0000213,Mont-Tremblant,QC,46.12,-74.6
+s0000214,Sainte-Agathe,QC,46.05,-74.28
+s0000244,Maniwaki,QC,46.38,-75.97
+s0000245,La Vérendrye (Réserve faunique),QC,47.33,-77
+s0000246,Mont-Laurier,QC,46.55,-75.5
+s0000253,Rivière-du-Loup,QC,47.83,-69.53
+s0000254,Trois-Pistoles,QC,48.12,-69.18
+s0000255,Temiscouata,QC,47.68,-68.88
+s0000260,Nicolet,QC,46.22,-72.62
+s0000261,Drummondville,QC,45.88,-72.48
+s0000262,Saint-Nicéphore,QC,45.83,-72.42
+s0000268,New Carlisle,QC,48.02,-65.33
+s0000269,Bonaventure,QC,48.05,-65.48
+s0000270,Dolbeau-Mistassini,QC,48.88,-72.23
+s0000284,Laurentides (Réserve faunique),QC,47.75,-71.25
+s0000287,Parent,QC,47.92,-74.62
+s0000288,Gouin (Réservoir),QC,48.63,-74.9
+s0000290,Terrebonne,QC,45.7,-73.63
+s0000295,Tadoussac,QC,48.15,-69.72
+s0000296,Coaticook,QC,45.13,-71.8
+s0000314,Percé,QC,48.53,-64.22
+s0000315,Chandler,QC,48.35,-64.68
+s0000319,Grande-Vallée,QC,49.22,-65.13
+s0000320,Cap Chat,QC,49.1,-66.68
+s0000321,Gaspésie (Parc national),QC,48.93,-66.28
+s0000322,Sainte-Anne-Des-Monts,QC,49.13,-66.5
+s0000333,La Malbaie,QC,47.65,-70.15
+s0000334,Montmagny,QC,46.98,-70.55
+s0000335,Kamouraska,QC,47.57,-69.87
+s0000336,L'Islet,QC,47.1,-70.35
+s0000342,Baie-Saint-Paul,QC,47.45,-70.5
+s0000345,Magog,QC,45.27,-72.15
+s0000346,Trois-Rivières,QC,46.35,-72.58
+s0000347,Bécancour,QC,46.33,-72.43
+s0000348,Louiseville,QC,46.25,-72.95
+s0000353,Rouyn-Noranda,QC,48.23,-79.02
+s0000354,La Sarre,QC,48.8,-79.2
+s0000361,Deux-Montagnes,QC,45.53,-73.88
+s0000362,Vaudreuil-Dorion,QC,45.4,-74.03
+s0000363,Pincourt,QC,45.38,-73.98
+s0000393,Rimouski,QC,48.45,-68.53
+s0000406,Amqui,QC,48.47,-67.43
+s0000407,Matapedia,QC,47.97,-66.95
+s0000408,Vallée de la Matapédia,QC,48.17,-67.14
+s0000416,Lévis,QC,46.8,-71.18
+s0000459,Lanaudière,QC,46.3,-73.2
+s0000478,La Grande-Quatre,QC,53.83,-73.53
+s0000480,Kangirsuk,QC,60.02,-70.03
+s0000483,Baie-Comeau,QC,49.22,-68.15
+s0000484,Forestville,QC,48.73,-69.08
+s0000486,Bagotville,QC,48.35,-70.88
+s0000494,Blanc-Sablon,QC,51.42,-57.13
+s0000532,La Grande Rivière,QC,53.63,-77.7
+s0000535,Gaspé,QC,48.83,-64.48
+s0000536,Forillon,QC,48.84,-64.34
+s0000537,Forillon (National Park),QC,48.9,-64.35
+s0000541,Havre St-Pierre,QC,50.23,-63.6
+s0000542,Kuujjuarapik,QC,55.28,-77.75
+s0000544,Quaqtaq,QC,61.05,-69.63
+s0000551,Longueuil,QC,45.53,-73.52
+s0000552,Richelieu,QC,45.45,-73.25
+s0000553,Carignan,QC,45.45,-73.3
+s0000554,Chambly,QC,45.45,-73.28
+s0000555,Mont Saint-Hilaire,QC,45.57,-73.2
+s0000556,Otterburn Park,QC,45.53,-73.22
+s0000557,Saint-Amable,QC,45.65,-73.3
+s0000558,Saint-Basile Le Grand,QC,45.53,-73.28
+s0000559,Sainte-Julie,QC,45.58,-73.33
+s0000563,Ivujivik,QC,62.42,-77.92
+s0000574,Kangiqsujuaq,QC,61.6,-71.96
+s0000575,Lac Raglan,QC,61.66,-73.26
+s0000577,Schefferville,QC,54.8,-66.83
+s0000578,Akulivik,QC,60.8,-78.2
+s0000579,Waskaganish,QC,51.2,-78.77
+s0000580,Baie-James,QC,52,-76
+s0000586,Aupaluk,QC,59.3,-69.6
+s0000591,Kangiqsualujjuaq,QC,58.69,-65.95
+s0000598,Chibougamau,QC,49.92,-74.37
+s0000599,Umiujaq,QC,56.56,-76.55
+s0000600,Mirabel,QC,45.65,-74.08
+s0000601,Saint-Jérôme,QC,45.78,-74
+s0000602,Lachute,QC,45.65,-74.33
+s0000603,Blainville,QC,45.67,-73.88
+s0000604,Boisbriand,QC,45.62,-73.83
+s0000605,Lorraine,QC,45.68,-73.78
+s0000606,Rosemère,QC,45.63,-73.8
+s0000607,Sainte-Anne-Des-Plaines,QC,45.77,-73.82
+s0000608,Sainte-Thérèse,QC,45.63,-73.85
+s0000609,Saint-Eustache,QC,45.57,-73.9
+s0000610,Natashquan,QC,50.19,-61.82
+s0000611,Gatineau,QC,45.48,-75.65
+s0000612,Papineau,QC,45.88,-75.05
+s0000613,Pontiac,QC,46.05,-76.92
+s0000614,Val-des-Monts,QC,45.65,-75.67
+s0000615,Chelsea,QC,45.5,-75.78
+s0000617,Matagami,QC,49.75,-77.63
+s0000620,Québec,QC,46.82,-71.22
+s0000627,Inukjuak,QC,58.45,-78.1
+s0000635,Montréal,QC,45.52,-73.65
+s0000673,Roberval,QC,48.52,-72.27
+s0000674,Lac-Saint-Jean,QC,48.57,-72.23
+s0000675,Saint-Félicien,QC,48.65,-72.45
+s0000681,Sherbrooke,QC,45.4,-71.9
+s0000682,Asbestos,QC,45.77,-71.93
+s0000699,Tasiujaq,QC,58.7,-69.93
+s0000709,Shawinigan,QC,46.57,-72.75
+s0000711,Puvirnituq,QC,60.03,-77.28
+s0000712,Laval,QC,45.58,-73.75
+s0000717,Val-d'Or,QC,48.1,-77.78
+s0000718,Amos,QC,48.57,-78.12
+s0000719,Kuujjuaq,QC,58.1,-68.4
+s0000721,Joliette,QC,46.02,-73.45
+s0000738,Fermont,QC,52.78,-67.08
+s0000742,Saint-Timothée,QC,45.29,-74.04
+s0000755,Repentigny,QC,45.73,-73.47
+s0000769,Delson,QC,45.37,-73.55
+s0000783,Mont-Joli,QC,48.58,-68.18
+s0000784,Matane,QC,48.85,-67.53
+s0000793,Salluit,QC,62.2,-75.63
+s0000800,Sept-Îles,QC,50.2,-66.38
+s0000801,Port-Cartier,QC,50.03,-66.87
+s0000810,Pointe-à-la-Croix,QC,48.02,-66.68
+s0000811,Carleton-sur-Mer,QC,48.1,-66.13
+s0000067,Pelican Narrows,SK,55.19,-102.93
+s0000081,Coronach,SK,49.11,-105.51
+s0000086,Indian Head,SK,50.53,-103.67
+s0000087,Fort Qu'Appelle,SK,50.77,-103.79
+s0000095,Nipawin,SK,53.36,-104.02
+s0000113,Uranium City,SK,59.57,-108.61
+s0000133,Shaunavon,SK,49.65,-108.42
+s0000134,Eastend,SK,49.52,-108.82
+s0000157,Tisdale,SK,52.85,-104.05
+s0000158,Melfort,SK,52.86,-104.61
+s0000192,Broadview,SK,50.38,-102.58
+s0000195,Watrous,SK,51.69,-105.46
+s0000196,Humboldt,SK,52.2,-105.12
+s0000208,Southend Reindeer,SK,56.32,-103.27
+s0000209,Assiniboia,SK,49.63,-105.99
+s0000219,Leader,SK,50.89,-109.55
+s0000225,Rockglen,SK,49.18,-105.95
+s0000230,Lucky Lake,SK,50.99,-107.13
+s0000241,Waskesiu Lake,SK,53.92,-106.08
+s0000248,Maple Creek,SK,49.91,-109.48
+s0000274,Elbow,SK,51.12,-106.6
+s0000278,Wynyard,SK,51.77,-104.18
+s0000300,Rosetown,SK,51.55,-107.99
+s0000330,Spiritwood,SK,53.37,-107.52
+s0000343,Biggar,SK,52.06,-107.98
+s0000344,Scott,SK,52.37,-108.83
+s0000355,Swift Current,SK,50.29,-107.79
+s0000357,Val Marie,SK,49.25,-107.73
+s0000360,Cypress Hills (Provincial Park),SK,49.63,-109.75
+s0000369,Collins Bay,SK,58.28,-103.63
+s0000372,Weyburn,SK,49.66,-103.85
+s0000381,Last Mountain Lake (Sanctuary),SK,51.37,-105.23
+s0000387,Outlook,SK,51.49,-107.05
+s0000514,Oxbow,SK,49.23,-102.17
+s0000515,Carlyle,SK,49.64,-102.27
+s0000516,Estevan,SK,49.14,-102.99
+s0000545,Hudson Bay,SK,52.84,-102.38
+s0000576,Key Lake,SK,57.22,-105.63
+s0000581,Kindersley,SK,51.47,-109.16
+s0000589,Meadow Lake,SK,54.12,-108.44
+s0000624,Prince Albert,SK,53.22,-105.71
+s0000662,Canora,SK,51.64,-102.43
+s0000663,Yorkton,SK,51.21,-102.46
+s0000664,Kamsack,SK,51.56,-101.9
+s0000665,Melville,SK,50.93,-102.81
+s0000666,North Battleford,SK,52.76,-108.29
+s0000684,Stony Rapids,SK,59.25,-105.84
+s0000715,La Ronge,SK,55.12,-105.29
+s0000722,La Loche,SK,56.49,-109.4
+s0000723,Buffalo Narrows,SK,55.88,-108.52
+s0000733,Moosomin,SK,50.14,-101.67
+s0000743,Rosthern,SK,52.66,-106.33
+s0000788,Regina,SK,50.45,-104.61
+s0000797,Saskatoon,SK,52.14,-106.69
+s0000822,Moose Jaw,SK,50.39,-105.55
+s0000835,Lloydminster,SK,53.28,-109.98
+s0000030,Rancheria,YT,60.09,-130.6
+s0000031,Dempster (Highway),YT,66.16,-137.15
+s0000183,Haines Junction,YT,60.75,-137.51
+s0000275,Dawson,YT,64.06,-139.43
+s0000309,Rock River,YT,66.98,-136.22
+s0000349,Faro,YT,62.23,-133.36
+s0000350,Ross River,YT,61.98,-132.43
+s0000410,Teslin,YT,60.17,-132.72
+s0000421,Carmacks,YT,62.09,-136.3
+s0000505,Kluane Lake,YT,61.26,-138.77
+s0000506,Burwash Landing,YT,61.36,-138.99
+s0000593,Mayo,YT,63.59,-135.9
+s0000648,Watson Lake,YT,60.06,-128.7
+s0000751,Beaver Creek,YT,62.38,-140.88
+s0000760,Carcross,YT,60.17,-134.71
+s0000823,Old Crow,YT,67.57,-139.84
+s0000825,Whitehorse,YT,60.7,-135.08

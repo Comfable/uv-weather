@@ -1,3 +1,4 @@
+//
 var context = document.createElement('canvas').getContext('2d');
 var start = new Date();
 var lines = 16,
@@ -12,13 +13,15 @@ function capital_letter(str) {
     return str.join(" ");
 };
 
-function solarNighDay(timeZoneBadge,lat,lng) {
+function solarNighDay(timeZoneBadge,latlong) {
 	isDay = false;
 	isNight = false;
 	cloudyBadge = false;
 	sunnyDayBadge = false;
 	rainyBadge = false;
 	snowyBadge = false;
+	lat = (latlong.split(','))[0];
+	lng = (latlong.split(','))[1];
 
 	//Solar Times --------------------------------------------------------------------------------------------------------------
 		systemTime = new Date();
@@ -27,14 +30,14 @@ function solarNighDay(timeZoneBadge,lat,lng) {
 	offsetTime = DeviceTimeDifferenceFromGMT + timeZoneBadge/3600;
 		offsetUnix = offsetTime * 3600;
 	localTimeUnix = Math.round(systemTimeUnix + offsetUnix);
-
 	timesSolar = SunCalc.getTimes(localTimeUnix, lat, lng);
 		sunriseTimeSolar = timesSolar.sunrise;
 		sunsetTimeSolar = timesSolar.sunset;
 		solarNoon = timesSolar.solarNoon;
 		goldenHourEnd = timesSolar.goldenHourEnd;
 		goldenHour = timesSolar.goldenHour;
-		totalSeconds  = dayjs(dayjs.unix(sunsetTimeSolar)).diff(dayjs(dayjs.unix(sunriseTimeSolar)), 'second');
+		totalSeconds  = moment(moment.unix(sunsetTimeSolar)).diff(moment(moment.unix(sunriseTimeSolar)), 'second');
+		dayLengthHours = totalSeconds/3600;
 		totalHours = Math.floor(totalSeconds/(60*60));
 		totalSeconds = totalSeconds - (totalHours*60*60);
 		totalMinutes = Math.ceil(totalSeconds/60);
@@ -48,74 +51,191 @@ function solarNighDay(timeZoneBadge,lat,lng) {
 		nightEnds = timesSolar.nightEnd;
 
 
-		localTimeUnixDD = dayjs.unix(systemTimeUnix + offsetUnix).format('DD');
-		localTimeUnixHH = dayjs.unix(systemTimeUnix + offsetUnix).format('HH');
+		localTimeUnixDD = moment.unix(systemTimeUnix + offsetUnix).format('DD');
+		localTimeUnixHH = moment.unix(systemTimeUnix + offsetUnix).format('HH');
 
-		dawnDD = dayjs.unix(dawn + offsetUnix).format('DD');
+		dawnDD = moment.unix(sunriseTimeSolar + offsetUnix).format('DD');
 
-		localTimeUnix = dayjs.unix(systemTimeUnix + offsetUnix);
+		localTimeString = moment.unix(systemTimeUnix + offsetUnix);
 		if(localTimeUnixDD !== dawnDD) {
-			dawnDayjs = dayjs.unix(dawn + offsetUnix - 86400);
-			duskDayjs = dayjs.unix(dusk + offsetUnix - 86400);
+			dawnDayjs = moment.unix(((dawn + sunriseTimeSolar)/2) + offsetUnix - 86400);
+			duskDayjs = moment.unix(((dusk + sunsetTimeSolar)/2) + offsetUnix - 86400);
 		}
 		else{
-			dawnDayjs = dayjs.unix(dawn + offsetUnix);
-			duskDayjs = dayjs.unix(dusk + offsetUnix);
+			dawnDayjs = moment.unix(((dawn + sunriseTimeSolar)/2) + offsetUnix);
+			duskDayjs = moment.unix(((dusk + sunsetTimeSolar)/2) + offsetUnix);
 		}
 
-		if(localTimeUnix >= dawnDayjs && localTimeUnix <= duskDayjs) {
-		   	isDay = true;	
+		if(localTimeString >= dawnDayjs && localTimeString <= duskDayjs) {
+		   	isDay = true;
 		} 
 		else {
-		    isNight = true;	
+		    isNight = true;
 		}
 };
 
-function iconBadgeConvert(descriptionBadge,summaryBadge) {
-	if(descriptionBadge === "overcast clouds" || descriptionBadge === "broken clouds") {
-		iconBadge = 'cloudy';							
+
+function iconBadgeConvertCA(iconCodeCA) {
+	if(iconCodeCA == "03" || iconCodeCA == "10" || iconCodeCA == "33") {
+		iconBadge = 'cloudy';
 	}
-	else if(summaryBadge === "Ash" || summaryBadge === "Sand" || summaryBadge === "Fog" || summaryBadge === "Dust" || summaryBadge === "Haze" || summaryBadge === "Smoke" || summaryBadge === "Mist") {
-		iconBadge = 'fog';							
+	else if(iconCodeCA == "23" || iconCodeCA == "24" || iconCodeCA == "44" || iconCodeCA == "45" || iconCodeCA == "48") {
+		iconBadge = 'fog';
 	}
-	else if(summaryBadge === "Rain" || summaryBadge === "Thunderstorm" || summaryBadge === "Drizzle") {
+	else if(iconCodeCA == "06" || iconCodeCA == "07" || iconCodeCA == "11" || iconCodeCA == "12" || iconCodeCA == "13" || iconCodeCA == "19" || iconCodeCA == "28" || iconCodeCA == "36" || iconCodeCA == "37" || iconCodeCA == "38" || iconCodeCA == "39" || iconCodeCA == "46" || iconCodeCA == "47") {
 		iconBadge = 'rain'; 
 	}
-	else if(summaryBadge === "Snow") {
-		iconBadge = 'snow'; 
+	else if(iconCodeCA == "08" || iconCodeCA == "16" || iconCodeCA == "17" || iconCodeCA == "18" || iconCodeCA == "25" || iconCodeCA == "40") {
+		iconBadge = 'snow';
 	}
-	else if(summaryBadge === "Squall" || summaryBadge === "Tornado") {
-		iconBadge = 'wind'; 
+	else if(iconCodeCA == "41" || iconCodeCA == "42" || iconCodeCA == "43") {
+		iconBadge = 'wind';
 	}
-	else if(descriptionBadge === "Sleet") {
-		iconBadge = 'sleet'; 
+	else if(iconCodeCA == "14" || iconCodeCA == "15" || iconCodeCA == "26" || iconCodeCA == "27") {
+		iconBadge = 'sleet';
 	}
-	else if((descriptionBadge === "few clouds" || descriptionBadge === "scattered clouds") && isDay) {
-		iconBadge = 'partly-cloudy-day'; 
+	else if((iconCodeCA == "02" || iconCodeCA == "32") && isDay) {
+		iconBadge = 'partly-cloudy-day';
 	}
-	else if((descriptionBadge === "few clouds" || descriptionBadge === "scattered clouds") && isNight) {
-		iconBadge = 'partly-cloudy-night'; 
+	else if((iconCodeCA == "02" || iconCodeCA == "32") && isNight) {
+		iconBadge = 'partly-cloudy-night';
 	}
-	else if(summaryBadge === "Clear" && isNight) {
-		iconBadge = 'clear-night'; 
+	else if((iconCodeCA == "00" || iconCodeCA == "01" || iconCodeCA == "30" || iconCodeCA == "31" || iconCodeCA == "") && isNight) {
+		iconBadge = 'clear-night';
 	}
-	else if(summaryBadge === "Clear" && isDay) {
-		iconBadge = 'clear-day'; 
+	else if((iconCodeCA == "00" || iconCodeCA == "01" || iconCodeCA == "30" || iconCodeCA == "31" || iconCodeCA == "") && isDay) {
+		iconBadge = 'clear-day';
 	}
 
 
-	if(iconBadge === "cloudy" || iconBadge === "partly-cloudy-day" || iconBadge === "partly-cloudy-night") {
+	if(iconBadge === "cloudy" || iconBadge === "partly-cloudy-day" || iconBadge === "partly-cloudy-night" || iconBadge === "fog") {
 		cloudyBadge  = true;							
 	}
-		else if (iconBadge === "rain"){
+		else if(iconBadge === "rain") {
 		rainyBadge  = true; 
 	}
-		else if (iconBadge === "snow" || iconBadge === "sleet"){
+		else if(iconBadge === "snow" || iconBadge === "sleet") {
 		snowyBadge  = true; 
 	}	else {
 		sunnyDayBadge  = true;
 	};
+
 };
+
+
+
+function iconBadgeConvert(summaryBadge,summaryBadgeMain) {
+	if(summaryBadge === "overcast clouds" || summaryBadge === "broken clouds") {
+		iconBadge = 'cloudy';							
+	}
+	else if(summaryBadgeMain === "Ash" || summaryBadgeMain === "Sand" || summaryBadgeMain === "Fog" || summaryBadgeMain === "Dust" || summaryBadgeMain === "Haze" || summaryBadgeMain === "Smoke" || summaryBadgeMain === "Mist") {
+		iconBadge = 'fog';							
+	}
+	else if(summaryBadgeMain === "Rain" || summaryBadgeMain === "Thunderstorm" || summaryBadgeMain === "Drizzle") {
+		iconBadge = 'rain'; 
+	}
+	else if(summaryBadgeMain === "Snow") {
+		iconBadge = 'snow'; 
+	}
+	else if(summaryBadgeMain === "Squall" || summaryBadgeMain === "Tornado") {
+		iconBadge = 'wind'; 
+	}
+	else if(summaryBadge === "Sleet") {
+		iconBadge = 'sleet'; 
+	}
+	else if((summaryBadge === "few clouds" || summaryBadge === "scattered clouds") && isDay) {
+		iconBadge = 'partly-cloudy-day'; 
+	}
+	else if((summaryBadge === "few clouds" || summaryBadge === "scattered clouds") && isNight) {
+		iconBadge = 'partly-cloudy-night'; 
+	}
+	else if((summaryBadgeMain === "Clear" && isNight)) {
+		iconBadge = 'clear-night'; 
+	}
+	else if(summaryBadgeMain === "Clear" && isDay) {
+		iconBadge = 'clear-day'; 
+	}
+
+
+	if(iconBadge === "cloudy" || iconBadge === "partly-cloudy-day" || iconBadge === "partly-cloudy-night" || iconBadge === "fog") {
+		cloudyBadge  = true;							
+	}
+		else if(iconBadge === "rain") {
+		rainyBadge  = true; 
+	}
+		else if(iconBadge === "snow" || iconBadge === "sleet") {
+		snowyBadge  = true; 
+	}	else {
+		sunnyDayBadge  = true;
+	};
+
+};
+
+
+function iconBadgeConvertDS(iconBadge) {
+	if(iconBadge === "cloudy" || iconBadge === "partly-cloudy-day" || iconBadge === "partly-cloudy-night" || iconBadge === "fog") {
+			cloudyBadge = true;							
+		}
+			else if(iconBadge=== "rain") {
+			rainyBadge = true; 
+		}
+			else if(iconBadge=== "snow" || iconBadge=== "sleet") {
+			snowyBadge = true; 
+		}			
+			else{
+			sunnyDayBadge = true;
+	};
+};
+
+
+function iconBadgeConvertUS(iconUS) {
+	if(iconUS === "bkn" || iconUS === "ovc" || iconUS === "wind_bkn" || iconUS === "wind_ovc" || iconUS === "tsra" || iconUS === "tsra_sct") {
+		iconBadge = 'cloudy';							
+	}
+	else if(iconUS === "dust" || iconUS === "smoke" || iconUS === "haze" || iconUS === "fog") {
+		iconBadge = 'fog';							
+	}
+	else if(iconUS === "rain_snow" || iconUS === "rain_fzra" || iconUS === "rain" || iconUS === "rain_showers" || iconUS === "rain_showers_hi") {
+		iconBadge = 'rain'; 
+	}
+	else if(iconUS === "snow" || iconUS === "snow_fzra" || iconUS === "blizzard") {
+		iconBadge = 'snow'; 
+	}
+	else if(iconUS === "wind_skc" || iconUS === "wind_few" || iconUS === "tsra_hi" || iconUS === "tornado" || iconUS === "hurricane" || iconUS === "tropical_storm") {
+		iconBadge = 'wind'; 
+	}
+	else if(iconUS === "rain_sleet" || iconUS === "fzra" || iconUS === "snow_sleet" || iconUS === "sleet") {
+		iconBadge = 'sleet'; 
+	}
+	else if((iconUS === "wind_sct" || iconUS === "sct") && isDay) {
+		iconBadge = 'partly-cloudy-day'; 
+	}
+	else if((iconUS === "wind_sct" || iconUS === "sct") && isNight) {
+		iconBadge = 'partly-cloudy-night'; 
+	}
+	else if((iconUS === "skc" || iconUS === "few" || iconUS === "hot" || iconUS === "cold" || iconUS === "") && isNight) {
+		iconBadge = 'clear-night'; 
+	}
+	else if((iconUS === "skc" || iconUS === "few" || iconUS === "hot" || iconUS === "cold" || iconUS === "") && isDay) {
+		iconBadge = 'clear-day'; 
+	}
+
+
+	if(iconBadge === "cloudy" || iconBadge === "partly-cloudy-day" || iconBadge === "partly-cloudy-night" || iconBadge === "fog") {
+		cloudyBadge  = true;							
+	}
+		else if(iconBadge === "rain") {
+		rainyBadge  = true; 
+	}
+		else if(iconBadge === "snow" || iconBadge === "sleet") {
+		snowyBadge  = true; 
+	}	
+		else{
+		sunnyDayBadge  = true;
+	};
+
+};
+
 
 function badgeBackgroundImage() {
 	if(isDay && sunnyDayBadge && temperatureFbadge >= 50 && currentWhiteIcon == 0) {
@@ -238,6 +358,7 @@ function animatedBadge(isDayBadge,sunnyDayBadge,cloudyBadge,rainyBadge,snowyBadg
 	context.restore();
 };
 
+
 function largBadgeNumber(displayNumber, lightBadge) {
     var ctx = document.createElement('canvas').getContext('2d');
     ctx.font = 'bold 18px Helvetica';
@@ -262,15 +383,16 @@ function largBadgeNumber(displayNumber, lightBadge) {
     });
 };
 
+
 function f2c(TempF) {
 	var TempC = Math.round((Number(TempF) - 32) / 1.8);
-	return (TempC);
+	return TempC;
 };
 
 
 function c2f(TempC) {
 	var TempF = Math.round((1.8 * Number(TempC)) + 32);
-	return (TempF);
+	return TempF;
 };
 
 
@@ -332,50 +454,6 @@ function uv_adj_daily(icon,cloudCover) {
 };
 
 
-function update_tomorrow_is_f(forecast_1_tempF,forecast_0_tempF) {
-	temp_difference = (parseInt(Math.round(forecast_1_tempF)) - parseInt(Math.round(forecast_0_tempF)));
-
-	if(temp_difference >= 2.4) {
-		update_tomorrow_f = 'Tomorrow ' + Math.round(temp_difference)  + "°"+ ' warmer than today.'; 
-	}
-	else if(temp_difference > -2.4 && temp_difference < 2.4) {
-			if(forecast_1_tempF >= 64) {
-				update_tomorrow_f = 'Tomorrow is as warm as today.'; 
-			}
-			else {
-				update_tomorrow_f = 'Tomorrow is as cool as today.'; 
-			}
-	}
-	else if(temp_difference <= -2.4) {
-		update_tomorrow_f = 'Tomorrow ' + Math.round(temp_difference)*-1 + "°"+' cooler than today.';  
-	}
-	else {
-	 }
-};
-
-
-function update_tomorrow_is_c(forecast_1_tempF,forecast_0_tempF) {
-	temp_difference = (parseInt(Math.round(forecast_1_tempF)) - parseInt(Math.round(forecast_0_tempF)));
-
-	if(temp_difference >= 2.4) {
-		update_tomorrow_c = 'Tomorrow ' + Math.round(temp_difference * 5/9)  + "°"+ ' warmer than today.'; 
-		}
-	else if(temp_difference > -2.4 && temp_difference < 2.4) {
-			if(forecast_1_tempF >= 64) {
-				update_tomorrow_c = 'Tomorrow is as warm as today.'; 
-			}
-			else {
-				update_tomorrow_c = 'Tomorrow is as cool as today.'; 
-			}
-	}
-	else if(temp_difference <= -2.4) {
-		update_tomorrow_c = 'Tomorrow ' + Math.round(temp_difference * -5/9) + "°"+' cooler than today.';  
-	}
-	else {
-	 }
-};
-
-
 function degToCompass(num) { 
     while( num < 0 ) num += 360 ;
     while( num >= 360 ) num -= 360 ; 
@@ -385,21 +463,6 @@ function degToCompass(num) {
     return arr[ Math.abs(val) ] ;
 };
 
-
-function weatherEmoji(icon) {
-	if (icon == 'clear-day') {currentEmoji = '😎'}
-	else if (icon == 'clear-night') {currentEmoji = '🌚'}
-	else if  (icon == 'rain') {currentEmoji = '☔️'}
-	else if (icon == 'snow') {currentEmoji = '❄️'}
-	else if (icon == 'sleet') {currentEmoji = '😱'}
-	else if (icon == 'wind') {currentEmoji = '👻'}
-	else if (icon == 'fog') {currentEmoji = '🌫'}
-	else if (icon == 'cloudy') {currentEmoji = '☁️'}
-	else if (icon == 'partly-cloudy-night') {currentEmoji = '☁️'}
-	else if (icon == 'partly-cloudy-day') {currentEmoji = '🌤'}
-	else {currentEmoji = '😎'}
-	return currentEmoji;
-};
 
 
 function compareValues(key, order = 'asc') {
@@ -424,4 +487,98 @@ function compareValues(key, order = 'asc') {
       (order === 'desc') ? (comparison * -1) : comparison
     );
   };
-}
+};
+
+
+function xml2json(srcDOM) {
+  let children = [...srcDOM.children];  
+  if (!children.length) {
+    return srcDOM.innerHTML
+  }
+  
+  let jsonResult = {};  
+  for (let child of children) {    
+    let childIsArray = children.filter(eachChild => eachChild.nodeName === child.nodeName).length > 1;
+    if (childIsArray) {
+      if (jsonResult[child.nodeName] === undefined) {
+        jsonResult[child.nodeName] = [xml2json(child)];
+      } else {
+        jsonResult[child.nodeName].push(xml2json(child));
+      }
+    } else {
+      jsonResult[child.nodeName] = xml2json(child);
+    }
+  }  
+  return jsonResult;
+};
+
+
+function closestLocation(targetLocation, locationData) {
+    function vectorDistance(dx, dy) {
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    function locationDistance(location1, location2) {
+        var dx = location1.latitude - location2.latitude,
+            dy = location1.longitude - location2.longitude;
+
+        return vectorDistance(dx, dy);
+    }
+
+    return locationData.reduce(function(prev, curr) {
+        var prevDistance = locationDistance(targetLocation , prev),
+            currDistance = locationDistance(targetLocation , curr);
+        return (prevDistance < currDistance) ? prev : curr;
+    });
+};
+
+
+function cloudAdjUV(iconBadge,cloudCoverBadge) {
+	if(iconBadge === "rain" || iconBadge === "sleet" || iconBadge === "snow") {
+		cloudAdj = 0.31;
+	}
+	else if(cloudCoverBadge < 20) {
+		cloudAdj = 1;
+	}
+	else if(cloudCoverBadge >= 20 && cloudCoverBadge < 70) {
+		cloudAdj = 0.89;
+	}
+	else if(cloudCoverBadge >= 70 && cloudCoverBadge < 90) {
+		cloudAdj = 0.73;
+	}
+	else if(cloudCoverBadge >= 90) {
+		cloudAdj = 0.31;
+	}
+	else {cloudAdj = 1;
+	}
+	return cloudAdj;
+};
+
+
+function uv_note(uv1) {
+	if(isNight) {
+	  current_uv_note = (" (night)");
+	  }
+	else if(uv1 >= 0 && uv1 <= 2) {
+	  current_uv_note = (" (Low)");
+	  }
+	else if(uv1 >= 3 && uv1 <= 5) {
+	  current_uv_note = (" (Moderate)");
+	  }
+	else if(uv1 >= 6 && uv1 <= 7) {
+	  current_uv_note = (" (High)");
+	  }
+	else if(uv1 >= 8 && uv1 <= 10) {
+	  current_uv_note = (" (Very High)");
+	  }
+	else if(uv1 >= 11) {
+	  current_uv_note = (" (Extreme)");
+	  } 
+	return current_uv_note;     
+};
+
+
+function toTimestamp(strDate){
+  var datum = Date.parse(strDate);
+  return datum/1000;
+};

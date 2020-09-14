@@ -36,14 +36,16 @@
   left: 0;
   position: fixed;
   top: 0;
-  transition: opacity 1.750s linear;
+  transition-delay: .25s;
+  transition: opacity 2.75s linear;
   width: 100%;
   z-index: 99999;
   opacity: 1;
-  transform: opacity 1s linear;
+  /*transform: opacity 1.750s linear;*/
 }
 
 .preloader.loaded{
+  transition-delay: .125s;
   opacity: 0;
   pointer-events: none;
 }
@@ -522,6 +524,7 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 
 .current_accufeel_Class {
 	position: relative;
+	width: 70px;
 }
 .location_Class {
 	position: relative;
@@ -836,8 +839,8 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 }
 .forecast_day_Class {
 	position: relative;
-	width: 160px;
-	max-width: 160px;
+	width: 144px;
+	max-width: 144px;
 	display: inline-block;
 	text-align: left;
 	font-weight: 250;
@@ -898,7 +901,7 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 	font-weight: 250;
 	font-size: 15px;
 	padding-right: 3px;
-	padding-left: 4px;
+	padding-left: 14px;
 }
 .forecast_icon_Class {
 	position: relative;
@@ -989,7 +992,9 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
     white-space: normal !important;
 }
 .title_subtitle_modal_Class {
-	position: relative;
+	position: relative;	
+	display: block;
+	white-space: normal;
 	text-align: center;
 	font-weight: 250;
 	font-size: 12px;
@@ -1090,8 +1095,8 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 .forecast_temp_min_modal_Class {
 	position: relative;
 	display: inline-block;
-	width: 20px;
-	max-width: 20px;
+	width: 23px;
+	max-width: 23px;
 	text-align: right;
 	font-weight: 250;
 	font-size: 14px;
@@ -1193,7 +1198,7 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 	 text-align: left;
 	 padding: 10px;
 	 border-radius: 3px;
-	 z-index: 16000;
+	 z-index: 106000;
 	 opacity: 0;
 	 transition: opacity .6s;
 	 font-size: 12px;
@@ -1201,7 +1206,8 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
  }
  .tooltip:hover .tooltiptext {
 	 visibility: visible;
-	 opacity: 1;
+	 opacity: 1!important;
+	 background-color: #000000;
  }
  .tooltip-top {
 	 bottom: -50%;
@@ -1230,6 +1236,16 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 	 padding-bottom: 10 !important;
 	 padding-top: 10px !important;
 	 z-index: 15000;
+ }
+   .tooltip-bottom-interval {
+	 top: 15px;
+	 left: 0px;
+	 margin-bottom: 0 !important;
+	 margin-top: 0 !important;
+	 padding-bottom: 10 !important;
+	 padding-top: 10px !important;
+	 z-index: 105000;
+	 opacity: 1!important;
  }
  .tooltip-right {
 	 top: -50%;
@@ -2005,6 +2021,7 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 }
 
 .setting_title_section_unit_Class {
+	position: relative;	
 	margin-bottom: 10px;
 	margin-top: 10px;
 }
@@ -2012,7 +2029,7 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 .setting_section_badge_Class {
 	position: absolute;
 	left: 25px;
-	top: 175px;
+	top: 180px;
 	width: 260px;
 	margin-top: 10px;
 }
@@ -2033,9 +2050,13 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 .setting_section_theme_Class {
 	position: absolute;
 	left: 25px;
-	top: 330px;
+	top: 315px;
 }
 
+.setting_unit_row_2{
+	position: relative;
+	margin-top: 10px;
+}
 
 
 .setting_section_badge_color_Class {
@@ -2058,18 +2079,30 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 .setting_temp_section_Class {
 	display: inline-block;
   	position: relative;
-  	margin-left: 20px;
+  	margin-left: 9px;
+}
+#setting_defualt_button_kmh_all {
+	margin-left: -2px;
+}
+#setting_defualt_button_c_all {
+	margin-left: 9px;
+}
+.setting_wind_section_Class {
+	display: inline-block;
+  	position: relative;
+  	margin-left: 11px;
 }
 .setting_time_section_Class {
 	display: inline-block;
   	position: relative;
-  	margin-left: 44px;
+  	margin-left: 34px;
 }
 
 .setting_interval_section_Class {
 	display: inline-block;
   	position: relative;
-  	margin-left: 5px;
+  	margin-left: 0px;
+  	margin-top: 10px;
 }
 
 .F_C_Class {
@@ -2266,7 +2299,7 @@ i {
 
 .setting_title_section_time_Class {
 	position: relative;
-	margin-bottom: 30px;
+	margin-bottom: 20px;
 	margin-top: 10px;
 }
 
@@ -2360,7 +2393,7 @@ input[type=radio]:checked ~ label{
 }
 
 .setting_section_theme_Class {
-	margin-top: 10px;
+	margin-top: 30px;
 }
 
 .setting_section_unit_Class {
@@ -2438,15 +2471,17 @@ input[type=radio]:checked ~ label{
   	margin-right: 25px;
   	padding-right: 25px;
   	margin-top: 10px;
-  	margin-bottom: 30px;
+  	margin-bottom: 20px;
 }
 
 .hr_forecast_setting {
+	position: relative;
     height: 1px;
     border: 0;
     background: var(--bg-color-hr); 
     width: 114% !important;
     margin-left: -7% !important;
+    z-index: 1000;
 }
 
 ul li label {
@@ -2652,7 +2687,7 @@ ul li {
     border-radius: 3px;
     cursor: pointer;
     text-decoration: none;
-    width: 170px;
+    width: 210px;
     z-index: 2147483647;
     font-size: 13px;
     cursor: default;
@@ -2723,4 +2758,24 @@ ul li {
     left: 0;
     right: 0;
     max-width: fit-content;
+}
+
+.mapboxgl-popup-close-button {
+  display: none;
+}
+
+.mapboxgl-popup-content {
+  font: 250 13px/18px 'Helvetica Neue';
+  padding: 0;
+  width: 210px;
+  color: #000000;
+  white-space: nowrap;
+  background-color: rgba(255, 255, 255, 1)!important;
+  box-shadow: 0 3px 6px -1px rgba(0, 0, 0, 0.12), 0 10px 36px -4px rgba(77, 96, 232, 0.3);
+}
+/*.mapboxgl-popup-tip {
+  display: none!important;
+}*/
+.mapboxgl-popup-content-wrapper {
+  padding: 10%;
 }

@@ -14,14 +14,19 @@
 
   <script src="/library/suncalc.min.js"></script>  
   <script src="/library/util.js"></script>
-  <script src="/library/dayjs.min.js"></script>
   <script src="/library/accufeel.min.js"></script>
   <script src="/js/background.js"></script>
   <script rel="preload" src="/js/popup.js"></script>
   <script src="/library/toastify.js"></script>
+  <script src="/library/weatherCA.js"></script>
+  <script src="/library/weatherDS.js"></script>
+  <script src="/library/weatherUS.js"></script>
+  <script src="/library/weatherOWM.js"></script>  
+  <script src="/library/papaparse.min.js"></script>
+  <script src="/library/moment.js"></script>  
+  <script src="/library/moment-timezone-with-data-10-year-range.js"></script>
 
-
-  <script src="/library/CountUp.js"></script>
+  <script src="/library/countup.js"></script>
   <link rel="stylesheet" href="/popup.css" media="screen" />
   <script type="text/javascript" src="/library/gtm.js"></script>
 
@@ -199,7 +204,7 @@
   <div id="group_uv" class="group_uv_Class">
     <div id="current_uv_group" class="current_uv_group_Class"> <span id="current_uv_title" class="current_uv_title_Class">UV Index</span>
       <span id="current_uv" class="current_uv_Class">0</span>
-      <span id="current_uv_note" class="current_uv_note_Class">(-)</span>
+      <!-- <span id="current_uv_note" class="current_uv_note_Class">(-)</span> -->
     </div>
 
     <div id="icon_uv_top" class="icon_uv_top_Class">
@@ -279,8 +284,8 @@
     </a>
   </div>
 
-    <div id="forecast_tomorrow" class="forecast_tomorrow_Class"> <span>Forecast Tomorrow</span>
-    </div>
+<!--     <div id="forecast_tomorrow" class="forecast_tomorrow_Class"> <span>Forecast Tomorrow</span>
+    </div> -->
 
 
   <div id="icon_close_box" class="icon_close_box_Class">
@@ -1797,20 +1802,47 @@
 
             <div class="setting_section_unit_Class">
               <div class="setting_title_section_general_Class" id="setting_badge">GENERAL</div>
-                <span class="setting_title_section_unit_Class" id="setting_unit_badge">Temperature Unit</span>
-                          <span class="setting_temp_section_Class">
-                              <span id="setting_defualt_button_f_all" class="setting_section_iner_Class">
-                                <input type="radio" id="setting_defualt_button_f" name="radioTemp" />
-                                <span class="check"></span>
-                                <label for="setting_defualt_button_f">°F</label>
-                              </span>
-                              
-                              <span id="setting_defualt_button_c_all" class="setting_section_iner_Class">
-                                <input type="radio" id="setting_defualt_button_c" name="radioTemp" />
-                                <span class="check"></span>
-                                <label for="setting_defualt_button_c">°C</label>
-                              </span>
+
+                    <div class="setting_unit_row_1">  
+                      <span class="setting_title_section_unit_Class" id="setting_unit_badge">Temperature Unit</span>
+                        <span class="setting_temp_section_Class">
+                          <span id="setting_defualt_button_f_all" class="setting_section_iner_Class">
+                            <input type="radio" id="setting_defualt_button_f" name="radioTemp" />
+                            <span class="check"></span>
+                            <label for="setting_defualt_button_f">°F</label>
                           </span>
+                          
+                          <span id="setting_defualt_button_c_all" class="setting_section_iner_Class">
+                            <input type="radio" id="setting_defualt_button_c" name="radioTemp" />
+                            <span class="check"></span>
+                            <label for="setting_defualt_button_c">°C</label>
+                          </span>
+                        </span>
+                    </div>
+
+                    <div class="setting_unit_row_2">       
+                    <span class="setting_title_section_unit_Class" id="setting_wind_unit_badge">Wind Speed Unit </span>
+                        <span class="setting_wind_section_Class">
+                          <span id="setting_defualt_button_mph_all" class="setting_section_iner_Class">
+                            <input type="radio" id="setting_defualt_button_mph" name="radioWind" />
+                            <span class="check"></span>
+                            <label for="setting_defualt_button_mph">mph</label>
+                          </span>
+                          
+                          <span id="setting_defualt_button_kmh_all" class="setting_section_iner_Class">
+                            <input type="radio" id="setting_defualt_button_kmh" name="radioWind" />
+                            <span class="check"></span>
+                            <label for="setting_defualt_button_kmh">km/h</label>
+                          </span>
+
+                          <span id="setting_defualt_button_ms_all" class="setting_section_iner_Class">
+                            <input type="radio" id="setting_defualt_button_ms" name="radioWind" />
+                            <span class="check"></span>
+                            <label for="setting_defualt_button_ms">m/s</label>
+                          </span>
+                        </span>
+                    </div>
+
               <div class="setting_title_section_time_Class">            
                 <span id="setting_time_badge">Time Format</span>
                   <span class="setting_time_section_Class">
@@ -1858,26 +1890,42 @@
                   </div>
 
                   <div class="setting_section_badge_interval_Class">
-                      <span class="setting_title_section_badge_interval_Class">Update Interval (min)</span>
-                        <span class="setting_interval_section_Class">
+                      <div class="setting_title_section_badge_interval_Class">Update Interval (minutes)</div>
+                        <div class="setting_interval_section_Class">
+
+                            <span id="setting_defualt_button_15_all" class="setting_section_iner_Class tooltip">
+                              <input type="radio" id="setting_defualt_button_15" name="radioInterval" />
+                              <span class="check tooltip setting_defualt_button_15_sub"></span>
+                              <label for="setting_defualt_button_15_label" class="setting_defualt_button_15_sub_label">15</label>
+                                <span class="tooltiptext tooltip-bottom-interval tooltip-bottom-interval-display-15">US and Canada only</span>                              
+                            </span>
+
+                            <span id="setting_defualt_button_30_all" class="setting_section_iner_Class tooltip">
+                              <input type="radio" id="setting_defualt_button_30" name="radioInterval" />
+                              <span class="check tooltip setting_defualt_button_30_sub"></span>
+                              <label for="setting_defualt_button_30_label" class="setting_defualt_button_30_sub_label">30</label>
+                                <span class="tooltiptext tooltip-bottom-interval tooltip-bottom-interval-display-30">US and Canada only</span>
+                            </span>
+
                             <span id="setting_defualt_button_60_all" class="setting_section_iner_Class">
                               <input type="radio" id="setting_defualt_button_60" name="radioInterval" />
                               <span class="check"></span>
-                              <label for="setting_defualt_button_60">60</label>
+                              <label for="setting_defualt_button_60_label">60</label>
                             </span>
                             
                             <span id="setting_defualt_button_90_all" class="setting_section_iner_Class">
                               <input type="radio" id="setting_defualt_button_90" name="radioInterval" />
                               <span class="check"></span>
-                              <label for="setting_defualt_button_90">90</label>
+                              <label for="setting_defualt_button_90_label">90</label>
                             </span>
 
                             <span id="setting_defualt_button_120_all" class="setting_section_iner_Class">
                               <input type="radio" id="setting_defualt_button_120" name="radioInterval" />
                               <span class="check"></span>
-                              <label for="setting_defualt_button_120">120</label>
+                              <label for="setting_defualt_button_120_label">120</label>
                             </span>
-                          </span>                  
+
+                          </div>                  
                     </div>
               <hr class="hr_forecast_setting">
               </div>

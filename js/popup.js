@@ -1,6 +1,5 @@
 //
 document.addEventListener("DOMContentLoaded", function() {
-
 const options = {duration: 0.9,};
 const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
 var element = document.getElementById("home_icon_popup_page");
@@ -19,7 +18,6 @@ var mapInner = document.getElementById("mapWeather");
 var mapTitle = document.getElementById("map_popup_title");
 var searchInner = document.getElementById("mapSearch");
 var searchTitle = document.getElementById("search_popup_title");
-//var searchOnMap = document.getElementById("click_on_map");
 var modalCurrent = document.getElementById("currentReport_popup");
 var modalSearch = document.getElementById("search_popup");
 var F_C_display = document.getElementById("F_C"); 
@@ -27,6 +25,15 @@ var F_C_display = document.getElementById("F_C");
 var C_sign_elementStyle = document.getElementById('C_sign').style;
 var F_sign_elementStyle = document.getElementById('F_sign').style;
 const toggleSwitchBadgeSize = document.querySelector('.badge_size_switch_setting input[type="checkbox"]');
+var loadingIconBadgeDelay = 1;
+
+var mapStyleLight = 'mapbox://styles/mapbox/light-v10';
+var weathermapStyleLight = 'mapbox://styles/mapbox/light-v10';
+var mapStyleDark = 'mapbox://styles/mapbox/dark-v10';
+var weathermapStyleDark = 'mapbox://styles/mapbox/dark-v10';
+
+mapStyle = 'mapbox://styles/mapbox/light-v10';
+weathermapStyle = 'mapbox://styles/mapbox/light-v10';
 
 const preloader = document.querySelector('.preloader');
 const fadeEffect = setInterval(() => {
@@ -42,32 +49,18 @@ const fadeEffect = setInterval(() => {
 
 var locationToast = Toastify({
  className: "locationToast",
- text: "Change your location here →",
- //destination: 'https://chrome.google.com/webstore/detail/coronavirus-live-status-c/ilfokbeknllmcepedkagnjciemcjncpc/reviews',
- //newWindow: true,
+ text: "Get data specific to your location →",  //Change your location here
  gravity: 'top',
  position: 'right',
  close: false,
  stopOnFocus: false,
  backgroundColor: '#3B4149',
- duration: 5000,
- //avatar: '/coronavirus_128.png'
- // callback: function(){
- // }
+ duration: 60000,
 })
 
-var searchToast = Toastify({
- className: "searchToast",
- text: "If your city isn't on the list, <br>double click on the map to find the location. ",
- //destination: 'https://chrome.google.com/webstore/detail/coronavirus-live-status-c/ilfokbeknllmcepedkagnjciemcjncpc/reviews',
- //newWindow: true,
- gravity: 'bottom',
- position: 'right',
- close: false,
- stopOnFocus: false,
- backgroundColor: '#3B4149',
- duration: 8000,
-})
+version_manifest = chrome.runtime.getManifest().version;
+document.querySelector("#title_version_setting").textContent = 'Version ' + version_manifest;
+document.getElementById("preload_body").style.display = "block";
 
 chrome.storage.local.get('firstTimePopup', function(data) {
   if(typeof data.firstTimePopup == 'undefined') {
@@ -82,384 +75,364 @@ chrome.storage.local.get('firstTimePopup', function(data) {
   }
 });
 
+
 chrome.storage.local.set({'firstTimeSaerchPopupInSession': 0});
 
-chrome.storage.local.get(['latlong', 'city', 'country'], function(data) {
-  latandlong = data.latlong;
-  city = data.city;
-  country = data.country;
-  popupPage(city,latandlong,country);
+chrome.storage.local.get(['IntervalUpdate', 'setSettingUT', 'country'], function(data) {
+   if(data.country == "US" || data.country == "us" || data.country == "United States of America" || data.country == "CA" || data.country == "ca" || data.country == "Canada"){
+     document.querySelector(".setting_defualt_button_30_sub").style.opacity = "1";
+     document.querySelector(".setting_defualt_button_15_sub").style.opacity = "1";
+     document.querySelector(".setting_defualt_button_30_sub_label").style.opacity = "1";
+     document.querySelector(".setting_defualt_button_15_sub_label").style.opacity = "1";     
+     document.getElementById("setting_defualt_button_30_all").style.pointerEvents = "auto";
+     document.getElementById("setting_defualt_button_15_all").style.pointerEvents = "auto";
+    }
+    else{
+     document.querySelector(".setting_defualt_button_30_sub_label").style.opacity = ".3";
+     document.querySelector(".setting_defualt_button_15_sub_label").style.opacity = ".3";
+     document.querySelector(".setting_defualt_button_30_sub").style.opacity = ".3";
+     document.querySelector(".setting_defualt_button_15_sub").style.opacity = ".3";
+    }
+
+  if(data.IntervalUpdate == "120") {
+    document.getElementById("setting_defualt_button_120").checked = true;
+  }
+  else if(data.IntervalUpdate == "90") {
+    document.getElementById("setting_defualt_button_90").checked = true;
+  }
+  else if(data.IntervalUpdate == "60") {
+    document.getElementById("setting_defualt_button_60").checked = true;
+  }
+  else if(data.IntervalUpdate == "30" && data.setSettingUT == 't' && (data.country == "US" || data.country == "us" || data.country == "United States of America" || data.country == "CA" || data.country == "ca" || data.country == "Canada") ) {
+    document.getElementById("setting_defualt_button_30").checked = true;
+    document.querySelector(".setting_defualt_button_30_sub").style.opacity = "1";
+    document.querySelector(".setting_defualt_button_30_sub_label").style.opacity = "1";
+    document.getElementById("setting_defualt_button_30_all").style.pointerEvents = "auto";    
+  }
+  else if(data.IntervalUpdate == "15" && data.setSettingUT == 't' && (data.country == "US" || data.country == "us" || data.country == "United States of America" || data.country == "CA" || data.country == "ca" || data.country == "Canada") ) {
+    document.getElementById("setting_defualt_button_15").checked = true;
+    document.querySelector(".setting_defualt_button_15_sub").style.opacity = "1";
+    document.querySelector(".setting_defualt_button_15_sub_label").style.opacity = "1"; 
+    document.getElementById("setting_defualt_button_15_all").style.pointerEvents = "auto";       
+  }
+})
+
+chrome.storage.local.get('windUnit', function(data) {
+  if(data.windUnit == "mph" || typeof(data.windUnit) == 'undefined') {
+    document.getElementById("setting_defualt_button_mph").checked = true;
+  } 
+  else if(data.windUnit == "kmh") {
+    document.getElementById("setting_defualt_button_kmh").checked = true;
+  }
+  else if(data.windUnit == "ms") {
+    document.getElementById("setting_defualt_button_ms").checked = true;
+  }
+})
+
+chrome.storage.local.get('closeAds', function(data) {
+  if(data.closeAds == 1) {
+    var donateButton = document.getElementById("donate_button");
+    var donateClose = document.getElementById("icon_close_box");
+    var donateCard = document.getElementById("cardMain");
+    donateButton.style.display = "none";
+    donateClose.style.display = "none";
+    donateCard.style.display = "none";
+  }
+});
+
+chrome.storage.local.get('badgeSize', function(data) {
+  if(data.badgeSize) {
+      if(data.badgeSize === '1') {
+          toggleSwitchBadgeSize.checked = true;
+          chrome.storage.local.set({'badgeSize': '1'});
+      }
+      else {
+          toggleSwitchBadgeSize.checked = false;
+          chrome.storage.local.set({'badgeSize': '0'});
+      }
+  }
+  function switchBadgeSize(e) {
+    if(e.target.checked) {
+      chrome.storage.local.set({'badgeSize': '1'});
+      document.getElementById("checkbox_largIcon").checked = true;
+      document.getElementById("checkbox_largIcon").disabled = true;
+      updateBadge();
+      delayButtonBadgeSize();
+      delayButtonSetting();
+      delayReleaseButtonSetting();
+    }
+    else {
+      chrome.storage.local.set({'badgeSize': '0'});
+      document.getElementById("checkbox_largIcon").checked = false;
+      document.getElementById("checkbox_largIcon").disabled = true;
+      updateBadge();
+      delayButtonBadgeSize();
+      delayButtonSetting();
+      delayReleaseButtonSetting();
+    }    
+  }
+  toggleSwitchBadgeSize.addEventListener('change', switchBadgeSize, false);
+});
+
+sidebarMenu
+
+const toggleSwitchAnimatedIcon = document.querySelector('.theme-switch_setting_animated_icon input[type="checkbox"]');
+chrome.storage.local.get('animatedIcon', function(data) {
+  currentAnimatedIcon = data.animatedIcon;
+
+    if(currentAnimatedIcon) {      
+        if(currentAnimatedIcon === '1') {
+            toggleSwitchAnimatedIcon.checked = true;
+            chrome.storage.local.set({'animatedIcon': '1'});
+        }
+        else {
+            chrome.storage.local.set({'animatedIcon': '0'});
+        }
+    }
+    else {
+            toggleSwitchAnimatedIcon.checked = true;
+            chrome.storage.local.set({'animatedIcon': '1'});
+    }
+
+  function switchAnimatedIcon(e) {
+    if(e.target.checked) {
+      chrome.storage.local.set({'animatedIcon': '1'});
+      document.getElementById("checkbox_animatedIcon").checked = true;
+      document.getElementById("checkbox_animatedIcon").disabled = true;
+      iconCurrent_animated();
+      delayButtonAnimatedIcon();
+    }
+    else {
+      chrome.storage.local.set({'animatedIcon': '0'});
+      document.getElementById("checkbox_animatedIcon").checked = false;
+      document.getElementById("checkbox_animatedIcon").disabled = true;
+      iconCurrent();
+      delayButtonAnimatedIcon();
+    }    
+  }
+  toggleSwitchAnimatedIcon.addEventListener('change', switchAnimatedIcon, false);
+});
+
+const toggleSwitchWhiteIcon = document.querySelector('.theme-switch_setting input[type="checkbox"]');
+chrome.storage.local.get('whiteIcon', function(data) {
+  currentWhiteIcon = data.whiteIcon;
+    if(currentWhiteIcon) {      
+        if(currentWhiteIcon === '1') {
+            toggleSwitchWhiteIcon.checked = true;
+            chrome.storage.local.set({'whiteIcon': '1'});
+        }
+        else {
+            chrome.storage.local.set({'whiteIcon': '0'});
+        }
+    }
+
+    if((window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) && (typeof currentWhiteIcon == 'undefined') || currentWhiteIcon == 'undefined') {
+        document.getElementById("checkbox_whiteIcon").checked = true;
+    }
+    else if((window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) && (typeof currentWhiteIcon == 'undefined') || currentWhiteIcon == 'undefined') {
+        document.getElementById("checkbox_whiteIcon").checked = false;
+    }
+
+  function switchWhiteIcon(e) {
+    if(e.target.checked) {
+      chrome.storage.local.set({'whiteIcon': '1'});
+      document.getElementById("checkbox_whiteIcon").checked = true;
+      document.getElementById("checkbox_whiteIcon").disabled = true;
+        updateBadge();
+        delayButtonWhiteIcon();
+    }
+    else {
+      chrome.storage.local.set({'whiteIcon': '0'});
+      document.getElementById("checkbox_whiteIcon").checked = false;
+      document.getElementById("checkbox_whiteIcon").disabled = true;
+      updateBadge();
+      delayButtonWhiteIcon();
+    }    
+  }
+  toggleSwitchWhiteIcon.addEventListener('change', switchWhiteIcon, false);
 });
 
 
-function popupPage(city,latandlong,country) {
-  cityName = (city.split('"'))[1].charAt(0).toUpperCase() + (city.split('"'))[1].slice(1);
-  if(cityName && cityName.length > 15) {
-    citys = cityName.substr(0,15)
-  }
-  else {
-    citys = cityName
-  }
+chrome.storage.local.get(['theme', 'autoDark', 'timeZoneBadge', 'latlong'], function(data) {
+  currentTheme = data.theme;
+  autoDarkTheme = data.autoDark;
+  timeZoneBadge = data.timeZoneBadge;
+  latlong = data.latlong;
 
-  latlong = (latandlong.split('"'))[1];
-  lat = (latlong.split(','))[0];
-  lng = (latlong.split(','))[1];
+    solarNighDay(timeZoneBadge,latlong);
 
-    if(country == "US" || country == "us" || country == "United States of America" || country == "CA" || country == "ca" || country == "Canada") {
-      owmAPIpopup = 'https://api.openweathermap.org/data/2.5/weather?lat='+ lat + '&lon=' + lng + '&appid=6761dd7f8d0c3c216f9af6813064f867';
+    if(currentTheme || autoDarkTheme) {
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        
+        if(autoDarkTheme == '1' && isNight) {
+            darkDisplay();
+        }
+        else if(autoDarkTheme == '1' && isDay) {
+            lightDisplay();    
+        }
+        else if(currentTheme === 'dark') {
+            toggleSwitch.checked = true;
+            darkDisplay();     
+        }
+        else {
+            lightDisplay();
+        }
     }
     else{
-      owmAPIpopup = 'https://uv-weather.herokuapp.com/https://api.openweathermap.org/data/2.5/weather?lat='+ lat + '&lon=' + lng + '&appid=6761dd7f8d0c3c216f9af6813064f867';
+      document.getElementById("setting_defualt_theme_l").checked = true;      
     }
-    fetch(owmAPIpopup)
-    .then((resp) => resp.json())
-    .then(function(resultBadge) {
-      window.resultBadge = resultBadge;
-      temperatureCbadge = Math.round((resultBadge.main.temp) - 273.15);
-      temperatureFbadge = Math.round((1.8*temperatureCbadge) + 32);
-      if(temperatureCbadge == '-0') {temperatureCbadge = 0};
-      if(temperatureFbadge == '-0') {temperatureFbadge = 0};
-      summaryBadge = resultBadge.weather[0].main;
-      descriptionBadge = resultBadge.weather[0].description;
-      updateTimeBadge = resultBadge.dt;
-      timeZoneBadge = resultBadge.timezone;
-      cloudCoverBadge = resultBadge.clouds.all;
-      solarNighDay(timeZoneBadge,lat,lng);
-      iconBadgeConvert(descriptionBadge,summaryBadge);
 
-        const ads = '3dfc8ba9095bfa87462f459fc85238c6'; 
-        return fetch('https://uv-weather.herokuapp.com/https://api.darksky.net/forecast/' + ads +'/' + latlong + '?solar')
-        .then((resp) => resp.json())
-        .then(function(result) {        
-          window.result = result;
-
-          updateTime = result.currently.time;
-          temperatureF =  Math.round(result.currently.temperature);
-          temperatureC =  f2c(temperatureF);
-          humidity = Math.round(100 * (result.currently.humidity));
-          dewPointF = Math.round(result.currently.dewPoint);
-          dewPointC = f2c(dewPointF);
-          pressure = result.currently.hasOwnProperty('pressure') ? Math.round(result.currently.pressure) : '-';
-          windSpeedMPH = Math.round(result.currently.windSpeed);
-          windSpeedKMH = Math.round(windSpeedMPH * 1.609334);
-            windSpeedMS10 = windSpeedMPH * 0.4470389;
-            windSpeedMS10R = Math.round(windSpeedMPH * 0.4470389 * 10) / 10;
-            windSpeedMS = windSpeedMS10 * 0.33; // on humun hieght an urban area
-          windGustMPH = Math.round(result.currently.windGust);
-          windGustKMH = Math.round(windGustMPH * 1.609334);
-          windGustMS = Math.round(windGustMPH * 0.4470389 * 10) / 10;
-
-          ghiSolarClearSki = result.hourly.data[0].hasOwnProperty('solar') ? result.hourly.data[0].solar.ghi : '-'; //GHI = DHI + DNI * cos (Î¸)
-
-            if(result.currently.windSpeed > 0) {
-              windBearing = Math.round(result.currently.windBearing); //true north at 0° and progressing clockwise
-              windCompass = degToCompass(result.currently.windBearing);
-            }
-            else {
-              windBearing = "-";
-              windCompass = "-";
-            }
-
-            visibility = result.currently.hasOwnProperty('visibility') ? Math.round(result.currently.visibility *10)/10 : '-';
-            visibilityKM = result.currently.hasOwnProperty('visibility') ? Math.round(result.currently.visibility * 1.60934 *10)/10 : '-';
-
-            if(visibility >= 10) {
-              visibility = "+10";
-              visibilityKM = "+16";
-            }
-
-          ozone = result.currently.hasOwnProperty('ozone') ? Math.round(result.currently.ozone) : '-';
-          precipProbability = result.currently.hasOwnProperty('precipProbability') ? Math.round(result.currently.precipProbability * 100) : '-';
-
-          summary = result.currently.hasOwnProperty('summary') ? result.currently.summary : '-'
-
-          if(result.hasOwnProperty('minutely')) {
-            if(result.minutely.hasOwnProperty('summary')) {
-              summaryMinutely = result.minutely.summary;
-            }
-          }
-          else {
-            summaryMinutely = result.currently.hasOwnProperty('summary') ? result.currently.summary : '-'
-          }
-
-          summaryHourlyF = result.hourly.hasOwnProperty('summary') ? result.hourly.summary : '-'
-          summaryDailyF = result.daily.hasOwnProperty('summary') ? result.daily.summary : '-'
-
-          summaryHourlyC = summaryUnitConvertor(result.hourly.summary);
-
-          summaryDailyC = summaryUnitConvertor(result.daily.summary);
-
-          current_tempF_max = Math.round(result.daily.data[0].temperatureMax);
-          current_tempF_min = Math.round(result.daily.data[0].temperatureMin);                 
-
-          current_tempC_max = f2c(current_tempF_max);
-          current_tempC_min = f2c(current_tempF_min);
-
-          uvCurrently = result.currently.hasOwnProperty('uvIndex') ? result.currently.uvIndex : '-'
-
-          forecast_0_tempF = Math.round(result.daily.data[0].temperatureMax);
-          forecast_1_tempF = Math.round(result.daily.data[1].temperatureMax);
-
-          update_tomorrow_is_f(forecast_1_tempF,forecast_0_tempF);
-          update_tomorrow_is_c(forecast_1_tempF,forecast_0_tempF);
-
-          if(iconBadge === "rain" || iconBadge === "sleet" || iconBadge === "snow")
-            {cloudAdj = 0.31;}
-          else if(cloudCoverBadge < 20)
-            {cloudAdj = 1;}
-          else if(cloudCoverBadge >= 20 && cloudCoverBadge < 70)
-            {cloudAdj = 0.89;}
-          else if(cloudCoverBadge >= 70 && cloudCoverBadge < 90)
-            {cloudAdj = 0.73;}
-          else if(cloudCoverBadge >= 90)
-            {cloudAdj = 0.31;}
-          else {cloudAdj = 1;}
-
-          if(isNight) {
-            uvCurrently = 0;
-          }
-
-          uv1 = Math.floor(uvCurrently * cloudAdj);
-
-          if(isNight) {
-            current_uv_note = (" (night)");
-            }
-          else if(uv1 >= 0 && uv1 <= 2) {
-            current_uv_note = (" (Low)");
-            }
-          else if(uv1 >= 3 && uv1 <= 5) {
-            current_uv_note = (" (Moderate)");
-            }
-          else if(uv1 >= 6 && uv1 <= 7) {
-            current_uv_note = (" (High)");
-            }
-          else if(uv1 >= 8 && uv1 <= 10) {
-            current_uv_note = (" (Very High)");
-            }
-          else if(uv1 >= 11) {
-            current_uv_note = (" (Extreme)");
-            };
-
-chrome.storage.local.get(['theme', 'autoDark'], function(data) {
-    const currentTheme = data.theme;
-    const autoDarkTheme = data.autoDark;
-
-      if(currentTheme || autoDarkTheme) {
-          document.documentElement.setAttribute('data-theme', currentTheme);
-          
-          if(autoDarkTheme == '1' && isNight) {
-              darkDisplay();
-          }
-          else if(autoDarkTheme == '1' && isDay) {
-              lightDisplay();    
-          }
-          else if(currentTheme === 'dark') {
-              toggleSwitch.checked = true;
-              darkDisplay();     
-          }
-          else {
-              lightDisplay();
-          }
-      }
-      else{
-        document.getElementById("setting_defualt_theme_l").checked = true;      
-      }
-
-      function switchTheme(e) {
-          if(e.target.checked) {
-              darkDisplay();    
-              delayButtonDarkmode();
-          }
-          else {
-              lightDisplay();    
-              delayButtonDarkmode();
-          }    
-      }
-
-      toggleSwitch.addEventListener('change', switchTheme, false);
-  });
-
-
-  const toggleSwitchAutoDark = document.querySelector('.theme-switch_setting_auto_dark input[type="checkbox"]');
-  chrome.storage.local.get('autoDark', function(data) {
-    const currentAutoDark = data.autoDark;
-
-      if(currentAutoDark) {      
-          if(currentAutoDark === '1') {
-              toggleSwitchAutoDark.checked = true;
-              chrome.storage.local.set({'autoDark': '1'});
-          }
-          else {
-              chrome.storage.local.set({'autoDark': '0'});
-          }
-      }
-
-    function switchAutoDark(e) {
-      if(e.target.checked) {
-        chrome.storage.local.set({'autoDark': '1'});
-        document.getElementById("checkbox_autoDark").checked = true;
-        document.getElementById("checkbox_autoDark").disabled = true;
-        if(isNight) {
-            darkDisplay();
+    function switchTheme(e) {
+        if(e.target.checked) {
+            darkDisplay();    
+            delayButtonDarkmode();
         }
         else {
             lightDisplay();    
-        }
-
-        delayButtonAutoDarkmode();
-      }
-      else {
-        chrome.storage.local.set({'autoDark': '0'});
-        document.getElementById("checkbox_autoDark").checked = false;
-        document.getElementById("checkbox_autoDark").disabled = true;
-        delayButtonAutoDarkmode();
-      }    
+            delayButtonDarkmode();
+        }    
     }
-    toggleSwitchAutoDark.addEventListener('change', switchAutoDark, false);
-  });
 
-  accufeelCalc();
-  uvRecommendation();
-  refresh24h12h();
-  next7Function();
-  reportFunction();
-  next48Function();
-  trackSunExposure();
-
-  chrome.storage.local.get('IntervalUpdate', function(data) {
-    if(data.IntervalUpdate == "120") {
-      document.getElementById("setting_defualt_button_120").checked = true;
-    } 
-    else if(data.IntervalUpdate == "90") {
-      document.getElementById("setting_defualt_button_90").checked = true;
-    }
-    else if(data.IntervalUpdate == "60") {
-      document.getElementById("setting_defualt_button_60").checked = true;
-    }
-  })
-
-var mapStyleLight = 'mapbox://styles/mapbox/light-v10';
-var weathermapStyleLight = 'mapbox://styles/mapbox/light-v10';
-var mapStyleDark = 'mapbox://styles/mapbox/dark-v10';
-var weathermapStyleDark = 'mapbox://styles/mapbox/dark-v10';
-
-mapStyle = 'mapbox://styles/mapbox/light-v10';
-weathermapStyle = 'mapbox://styles/mapbox/light-v10';
-
-chrome.storage.local.get('closeAds', function(data) {
-    if(data.closeAds == 1) {
-      var donateButton = document.getElementById("donate_button");
-      var donateClose = document.getElementById("icon_close_box");
-      var donateCard = document.getElementById("cardMain");
-      donateButton.style.display = "none";
-      donateClose.style.display = "none";
-      donateCard.style.display = "none";
-    }
+    toggleSwitch.addEventListener('change', switchTheme, false);
 });
 
 
+const toggleSwitchAutoDark = document.querySelector('.theme-switch_setting_auto_dark input[type="checkbox"]');
+chrome.storage.local.get('autoDark', function(data) {
+  currentAutoDark = data.autoDark;
 
- const toggleSwitchAnimatedIcon = document.querySelector('.theme-switch_setting_animated_icon input[type="checkbox"]');
-  chrome.storage.local.get('animatedIcon', function(data) {
-    const currentAnimatedIcon = data.animatedIcon;
-
-      if(currentAnimatedIcon) {      
-          if(currentAnimatedIcon === '1') {
-              toggleSwitchAnimatedIcon.checked = true;
-              chrome.storage.local.set({'animatedIcon': '1'});
-          }
-          else {
-              chrome.storage.local.set({'animatedIcon': '0'});
-          }
-      }
-      else {
-              toggleSwitchAnimatedIcon.checked = true;
-              chrome.storage.local.set({'animatedIcon': '1'});
-      }
-
-    function switchAnimatedIcon(e) {
-      if(e.target.checked) {
-        chrome.storage.local.set({'animatedIcon': '1'});
-        document.getElementById("checkbox_animatedIcon").checked = true;
-        document.getElementById("checkbox_animatedIcon").disabled = true;
-        iconCurrent_animated();
-        delayButtonAnimatedIcon();
-      }
-      else {
-        chrome.storage.local.set({'animatedIcon': '0'});
-        document.getElementById("checkbox_animatedIcon").checked = false;
-        document.getElementById("checkbox_animatedIcon").disabled = true;
-        iconCurrent();
-        delayButtonAnimatedIcon();
-      }    
+    if(currentAutoDark) {      
+        if(currentAutoDark === '1') {
+            toggleSwitchAutoDark.checked = true;
+            chrome.storage.local.set({'autoDark': '1'});
+        }
+        else {
+            chrome.storage.local.set({'autoDark': '0'});
+        }
     }
-    toggleSwitchAnimatedIcon.addEventListener('change', switchAnimatedIcon, false);
+
+  function switchAutoDark(e) {
+    if(e.target.checked) {
+      chrome.storage.local.set({'autoDark': '1'});
+      document.getElementById("checkbox_autoDark").checked = true;
+      document.getElementById("checkbox_autoDark").disabled = true;
+      if(isNight) {
+          darkDisplay();
+      }
+      else {
+          lightDisplay();    
+      }
+
+      delayButtonAutoDarkmode();
+    }
+    else {
+      chrome.storage.local.set({'autoDark': '0'});
+      document.getElementById("checkbox_autoDark").checked = false;
+      document.getElementById("checkbox_autoDark").disabled = true;
+      delayButtonAutoDarkmode();
+    }    
+  }
+  toggleSwitchAutoDark.addEventListener('change', switchAutoDark, false);
+});
+
+
+function popup() {
+
+  chrome.storage.local.get(['latlong', 'citys', 'country', 'failedHTTP', 'setSettingUT'], function(data) {
+    latlong = data.latlong;
+    country = data.country;
+    citys = data.citys;
+    setSettingUT = data.setSettingUT;
+    failedHTTP = data.failedHTTP;
+
+    if(setSettingUT == "u") {
+      var promise = new Promise(function (resolve, reject) {
+          weatherDS(latlong,citys,country,resolve);
+      });
+      var promise2 = new Promise(async function (resolve, reject) {
+          await promise;
+          popupGeneral();
+          resolve(true);
+      });
+    }
+
+    if(typeof setSettingUT === 'undefined' || setSettingUT == "t") {
+
+      if(country == "CA" || country == "ca" || country == "Canada") {
+          var promise = new Promise(function (resolve, reject) {
+                  weatherCA(latlong,citys,resolve);
+          });
+          var promise2 = new Promise(async function (resolve, reject) {
+              await promise;
+                if(failedHTTP == '1') {
+                  resolve(true);                  
+                }
+                else {
+                  weatherDS(latlong,citys,country,resolve);
+                }
+          });
+          var promise3 = new Promise(async function (resolve, reject) {
+              await promise2;
+              popupGeneral();
+              resolve(true);
+          });
+      }
+      
+      else if(country == "US" || country == "us" || country == "United States of America") {
+          var promise = new Promise(function (resolve, reject) {
+                  weatherUS(latlong,citys,resolve);
+          });
+          var promise2 = new Promise(async function (resolve, reject) {
+              await promise;
+                if(failedHTTP == '1') {
+                  resolve(true);                  
+                }
+                else {
+                  weatherDS(latlong,citys,country,resolve);
+                }
+          });
+          var promise3 = new Promise(async function (resolve, reject) {
+              await promise2;
+              popupGeneral();
+              resolve(true);
+          });
+      }
+
+      else {
+          var promise = new Promise(function (resolve, reject) {
+                  weatherOWM(latlong,citys,resolve);
+          });
+          var promise2 = new Promise(async function (resolve, reject) {
+              await promise;
+                if(failedHTTP == '1') {
+                  resolve(true);                  
+                }
+                else {
+                  weatherDS(latlong,citys,country,resolve);
+                }
+          });
+          var promise3 = new Promise(async function (resolve, reject) {
+              await promise2;
+              popupGeneral();
+              resolve(true);
+          });
+      }
+
+    }
+
   });
 
+};
 
-  const toggleSwitchWhiteIcon = document.querySelector('.theme-switch_setting input[type="checkbox"]');
-  chrome.storage.local.get('whiteIcon', function(data) {
-    const currentWhiteIcon = data.whiteIcon;
-      if(currentWhiteIcon) {      
-          if(currentWhiteIcon === '1') {
-              toggleSwitchWhiteIcon.checked = true;
-              chrome.storage.local.set({'whiteIcon': '1'});
-          }
-          else {
-              chrome.storage.local.set({'whiteIcon': '0'});
-          }
-      }
+popup();
 
-      if((window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) && (typeof currentWhiteIcon == 'undefined') || currentWhiteIcon == 'undefined') {
-          document.getElementById("checkbox_whiteIcon").checked = true;
-      }
-      else if((window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) && (typeof currentWhiteIcon == 'undefined') || currentWhiteIcon == 'undefined') {
-          document.getElementById("checkbox_whiteIcon").checked = false;
-      }
+function popupGeneral() {
+  UTFC();
+  refreshPopup();
+  updateBadge();
+};
 
-    function switchWhiteIcon(e) {
-      if(e.target.checked) {
-        chrome.storage.local.set({'whiteIcon': '1'});
-        document.getElementById("checkbox_whiteIcon").checked = true;
-        document.getElementById("checkbox_whiteIcon").disabled = true;
-          updateBadge();
-          delayButtonWhiteIcon();
-      }
-      else {
-        chrome.storage.local.set({'whiteIcon': '0'});
-        document.getElementById("checkbox_whiteIcon").checked = false;
-        document.getElementById("checkbox_whiteIcon").disabled = true;
-        updateBadge();
-        delayButtonWhiteIcon();
-      }    
-    }
-    toggleSwitchWhiteIcon.addEventListener('change', switchWhiteIcon, false);
-  });
-
-  function delayButtonDarkmode() {
-      setTimeout(function() {
-      document.getElementById("checkbox").disabled = false;
-    }, 1500);
-  };
-
-  function delayButtonAutoDarkmode() {
-      setTimeout(function() {
-      document.getElementById("checkbox_autoDark").disabled = false;
-    }, 1500);
-  };
-
-  function delayButtonWhiteIcon() {
-      setTimeout(function() {
-      document.getElementById("checkbox_whiteIcon").disabled = false;
-    }, 1500);
-  };
-
-  function delayButtonAnimatedIcon() {
-      setTimeout(function() {
-      document.getElementById("checkbox_animatedIcon").disabled = false;
-    }, 1500);
-  };
-
+/// Functions----------------------------------------------------------
   function UTFC() {
     chrome.storage.local.get(['setSettingFC', 'setSettingUT'], function(data) {
     setSettingFC = data.setSettingFC;
@@ -501,68 +474,47 @@ chrome.storage.local.get('closeAds', function(data) {
         ctemp();
       }
       });
-  }
-  UTFC();
+  };
 
-  chrome.storage.local.get('badgeSize', function(data) {
-      if(data.badgeSize) {
-          if(data.badgeSize === '1') {
-              toggleSwitchBadgeSize.checked = true;
-              chrome.storage.local.set({'badgeSize': '1'});
-          }
-          else {
-              toggleSwitchBadgeSize.checked = false;
-              chrome.storage.local.set({'badgeSize': '0'});
-          }
-      }
-      function switchBadgeSize(e) {
-        if(e.target.checked) {
-          chrome.storage.local.set({'badgeSize': '1'});
-          document.getElementById("checkbox_largIcon").checked = true;
-          document.getElementById("checkbox_largIcon").disabled = true;
-          updateBadge();
-          delayButtonBadgeSize();
-          delayButtonSetting();
-          delayReleaseButtonSetting();
-        }
-        else {
-          chrome.storage.local.set({'badgeSize': '0'});
-          document.getElementById("checkbox_largIcon").checked = false;
-          document.getElementById("checkbox_largIcon").disabled = true;
-          updateBadge();
-          delayButtonBadgeSize();
-          delayButtonSetting();
-          delayReleaseButtonSetting();
-        }    
-      }
-      toggleSwitchBadgeSize.addEventListener('change', switchBadgeSize, false);
-  });
+  function delayButtonDarkmode() {
+      setTimeout(function() {
+      document.getElementById("checkbox").disabled = false;
+    }, 1500);
+  };
 
-  loadingIconBadge();
-  refreshPopup();
-  updateBadge();
+  function delayButtonAutoDarkmode() {
+      setTimeout(function() {
+      document.getElementById("checkbox_autoDark").disabled = false;
+    }, 1500);
+  };
 
-  version_manifest = chrome.runtime.getManifest().version;
-  document.querySelector("#title_version_setting").textContent = 'Version ' + version_manifest;
+  function delayButtonWhiteIcon() {
+      setTimeout(function() {
+      document.getElementById("checkbox_whiteIcon").disabled = false;
+    }, 1500);
+  };
 
-  document.getElementById("preload_body").style.display = "block";
+  function delayButtonAnimatedIcon() {
+      setTimeout(function() {
+      document.getElementById("checkbox_animatedIcon").disabled = false;
+    }, 1500);
+  };
 
-        })
-    })
-
-};
-
-
-
-/// Functions----------------------------------------------------------
   function loadingIconBadge() {
-    animatedBadgeInterval = setInterval(function() {animatedBadge(isDay,sunnyDayBadge,cloudyBadge,rainyBadge,snowyBadge); }, 1000 / 30);
-    setTimeout(function() {
-      clearInterval(animatedBadgeInterval);   
-    }, 485);
+    if(loadingIconBadgeDelay == '1') {
+      loadingIconBadgeDelay = '0';
+      animatedBadgeInterval = setInterval(function() {animatedBadge(isDay,sunnyDayBadge,cloudyBadge,rainyBadge,snowyBadge); }, 1000 / 30);
+      setTimeout(function() {
+        clearInterval(animatedBadgeInterval);
+        loadingIconBadgeDelay = '1';  
+      }, 485);
+    };
   };
 
   function refreshPopup() {
+    i_er = 1; //weatherUS
+    chrome.storage.local.set({'failedHTTP': '0'});
+
     chrome.storage.local.get(['verUpdate'], function(data) {
         if(data.verUpdate == 1) {
             chrome.storage.local.set({'verUpdate': 2});
@@ -581,9 +533,15 @@ chrome.storage.local.get('closeAds', function(data) {
             ftemp();
           }
       });
-      document.querySelector("#location").textContent = citys;
+
+      if(citys.length > 15) {
+        document.querySelector("#location").textContent = citys.slice(0, 12) +'...';
+      }
+      else{
+        document.querySelector("#location").textContent = citys;
+      }
+      
       document.querySelector("#current_uv").textContent = uv1;
-      document.querySelector("#current_uv_note").textContent = current_uv_note;
       if(typeof country !== 'undefined' && country !== 'undefined' && country !== ' ') {
             country = (country.trim()).substring(0, 2);
             url_flags = 'https://www.countryflags.io/' + country + '/flat/64.png';
@@ -599,6 +557,7 @@ chrome.storage.local.get('closeAds', function(data) {
       else{
           document.querySelector('.countryflagsClass').style.backgroundImage = 'url("images/heart.svg")';
       }
+
     chrome.storage.local.get('animatedIcon', function(data) {
         if(data.animatedIcon === '1') {
               iconCurrent_animated();
@@ -607,6 +566,41 @@ chrome.storage.local.get('closeAds', function(data) {
               iconCurrent();
           }
       });
+
+    chrome.storage.local.get(['country', 'setSettingUT'], function(data) {
+      if(data.setSettingUT == 'u') {
+          document.querySelector(".tooltip-bottom-interval-display-15").style.display = "none";
+          document.querySelector(".tooltip-bottom-interval-display-30").style.display = "none";
+          document.querySelector(".setting_defualt_button_30_sub").style.opacity = ".3";
+          document.querySelector(".setting_defualt_button_15_sub").style.opacity = ".3";
+          document.querySelector(".setting_defualt_button_30_sub_label").style.opacity = ".3";
+          document.querySelector(".setting_defualt_button_15_sub_label").style.opacity = ".3";
+      }      
+      else if(data.setSettingUT == 't' && (data.country == "US" || data.country == "us" || data.country == "United States of America" || data.country == "CA" || data.country == "ca" || data.country == "Canada") ) {
+          document.querySelector(".setting_defualt_button_30_sub").style.opacity = "1";
+          document.querySelector(".setting_defualt_button_15_sub").style.opacity = "1";
+          document.querySelector(".setting_defualt_button_30_sub_label").style.opacity = "1";
+          document.querySelector(".setting_defualt_button_15_sub_label").style.opacity = "1";          
+          document.getElementById("setting_defualt_button_30_all").style.pointerEvents = "auto";
+          document.getElementById("setting_defualt_button_15_all").style.pointerEvents = "auto";
+          document.querySelector(".tooltip-bottom-interval-display-15").style.display = "none";
+          document.querySelector(".tooltip-bottom-interval-display-30").style.display = "none";          
+        }
+      else{
+          document.querySelector(".setting_defualt_button_30_sub").style.opacity = ".3";
+          document.querySelector(".setting_defualt_button_15_sub").style.opacity = ".3";
+          document.querySelector(".setting_defualt_button_30_sub_label").style.opacity = ".3";
+          document.querySelector(".setting_defualt_button_15_sub_label").style.opacity = ".3";
+          document.querySelector(".tooltip-bottom-interval-display-15").style.display = "block";
+          document.querySelector(".tooltip-bottom-interval-display-30").style.display = "block";          
+
+          chrome.storage.local.set({'IntervalUpdate': '60'});
+          chrome.runtime.sendMessage({ msg: "intervalUpdateMessage" });
+          document.getElementById("setting_defualt_button_60").checked = true;
+        }
+
+      });
+
       accufeelCalc();
       uvRecommendation();
       next48Function();
@@ -614,6 +608,8 @@ chrome.storage.local.get('closeAds', function(data) {
       refresh24h12h();
       reportFunction();
       trackSunExposure();
+      refreshWindSpeedUnit();
+      loadingIconBadge();
   };
 
   function groundCurrent() {
@@ -954,7 +950,6 @@ chrome.storage.local.get('closeAds', function(data) {
       document.querySelector("#current_temp_max").textContent = current_tempC_max + "°";
 
       document.querySelector("#current_temp_min").textContent = current_tempC_min + "°";
-      document.querySelector("#forecast_tomorrow").textContent = update_tomorrow_c;
 
       for (i=1;i<3;i++){
           document.querySelector(`#forecast_${i}_temp`).textContent = f2c(Math.round(result.daily.data[i].temperatureMax)) + "°";
@@ -1005,6 +1000,7 @@ chrome.storage.local.get('closeAds', function(data) {
                     
     Tmrta = Math.pow(TglobeC + 273.15, 4) + (2.5 * 100000000 * Math.pow(windSpeedMS, 0.60) * (TglobeC - temperatureCbadge));
     TmrtC = Math.pow(Tmrta, 1/4) - 273.15;
+
     accufeelResultC = Math.round(accufeel(temperatureCbadge, TmrtC, windSpeedMS, humidity));
     accufeelResultF = c2f(accufeelResultC);
   };
@@ -1069,7 +1065,7 @@ chrome.storage.local.get('closeAds', function(data) {
     document.querySelector("#current_report_accufeel").textContent = accufeelResultF + "° F";    
     document.querySelector("#current_temp_max").textContent = current_tempF_max + "°";
     document.querySelector("#current_temp_min").textContent = current_tempF_min + "°";
-    document.querySelector("#forecast_tomorrow").textContent = update_tomorrow_f;
+    // document.querySelector("#forecast_tomorrow").textContent = update_tomorrow_f;
 
     for(i=1;i<3;i++) {
         document.querySelector(`#forecast_${i}_temp`).textContent = Math.round(result.daily.data[i].temperatureMax) + "°";
@@ -1121,44 +1117,44 @@ chrome.storage.local.get('closeAds', function(data) {
   };
 
   function solarFunction12H() {
-    document.querySelector("#solar_now_date").textContent = dayjs.unix(updateTimeBadge + offsetUnix).format('MMMM DD, h:mm A') + ' (LT)';
-    document.querySelector("#solar_1_time").textContent = dayjs.unix(sunriseTimeSolar + offsetUnix).format('h:mm A');
-    document.querySelector("#solar_2_time").textContent = dayjs.unix(sunsetTimeSolar + offsetUnix).format('h:mm A');
-    document.querySelector("#solar_3_time").textContent = dayjs.unix(solarNoon + offsetUnix).format('h:mm A');
+    document.querySelector("#solar_now_date").textContent = moment.unix(updateTimeBadge + offsetUnix).format('MMMM DD, h:mm A') + ' (LT)';
+    document.querySelector("#solar_1_time").textContent = moment.unix(sunriseTimeSolar + offsetUnix).format('h:mm A');
+    document.querySelector("#solar_2_time").textContent = moment.unix(sunsetTimeSolar + offsetUnix).format('h:mm A');
+    document.querySelector("#solar_3_time").textContent = moment.unix(solarNoon + offsetUnix).format('h:mm A');
     document.querySelector("#solar_4_time").textContent = dayLength;
-    document.querySelector("#solar_5_time").textContent = dayjs.unix(goldenHourEnd + offsetUnix).format('h:mm A');
-    document.querySelector("#solar_6_time").textContent = dayjs.unix(goldenHour + offsetUnix).format('h:mm A');
-    document.querySelector("#solar_7_time").textContent = dayjs.unix(dusk + offsetUnix).format('h:mm A');
-    document.querySelector("#solar_8_time").textContent = dayjs.unix(dawn + offsetUnix).format('h:mm A');
-    document.querySelector("#solar_9_time").textContent = dayjs.unix(nightStarts + offsetUnix).format('h:mm A');
+    document.querySelector("#solar_5_time").textContent = moment.unix(goldenHourEnd + offsetUnix).format('h:mm A');
+    document.querySelector("#solar_6_time").textContent = moment.unix(goldenHour + offsetUnix).format('h:mm A');
+    document.querySelector("#solar_7_time").textContent = moment.unix(dusk + offsetUnix).format('h:mm A');
+    document.querySelector("#solar_8_time").textContent = moment.unix(dawn + offsetUnix).format('h:mm A');
+    document.querySelector("#solar_9_time").textContent = moment.unix(nightStarts + offsetUnix).format('h:mm A');
   };
 
   function solarFunction24H() {
-    document.querySelector("#solar_now_date").textContent = dayjs.unix(updateTimeBadge + offsetUnix).format('MMMM DD, HH:mm') + ' (LT)';
-    document.querySelector("#solar_1_time").textContent = dayjs.unix(sunriseTimeSolar + offsetUnix).format('HH:mm');
-    document.querySelector("#solar_2_time").textContent = dayjs.unix(sunsetTimeSolar + offsetUnix).format('HH:mm');
-    document.querySelector("#solar_3_time").textContent = dayjs.unix(solarNoon + offsetUnix).format('HH:mm');
+    document.querySelector("#solar_now_date").textContent = moment.unix(updateTimeBadge + offsetUnix).format('MMMM DD, HH:mm') + ' (LT)';
+    document.querySelector("#solar_1_time").textContent = moment.unix(sunriseTimeSolar + offsetUnix).format('HH:mm');
+    document.querySelector("#solar_2_time").textContent = moment.unix(sunsetTimeSolar + offsetUnix).format('HH:mm');
+    document.querySelector("#solar_3_time").textContent = moment.unix(solarNoon + offsetUnix).format('HH:mm');
     document.querySelector("#solar_4_time").textContent = dayLength;
-    document.querySelector("#solar_5_time").textContent = dayjs.unix(goldenHourEnd + offsetUnix).format('HH:mm');
-    document.querySelector("#solar_6_time").textContent = dayjs.unix(goldenHour + offsetUnix).format('HH:mm');
-    document.querySelector("#solar_7_time").textContent = dayjs.unix(dusk + offsetUnix).format('HH:mm');
-    document.querySelector("#solar_8_time").textContent = dayjs.unix(dawn + offsetUnix).format('HH:mm');
-    document.querySelector("#solar_9_time").textContent = dayjs.unix(nightStarts + offsetUnix).format('HH:mm');
+    document.querySelector("#solar_5_time").textContent = moment.unix(goldenHourEnd + offsetUnix).format('HH:mm');
+    document.querySelector("#solar_6_time").textContent = moment.unix(goldenHour + offsetUnix).format('HH:mm');
+    document.querySelector("#solar_7_time").textContent = moment.unix(dusk + offsetUnix).format('HH:mm');
+    document.querySelector("#solar_8_time").textContent = moment.unix(dawn + offsetUnix).format('HH:mm');
+    document.querySelector("#solar_9_time").textContent = moment.unix(nightStarts + offsetUnix).format('HH:mm');
   };
 
   function refresh24h12h() {
     chrome.storage.local.get('TimeFormat', function(dataTime) {
       if(dataTime.TimeFormat == "24h") {
         solarFunction24H();
-        document.querySelector("#next7_update_date").textContent = 'Updated at ' + dayjs.unix(updateTimeBadge + offsetUnix).format('MMM DD, HH:mm') + ' (LT)';
-        document.querySelector("#report_update_date").textContent = dayjs.unix(updateTimeBadge + offsetUnix).format('MMM DD, HH:mm') + ' (LT)';
-        document.querySelector("#next48_update_date").textContent = 'Updated at ' + dayjs.unix(updateTimeBadge + offsetUnix).format('MMM DD, HH:mm') + ' (LT)';
+        document.querySelector("#next7_update_date").textContent = moment.unix(updateTimeBadge + offsetUnix).format('MMM DD, HH:mm') + ' (LT)';
+        document.querySelector("#report_update_date").textContent = moment.unix(updateTimeBadge + offsetUnix).format('MMM DD, HH:mm') + ' (LT)';
+        document.querySelector("#next48_update_date").textContent = moment.unix(updateTimeBadge + offsetUnix).format('MMM DD, HH:mm') + ' (LT)';
           for(i=1;i<49;i++) {
-              document.querySelector(`#forecast_${i}_hours`).textContent = dayjs.unix(result.hourly.data[i].time + offsetUnix).format('HH')+':00';
+              document.querySelector(`#forecast_${i}_hours`).textContent = moment.unix(result.hourly.data[i].time + offsetUnix).format('HH')+':00';
               document.querySelector(`#forecast_${i}_hours_uv`).textContent = "UVI " + Math.round((result.hourly.data[i].uvIndex) * uv_adj_daily(result.hourly.data[i].icon, result.hourly.data[i].cloudCover));
               document.querySelector(`#forecast_${i}_hours_rain`).textContent = Math.round(((result.hourly.data[i].precipProbability) * 100)/5)*5 + "%";
           }
-        document.querySelector("#map_popup_title").textContent = 'PRECIPITATION FORECAST | UV WEATHER | ' + dayjs.unix(updateTimeBadge + offsetUnix).format('MMMM DD, YYYY HH:mm') + ' (LT)';  
+        document.querySelector("#map_popup_title").textContent = 'PRECIPITATION FORECAST | UV WEATHER | ' + moment.unix(updateTimeBadge + offsetUnix).format('MMMM DD, YYYY HH:mm') + ' (LT)';  
         document.getElementById("setting_defualt_button_24h").checked = true;
         document.getElementById("setting_defualt_button_12h").checked = false;
         document.getElementById("setting_defualt_button_24h").disabled = true;
@@ -1166,15 +1162,15 @@ chrome.storage.local.get('closeAds', function(data) {
       } 
       else {
         solarFunction12H();
-        document.querySelector("#next7_update_date").textContent = 'Updated at ' + dayjs.unix(updateTimeBadge + offsetUnix).format('MMM DD, h:mm A') + ' (LT)';
-        document.querySelector("#report_update_date").textContent = dayjs.unix(updateTimeBadge + offsetUnix).format('MMM DD, h:mm A') + ' (LT)';
-        document.querySelector("#next48_update_date").textContent = 'Updated at ' + dayjs.unix(updateTimeBadge + offsetUnix).format('MMM DD, h:mm A') + ' (LT)';
+        document.querySelector("#next7_update_date").textContent = moment.unix(updateTimeBadge + offsetUnix).format('MMM DD, h:mm A') + ' (LT)';
+        document.querySelector("#report_update_date").textContent = moment.unix(updateTimeBadge + offsetUnix).format('MMM DD, h:mm A') + ' (LT)';
+        document.querySelector("#next48_update_date").textContent = moment.unix(updateTimeBadge + offsetUnix).format('MMM DD, h:mm A') + ' (LT)';
           for(i=1;i<49;i++) {
-              document.querySelector(`#forecast_${i}_hours`).textContent = dayjs.unix(result.hourly.data[i].time + offsetUnix).format('h A');
+              document.querySelector(`#forecast_${i}_hours`).textContent = moment.unix(result.hourly.data[i].time + offsetUnix).format('h A');
               document.querySelector(`#forecast_${i}_hours_uv`).textContent = "UVI " + Math.round((result.hourly.data[i].uvIndex) * uv_adj_daily(result.hourly.data[i].icon, result.hourly.data[i].cloudCover));
               document.querySelector(`#forecast_${i}_hours_rain`).textContent = Math.round(((result.hourly.data[i].precipProbability) * 100)/5)*5 + "%";
           }
-        document.querySelector("#map_popup_title").textContent = 'PRECIPITATION FORECAST | UV WEATHER | ' + dayjs.unix(updateTimeBadge + offsetUnix).format('MMMM DD, YYYY h:mm A') + ' (LT)';
+        document.querySelector("#map_popup_title").textContent = 'PRECIPITATION FORECAST | UV WEATHER | ' + moment.unix(updateTimeBadge + offsetUnix).format('MMMM DD, YYYY h:mm A') + ' (LT)';
         document.getElementById("setting_defualt_button_12h").checked = true;
         document.getElementById("setting_defualt_button_24h").checked = false;
         document.getElementById("setting_defualt_button_12h").disabled = true;
@@ -1182,6 +1178,52 @@ chrome.storage.local.get('closeAds', function(data) {
       }
     });
   };
+
+
+  function windFunctionMPH() {
+    document.querySelector("#current_report_wind").textContent = windSpeedMPH + " mph";
+    document.querySelector("#current_report_windGust").textContent = windGustMPH + " mph"; 
+    document.querySelector("#current_report_windGust").textContent = windGustMPH + " mph"; 
+    for(i=1;i<8;i++) {
+        document.querySelector(`#forecast_${i*10}_wind`).textContent = Math.round(result.daily.data[i].windSpeed);
+        document.querySelector(`#forecast_${i*10}_wind_unit`).textContent = 'mph';
+    }
+  };
+
+  function windFunctionKMH() {
+    document.querySelector("#current_report_wind").textContent = windSpeedKMH + " km/h";
+    document.querySelector("#current_report_windGust").textContent = windGustKMH + " km/h"; 
+    document.querySelector("#current_report_windGust").textContent = windGustKMH + " km/h"; 
+    for(i=1;i<8;i++) {
+        document.querySelector(`#forecast_${i*10}_wind`).textContent = Math.round(result.daily.data[i].windSpeed);
+        document.querySelector(`#forecast_${i*10}_wind_unit`).textContent = 'km/h';
+    }
+  };
+
+  function windFunctionMS() {
+    document.querySelector("#current_report_wind").textContent = windSpeedMS10R + " m/s";
+    document.querySelector("#current_report_windGust").textContent = windSpeedMS10R + " m/s"; 
+    document.querySelector("#current_report_windGust").textContent = windSpeedMS10R + " m/s"; 
+    for(i=1;i<8;i++) {
+        document.querySelector(`#forecast_${i*10}_wind`).textContent = Math.round(result.daily.data[i].windSpeed);
+        document.querySelector(`#forecast_${i*10}_wind_unit`).textContent = 'm/s';
+    }
+  };
+
+function refreshWindSpeedUnit() {
+    chrome.storage.local.get('windUnit', function(dataWind) {
+      if(dataWind.windUnit == "mph") {
+        windFunctionMPH();
+      }
+      else if(dataWind.windUnit == "kmh") {
+        windFunctionKMH();
+      }
+      else if(dataWind.windUnit == "ms") {
+        windFunctionMS();
+      }      
+    });
+  };
+
 
   function next48Function() {
     var i;
@@ -1227,16 +1269,12 @@ chrome.storage.local.get('closeAds', function(data) {
 
   function next7Function(){
     for(i=1;i<3;i++) {
-        document.querySelector(`#forecast_${i}_day`).textContent = dayjs.unix(result.daily.data[i].time).format('dddd');
-        //document.querySelector(`#forecast_${i}_wind`).textContent = Math.round(result.daily.data[i].windSpeed);
-        //document.querySelector(`#forecast_${i}_wind_arrow`).style.transform = 'rotate(' + result.daily.data[i].windBearing + 'deg)';        
-        //document.querySelector(`#forecast_${i}_uv`).textContent = "UVI " + (Math.round ((result.daily.data[i].uvIndex) * uv_adj_daily(result.daily.data[i].icon)));        
+        document.querySelector(`#forecast_${i}_day`).textContent = moment.unix(result.daily.data[i].time).format('dddd');
     }
 
     for(i=1;i<8;i++) {
-        document.querySelector(`#forecast_${i*10}_day`).textContent = dayjs.unix(result.daily.data[i].time).format('ddd');
+        document.querySelector(`#forecast_${i*10}_day`).textContent = moment.unix(result.daily.data[i].time).format('ddd');
         document.querySelector(`#forecast_${i*10}_uv`).textContent = "UVI " + (Math.round ((result.daily.data[i].uvIndex) * uv_adj_daily(result.daily.data[i].icon)));
-        document.querySelector(`#forecast_${i*10}_wind`).textContent = Math.round(result.daily.data[i].windSpeed);
         document.querySelector(`#forecast_${i*10}_wind_arrow`).style.transform = 'rotate(' + result.daily.data[i].windBearing + 'deg)';        
     }
 
@@ -1315,12 +1353,10 @@ chrome.storage.local.get('closeAds', function(data) {
   };
 
   function reportFunction() {
-    document.querySelector("#title_report_text").textContent = citys;
+    document.querySelector("#title_report_text").textContent = citys.slice(0,30);
     document.querySelector("#current_report_summary").textContent = summaryMinutely;
-    document.querySelector("#current_report_uv").textContent = uv1 + " " + current_uv_note;
-    document.querySelector("#current_report_wind").textContent = windSpeedMPH + " mph (" + windSpeedKMH + " km/h)";
+    document.querySelector("#current_report_uv").textContent = uv1 + " " + uv_note(uv1); 
     document.querySelector("#current_report_windBearing").textContent = windBearing + "° (" + windCompass + ")";
-    document.querySelector("#current_report_windGust").textContent = windGustMPH + " mph (" + windGustKMH + " km/h)";
     document.querySelector("#current_report_humidity").textContent = humidity + "%";
     document.querySelector("#current_report_visibility").textContent = visibility + " mi (" + visibilityKM + " km)";
     document.querySelector("#current_report_pressure").textContent = pressure + " mb (hPa)";
@@ -1414,26 +1450,22 @@ chrome.storage.local.get('closeAds', function(data) {
       }
 
         if(TimeFormat == "24h") {
-          updateTimeRelativeBadge = dayjs.unix(updateTimeBadge).format('HH:mm');
+          updateTimeRelativeBadge = moment.unix(updateTimeBadge).format('HH:mm');
         }
         else{
-          updateTimeRelativeBadge = dayjs.unix(updateTimeBadge).format('h:mm A');
+          updateTimeRelativeBadge = moment.unix(updateTimeBadge).format('h:mm A');
         }
         
-        if(setSettingUT == "u" && setSettingFC == "f") {
-          toolTipBadge = temperatureFbadge + "° " + capital_letter(descriptionBadge) + " - " + citys + "\n" + "Updated at " + updateTimeRelativeBadge;
-          chrome.browserAction.setTitle({title: toolTipBadge});
-          }
-        else if(setSettingUT == "u" && setSettingFC == "c") {
-          toolTipBadge = temperatureCbadge + "° " + capital_letter(descriptionBadge) + " - " + citys  + "\n" + "Updated at " + updateTimeRelativeBadge;
+        if(setSettingUT == "u") {
+          toolTipBadge = uv1 + " UVI " + uv_note(uv1) + " - " + citys + "\n" + "Updated at " + updateTimeRelativeBadge;
           chrome.browserAction.setTitle({title: toolTipBadge});
           }
         else if(setSettingUT == "t" && setSettingFC == "f") {
-          toolTipBadge = temperatureFbadge + "° " + capital_letter(descriptionBadge) + " - " + citys  + "\n" + "Updated at " + updateTimeRelativeBadge;
+          toolTipBadge = temperatureFbadge + "° " + capital_letter(summaryBadge) + " - " + citys  + "\n" + "Updated at " + updateTimeRelativeBadge;
           chrome.browserAction.setTitle({title: toolTipBadge});
           }
         else if(setSettingUT == "t" && setSettingFC == "c") {
-          toolTipBadge = temperatureCbadge + "° " + capital_letter(descriptionBadge) + " - " + citys + "\n"  + "Updated at " + updateTimeRelativeBadge;
+          toolTipBadge = temperatureCbadge + "° " + capital_letter(summaryBadge) + " - " + citys + "\n"  + "Updated at " + updateTimeRelativeBadge;
           chrome.browserAction.setTitle({title: toolTipBadge});
           };            
     });
@@ -1452,7 +1484,10 @@ chrome.storage.local.get('closeAds', function(data) {
       modal7days.style.display = "none";
       modalSolar.style.display = "none";
       modalCurrent.style.display = "none";
-      modalSearch.style.display = "none";     
+      modalSearch.style.display = "none";
+      if(document.querySelector('.toastify-top') !== null) {
+        locationToast.hideToast();
+      }
     }; 
 
   function removeClassIcons() {
@@ -1492,10 +1527,12 @@ chrome.storage.local.get('closeAds', function(data) {
 
   function delayButtonIntervalUpdate() {
       setTimeout(function() {
+         document.querySelector("#setting_defualt_button_15_all").style.pointerEvents = "auto";       
+        document.querySelector("#setting_defualt_button_30_all").style.pointerEvents = "auto";
         document.querySelector("#setting_defualt_button_60_all").style.pointerEvents = "auto";
         document.querySelector("#setting_defualt_button_90_all").style.pointerEvents = "auto";
         document.querySelector("#setting_defualt_button_120_all").style.pointerEvents = "auto";
-    }, 1500);
+    }, 750);
   };
 
   function delayReleaseButtonSetting() {
@@ -1507,6 +1544,9 @@ chrome.storage.local.get('closeAds', function(data) {
       document.getElementById("setting_defualt_button_12h_all").style.pointerEvents = "auto";
       document.getElementById("setting_defualt_button_24h_all").style.pointerEvents = "auto";
       document.querySelector(".setting_section_badge_size_Class").style.pointerEvents = "auto";
+      document.getElementById("setting_defualt_button_mph_all").style.pointerEvents = "auto";
+      document.getElementById("setting_defualt_button_kmh_all").style.pointerEvents = "auto";
+      document.getElementById("setting_defualt_button_ms_all").style.pointerEvents = "auto";
 
     }, 1500);
   };
@@ -1519,10 +1559,20 @@ chrome.storage.local.get('closeAds', function(data) {
       document.getElementById("setting_defualt_button_12h_all").style.pointerEvents = "none";
       document.getElementById("setting_defualt_button_24h_all").style.pointerEvents = "none";
       document.querySelector(".setting_section_badge_size_Class").style.pointerEvents = "none";
+      document.getElementById("setting_defualt_button_mph_all").style.pointerEvents = "none";
+      document.getElementById("setting_defualt_button_kmh_all").style.pointerEvents = "none";
+      document.getElementById("setting_defualt_button_ms_all").style.pointerEvents = "none";      
   };
 
 
 /// Click event ------------------------------------------------------------------------------
+
+  document.querySelector(".sidebarIconToggle").addEventListener("click", (e) => {
+      if(document.querySelector('.toastify-top') !== null) {
+        locationToast.hideToast();
+      }
+  });
+
   document.querySelector("#setting_defualt_theme_d_all").addEventListener("click", (e) => {
     darkDisplay();
       document.querySelector("#setting_defualt_theme_d_all").style.pointerEvents = "none";
@@ -1544,6 +1594,18 @@ chrome.storage.local.get('closeAds', function(data) {
       updateBadge();       
       document.getElementById("setting_defualt_button_u").checked = true;
       document.getElementById("setting_defualt_button_t").checked = false;
+
+      document.querySelector(".setting_defualt_button_30_sub_label").style.opacity = ".3";
+      document.querySelector(".setting_defualt_button_15_sub_label").style.opacity = ".3";
+      document.querySelector(".setting_defualt_button_30_sub").style.opacity = ".3";
+      document.querySelector(".setting_defualt_button_15_sub").style.opacity = ".3";
+      document.querySelector(".tooltip-bottom-interval-display-15").style.display = "none";
+      document.querySelector(".tooltip-bottom-interval-display-30").style.display = "none";
+
+      chrome.storage.local.set({'IntervalUpdate': '60'});
+      chrome.runtime.sendMessage({ msg: "intervalUpdateMessage" });
+      document.getElementById("setting_defualt_button_60").checked = true;
+
       delayReleaseButtonSetting();  
   });
   
@@ -1554,6 +1616,21 @@ chrome.storage.local.get('closeAds', function(data) {
       updateBadge();
       document.getElementById("setting_defualt_button_t").checked = true;
       document.getElementById("setting_defualt_button_u").checked = false;
+      chrome.storage.local.get('country', function(data) {
+        if(data.country == "US" || data.country == "us" || data.country == "United States of America" || data.country == "CA" || data.country == "ca" || data.country == "Canada") {
+          document.querySelector(".setting_defualt_button_30_sub_label").style.opacity = "1";
+          document.querySelector(".setting_defualt_button_15_sub_label").style.opacity = "1";
+          document.querySelector(".setting_defualt_button_30_sub").style.opacity = "1";
+          document.querySelector(".setting_defualt_button_15_sub").style.opacity = "1";
+          document.getElementById("setting_defualt_button_30_all").style.pointerEvents = "auto";
+          document.getElementById("setting_defualt_button_15_all").style.pointerEvents = "auto";
+          document.querySelector(".tooltip-bottom-interval-display-15").style.display = "none";
+          document.querySelector(".tooltip-bottom-interval-display-30").style.display = "none";
+        } else{
+          document.querySelector(".tooltip-bottom-interval-display-15").style.display = "block";
+          document.querySelector(".tooltip-bottom-interval-display-30").style.display = "block";          
+        }
+      });
       delayReleaseButtonSetting();    
   });
 
@@ -1594,7 +1671,6 @@ chrome.storage.local.get('closeAds', function(data) {
     
     searchTitle.style.visibility = "hidden";
     searchInner.style.visibility = "hidden";
-    //searchOnMap.style.visibility = "hidden";
     mapTitle.style.visibility = "visible";
     mapInner.style.visibility = "visible";
     weatherMap(weathermapStyle);
@@ -1607,50 +1683,48 @@ chrome.storage.local.get('closeAds', function(data) {
   });
 
   document.querySelector("#search_popup_page").addEventListener("click", (e) => {
-    chrome.storage.local.set({'firstTimeSaerchPopupInSession': 1}); 
-    closeAllPopup();
-    removeClassIcons();
-    modalSearch.style.display = "block";
-    setTimeout(function() {
-      document.getElementById("search_popup_close").style.visibility = 'visible';
-      searchTitle.style.visibility = "visible";
-      searchInner.style.visibility = "visible";
-      //searchOnMap.style.visibility = "visible";
-      searchMap(mapStyle);
-    }, 300);
+    if(modalSearch.style.display !== 'block') {
 
-    var currentIcon = document.getElementById("home_icon_popup_page");
-    currentIcon.classList.add("sub_menu_current_icon_Class");
-
-    var currentSubMenu = document.getElementById("sub_menu_home");
-    currentSubMenu.classList.add("sub_menu_current_Class");
-    setTimeout(function() {
-      searchToast.showToast();
-    }, 1000);         
-  });
-
-  document.querySelector("#location").addEventListener("click", (e) => { 
-    chrome.storage.local.set({'firstTimeSaerchPopupInSession': 1}); 
-    document.getElementById("openSidebarMenu").checked = false;
+      chrome.storage.local.set({'firstTimeSaerchPopupInSession': 1}); 
       closeAllPopup();
       removeClassIcons();
       modalSearch.style.display = "block";
       setTimeout(function() {
-        document.getElementById("search_popup_close").style.visibility = "visible";
+        document.getElementById("search_popup_close").style.visibility = 'visible';
         searchTitle.style.visibility = "visible";
         searchInner.style.visibility = "visible";
-        //searchOnMap.style.visibility = "visible";
+        searchMap(mapStyle);
       }, 300);
-      searchMap(mapStyle);
 
       var currentIcon = document.getElementById("home_icon_popup_page");
       currentIcon.classList.add("sub_menu_current_icon_Class");
 
       var currentSubMenu = document.getElementById("sub_menu_home");
-      currentSubMenu.classList.add("sub_menu_current_Class"); 
-      setTimeout(function() {
-        searchToast.showToast();
-      }, 1000);           
+      currentSubMenu.classList.add("sub_menu_current_Class");
+    };  
+  });
+
+  document.querySelector("#location").addEventListener("click", (e) => { 
+    if(modalSearch.style.display !== 'block') {
+      chrome.storage.local.set({'firstTimeSaerchPopupInSession': 1}); 
+      document.getElementById("openSidebarMenu").checked = false;
+        closeAllPopup();
+        removeClassIcons();
+        modalSearch.style.display = "block";
+        setTimeout(function() {
+          document.getElementById("search_popup_close").style.visibility = "visible";
+          searchTitle.style.visibility = "visible";
+          searchInner.style.visibility = "visible";
+        }, 300);
+        searchMap(mapStyle);
+
+        var currentIcon = document.getElementById("home_icon_popup_page");
+        currentIcon.classList.add("sub_menu_current_icon_Class");
+
+        var currentSubMenu = document.getElementById("sub_menu_home");
+        currentSubMenu.classList.add("sub_menu_current_Class"); 
+
+    };          
   });
 
   document.querySelector("#sidebar_search").addEventListener("click", (e) => {
@@ -1663,7 +1737,6 @@ chrome.storage.local.get('closeAds', function(data) {
       document.getElementById("search_popup_close").style.visibility = "visible";
       searchTitle.style.visibility = "visible";
       searchInner.style.visibility = "visible";
-      //searchOnMap.style.visibility = "visible";
     }, 300);    
     searchMap(mapStyle);
 
@@ -1671,10 +1744,7 @@ chrome.storage.local.get('closeAds', function(data) {
     currentIcon.classList.add("sub_menu_current_icon_Class");
 
     var currentSubMenu = document.getElementById("sub_menu_home");
-    currentSubMenu.classList.add("sub_menu_current_Class");  
-    setTimeout(function() {
-      searchToast.showToast();
-    }, 1000);     
+    currentSubMenu.classList.add("sub_menu_current_Class");    
   });
 
   document.querySelector("#setting_popup_page").addEventListener("click", (e) => {
@@ -1716,7 +1786,6 @@ chrome.storage.local.get('closeAds', function(data) {
     
     searchTitle.style.visibility = "hidden";
     searchInner.style.visibility = "hidden";
-    //searchOnMap.style.visibility = "hidden";
 
     mapTitle.style.visibility = "visible";
     mapInner.style.visibility = "visible";
@@ -1785,12 +1854,6 @@ chrome.storage.local.get('closeAds', function(data) {
   });
 
   document.querySelector("#report_button").addEventListener("click", (e) => {
-    chrome.storage.local.get('firstTimeSaerchPopupInSession', function(data) {
-    firstTimeSaerchPopupInSession = data.firstTimeSaerchPopupInSession;
-      if(firstTimeSaerchPopupInSession == 1) {
-        searchToast.hideToast();
-      }
-    });
     document.getElementById("openSidebarMenu").checked = false;
         closeAllPopup();
         removeClassIcons();
@@ -1830,20 +1893,12 @@ chrome.storage.local.get('closeAds', function(data) {
   });
 
   document.querySelector("#search_popup_close").addEventListener("click", (e) => {
-    chrome.storage.local.get('firstTimeSaerchPopupInSession', function(data) {
-    firstTimeSaerchPopupInSession = data.firstTimeSaerchPopupInSession;
-      if(firstTimeSaerchPopupInSession == 1) {
-        searchToast.hideToast();
-      }
-    });
     setTimeout(function() {
       document.getElementById("search_popup_close").style.transition = "all 0s";
       document.getElementById("search_popup_close").style.visibility = "hidden";
       searchTitle.style.visibility = "hidden";
       searchInner.style.visibility = "hidden";
-      //searchOnMap.style.visibility = "hidden";
       closeAllPopup();
-      //document.getElementById('geocoderID').remove();
       removeClassIcons();
       var element = document.getElementById("home_icon_popup_page");
       element.classList.add("sub_menu_icon_active_Class");
@@ -1875,12 +1930,6 @@ chrome.storage.local.get('closeAds', function(data) {
   });
 
   document.querySelector("#image_background").addEventListener("click", (e) => {
-    chrome.storage.local.get('firstTimeSaerchPopupInSession', function(data) {
-    firstTimeSaerchPopupInSession = data.firstTimeSaerchPopupInSession;
-      if(firstTimeSaerchPopupInSession == 1) {
-        searchToast.hideToast();
-      }
-    });
     setTimeout(function() {
       document.getElementById("openSidebarMenu").checked = false;
       closeAllPopup();
@@ -1925,6 +1974,9 @@ chrome.storage.local.get('closeAds', function(data) {
 
   document.querySelector("#icon_close_box").addEventListener("click", (e) => {
       chrome.storage.local.set({'closeAds': '1'});
+      if(document.querySelector('.toastify-top') !== null) {
+        locationToast.hideToast();
+      }
       var donateButton = document.getElementById("donate_button");
       var donateClose = document.getElementById("icon_close_box");
       var donateCard = document.getElementById("cardMain");
@@ -1951,22 +2003,80 @@ chrome.storage.local.get('closeAds', function(data) {
       delayReleaseButtonSetting();
   });
 
+
+  document.querySelector("#setting_defualt_button_mph_all").addEventListener("click", (e) => {
+      chrome.storage.local.set({'windUnit': 'mph'});
+      document.getElementById("setting_defualt_button_mph").checked = true;
+      refreshWindSpeedUnit();
+      delayButtonSetting();
+      delayReleaseButtonSetting();
+  });
+
+  document.querySelector("#setting_defualt_button_kmh_all").addEventListener("click", (e) => {
+      chrome.storage.local.set({'windUnit': 'kmh'});
+      document.getElementById("setting_defualt_button_kmh").checked = true;
+      refreshWindSpeedUnit();
+      delayButtonSetting();
+      delayReleaseButtonSetting();      
+  });
+
+  document.querySelector("#setting_defualt_button_ms_all").addEventListener("click", (e) => {
+      chrome.storage.local.set({'windUnit': 'ms'});
+      document.getElementById("setting_defualt_button_ms").checked = true;
+      refreshWindSpeedUnit();      
+      delayButtonSetting();
+      delayReleaseButtonSetting();      
+  });
+
+  document.querySelector("#setting_defualt_button_15_all").addEventListener("click", (e) => { 
+    chrome.storage.local.get(['setSettingUT', 'country'], function(data) {
+      if(data.setSettingUT == 't' && (data.country == "US" || data.country == "us" || data.country == "United States of America" || data.country == "CA" || data.country == "ca" || data.country == "Canada") ) {
+        chrome.storage.local.set({'IntervalUpdate': '15'});
+        chrome.runtime.sendMessage({ msg: "intervalUpdateMessage" });
+        document.querySelector("#setting_defualt_button_15_all").style.pointerEvents = "none";            
+        document.querySelector("#setting_defualt_button_30_all").style.pointerEvents = "none";      
+        document.querySelector("#setting_defualt_button_60_all").style.pointerEvents = "none";
+        document.querySelector("#setting_defualt_button_90_all").style.pointerEvents = "none";
+        document.querySelector("#setting_defualt_button_120_all").style.pointerEvents = "none";
+        document.getElementById("setting_defualt_button_15").checked = true;
+        delayButtonIntervalUpdate();
+      }
+    })
+    })
+
+  document.querySelector("#setting_defualt_button_30_all").addEventListener("click", (e) => { 
+    chrome.storage.local.get(['setSettingUT', 'country'], function(data) {
+      if(data.setSettingUT == 't' && (data.country == "US" || data.country == "us" || data.country == "United States of America" || data.country == "CA" || data.ountry == "ca" || data.country == "Canada") ) {    
+        chrome.storage.local.set({'IntervalUpdate': '30'});
+        chrome.runtime.sendMessage({ msg: "intervalUpdateMessage" });
+        document.querySelector("#setting_defualt_button_15_all").style.pointerEvents = "none";                  
+        document.querySelector("#setting_defualt_button_30_all").style.pointerEvents = "none";      
+        document.querySelector("#setting_defualt_button_60_all").style.pointerEvents = "none";
+        document.querySelector("#setting_defualt_button_90_all").style.pointerEvents = "none";
+        document.querySelector("#setting_defualt_button_120_all").style.pointerEvents = "none";
+        document.getElementById("setting_defualt_button_30").checked = true;
+        delayButtonIntervalUpdate();
+      }
+    })        
+    })
+
   document.querySelector("#setting_defualt_button_60_all").addEventListener("click", (e) => { 
       chrome.storage.local.set({'IntervalUpdate': '60'});
       chrome.runtime.sendMessage({ msg: "intervalUpdateMessage" });
+      document.querySelector("#setting_defualt_button_15_all").style.pointerEvents = "none";                  
+      document.querySelector("#setting_defualt_button_30_all").style.pointerEvents = "none";            
       document.querySelector("#setting_defualt_button_60_all").style.pointerEvents = "none";
       document.querySelector("#setting_defualt_button_90_all").style.pointerEvents = "none";
       document.querySelector("#setting_defualt_button_120_all").style.pointerEvents = "none";
       document.getElementById("setting_defualt_button_60").checked = true;
-      setTimeout(function() {
-        window.open("https://uvweather.net/donate");
-      }, 1000);
       delayButtonIntervalUpdate();
     })
 
   document.querySelector("#setting_defualt_button_90_all").addEventListener("click", (e) => { 
       chrome.storage.local.set({'IntervalUpdate': '90'});
       chrome.runtime.sendMessage({ msg: "intervalUpdateMessage" });
+      document.querySelector("#setting_defualt_button_15_all").style.pointerEvents = "none";                  
+      document.querySelector("#setting_defualt_button_30_all").style.pointerEvents = "none";            
       document.querySelector("#setting_defualt_button_60_all").style.pointerEvents = "none";
       document.querySelector("#setting_defualt_button_90_all").style.pointerEvents = "none";
       document.querySelector("#setting_defualt_button_120_all").style.pointerEvents = "none";
@@ -1976,7 +2086,9 @@ chrome.storage.local.get('closeAds', function(data) {
   
   document.querySelector("#setting_defualt_button_120_all").addEventListener("click", (e) => { 
       chrome.storage.local.set({'IntervalUpdate': '120'});
-      chrome.runtime.sendMessage({ msg: "intervalUpdateMessage" });      
+      chrome.runtime.sendMessage({ msg: "intervalUpdateMessage" });
+      document.querySelector("#setting_defualt_button_15_all").style.pointerEvents = "none";            
+      document.querySelector("#setting_defualt_button_30_all").style.pointerEvents = "none";                
       document.querySelector("#setting_defualt_button_60_all").style.pointerEvents = "none";
       document.querySelector("#setting_defualt_button_90_all").style.pointerEvents = "none";
       document.querySelector("#setting_defualt_button_120_all").style.pointerEvents = "none";
@@ -1994,21 +2106,80 @@ chrome.storage.local.get('closeAds', function(data) {
     }, 400);
 
     mapboxgl.accessToken = 'pk.eyJ1IjoidXZ3IiwiYSI6ImNrOTY4dzRiMTAyMnUzZXBheHppanV2MXIifQ.jFdHCvYe2u-LUw-_9mcw_g';
-    if(typeof ((latandlong.split('"'))[1]) !== 'undefined') {
-      latandlongMapBox = ((latandlong.split('"'))[1]).split(',').reverse().join(',');
+    if(typeof (latlong) !== 'undefined') {
+      latandlongMapBox = (latlong).split(',').reverse().join(',');
       latandlongMapBox = JSON.parse("[" + latandlongMapBox + "]");
     }
     else {
       latandlongMapBox = [-79.3832,43.6532];
     } 
 
+    function updateGeocoderProximity() {
+            var center = map.getCenter().wrap();
+            geocoder.setProximity({ longitude: center.lng, latitude: center.lat });
+    };
+
+    function onDragEnd() {
+        var lngLat = marker.getLngLat();  
+        latClick = lngLat.lat;
+        lngClick = lngLat.lng;
+
+        latlong = latClick + ',' + lngClick;
+        latandlongbyClick = [lngClick,latClick];
+
+        popupSeachPin.remove();
+
+        token = 'pk.eyJ1IjoidXZ3IiwiYSI6ImNrOTY4dzRiMTAyMnUzZXBheHppanV2MXIifQ.jFdHCvYe2u-LUw-_9mcw_g';
+        fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${latandlongbyClick}.json?types=place,locality&limit=1&access_token=${token}`)
+          .then((resp) => resp.json())
+           .then(function(result) {
+            
+            if(result.hasOwnProperty('features')) {
+              if(result.features.hasOwnProperty('0')) {
+              if(result.features[0].hasOwnProperty('place_name') && result.features[0].hasOwnProperty('text')) {
+                var fullname = result.features[0].place_name;
+                var cityAPI = result.features[0].text;
+                  latlong =  latClick + ',' + lngClick;
+                  citys = cityAPI;
+
+                  if(((result.features[0].place_name).split(','))[2]) {
+                      countryFull = ((result.features[0].place_name).split(','))[2];
+                  }
+                  else {
+                    countryFull = ((result.features[0].place_name).split(','))[1];
+                  }
+
+                  if(result.features[0].hasOwnProperty('context')) {
+                    for(var i = 0; i <= result.features[0].context.length; i++) {
+                          if(result.features[0].context[i].hasOwnProperty('short_code')) {
+                          country = (result.features[0].context[i].short_code).substring(0, 2);
+                          break;
+                        }                    
+                    }
+                  }
+
+                  chrome.storage.local.set({'fullname': fullname});
+                  chrome.storage.local.set({'latlong': latlong});
+                  chrome.storage.local.set({'citys': citys});
+                  chrome.storage.local.set({'country': country});
+
+                  setTimeout(function(){
+                    popup();
+                  }, 150);
+
+              }
+            }
+          }
+          });
+    };
+
     var map = new mapboxgl.Map({
         container: 'mapSearch',
         style: mapStyle,
         center: latandlongMapBox,
+        minZoom: 2,
+        maxZoom: 12,
         zoom: 10,
-        // maxZoom: 13,
-        // minZoom: 3,
         interactive: true
     });
 
@@ -2017,11 +2188,6 @@ chrome.storage.local.get('closeAds', function(data) {
 
     map.on('load', updateGeocoderProximity);
     map.on('moveend', updateGeocoderProximity);
-
-    function updateGeocoderProximity() {
-            var center = map.getCenter().wrap();
-            geocoder.setProximity({ longitude: center.lng, latitude: center.lat });
-    };
 
     var center = map.getCenter().wrap();
 
@@ -2037,11 +2203,27 @@ chrome.storage.local.get('closeAds', function(data) {
       proximity: {
         longitude: center.lng,
         latitude: center.lat
-      } 
+      },
+      marker: {
+        color: '#ff662b',
+        draggable: true
+      }
     });
-     
+
+    var marker = new mapboxgl.Marker({
+        color: '#ff662b',
+        draggable: true
+    })
+    .setLngLat(latandlongMapBox)
+    .addTo(map);
+
+    var popupSeachPin = new mapboxgl.Popup({closeButton: false, closeOnMove: true, offset: 38  })
+    .setLngLat(latandlongMapBox)
+    .setHTML('<h4>Drag and drop the pin to your location<br>to get accurate weather data.</h4>')
+    .addTo(map);
+
     map.addControl(geocoder);
-  map.addControl(new mapboxgl.NavigationControl());
+    map.addControl(new mapboxgl.NavigationControl());
 
     map.on('load', function() {
       map.addSource('single-point', {
@@ -2053,89 +2235,8 @@ chrome.storage.local.get('closeAds', function(data) {
 
       });
 
-
-
-      map.on('dblclick', function(e) {
-          locationByClick = map.queryRenderedFeatures(e.point);
-          lnglatclick = e.lngLat.wrap();
-          var latClick = lnglatclick.lat;
-          var lngClick = lnglatclick.lng;
-
-          chrome.storage.local.get(['latPre','lngPre'], function(data) {
-            latPre = data.latPre;
-            lngPre = data.lngPre;
-
-          if((typeof latPre == 'undefined' || typeof lngPre == 'undefined')) {
-            latPre = 0;
-            lngPre = 0;
-          }
-
-          if((Math.abs(latClick - latPre) >= 0.05) || (Math.abs(lngClick - lngPre) >= 0.05)) {
-          chrome.storage.local.set({'latPre': latClick});
-          chrome.storage.local.set({'lngPre': lngClick});
-
-          latlong =  '"' + latClick + ',' + lngClick + '"';
-          latandlongbyClick = [lngClick,latClick];
-
-          token = 'pk.eyJ1IjoidXZ3IiwiYSI6ImNrOTY4dzRiMTAyMnUzZXBheHppanV2MXIifQ.jFdHCvYe2u-LUw-_9mcw_g';
-          fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${latandlongbyClick}.json?types=place,locality&limit=1&access_token=${token}`)
-            .then((resp) => resp.json())
-             .then(function(result) {
-              
-              if(result.hasOwnProperty('features')) {
-                if(result.features.hasOwnProperty('0')) {
-                if(result.features[0].hasOwnProperty('place_name') && result.features[0].hasOwnProperty('text')) {
-                  var fullname = result.features[0].place_name;
-                  var cityAPI = result.features[0].text;
-
-                    latandlong =  '"' + latClick + ',' + lngClick + '"';
-                    city =  '"' + cityAPI + '"';
-
-                    if(((result.features[0].place_name).split(','))[2]) {
-                        countryFull = ((result.features[0].place_name).split(','))[2];
-                    }
-                    else {
-                      countryFull = ((result.features[0].place_name).split(','))[1];
-                    }
-
-                    if(result.features[0].hasOwnProperty('context')) {
-                      for(var i = 0; i <= result.features[0].context.length; i++) {
-                            if(result.features[0].context[i].hasOwnProperty('short_code')) {
-                            country = (result.features[0].context[i].short_code).substring(0, 2);
-                            break;
-                          }                    
-                      }
-                    }
-
-                    chrome.storage.local.set({'fullname': fullname});
-                    chrome.storage.local.set({'latlong': latandlong});
-                    chrome.storage.local.set({'city': city});
-                    chrome.storage.local.set({'country': country});
-
-                    setTimeout(function(){
-                      popupPage(city,latandlong,country);
-                    }, 150);
-
-                        chrome.storage.local.get('autoDark', function(data) {
-                        var autoDarkTheme = data.autoDark;
-                          if(autoDarkTheme == '1' && isNight) {
-                              darkDisplay();
-                              map.setStyle('mapbox://styles/mapbox/dark-v10');
-                          }
-                           else if(autoDarkTheme == '1' && isDay) {
-                              lightDisplay();
-                              map.setStyle('mapbox://styles/mapbox/light-v10');
-                          }
-                        });
-
-                }
-              }
-            }
-            });
-        }
-      });
-
-      });
+      marker.on('dragend', onDragEnd);
+ 
 
       geocoder.on('result', function(ev) {
           updateGeocoderProximity();
@@ -2144,8 +2245,8 @@ chrome.storage.local.get('closeAds', function(data) {
           var lat = ev.result.geometry.coordinates[1];
           var lng = ev.result.geometry.coordinates[0];
 
-          latandlong =  '"' + lat + ',' + lng + '"';
-          city =  '"' + cityAPI + '"';
+          latlong =  lat + ',' + lng;
+          citys =  cityAPI;
 
           if(((ev.result.place_name).split(','))[2]) {
               countryFull = ((ev.result.place_name).split(','))[2];
@@ -2161,37 +2262,31 @@ chrome.storage.local.get('closeAds', function(data) {
               }                    
           }
 
+          marker.remove();
+
           chrome.storage.local.set({'fullname': fullname});
-          chrome.storage.local.set({'latlong': latandlong});
-          chrome.storage.local.set({'city': city});
+          chrome.storage.local.set({'latlong': latlong});
+          chrome.storage.local.set({'citys': citys});
           chrome.storage.local.set({'country': country});
 
             setTimeout(function(){
-              popupPage(city,latandlong,country);
+              popup();
             }, 150);
-
-                chrome.storage.local.get('autoDark', function(data) {
-                var autoDarkTheme = data.autoDark;
-                  if(autoDarkTheme == '1' && isNight) {
-                      darkDisplay();
-                      map.setStyle('mapbox://styles/mapbox/dark-v10');
-                  }
-                   else if(autoDarkTheme == '1' && isDay) {
-                      lightDisplay();
-                      map.setStyle('mapbox://styles/mapbox/light-v10');
-                  }
-                });
 
           map.flyTo({
             center: [lng,lat],
             zoom: 10,
-            speed: 1.2,
+            speed: .8,
             curve: 1.42,
+            essential: true,
             easing(t) {
               return t;
             }
           });
 
+          map.on('moveend', function(e){
+              searchMap(mapStyle);
+          });
 
       });
 
@@ -2205,8 +2300,8 @@ chrome.storage.local.get('closeAds', function(data) {
 
   function weatherMap(weathermapStyle) {
     mapboxgl.accessToken = 'pk.eyJ1IjoidXZ3IiwiYSI6ImNrOTY4dzRiMTAyMnUzZXBheHppanV2MXIifQ.jFdHCvYe2u-LUw-_9mcw_g';
-    if(typeof ((latandlong.split('"'))[1]) !== 'undefined') {
-      latandlongMapBox = ((latandlong.split('"'))[1]).split(',').reverse().join(',');
+    if(typeof (latlong) !== 'undefined') {
+      latandlongMapBox = (latlong).split(',').reverse().join(',');
       latandlongMapBox = JSON.parse("[" + latandlongMapBox + "]");
     }
     else {
