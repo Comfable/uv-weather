@@ -542,6 +542,7 @@ function popupGeneral() {
       }
       
       document.querySelector("#current_uv").textContent = uv1;
+      
       if(typeof country !== 'undefined' && country !== 'undefined' && country !== ' ') {
             country = (country.trim()).substring(0, 2);
             url_flags = 'https://www.countryflags.io/' + country + '/flat/64.png';
