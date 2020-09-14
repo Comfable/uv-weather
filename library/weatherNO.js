@@ -12,8 +12,8 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
         }
     }
 
-    fetch(`https://uvweather.herokuapp.com/https://api.met.no/weatherapi/locationforecast/2.0/?lat=${lat}&lon=${lng}`, optionsNO)
-        .then((resp) => resp.json())
+    fetchWithTimeout(`https://uvweather.herokuapp.com/https://api.met.no/weatherapi/locationforecast/2.0/?lat=${lat}&lon=${lng}`, optionsNO, 4000)
+        .then(CheckError)
         .then(function(resultNO) {
             window.resultNO = resultNO;
 
@@ -112,6 +112,9 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
             next_1_hours_precipitation_NO = resultNO.properties.timeseries[0].data.next_1_hours.details.hasOwnProperty('precipitation_amount') ? resultNO.properties.timeseries[0].data.next_1_hours.details.precipitation_amount : '';
             if (next_1_hours_precipitation_NO !== "NA" && next_1_hours_precipitation_NO !== "" && next_1_hours_precipitation_NO !== null && next_1_hours_precipitation_NO !== "NULL") {
                 precipProbability = (next_1_hours_precipitation_NO);
+                if (precipProbability = '0') {
+                    precipProbability = 'No precipitation'
+                } 
             } else {
                 next_1_hours_precipitation_NO = "NA";
                 precipProbability = '-';
@@ -536,11 +539,14 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
 
 
         }).catch(function(err) {
+
             //console.log('no err ' + err);
+            if (navigator.onLine) {
+                document.querySelector("#overloaded_popup").style.visibility = "visible";
+            }
             chrome.storage.local.set({
                 'failedHTTP_NO': '1'
             });
-
 
 
         });

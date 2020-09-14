@@ -42,7 +42,7 @@
 
  <body>
 
-     <div id="noInternet_popup" class="noInternet_popup_Class">
+     <div id="noInternet_popup" class="overlay_popup_Class">
          <div class="noInternet_content_Class">
              <img id="noInternet_image" class="noInternet_image_Class" src="images/noInternet.svg" />
              <div id="noInternet_title" class="noInternet_title_Class">Whoops!</div>
@@ -50,6 +50,13 @@
          </div>
      </div>
 
+     <div id="overloaded_popup" class="overlay_popup_Class">
+         <div class="noInternet_content_Class">
+             <img id="noInternet_image" class="noInternet_image_Class" src="images/noInternet.svg" />
+             <div id="noInternet_title" class="noInternet_title_Class">Whoops!</div>
+             <div id="noInternet_text" class="noInternet_text_Class">Service is overloaded at the moment. <br>Please try again in a few seconds.</div>
+         </div>
+     </div>
 
      <div id="preload_body">
          <!-- aside -->
@@ -1500,6 +1507,9 @@
                          <span id="current_report_uv" class="current_report_value_Class">
                              value
                          </span>
+                         <span id="current_report_uv_note" class="current_report_explain_Class">
+                             value
+                         </span>                         
                      </div>
 
                      <hr class="hr_forecast">
@@ -1520,7 +1530,7 @@
                          <span id="current_report_title_5" class="current_report_title_Class">
                              Precipitation
                          </span>
-                         <span id="current_report_precipitation" class="current_report_value_Class">
+                         <span id="current_report_precipitation" class="current_report_explain_Class">
                              value
                          </span>
                      </div>
@@ -1567,7 +1577,7 @@
                          <span id="current_report_windBearing" class="current_report_value_Class">
                              value
                          </span>
-                         <span id="current_report_windBearing_windCompass" class="current_report_windBearing_windCompass_Class">
+                         <span id="current_report_windBearing_windCompass" class="current_report_explain_Class">
                              value
                          </span>                         
                      </div>

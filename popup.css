@@ -1513,7 +1513,7 @@
       padding-left: 5px;
   }
 
-  .current_report_windBearing_windCompass_Class {
+  .current_report_explain_Class {
       position: relative;
       display: inline-block;
       text-align: left;
@@ -1824,7 +1824,7 @@
 
   }
 
-  .noInternet_popup_Class {
+  .overlay_popup_Class {
       position: absolute;
       left: 0px;
       top: 0px;

@@ -1,12 +1,6 @@
 //
 document.addEventListener("DOMContentLoaded", function() {
 
-    if (navigator.onLine) {
-        document.querySelector(".noInternet_popup_Class").style.visibility = "hidden";
-    } else {
-        document.querySelector(".noInternet_popup_Class").style.visibility = "visible";
-    }
-
     const options = {
         duration: 0.9,
     };
@@ -367,7 +361,6 @@ document.addEventListener("DOMContentLoaded", function() {
                         UTFC();
                         refreshPopup();
                         updateBadge();
-
                         const preloader = document.querySelector('.preloader');
                         const fadeEffect = setInterval(() => {
                             if (!preloader.style.opacity) {
@@ -1296,7 +1289,8 @@ document.addEventListener("DOMContentLoaded", function() {
     function reportFunction() {
         document.querySelector("#title_report_text").textContent = citys.slice(0, 30);
         document.querySelector("#current_report_summary").textContent = summaryMinutely;
-        document.querySelector("#current_report_uv").textContent = uv1 + " " + uv_note(uv1);
+        document.querySelector("#current_report_uv").textContent = uv1;
+        document.querySelector("#current_report_uv_note").textContent = " " + uv_note(uv1);
         document.querySelector("#current_report_windBearing").textContent = windBearing + "° ";
         document.querySelector("#current_report_windBearing_windCompass").textContent = " (" + windCompass + ")";
         document.querySelector("#current_report_humidity").textContent = humidity + "%";
@@ -2370,6 +2364,14 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     };
 
+
+    setTimeout(function() {
+	    if (navigator.onLine) {
+	        document.querySelector("#noInternet_popup").style.visibility = "hidden";
+	    } else {
+	        document.querySelector("#noInternet_popup").style.visibility = "visible";
+	    }
+    }, 3500);
 
 
 });
