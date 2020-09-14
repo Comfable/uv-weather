@@ -41,7 +41,7 @@ function weatherCA(latlong, citys, resolve) {
                     updateTimeBadge = toTimestamp(utcSystemTime);
 
                     srcDOMJsonCA = xml2json(srcDOM);
-                    //console.log(JSON.stringify(srcDOMJsonCA));
+                    console.log(JSON.stringify(srcDOMJsonCA));
 
                     var tempCca = "-";
                     tempCCca = srcDOMJsonCA.siteData.currentConditions.hasOwnProperty('temperature') ? srcDOMJsonCA.siteData.currentConditions.temperature : "NA";
