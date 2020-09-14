@@ -313,6 +313,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     function popup() {
+        
+        document.querySelector(".aqi-arrow").style.visibility = "hidden";
+        document.querySelector("#aqi-current-svg").style.visibility = "hidden";
 
         chrome.storage.local.get(['latlong', 'citys', 'country', 'timeZoneBadge', 'failedHTTP'], function(data) {
             latlong = data.latlong;
@@ -343,7 +346,9 @@ document.addEventListener("DOMContentLoaded", function() {
             });
 
             var promise3 = () => new Promise(resolve => {
-                    aqi(latlong, resolve);
+                    //aqi(latlong, resolve);
+                    //aqi_index = '1';
+                    resolve && resolve('result of NO()');
             });
 
             promise().then(() => {
@@ -538,13 +543,16 @@ document.addEventListener("DOMContentLoaded", function() {
         reportFunction();
         trackSunExposure();
         refreshWindSpeedUnit();
-        aqi_popup();
         //loadingIconBadge();
     };
 
 
     function aqi_popup() {
+        document.querySelector(".aqi-loading-dots").style.display = "none";
         document.querySelector(".aqi-current-text").textContent = aqi_index;
+        document.querySelector(".aqi-arrow").style.visibility = "visible";
+        document.querySelector("#aqi-current-svg").style.visibility = "visible";
+
         if(aqi_index == '-') {
             document.querySelector(".aqi-arrow").style.transform = "translateY(0px)";
             document.querySelector("#aqi-current-svg").style.fill = "#27AE60";
@@ -1731,8 +1739,11 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     document.querySelector("#aqi_popup_page").addEventListener("click", (e) => {
+
         closeAllPopup();
         removeClassIcons();
+        document.querySelector(".aqi-loading-dots").style.display = "block";
+
         modalAqi.style.display = "block";
         var element = document.getElementById("aqi_icon_popup_page");
         element.classList.add("sub_menu_icon_active_Class");
@@ -1742,6 +1753,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
         var currentSubMenu = document.getElementById("sub_menu_aqi");
         currentSubMenu.classList.add("sub_menu_current_Class");
+
+        aqi(latlong);
     });
 
     document.querySelector("#sidebar_setting").addEventListener("click", (e) => {
@@ -2482,6 +2495,99 @@ document.addEventListener("DOMContentLoaded", function() {
     
     };
 
+
+
+    function aqi(latlong) {
+
+        lat = (latlong.split(','))[0];
+        lng = (latlong.split(','))[1];
+
+                 fetchWithTimeout(`https://uvweather.herokuapp.com/https://api.waqi.info/feed/geo:${lat};${lng}/?token=9311857ccf3e488b86121268b016304e3c5ca3b4`, 3000)
+                .then(CheckError)
+                .then(function(resultWaqi) {
+
+                    if(JSON.stringify(resultWaqi) !== '[]' && resultWaqi.status=='ok') {
+                        aqi_dominant_pollutant = resultWaqi.data.hasOwnProperty('dominentpol') ?  resultWaqi.data.dominentpol : '-';
+                        aqi_index = resultWaqi.data.hasOwnProperty('aqi') ?  resultWaqi.data.aqi : '-';
+
+                        if(aqi_index <= 50) {
+                            aqi_name = 'Good';
+                        }
+                        else if(aqi_index >= 51 && aqi_index <= 100) {
+                            aqi_name = 'Moderate';
+                        }
+                        else if(aqi_index >= 101 && aqi_index <= 150) {
+                            aqi_name = 'Unhealthy for Sensitive Groups';   
+                        }
+                        else if(aqi_index >= 151 && aqi_index <= 200) {
+                            aqi_name = 'Unhealthy';
+                        }
+                        else if(aqi_index >= 201 && aqi_index <= 300) {
+                            aqi_name = 'Very Unhealthy';
+                        }
+                        else {
+                            aqi_name = 'Hazardous';
+                        }
+
+                    aqi_popup();
+
+                    }
+                    else{
+                        AQIair(latlong);
+                    }
+
+                }).catch(function(err) {
+                    AQIair(latlong);
+                });
+
+
+        function AQIair(latlong) {
+                 fetchWithTimeout(`https://uvweather.herokuapp.com/http://api.airvisual.com/v2/nearest_city?lat=${lat}&lon=${lng}&key=dcb6e387-e96b-424e-87fb-b2201c95d25c`, 3000)
+                .then(CheckError)
+                .then(function(resultAQIair) {
+
+                    if(JSON.stringify(resultAQIair) !== '[]' && resultAQIair.status=='success') { // Good, Moderate, Unhealthy for Sensitive Groups, Unhealthy, Very Unhealthy, Hazardous, Unavailable
+                        aqi_dominant_pollutant = resultAQIair.data.current.pollution.hasOwnProperty('mainus') ?  resultAQIair.data.current.pollution.mainus : '-';
+                        aqi_index = resultAQIair.data.current.pollution.hasOwnProperty('aqius') ?  resultAQIair.data.current.pollution.aqius : '-';
+
+                        if(aqi_index <= 50) {
+                            aqi_name = 'Good';
+                        }
+                        else if(aqi_index >= 51 && aqi_index <= 100) {
+                            aqi_name = 'Moderate';
+                        }
+                        else if(aqi_index >= 101 && aqi_index <= 150) {
+                            aqi_name = 'Unhealthy for Sensitive Groups';   
+                        }
+                        else if(aqi_index >= 151 && aqi_index <= 200) {
+                            aqi_name = 'Unhealthy';
+                        }
+                        else if(aqi_index >= 201 && aqi_index <= 300) {
+                            aqi_name = 'Very Unhealthy';
+                        }
+                        else {
+                            aqi_name = 'Hazardous';
+                        }
+                                            
+                    }
+                    else{
+                        aqi_dominant_pollutant = '-';
+                        aqi_index = '-';
+                        aqi_name = '-';
+                    }
+
+                    aqi_popup();
+                }).catch(function(err) {
+                    aqi_dominant_pollutant = '-';
+                    aqi_index = '-';
+                    aqi_name = '-';
+                    aqi_popup();
+                });
+
+        }
+        
+
+    };
 
 
     setTimeout(function() {

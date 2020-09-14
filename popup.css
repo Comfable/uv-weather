@@ -3219,7 +3219,7 @@ textarea:hover {
 
     #aqi {
     position: absolute;
-    top: 60px;
+    top: 70px;
     width: 307px;
     height: 338px;
     overflow: hidden;
@@ -3234,6 +3234,7 @@ textarea:hover {
     stroke-linecap: butt;
     stroke-miterlimit: 4;
     shape-rendering: auto;
+    visibility: hidden;
   }
   .aqi-current {
     overflow: visible;
@@ -3327,7 +3328,7 @@ textarea:hover {
     text-transform: uppercase;
   }
   .aqi-current-text {
-    left: 24px;
+    left: 21px;
     top: 32px;
     position: absolute;
     overflow: visible;
@@ -3495,4 +3496,15 @@ textarea:hover {
     font-size: 11px;
     color: var(--font-color);
     text-transform: uppercase;
+  }
+
+  .aqi-loading-dots {
+    width: 90px;
+    height: 30px;
+    padding: 0;
+    margin: 0;
+    z-index: 100000;
+    position: absolute;
+    top: 40px;
+    left: 105px;
   }
