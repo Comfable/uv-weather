@@ -414,7 +414,17 @@
                      </a>
                  </span>
 
-                 <span id="sub_menu_setting" class="sub_menu_culumn_Class">
+                 <span id="sub_menu_aqi" class="sub_menu_culumn_Class">
+                     <a id="aqi_popup_page" class="blacklink">
+                         <div>
+                             <img src="images/aqi.svg" id="aqi_icon_popup_page" class="sub_menu_icon_Class" />
+                         </div>
+                         <div class="sub_menu_text_Class">Air Quality
+                         </div>
+                     </a>
+                 </span>
+
+<!--                  <span id="sub_menu_setting" class="sub_menu_culumn_Class">
                      <a id="setting_popup_page" class="blacklink">
                          <div>
                              <img src="images/settings.svg" id="setting_icon_popup_page" class="sub_menu_icon_Class" />
@@ -422,7 +432,7 @@
                          <div class="sub_menu_text_Class">Settings
                          </div>
                      </a>
-                 </span>
+                 </span> -->
 
              </div>
          </div>
@@ -1948,6 +1958,126 @@
                      </span>
                  </div>
              </div>
+
+         </div>
+
+
+        <!-- aqi Page -->
+         <div id="aqi_popup" class="modal">
+             <!-- <div id="solar_popup_close" class="modal_close"></div> -->
+             <div id="title_aqi" class="title_uv_group_Class_setting">
+                 <div id="title_aqi_text" class="title_page_Class">
+                     Air Quality Index
+                 </div>
+                 <div id="aqi_now_date" class="title_subtitle_modal_Class">
+
+                 </div>
+             </div>
+
+
+
+
+                <div id="aqi">
+
+
+                    <div class="aqi-arrow">
+                        <svg class="aqi-current" viewBox="0 0 51 39">
+                            <path id="aqi-current-svg" d="M 0 39 L 0 0 L 33 0 L 51 19.50092506408691 L 33 39 L 0 39 Z">
+                            </path>
+                        </svg>
+                        <div class="aqi-current-text">
+                            <span>15</span>
+                        </div>
+                    </div>
+
+
+
+                    <svg class="aqi-hazardous">
+                        <rect id="aqi-hazardous" rx="0" ry="0" x="0" y="0" width="8" height="50">
+                        </rect>
+                    </svg>
+                    <svg class="aqi-veryUnhealthy">
+                        <rect id="aqi-veryUnhealthy" rx="0" ry="0" x="0" y="0" width="8" height="51">
+                        </rect>
+                    </svg>
+                    <svg class="aqi-unhealthy">
+                        <rect id="aqi-unhealthy" rx="0" ry="0" x="0" y="0" width="8" height="52">
+                        </rect>
+                    </svg>
+                    <svg class="aqi-unhealthySensitive">
+                        <rect id="aqi-unhealthySensitive" rx="0" ry="0" x="0" y="0" width="8" height="52">
+                        </rect>
+                    </svg>
+                    <svg class="aqi-moderate">
+                        <rect id="aqi-moderate" rx="0" ry="0" x="0" y="0" width="8" height="50">
+                        </rect>
+                    </svg>
+                    <svg class="aqi-good">
+                        <rect id="aqi-good" rx="0" ry="0" x="0" y="0" width="8" height="51">
+                        </rect>
+                    </svg>
+                    <div id="aqi-text-good">
+                        <span>Good</span>
+                    </div>
+
+                    <div id="aqi-50">
+                        <span>50</span>
+                    </div>
+                    <div id="aqi-100">
+                        <span>100</span>
+                    </div>
+                    <div id="aqi-150">
+                        <span>150</span>
+                    </div>
+                    <div id="aqi-200">
+                        <span>200</span>
+                    </div>
+                    <div id="aqi-300">
+                        <span>300</span>
+                    </div>
+                    <div id="aqi-text-moderate">
+                        <span>Moderate</span>
+                    </div>
+                    <div id="aqi-text-unhealthySensitive">
+                        <span>Unhealthy for  Sensitive Group</span>
+                    </div>
+                    <div id="aqi-text-veryUnhealthy">
+                        <span>Unhealthy     </span>
+                    </div>
+                    <div id="aqi-text-unhealthy">
+                        <span>Very Unhealthy</span>
+                    </div>
+                    <div id="aqi-text-uazardous">
+                        <span>Hazardous</span>
+                    </div>
+                </div>
+
+
+
+<!--              <div class="aqi_table_Class">
+
+                 <div id="aqi_1" class="solar_Class">
+                     <span id="aqi_1_name" class="aqi_name_Class tooltip">
+                         AQI
+                         <span class="tooltiptext tooltip-top">Air Quality Index</span>
+                     </span>
+                     <span id="aqi_1_value" class="aqi_value_Class">
+                         -
+                     </span>
+                 </div>
+                 <hr class="hr_forecast">
+                 <div id="aqi_2" class="solar_Class">
+                     <span id="aqi_2_name" class="aqi_name_Class tooltip">
+                         Pollutant
+                         <span class="tooltiptext tooltip-top">Dominant (Main) pollutant</span>
+                     </span>
+                     <span id="aqi_2_value" class="aqi_value_Class">
+                         -
+                     </span>
+                 </div>
+                 
+             </div> -->
+
 
          </div>
 

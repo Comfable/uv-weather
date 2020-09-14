@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function() {
     var currentSubMenu = document.getElementById("sub_menu_home");
     currentSubMenu.classList.add("sub_menu_current_Class");
     var modalSetting = document.getElementById("setting_popup");
+    var modalAqi = document.getElementById("aqi_popup");
     var modalFeedback = document.getElementById("feedback_popup");
     var modalSolar = document.getElementById("solar_popup");
     var modalInfo = document.getElementById("info_popup");
@@ -310,6 +311,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
 
+
     function popup() {
 
         chrome.storage.local.get(['latlong', 'citys', 'country', 'timeZoneBadge', 'failedHTTP'], function(data) {
@@ -338,11 +340,16 @@ document.addEventListener("DOMContentLoaded", function() {
                 } else {
                     resolve && resolve('result of NO()');
                 }
+            });
 
+            var promise3 = () => new Promise(resolve => {
+                    aqi(latlong, resolve);
             });
 
             promise().then(() => {
-                    promise2().then(() => {}).then(function() {
+                promise2().then(() => {}).then(function() {
+                    promise3().then(() => {}).then(function() {
+
                         UTFC();
                         refreshPopup();
                         updateBadge();
@@ -374,7 +381,10 @@ document.addEventListener("DOMContentLoaded", function() {
                         });
 
                     })
+
                 })
+
+            })
                 .catch((error) => {
                     //console.log( 'promise error: ', error );
                 });
@@ -528,8 +538,42 @@ document.addEventListener("DOMContentLoaded", function() {
         reportFunction();
         trackSunExposure();
         refreshWindSpeedUnit();
+        aqi_popup();
         //loadingIconBadge();
     };
+
+
+    function aqi_popup() {
+        document.querySelector(".aqi-current-text").textContent = aqi_index;
+        if(aqi_index == '-') {
+            document.querySelector(".aqi-arrow").style.transform = "translateY(0px)";
+            document.querySelector("#aqi-current-svg").style.fill = "#27AE60";
+        }
+        else if(aqi_index <= 50) {
+            document.querySelector(".aqi-arrow").style.transform = "translateY(0px)";
+            document.querySelector("#aqi-current-svg").style.fill = "#27AE60";
+        }
+        else if(aqi_index >= 51 && aqi_index <= 100) {
+            document.querySelector(".aqi-arrow").style.transform = "translateY(52px)";
+            document.querySelector("#aqi-current-svg").style.fill = "#2ECC71";
+        }
+        else if(aqi_index >= 101 && aqi_index <= 150) {
+            document.querySelector(".aqi-arrow").style.transform = "translateY(104px)";
+            document.querySelector("#aqi-current-svg").style.fill = "#F1C40F"; 
+        }
+        else if(aqi_index >= 151 && aqi_index <= 200) {
+            document.querySelector(".aqi-arrow").style.transform = "translateY(156px)";
+            document.querySelector("#aqi-current-svg").style.fill = "#F39C12";
+        }
+        else if(aqi_index >= 201 && aqi_index <= 300) {
+            document.querySelector(".aqi-arrow").style.transform = "translateY(208px)";
+            document.querySelector("#aqi-current-svg").style.fill = "#9B59B6";
+        }
+        else {
+            document.querySelector(".aqi-arrow").style.transform = "translateY(260px)";
+            document.querySelector("#aqi-current-svg").style.fill = "#E74C3C";
+        }        
+    }
 
     function groundCurrent() {
         switch (iconBadge) {
@@ -1023,6 +1067,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function solarFunction12H() {
         document.querySelector("#solar_now_date").textContent = moment.unix(updateTimeBadge + offsetUnix).format('MMMM DD, h:mm A') + ' (LT)';
+        document.querySelector("#aqi_now_date").textContent = moment.unix(updateTimeBadge + offsetUnix).format('MMMM DD, h:mm A') + ' (LT)';
         document.querySelector("#solar_1_time").textContent = moment.unix(sunriseTimeSolar + offsetUnix).format('h:mm A');
         document.querySelector("#solar_2_time").textContent = moment.unix(sunsetTimeSolar + offsetUnix).format('h:mm A');
         document.querySelector("#solar_3_time").textContent = moment.unix(solarNoon + offsetUnix).format('h:mm A');
@@ -1036,6 +1081,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function solarFunction24H() {
         document.querySelector("#solar_now_date").textContent = moment.unix(updateTimeBadge + offsetUnix).format('MMMM DD, HH:mm') + ' (LT)';
+        document.querySelector("#aqi_now_date").textContent = moment.unix(updateTimeBadge + offsetUnix).format('MMMM DD, HH:mm') + ' (LT)';
         document.querySelector("#solar_1_time").textContent = moment.unix(sunriseTimeSolar + offsetUnix).format('HH:mm');
         document.querySelector("#solar_2_time").textContent = moment.unix(sunsetTimeSolar + offsetUnix).format('HH:mm');
         document.querySelector("#solar_3_time").textContent = moment.unix(solarNoon + offsetUnix).format('HH:mm');
@@ -1427,7 +1473,7 @@ document.addEventListener("DOMContentLoaded", function() {
     };
 
     function closeAllPopup() {
-        modalSetting.style.display = "none";
+        modalAqi.style.display = "none";
         modalFeedback.style.display = "none";
         modal48hours.style.display = "none";
         modal7days.style.display = "none";
@@ -1440,28 +1486,28 @@ document.addEventListener("DOMContentLoaded", function() {
     };
 
     function removeClassIcons() {
-        var settingIcon = document.getElementById("setting_icon_popup_page");
+        var aqiIcon = document.getElementById("aqi_icon_popup_page");
         var solarIcon = document.getElementById("solar_icon_popup_page");
         var homeIcon = document.getElementById("home_icon_popup_page");
         var next7Icon = document.getElementById("next7_icon_popup_page");
         var next48Icon = document.getElementById("next48_icon_popup_page");
-        settingIcon.classList.remove("sub_menu_icon_active_Class");
+        aqiIcon.classList.remove("sub_menu_icon_active_Class");
         solarIcon.classList.remove("sub_menu_icon_active_Class");
         homeIcon.classList.remove("sub_menu_icon_active_Class");
         next7Icon.classList.remove("sub_menu_icon_active_Class");
         next48Icon.classList.remove("sub_menu_icon_active_Class");
-        settingIcon.classList.remove("sub_menu_current_icon_Class");
+        aqiIcon.classList.remove("sub_menu_current_icon_Class");
         solarIcon.classList.remove("sub_menu_current_icon_Class");
         homeIcon.classList.remove("sub_menu_current_icon_Class");
         next7Icon.classList.remove("sub_menu_current_icon_Class");
         next48Icon.classList.remove("sub_menu_current_icon_Class");
 
-        var settingSub = document.getElementById("sub_menu_setting");
+        var aqiSub = document.getElementById("sub_menu_aqi");
         var solarSub = document.getElementById("sub_menu_solar");
         var homeSub = document.getElementById("sub_menu_home");
         var next7Sub = document.getElementById("sub_menu_next7");
         var next48Sub = document.getElementById("sub_menu_next48");
-        settingSub.classList.remove("sub_menu_current_Class");
+        aqiSub.classList.remove("sub_menu_current_Class");
         solarSub.classList.remove("sub_menu_current_Class");
         homeSub.classList.remove("sub_menu_current_Class");
         next7Sub.classList.remove("sub_menu_current_Class");
@@ -1683,17 +1729,17 @@ document.addEventListener("DOMContentLoaded", function() {
         currentSubMenu.classList.add("sub_menu_current_Class");
     });
 
-    document.querySelector("#setting_popup_page").addEventListener("click", (e) => {
+    document.querySelector("#aqi_popup_page").addEventListener("click", (e) => {
         closeAllPopup();
         removeClassIcons();
-        modalSetting.style.display = "block";
-        var element = document.getElementById("setting_icon_popup_page");
+        modalAqi.style.display = "block";
+        var element = document.getElementById("aqi_icon_popup_page");
         element.classList.add("sub_menu_icon_active_Class");
 
-        var currentIcon = document.getElementById("setting_icon_popup_page");
+        var currentIcon = document.getElementById("aqi_icon_popup_page");
         currentIcon.classList.add("sub_menu_current_icon_Class");
 
-        var currentSubMenu = document.getElementById("sub_menu_setting");
+        var currentSubMenu = document.getElementById("sub_menu_aqi");
         currentSubMenu.classList.add("sub_menu_current_Class");
     });
 
@@ -1702,14 +1748,14 @@ document.addEventListener("DOMContentLoaded", function() {
         closeAllPopup();
         removeClassIcons();
         modalSetting.style.display = "block";
-        var element = document.getElementById("setting_icon_popup_page");
-        element.classList.add("sub_menu_icon_active_Class");
+        // var element = document.getElementById("setting_icon_popup_page");
+        // element.classList.add("sub_menu_icon_active_Class");
 
-        var currentIcon = document.getElementById("setting_icon_popup_page");
-        currentIcon.classList.add("sub_menu_current_icon_Class");
+        // var currentIcon = document.getElementById("setting_icon_popup_page");
+        // currentIcon.classList.add("sub_menu_current_icon_Class");
 
-        var currentSubMenu = document.getElementById("sub_menu_setting");
-        currentSubMenu.classList.add("sub_menu_current_Class");
+        // var currentSubMenu = document.getElementById("sub_menu_setting");
+        // currentSubMenu.classList.add("sub_menu_current_Class");
     });
 
     document.querySelector("#sidebar_feedback").addEventListener("click", (e) => {
@@ -1717,13 +1763,13 @@ document.addEventListener("DOMContentLoaded", function() {
         closeAllPopup();
         removeClassIcons();
         modalFeedback.style.display = "flex";
-        var element = document.getElementById("setting_icon_popup_page");
+        var element = document.getElementById("aqi_icon_popup_page");
         element.classList.add("sub_menu_icon_active_Class");
 
-        var currentIcon = document.getElementById("setting_icon_popup_page");
+        var currentIcon = document.getElementById("aqi_icon_popup_page");
         currentIcon.classList.add("sub_menu_current_icon_Class");
 
-        var currentSubMenu = document.getElementById("sub_menu_setting");
+        var currentSubMenu = document.getElementById("sub_menu_aqi");
         currentSubMenu.classList.add("sub_menu_current_Class");
     });
 
@@ -2447,6 +2493,11 @@ document.addEventListener("DOMContentLoaded", function() {
 		    }
 		});
     }, 6500);
+
+
+
+
+
 
 
 

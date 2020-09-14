@@ -1208,3 +1208,97 @@ function badgeGeneral(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, sn
     utfc = UTFC(function(value) {});
 
 };
+
+
+function aqi(latlong, resolve) {
+
+    lat = (latlong.split(','))[0];
+    lng = (latlong.split(','))[1];
+
+             fetchWithTimeout(`https://uvweather.herokuapp.com/https://api.waqi.info/feed/geo:${lat};${lng}/?token=9311857ccf3e488b86121268b016304e3c5ca3b4`, 5000)
+            .then(CheckError)
+            .then(function(resultWaqi) {
+
+                if(JSON.stringify(resultWaqi) !== '[]' && resultWaqi.status=='ok') {
+                    aqi_dominant_pollutant = resultWaqi.data.hasOwnProperty('dominentpol') ?  resultWaqi.data.dominentpol : '-';
+                    aqi_index = resultWaqi.data.hasOwnProperty('aqi') ?  resultWaqi.data.aqi : '-';
+
+                    if(aqi_index <= 50) {
+                        aqi_name = 'Good';
+                    }
+                    else if(aqi_index >= 51 && aqi_index <= 100) {
+                        aqi_name = 'Moderate';
+                    }
+                    else if(aqi_index >= 101 && aqi_index <= 150) {
+                        aqi_name = 'Unhealthy for Sensitive Groups';   
+                    }
+                    else if(aqi_index >= 151 && aqi_index <= 200) {
+                        aqi_name = 'Unhealthy';
+                    }
+                    else if(aqi_index >= 201 && aqi_index <= 300) {
+                        aqi_name = 'Very Unhealthy';
+                    }
+                    else {
+                        aqi_name = 'Hazardous';
+                    }
+
+                resolve && resolve('result of AQI');    
+                }
+                else{
+                    AQIair(latlong, resolve);
+                }
+
+            }).catch(function(err) {
+                AQIair(latlong, resolve);
+            });
+
+
+    function AQIair(latlong, resolve) {
+             fetchWithTimeout(`https://uvweather.herokuapp.com/http://api.airvisual.com/v2/nearest_city?lat=${lat}&lon=${lng}&key=`, 5000)
+            .then(CheckError)
+            .then(function(resultAQIair) {
+
+                if(JSON.stringify(resultAQIair) !== '[]' && resultAQIair.status=='success') { // Good, Moderate, Unhealthy for Sensitive Groups, Unhealthy, Very Unhealthy, Hazardous, Unavailable
+                    aqi_dominant_pollutant = resultAQIair.data.current.pollution.hasOwnProperty('mainus') ?  resultAQIair.data.current.pollution.mainus : '-';
+                    aqi_index = resultAQIair.data.current.pollution.hasOwnProperty('aqius') ?  resultAQIair.data.current.pollution.aqius : '-';
+
+                    if(aqi_index <= 50) {
+                        aqi_name = 'Good';
+                    }
+                    else if(aqi_index >= 51 && aqi_index <= 100) {
+                        aqi_name = 'Moderate';
+                    }
+                    else if(aqi_index >= 101 && aqi_index <= 150) {
+                        aqi_name = 'Unhealthy for Sensitive Groups';   
+                    }
+                    else if(aqi_index >= 151 && aqi_index <= 200) {
+                        aqi_name = 'Unhealthy';
+                    }
+                    else if(aqi_index >= 201 && aqi_index <= 300) {
+                        aqi_name = 'Very Unhealthy';
+                    }
+                    else {
+                        aqi_name = 'Hazardous';
+                    }
+                                        
+                }
+                else{
+                    aqi_dominant_pollutant = '-';
+                    aqi_index = '-';
+                    aqi_name = '-';
+                }
+
+                resolve && resolve('result of AQI');
+            }).catch(function(err) {
+                aqi_dominant_pollutant = '-';
+                aqi_index = '-';
+                aqi_name = '-';
+                resolve && resolve('result of AQI');
+            });
+
+    }
+
+
+    
+
+};

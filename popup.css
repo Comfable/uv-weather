@@ -3187,3 +3187,312 @@ textarea:hover {
   #emailField:invalid {
     border-color: red;
   }
+
+  .aqi_table_Class {
+      position: absolute;
+      left: 30px;
+      right: 30px;
+      top: 295px;
+  }
+
+  .aqi_name_Class {
+      position: relative;
+      width: 30px;
+      max-width: 30px;
+      display: inline-block;
+      text-align: left;
+      font-weight: 250;
+      font-size: 13px;
+  }
+
+  .aqi_value_Class {
+      position: relative;
+      width: 200px;
+      max-width: 200px;
+      display: inline-block;
+      text-align: right;
+      font-weight: 250;
+      font-size: 13px;
+      padding-left: 10px;
+  }
+
+
+    #aqi {
+    position: absolute;
+    top: 60px;
+    width: 307px;
+    height: 338px;
+    overflow: hidden;
+    --web-view-name: aqi;
+    --web-view-id: aqi;
+    --web-scale-on-resize: true;
+    --web-enable-deep-linking: true;
+  }
+  #aqi-current-svg {
+    fill: rgba(39,174,96,1);
+    stroke-linejoin: miter;
+    stroke-linecap: butt;
+    stroke-miterlimit: 4;
+    shape-rendering: auto;
+  }
+  .aqi-current {
+    overflow: visible;
+    position: absolute;
+    width: 51px;
+    height: 39px;
+    left: 11px;
+    top: 21px;
+    transform: matrix(1,0,0,1,0,0);
+  }
+  #aqi-hazardous {
+    fill: rgba(231,76,60,1);
+  }
+  .aqi-hazardous {
+    position: absolute;
+    overflow: visible;
+    width: 8px;
+    height: 50px;
+    left: 70px;
+    top: 272px;
+  }
+  #aqi-veryUnhealthy {
+    fill: rgba(243,156,18,1);
+  }
+  .aqi-veryUnhealthy {
+    width: 8px;
+    height: 51px;
+    position: absolute;
+    overflow: visible;
+    transform: matrix(1,0,0,1,70,169) rotate(180deg);
+    transform-origin: center;
+  }
+  #aqi-unhealthy {
+    fill: rgba(155,89,182,1);
+  }
+  .aqi-unhealthy {
+    width: 8px;
+    height: 52px;
+    position: absolute;
+    overflow: visible;
+    transform: matrix(1,0,0,1,70,220) rotate(180deg);
+    transform-origin: center;
+  }
+  #aqi-unhealthySensitive {
+    fill: rgba(241,196,15,1);
+  }
+  .aqi-unhealthySensitive {
+    width: 8px;
+    height: 52px;
+    position: absolute;
+    overflow: visible;
+    transform: matrix(1,0,0,1,70,117) rotate(180deg);
+    transform-origin: center;
+  }
+  #aqi-moderate {
+    fill: rgba(46,204,113,1);
+  }
+  .aqi-moderate {
+    width: 8px;
+    height: 50px;
+    position: absolute;
+    overflow: visible;
+    transform: matrix(1,0,0,1,70,67) rotate(180deg);
+    transform-origin: center;
+  }
+  #aqi-good {
+    fill: rgba(39,174,96,1);
+  }
+  .aqi-good {
+    width: 8px;
+    height: 51px;
+    position: absolute;
+    overflow: visible;
+    transform: matrix(1,0,0,1,70,16) rotate(180deg);
+    transform-origin: center;
+  }
+  #aqi-text-good {
+    opacity: 0.7;
+    left: 87px;
+    top: 36px;
+    position: absolute;
+    overflow: visible;
+    width: 35px;
+    white-space: nowrap;
+    text-align: center;
+    font-family: Helvetica;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 11px;
+    color: var(--font-color);
+    text-transform: uppercase;
+  }
+  .aqi-current-text {
+    left: 24px;
+    top: 32px;
+    position: absolute;
+    overflow: visible;
+    width: 17px;
+    white-space: nowrap;
+    text-align: center;
+    font-family: Helvetica;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 15px;
+    color: #ffffff;
+    text-transform: uppercase;
+  }
+  #aqi-50 {
+    left: 53px;
+    top: 62px;
+    position: absolute;
+    overflow: visible;
+    width: 11px;
+    white-space: nowrap;
+    text-align: center;
+    font-family: Helvetica;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 9px;
+    color: var(--font-color);
+    text-transform: uppercase;
+  }
+  #aqi-100 {
+    left: 47px;
+    top: 113px;
+    position: absolute;
+    overflow: visible;
+    width: 17px;
+    white-space: nowrap;
+    text-align: center;
+    font-family: Helvetica;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 9px;
+    color: var(--font-color);
+    text-transform: uppercase;
+  }
+  #aqi-150 {
+    left: 47px;
+    top: 165px;
+    position: absolute;
+    overflow: visible;
+    width: 17px;
+    white-space: nowrap;
+    text-align: center;
+    font-family: Helvetica;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 9px;
+    color: var(--font-color);
+    text-transform: uppercase;
+  }
+  #aqi-200 {
+    left: 47px;
+    top: 216px;
+    position: absolute;
+    overflow: visible;
+    width: 17px;
+    white-space: nowrap;
+    text-align: center;
+    font-family: Helvetica;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 9px;
+    color: var(--font-color);
+    text-transform: uppercase;
+  }
+  #aqi-300 {
+    left: 47px;
+    top: 268px;
+    position: absolute;
+    overflow: visible;
+    width: 17px;
+    white-space: nowrap;
+    text-align: center;
+    font-family: Helvetica;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 9px;
+    color: var(--font-color);
+    text-transform: uppercase;
+  }
+  #aqi-text-moderate {
+    opacity: 0.7;
+    left: 87px;
+    top: 86px;
+    position: absolute;
+    overflow: visible;
+    width: 63px;
+    white-space: nowrap;
+    text-align: center;
+    font-family: Helvetica;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 11px;
+    color: var(--font-color);
+    text-transform: uppercase;
+  }
+  #aqi-text-unhealthySensitive {
+    opacity: 0.7;
+    left: 87px;
+    top: 134px;
+    position: absolute;
+    overflow: visible;
+    width: 201px;
+    white-space: nowrap;
+    text-align: center;
+    font-family: Helvetica;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 11px;
+    color: var(--font-color);
+    text-transform: uppercase;
+  }
+  #aqi-text-veryUnhealthy {
+    opacity: 0.7;
+    left: 71px;
+    top: 189px;
+    position: absolute;
+    overflow: visible;
+    width: 101px;
+    white-space: nowrap;
+    text-align: center;
+    font-family: Helvetica;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 11px;
+    color: var(--font-color);
+    text-transform: uppercase;
+  }
+  #aqi-text-unhealthy {
+    opacity: 0.7;
+    left: 88px;
+    top: 241px;
+    position: absolute;
+    overflow: visible;
+    width: 67px;
+    white-space: nowrap;
+    text-align: center;
+    font-family: Helvetica;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 11px;
+    color:  var(--font-color);
+    text-transform: uppercase;
+  }
+  #aqi-text-uazardous {
+    opacity: 0.7;
+    left: 89px;
+    top: 288px;
+    position: absolute;
+    overflow: visible;
+    width: 71px;
+    white-space: nowrap;
+    text-align: center;
+    font-family: Helvetica;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 11px;
+    color: var(--font-color);
+    text-transform: uppercase;
+  }
