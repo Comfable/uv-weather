@@ -1,4 +1,33 @@
-function accufeel(e, a, r, t) {
+function accufeel(e, g, r, t, c) {
+
+    if (g !== '-') {
+        if (g >= 250) {
+
+            if (c < 20) {
+                cj = 1;
+            } else if (c >= 20 && c < 70) {
+                cj = 0.89;
+            } else if (c >= 70 && c < 90) {
+                cj = 0.73;
+            } else if (c >= 90) {
+                cj = 0.31;
+            } else {
+                cj = 1;
+            }
+
+            gc = g * cj;
+            tg = 0.01498 * gc + 1.184 * e - 0.0789 * t - 2.739; //day
+        } else { //Low GHI
+            tg = e;
+        }
+    } else {
+        tg = e; //night
+    };
+
+    aa = Math.pow(tg + 273.15, 4) + (2.5 * 100000000 * Math.pow(r, 0.60) * (tg - e));
+    a = Math.pow(aa, 1 / 4) - 273.15;
+
+
     var n = [-2836.5744, -6028.076559, 19.54263612, -0.02737830188, 16261698e-12, 7.0229056e-10, -1.8680009e-13],
         c = e + 273.15,
         f = 2.7150305 * Math.log(c);

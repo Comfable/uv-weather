@@ -332,8 +332,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     function popup() {
-        
-        //console.log('popup');
 
         chrome.storage.local.get(['latlong', 'citys', 'country', 'timeZoneBadge', 'failedHTTP'], function(data) {
             latlong = data.latlong;
@@ -342,50 +340,51 @@ document.addEventListener("DOMContentLoaded", function() {
             failedHTTP = data.failedHTTP;
             timeZoneBadge = data.timeZoneBadge;
 
-                    var promise = () => new Promise( resolve => {
-                    	if (country == "CA" || country == "ca" || country == "Canada") {
-                        	weatherCA(latlong, citys, resolve);
-                        }
-                        else if(country == "US" || country == "us" || country == "United States of America") {
-                        	weatherUS2(latlong, citys, resolve);
-                        }
-                        else{
-                        	resolve && resolve( 'result of Promise()' );
-                        }
-                    });
-                    var promise2 = () => new Promise( resolve => {
-                    	if(failedHTTP !== '1' || (country !== "US" && country !== "us" && country !== "United States of America" && country !== "CA" && country !== "ca" && country !== "Canada")) {
-                            weatherNO(latlong, citys, timeZoneBadge, resolve);
-                    	}
-                    	else{
-                    		resolve && resolve( 'result of NO()' );
-                    	}
-                    });
+            var promise = () => new Promise(resolve => {
 
-					promise().then( ( ) => {
-					    promise2().then( ( ) => {
-						        } ).then(function() {
-				                        UTFC();
-				                        refreshPopup();
-				                        updateBadge();
+                if (country == "CA" || country == "ca" || country == "Canada") {
+                    weatherCA(latlong, citys, resolve);
+                } else if (country == "US" || country == "us" || country == "United States of America") {
+                    weatherUS2(latlong, citys, resolve);
+                } else {
+                    resolve && resolve('result of Promise()');
+                }
 
-                                        const preloader = document.querySelector('.preloader');
-                                        const fadeEffect = setInterval(() => {
-                                            if (!preloader.style.opacity) {
-                                                return preloader.style.opacity = 1;
-                                            }
-                                            if (preloader.style.opacity > 0) {
-                                                return preloader.style.opacity -= 0.1;
-                                            } else {
-                                                clearInterval(fadeEffect);
-                                            }
-                                        }, 50);
+            });
 
-						        })
-					} )
-					.catch( ( error ) => {
-					    //console.log( 'promise error: ', error );
-					} );
+            var promise2 = () => new Promise(resolve => {
+
+                if (failedHTTP !== '1' || (country !== "US" && country !== "us" && country !== "United States of America" && country !== "CA" && country !== "ca" && country !== "Canada")) {
+                    weatherNO(latlong, citys, timeZoneBadge, resolve);
+                } else {
+                    resolve && resolve('result of NO()');
+                }
+
+            });
+
+            promise().then(() => {
+                    promise2().then(() => {}).then(function() {
+                        UTFC();
+                        refreshPopup();
+                        updateBadge();
+
+                        const preloader = document.querySelector('.preloader');
+                        const fadeEffect = setInterval(() => {
+                            if (!preloader.style.opacity) {
+                                return preloader.style.opacity = 1;
+                            }
+                            if (preloader.style.opacity > 0) {
+                                return preloader.style.opacity -= 0.1;
+                            } else {
+                                clearInterval(fadeEffect);
+                            }
+                        }, 50);
+
+                    })
+                })
+                .catch((error) => {
+                    //console.log( 'promise error: ', error );
+                });
 
         });
 
@@ -880,7 +879,7 @@ document.addEventListener("DOMContentLoaded", function() {
         document.querySelector('#forecast_60_temp_min').textContent = daily_tempC_min_6 + "°";
         document.querySelector('#forecast_70_temp_min').textContent = daily_tempC_min_7 + "°";
 
-        for (i=1;i<49;i++){
+        for (i = 1; i < 49; i++) {
             document.querySelector(`#forecast_${i}_hours_temp`).textContent = Math.round(resultNO.properties.timeseries[i].data.instant.details.air_temperature) + "°";
         }
 
@@ -979,15 +978,15 @@ document.addEventListener("DOMContentLoaded", function() {
         document.querySelector('#forecast_40_temp_min').textContent = daily_tempF_min_4 + "°";
         document.querySelector('#forecast_50_temp_min').textContent = daily_tempF_min_5 + "°";
         document.querySelector('#forecast_60_temp_min').textContent = daily_tempF_min_6 + "°";
-        document.querySelector('#forecast_70_temp_min').textContent = daily_tempF_min_7 + "°";        
+        document.querySelector('#forecast_70_temp_min').textContent = daily_tempF_min_7 + "°";
 
-        for(i=1;i<8;i++) {
+        for (i = 1; i < 8; i++) {
             document.querySelector(`#forecast_${i*10}_temp`).textContent = Math.round(c2f(resultNO.properties.timeseries[i].data.instant.details.air_temperature)) + "°";
             document.querySelector(`#forecast_${i*10}_temp_min`).textContent = Math.round(c2f(resultNO.properties.timeseries[i].data.instant.details.air_temperature)) + "°";
         }
-        for(i=1;i<49;i++) {
+        for (i = 1; i < 49; i++) {
             document.querySelector(`#forecast_${i}_hours_temp`).textContent = Math.round(c2f(resultNO.properties.timeseries[i].data.instant.details.air_temperature)) + "°";
-        }  
+        }
 
         document.querySelector("#summery_next7_text").textContent = summaryDailyF;
         document.querySelector("#summery_next48_text").textContent = summaryHourlyF;
@@ -1064,31 +1063,30 @@ document.addEventListener("DOMContentLoaded", function() {
                 document.querySelector("#next48_update_date").textContent = moment.unix(updateTimeBadge + offsetUnix).format('MMM DD, HH:mm') + ' (LT)';
 
 
-                for(i=1;i<49;i++) {
-                    document.querySelector(`#forecast_${i}_hours`).textContent = moment.unix(moment(resultNO.properties.timeseries[i].time).unix() + offsetUnix).format('HH')+':00';
+                for (i = 1; i < 49; i++) {
+                    document.querySelector(`#forecast_${i}_hours`).textContent = moment.unix(moment(resultNO.properties.timeseries[i].time).unix() + offsetUnix).format('HH') + ':00';
                     document.querySelector(`#forecast_${i}_hours_uv`).textContent = "UVI " + Math.round((resultNO.properties.timeseries[i].data.instant.details.ultraviolet_index_clear_sky) * uv_adj_daily(resultNO.properties.timeseries[i].data.instant.details.cloud_area_fraction));
                     document.querySelector(`#forecast_${i}_hours_rain`).textContent = (resultNO.properties.timeseries[i].data.next_1_hours.details.precipitation_amount);
-                    document.querySelector(`#forecast_${i}_hours_rain_unit`).textContent = "mm";                      
-                }                    
+                    document.querySelector(`#forecast_${i}_hours_rain_unit`).textContent = "mm";
+                }
 
                 document.querySelector("#map_popup_title").textContent = 'PRECIPITATION FORECAST | UV WEATHER | ' + moment.unix(updateTimeBadge + offsetUnix).format('MMMM DD, YYYY HH:mm') + ' (LT)';
                 document.getElementById("setting_defualt_button_24h").checked = true;
                 document.getElementById("setting_defualt_button_12h").checked = false;
                 document.getElementById("setting_defualt_button_24h").disabled = true;
                 document.getElementById("setting_defualt_button_12h").disabled = false;
-            } 
-            else {
+            } else {
                 solarFunction12H();
                 document.querySelector("#next7_update_date").textContent = moment.unix(updateTimeBadge + offsetUnix).format('MMM DD, h:mm A') + ' (LT)';
                 document.querySelector("#report_update_date").textContent = moment.unix(updateTimeBadge + offsetUnix).format('MMM DD, h:mm A') + ' (LT)';
                 document.querySelector("#next48_update_date").textContent = moment.unix(updateTimeBadge + offsetUnix).format('MMM DD, h:mm A') + ' (LT)';
 
-              for(i=1;i<49;i++) {
-                  document.querySelector(`#forecast_${i}_hours`).textContent = moment.unix(moment(resultNO.properties.timeseries[i].time).unix() + offsetUnix).format('h A');
-                  document.querySelector(`#forecast_${i}_hours_uv`).textContent = "UVI " + Math.round((resultNO.properties.timeseries[i].data.instant.details.ultraviolet_index_clear_sky) * uv_adj_daily(resultNO.properties.timeseries[i].data.instant.details.cloud_area_fraction));
-                  document.querySelector(`#forecast_${i}_hours_rain`).textContent = (resultNO.properties.timeseries[i].data.next_1_hours.details.precipitation_amount);
-                  document.querySelector(`#forecast_${i}_hours_rain_unit`).textContent = "mm";                      
-              }
+                for (i = 1; i < 49; i++) {
+                    document.querySelector(`#forecast_${i}_hours`).textContent = moment.unix(moment(resultNO.properties.timeseries[i].time).unix() + offsetUnix).format('h A');
+                    document.querySelector(`#forecast_${i}_hours_uv`).textContent = "UVI " + Math.round((resultNO.properties.timeseries[i].data.instant.details.ultraviolet_index_clear_sky) * uv_adj_daily(resultNO.properties.timeseries[i].data.instant.details.cloud_area_fraction));
+                    document.querySelector(`#forecast_${i}_hours_rain`).textContent = (resultNO.properties.timeseries[i].data.next_1_hours.details.precipitation_amount);
+                    document.querySelector(`#forecast_${i}_hours_rain_unit`).textContent = "mm";
+                }
 
                 document.querySelector("#map_popup_title").textContent = 'PRECIPITATION FORECAST | UV WEATHER | ' + moment.unix(updateTimeBadge + offsetUnix).format('MMMM DD, YYYY h:mm A') + ' (LT)';
                 document.getElementById("setting_defualt_button_12h").checked = true;
@@ -1172,7 +1170,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     function next48Function() {
-        for (i = 1; i < 49; i++) {            
+        for (i = 1; i < 49; i++) {
 
             forecast_hours_icon_no = resultNO.properties.timeseries[i].data.next_1_hours.summary.symbol_code;
             forecast_hours_icon = iconBadgeConvertNO_hourly((forecast_hours_icon_no).split('_')[0], (forecast_hours_icon_no).split('_')[1]);
@@ -1299,7 +1297,8 @@ document.addEventListener("DOMContentLoaded", function() {
         document.querySelector("#title_report_text").textContent = citys.slice(0, 30);
         document.querySelector("#current_report_summary").textContent = summaryMinutely;
         document.querySelector("#current_report_uv").textContent = uv1 + " " + uv_note(uv1);
-        document.querySelector("#current_report_windBearing").textContent = windBearing + "° (" + windCompass + ")";
+        document.querySelector("#current_report_windBearing").textContent = windBearing + "° ";
+        document.querySelector("#current_report_windBearing_windCompass").textContent = " (" + windCompass + ")";
         document.querySelector("#current_report_humidity").textContent = humidity + "%";
         //document.querySelector("#current_report_visibility").textContent = visibility + " mi (" + visibilityKM + " km)";
         document.querySelector("#current_report_pressure").textContent = pressure + " mb (hPa)";
@@ -1339,30 +1338,29 @@ document.addEventListener("DOMContentLoaded", function() {
             if (setSettingUT == "t" && setSettingFC == "c") {
                 if (currentBadgeSize == 1) {
                     //setTimeout(function() {
-                        largBadgeNumber(temperatureCbadge, currentWhiteIcon)
-                    //}, 550);
+                    largBadgeNumber(temperatureCbadge, currentWhiteIcon)
+                        //}, 550);
                 } else {
                     badgeBackgroundColor(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, currentWhiteIcon);
                     //setTimeout(function() {
-                        chrome.browserAction.setBadgeText({
-                            "text": temperatureCbadge + "°C"
-                        });
-                        badgeBackgroundImage(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, currentWhiteIcon);
+                    chrome.browserAction.setBadgeText({
+                        "text": temperatureCbadge + "°C"
+                    });
+                    badgeBackgroundImage(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, currentWhiteIcon);
                     //}, 550);
                 }
             } else if (setSettingUT == "t" && setSettingFC == "f") {
                 if (currentBadgeSize == 1) {
                     //setTimeout(function() {
-                        largBadgeNumber(temperatureFbadge, currentWhiteIcon)
-                    //}, 550);
-                } else 
-                	{                	
+                    largBadgeNumber(temperatureFbadge, currentWhiteIcon)
+                        //}, 550);
+                } else {
                     badgeBackgroundColor(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, currentWhiteIcon);
                     //setTimeout(function() {
-                        chrome.browserAction.setBadgeText({
-                            "text": temperatureFbadge + "°F"
-                        });
-                        badgeBackgroundImage(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, currentWhiteIcon);
+                    chrome.browserAction.setBadgeText({
+                        "text": temperatureFbadge + "°F"
+                    });
+                    badgeBackgroundImage(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, currentWhiteIcon);
                     //}, 550);
                 }
             } else if (setSettingUT == "u") {
@@ -1371,32 +1369,30 @@ document.addEventListener("DOMContentLoaded", function() {
                 });
                 if (uv1 > 9) {
                     if (currentBadgeSize == 1) {
-                       // setTimeout(function() {
-                            largBadgeNumber(uv1, currentWhiteIcon)
-                        //}, 550);
-                    } else 
-                    	{
+                        // setTimeout(function() {
+                        largBadgeNumber(uv1, currentWhiteIcon)
+                            //}, 550);
+                    } else {
                         badgeBackgroundColor(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, currentWhiteIcon);
                         //setTimeout(function() {
-                            chrome.browserAction.setBadgeText({
-                                "text": "UV" + uv1
-                            });
-                            badgeBackgroundImage(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, currentWhiteIcon);
+                        chrome.browserAction.setBadgeText({
+                            "text": "UV" + uv1
+                        });
+                        badgeBackgroundImage(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, currentWhiteIcon);
                         //}, 550);
                     }
                 } else {
                     if (currentBadgeSize == 1) {
                         //setTimeout(function() {
-                            largBadgeNumber(uv1, currentWhiteIcon)
-                        //}, 550);
-                    } else 
-                    	{
+                        largBadgeNumber(uv1, currentWhiteIcon)
+                            //}, 550);
+                    } else {
                         badgeBackgroundColor(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, currentWhiteIcon);
                         //setTimeout(function() {
-                            chrome.browserAction.setBadgeText({
-                                "text": "UV " + uv1
-                            });
-                            badgeBackgroundImage(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, currentWhiteIcon);
+                        chrome.browserAction.setBadgeText({
+                            "text": "UV " + uv1
+                        });
+                        badgeBackgroundImage(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, currentWhiteIcon);
                         //}, 550);
                     }
                 }
@@ -2114,11 +2110,10 @@ document.addEventListener("DOMContentLoaded", function() {
                                 var cityAPI = result.features[0].text;
                                 latlong = latClick + ',' + lngClick;
 
-                                if(lat >= 90) {
+                                if (lat >= 90) {
                                     timezone = "Etc/GMT";
-                                }
-                                else{
-                                    timezone = tzlookup(latClick,lngClick);
+                                } else {
+                                    timezone = tzlookup(latClick, lngClick);
                                 }
                                 timeZoneBadge = timezone2offset(timezone);
 
@@ -2151,9 +2146,9 @@ document.addEventListener("DOMContentLoaded", function() {
                                 chrome.storage.local.set({
                                     'country': country
                                 });
-				                chrome.storage.local.set({
-				                     'timeZoneBadge': timeZoneBadge
-				                });
+                                chrome.storage.local.set({
+                                    'timeZoneBadge': timeZoneBadge
+                                });
                                 chrome.storage.local.set({
                                     'IntervalUpdate': '60'
                                 });
@@ -2205,14 +2200,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
             render: function(item) {
 
-            return (
-            "<div class='geocoder-dropdown-item'>" +
-              item.text +
-            "<div class='geocoder-dropdown-text'>" +
-              (((item.place_name).split(', ')).slice(1).join(', ')).slice(0, 38) + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
-            '</div></div>'
-            );
-            },      
+                return (
+                    "<div class='geocoder-dropdown-item'>" +
+                    item.text +
+                    "<div class='geocoder-dropdown-text'>" +
+                    (((item.place_name).split(', ')).slice(1).join(', ')).slice(0, 38) + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                    '</div></div>'
+                );
+            },
 
         });
 
@@ -2256,21 +2251,17 @@ document.addEventListener("DOMContentLoaded", function() {
                 var lat = ev.result.geometry.coordinates[1];
                 var lng = ev.result.geometry.coordinates[0];
 
-                setTimeout(function() {
-
                     map.jumpTo({
-                      center: ev.result.center,
-                      zoom: 10
+                        center: ev.result.center,
+                        zoom: 10
                     });
 
-                }, 1000);
 
                 // Special case the north pole. tz-lookup
-                if(lat >= 90) {
+                if (lat >= 90) {
                     timezone = "Etc/GMT";
-                }
-                else{
-                    timezone = tzlookup(lat,lng);
+                } else {
+                    timezone = tzlookup(lat, lng);
                 }
                 timeZoneBadge = timezone2offset(timezone);
                 latlong = lat + ',' + lng;
@@ -2282,17 +2273,16 @@ document.addEventListener("DOMContentLoaded", function() {
                     countryFull = ((ev.result.place_name).split(','))[1];
                 }
 
-                if(ev.result.hasOwnProperty('context')){
-	                for (var i = 0; i <= ev.result.context.length; i++) {
-	                    if (ev.result.context[i].hasOwnProperty('short_code')) {
-	                        country = (ev.result.context[i].short_code).substring(0, 2);
-	                        break;
-	                    }
-	                }
-            	}
-            	else{
-            		country = ' ';
-            	}
+                if (ev.result.hasOwnProperty('context')) {
+                    for (var i = 0; i <= ev.result.context.length; i++) {
+                        if (ev.result.context[i].hasOwnProperty('short_code')) {
+                            country = (ev.result.context[i].short_code).substring(0, 2);
+                            break;
+                        }
+                    }
+                } else {
+                    country = ' ';
+                }
 
                 marker.remove();
 
@@ -2309,7 +2299,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     'country': country
                 });
                 chrome.storage.local.set({
-                     'timeZoneBadge': timeZoneBadge
+                    'timeZoneBadge': timeZoneBadge
                 });
 
                 popup();

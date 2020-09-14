@@ -1506,12 +1506,19 @@
 
   .current_report_value_Class {
       position: relative;
-      width: 160px;
       display: inline-block;
       text-align: left;
       font-weight: 250;
       font-size: 14px;
       padding-left: 5px;
+  }
+
+  .current_report_windBearing_windCompass_Class {
+      position: relative;
+      display: inline-block;
+      text-align: left;
+      font-weight: 250;
+      font-size: 12px;
   }
 
   .report_model_Class {

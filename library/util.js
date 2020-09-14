@@ -877,24 +877,8 @@ function closestLocation(targetLocation, locationData) {
     });
 };
 
-function cloudAdjUV(iconBadge, cloudCoverBadge) {
-    if (iconBadge === "rain" || iconBadge === "sleet" || iconBadge === "snow") {
-        cloudAdj = 0.31;
-    } else if (cloudCoverBadge < 20) {
-        cloudAdj = 1;
-    } else if (cloudCoverBadge >= 20 && cloudCoverBadge < 70) {
-        cloudAdj = 0.89;
-    } else if (cloudCoverBadge >= 70 && cloudCoverBadge < 90) {
-        cloudAdj = 0.73;
-    } else if (cloudCoverBadge >= 90) {
-        cloudAdj = 0.31;
-    } else {
-        cloudAdj = 1;
-    }
-    return cloudAdj;
-};
 
-function cloudAdjUV2(cloudCoverBadge) {
+function cloudAdjUV(cloudCoverBadge) {
    if (cloudCoverBadge < 20) {
         cloudAdj = 1;
     } else if (cloudCoverBadge >= 20 && cloudCoverBadge < 70) {

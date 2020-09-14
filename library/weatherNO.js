@@ -29,34 +29,29 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
 
 
 
-
             tempCno = resultNO.properties.timeseries[0].data.instant.details.hasOwnProperty('air_temperature') ? resultNO.properties.timeseries[0].data.instant.details.air_temperature : '';
             if (tempCno !== "NA" && tempCno !== "" && tempCno !== null && tempCno !== "NULL") {
                 temperatureCbadgeNO = Math.round(parseFloat(tempCno));
-                temperatureFbadgeNO = Math.round((parseFloat(tempCno) * 1.8) + 32);                               
-            }
-            else{
+                temperatureFbadgeNO = Math.round((parseFloat(tempCno) * 1.8) + 32);
+            } else {
                 throw Error();
             }
 
             iconNO = resultNO.properties.timeseries[0].data.next_1_hours.summary.hasOwnProperty('symbol_code') ? (resultNO.properties.timeseries[0].data.next_1_hours.summary.symbol_code).split('_')[0] : '';
             if (iconNO !== "NA" && iconNO !== "" && iconNO !== null && iconNO !== "NULL") {
-                 summaryBadgeNO = code2description_no(iconNO);
-                 summaryMinutelyNO = summaryBadgeNO;
-            }
-            else{
+                summaryBadgeNO = code2description_no(iconNO);
+                summaryMinutelyNO = summaryBadgeNO;
+            } else {
                 throw Error();
             }
 
-            
 
 
 
             cloudCoverNO = resultNO.properties.timeseries[0].data.instant.details.hasOwnProperty('cloud_area_fraction') ? resultNO.properties.timeseries[0].data.instant.details.cloud_area_fraction : '';
             if (cloudCoverNO !== "NA" && cloudCoverNO !== "" && cloudCoverNO !== null && cloudCoverNO !== "NULL") {
                 cloudCoverBadge = Math.round(cloudCoverNO);
-            }
-            else{
+            } else {
                 throw Error();
             }
 
@@ -64,8 +59,7 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
             if (dewPointCNO !== "NA" && dewPointCNO !== "" && dewPointCNO !== null && dewPointCNO !== "NULL") {
                 dewPointC = Math.round(dewPointCNO);
                 dewPointF = Math.round(c2f(dewPointCNO));
-            }
-            else{
+            } else {
                 dewPointC = '-';
                 dewPointF = '-';
             }
@@ -73,8 +67,7 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
             humidityNO = resultNO.properties.timeseries[0].data.instant.details.hasOwnProperty('relative_humidity') ? resultNO.properties.timeseries[0].data.instant.details.relative_humidity : '';
             if (humidityNO !== "NA" && humidityNO !== "" && humidityNO !== null && humidityNO !== "NULL") {
                 humidity = Math.round(humidityNO);
-            }
-            else{
+            } else {
                 humidityNO = "NA";
                 humidity = '-';
             }
@@ -82,8 +75,7 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
             pressureNO = resultNO.properties.timeseries[0].data.instant.details.hasOwnProperty('air_pressure_at_sea_level') ? resultNO.properties.timeseries[0].data.instant.details.air_pressure_at_sea_level : '';
             if (pressureNO !== "NA" && pressureNO !== "" && pressureNO !== null && pressureNO !== "NULL") {
                 pressure = Math.round(pressureNO);
-            }
-            else{
+            } else {
                 pressure = '-';
             }
 
@@ -92,8 +84,7 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
                 windSpeedMS = Math.round(windSpeedMSNO * 10) / 10;
                 windSpeedMPH = Math.round(windSpeedMSNO * 2.236937);
                 windSpeedKMH = Math.round(windSpeedMSNO * 3.6);
-            }
-            else{
+            } else {
                 windSpeedMS = '-';
                 windSpeedMPH = '-';
                 windSpeedKMH = '-';
@@ -104,18 +95,16 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
                 windBearing = Math.round(windBearingNO);
 
                 if (windSpeedMSNO !== "NA" && windSpeedMSNO !== "" && windSpeedMSNO !== null && windSpeedMSNO !== "NULL") {
-                        if (windSpeedMSNO > 0) {
-                            windCompass = degToCompass(windBearingNO);
-                        } else {
-                            windCompass = "-";
-                        }
-                }    
-                else{
+                    if (windSpeedMSNO > 0) {
+                        windCompass = degToCompass(windBearingNO);
+                    } else {
+                        windCompass = "-";
+                    }
+                } else {
                     windCompass = "-";
                 }
 
-            }
-            else{
+            } else {
                 windBearing = '-';
                 windCompass = "-";
             }
@@ -123,22 +112,19 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
             next_1_hours_precipitation_NO = resultNO.properties.timeseries[0].data.next_1_hours.details.hasOwnProperty('precipitation_amount') ? resultNO.properties.timeseries[0].data.next_1_hours.details.precipitation_amount : '';
             if (next_1_hours_precipitation_NO !== "NA" && next_1_hours_precipitation_NO !== "" && next_1_hours_precipitation_NO !== null && next_1_hours_precipitation_NO !== "NULL") {
                 precipProbability = (next_1_hours_precipitation_NO);
-            }
-            else{
+            } else {
                 next_1_hours_precipitation_NO = "NA";
                 precipProbability = '-';
             }
 
             uvCurrentlyNO = resultNO.properties.timeseries[0].data.instant.details.hasOwnProperty('ultraviolet_index_clear_sky') ? resultNO.properties.timeseries[0].data.instant.details.ultraviolet_index_clear_sky : '';
             if (uvCurrentlyNO !== "NA" && uvCurrentlyNO !== "" && uvCurrentlyNO !== null && uvCurrentlyNO !== "NULL") {
-                if(cloudCoverNO !== "NA") {
-                 uv1 = Math.floor(uvCurrentlyNO * cloudAdjUV2(cloudCoverBadge));
-                }
-                else{
+                if (cloudCoverNO !== "NA") {
+                    uv1 = Math.floor(uvCurrentlyNO * cloudAdjUV(cloudCoverBadge));
+                } else {
                     uv1 = Math.floor(uvCurrentlyNO);
                 }
-            }
-            else{
+            } else {
                 throw Error();
             }
 
@@ -146,8 +132,7 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
             if (next_6_hours_tempC_max_NO !== "NA" && next_6_hours_tempC_max_NO !== "" && next_6_hours_tempC_max_NO !== null && next_6_hours_tempC_max_NO !== "NULL") {
                 current_tempC_max = Math.round(next_6_hours_tempC_max_NO);
                 current_tempF_max = Math.round(c2f(next_6_hours_tempC_max_NO));
-            }
-            else{
+            } else {
                 current_tempC_max = '-';
             }
 
@@ -155,12 +140,11 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
             if (next_6_hours_tempC_min_NO !== "NA" && next_6_hours_tempC_min_NO !== "" && next_6_hours_tempC_min_NO !== null && next_6_hours_tempC_min_NO !== "NULL") {
                 current_tempC_min = Math.round(next_6_hours_tempC_min_NO);
                 current_tempF_min = Math.round(c2f(next_6_hours_tempC_min_NO));
-            }
-            else{
+            } else {
                 current_tempC_max = '-';
             }
 
-            
+
             daily_uv_1 = [];
             daily_uv_2 = [];
             daily_uv_3 = [];
@@ -214,90 +198,83 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
             daily_date_7_DD = moment.unix(daily_date_0 + 86400 * 7).format('DD');
 
             resultNOlength = (resultNO.properties.timeseries).length;
-            for(i=1;i<=(resultNOlength-1);i++) {
-                if( moment.unix(moment(resultNO.properties.timeseries[i].time).unix() + offsetUnix).format('DD') == daily_date_1_DD) {
+            for (i = 1; i <= (resultNOlength - 1); i++) {
+                if (moment.unix(moment(resultNO.properties.timeseries[i].time).unix() + offsetUnix).format('DD') == daily_date_1_DD) {
                     resultNO.properties.timeseries[i].data.instant.details.hasOwnProperty('ultraviolet_index_clear_sky') ? daily_uv_1.push(resultNO.properties.timeseries[i].data.instant.details.ultraviolet_index_clear_sky) : '';
                     resultNO.properties.timeseries[i].data.instant.details.hasOwnProperty('wind_speed') ? daily_wind_speed_1.push(resultNO.properties.timeseries[i].data.instant.details.wind_speed) : '';
                     resultNO.properties.timeseries[i].data.instant.details.hasOwnProperty('wind_from_direction') ? daily_wind_dir_1.push(resultNO.properties.timeseries[i].data.instant.details.wind_from_direction) : '';
                     resultNO.properties.timeseries[i].data.instant.details.hasOwnProperty('air_temperature') ? daily_temp_1.push(resultNO.properties.timeseries[i].data.instant.details.air_temperature) : '';
-                    if(resultNO.properties.timeseries[i].data.hasOwnProperty('next_1_hours')) {
+                    if (resultNO.properties.timeseries[i].data.hasOwnProperty('next_1_hours')) {
                         resultNO.properties.timeseries[i].data.next_1_hours.summary.hasOwnProperty('symbol_code') ? daily_icon_1.push((resultNO.properties.timeseries[i].data.next_1_hours.summary.symbol_code).split('_')[0]) : '';
-                    }
-                    else{
+                    } else {
                         resultNO.properties.timeseries[i].data.next_6_hours.summary.hasOwnProperty('symbol_code') ? daily_icon_1.push((resultNO.properties.timeseries[i].data.next_6_hours.summary.symbol_code).split('_')[0]) : '';
-                    }                
+                    }
                 }
-                if( moment.unix(moment(resultNO.properties.timeseries[i].time).unix() + offsetUnix).format('DD') == daily_date_2_DD) {
+                if (moment.unix(moment(resultNO.properties.timeseries[i].time).unix() + offsetUnix).format('DD') == daily_date_2_DD) {
                     resultNO.properties.timeseries[i].data.instant.details.hasOwnProperty('ultraviolet_index_clear_sky') ? daily_uv_2.push(resultNO.properties.timeseries[i].data.instant.details.ultraviolet_index_clear_sky) : '';
                     resultNO.properties.timeseries[i].data.instant.details.hasOwnProperty('wind_speed') ? daily_wind_speed_2.push(resultNO.properties.timeseries[i].data.instant.details.wind_speed) : '';
                     resultNO.properties.timeseries[i].data.instant.details.hasOwnProperty('wind_from_direction') ? daily_wind_dir_2.push(resultNO.properties.timeseries[i].data.instant.details.wind_from_direction) : '';
                     resultNO.properties.timeseries[i].data.instant.details.hasOwnProperty('air_temperature') ? daily_temp_2.push(resultNO.properties.timeseries[i].data.instant.details.air_temperature) : '';
-                    if(resultNO.properties.timeseries[i].data.hasOwnProperty('next_1_hours')) {
+                    if (resultNO.properties.timeseries[i].data.hasOwnProperty('next_1_hours')) {
                         resultNO.properties.timeseries[i].data.next_1_hours.summary.hasOwnProperty('symbol_code') ? daily_icon_2.push((resultNO.properties.timeseries[i].data.next_1_hours.summary.symbol_code).split('_')[0]) : '';
-                    }
-                    else{
+                    } else {
                         resultNO.properties.timeseries[i].data.next_6_hours.summary.hasOwnProperty('symbol_code') ? daily_icon_2.push((resultNO.properties.timeseries[i].data.next_6_hours.summary.symbol_code).split('_')[0]) : '';
                     }
 
                 }
-                if( moment.unix(moment(resultNO.properties.timeseries[i].time).unix() + offsetUnix).format('DD') == daily_date_3_DD) {
+                if (moment.unix(moment(resultNO.properties.timeseries[i].time).unix() + offsetUnix).format('DD') == daily_date_3_DD) {
                     resultNO.properties.timeseries[i].data.instant.details.hasOwnProperty('ultraviolet_index_clear_sky') ? daily_uv_3.push(resultNO.properties.timeseries[i].data.instant.details.ultraviolet_index_clear_sky) : '';
                     resultNO.properties.timeseries[i].data.instant.details.hasOwnProperty('wind_speed') ? daily_wind_speed_3.push(resultNO.properties.timeseries[i].data.instant.details.wind_speed) : '';
                     resultNO.properties.timeseries[i].data.instant.details.hasOwnProperty('wind_from_direction') ? daily_wind_dir_3.push(resultNO.properties.timeseries[i].data.instant.details.wind_from_direction) : '';
                     resultNO.properties.timeseries[i].data.instant.details.hasOwnProperty('air_temperature') ? daily_temp_3.push(resultNO.properties.timeseries[i].data.instant.details.air_temperature) : '';
-                    if(resultNO.properties.timeseries[i].data.hasOwnProperty('next_1_hours')) {
+                    if (resultNO.properties.timeseries[i].data.hasOwnProperty('next_1_hours')) {
                         resultNO.properties.timeseries[i].data.next_1_hours.summary.hasOwnProperty('symbol_code') ? daily_icon_3.push((resultNO.properties.timeseries[i].data.next_1_hours.summary.symbol_code).split('_')[0]) : '';
-                    }
-                    else{
+                    } else {
                         resultNO.properties.timeseries[i].data.next_6_hours.summary.hasOwnProperty('symbol_code') ? daily_icon_3.push((resultNO.properties.timeseries[i].data.next_6_hours.summary.symbol_code).split('_')[0]) : '';
                     }
 
                 }
-                if( moment.unix(moment(resultNO.properties.timeseries[i].time).unix() + offsetUnix).format('DD') == daily_date_4_DD) {
+                if (moment.unix(moment(resultNO.properties.timeseries[i].time).unix() + offsetUnix).format('DD') == daily_date_4_DD) {
                     resultNO.properties.timeseries[i].data.instant.details.hasOwnProperty('ultraviolet_index_clear_sky') ? daily_uv_4.push(resultNO.properties.timeseries[i].data.instant.details.ultraviolet_index_clear_sky) : '';
                     resultNO.properties.timeseries[i].data.instant.details.hasOwnProperty('wind_speed') ? daily_wind_speed_4.push(resultNO.properties.timeseries[i].data.instant.details.wind_speed) : '';
                     resultNO.properties.timeseries[i].data.instant.details.hasOwnProperty('wind_from_direction') ? daily_wind_dir_4.push(resultNO.properties.timeseries[i].data.instant.details.wind_from_direction) : '';
                     resultNO.properties.timeseries[i].data.instant.details.hasOwnProperty('air_temperature') ? daily_temp_4.push(resultNO.properties.timeseries[i].data.instant.details.air_temperature) : '';
-                    if(resultNO.properties.timeseries[i].data.hasOwnProperty('next_1_hours')) {
+                    if (resultNO.properties.timeseries[i].data.hasOwnProperty('next_1_hours')) {
                         resultNO.properties.timeseries[i].data.next_1_hours.summary.hasOwnProperty('symbol_code') ? daily_icon_4.push((resultNO.properties.timeseries[i].data.next_1_hours.summary.symbol_code).split('_')[0]) : '';
-                    }
-                    else{
+                    } else {
                         resultNO.properties.timeseries[i].data.next_6_hours.summary.hasOwnProperty('symbol_code') ? daily_icon_4.push((resultNO.properties.timeseries[i].data.next_6_hours.summary.symbol_code).split('_')[0]) : '';
                     }
                 }
-                if( moment.unix(moment(resultNO.properties.timeseries[i].time).unix() + offsetUnix).format('DD') == daily_date_5_DD) {
+                if (moment.unix(moment(resultNO.properties.timeseries[i].time).unix() + offsetUnix).format('DD') == daily_date_5_DD) {
                     resultNO.properties.timeseries[i].data.instant.details.hasOwnProperty('ultraviolet_index_clear_sky') ? daily_uv_5.push(resultNO.properties.timeseries[i].data.instant.details.ultraviolet_index_clear_sky) : '';
                     resultNO.properties.timeseries[i].data.instant.details.hasOwnProperty('wind_speed') ? daily_wind_speed_5.push(resultNO.properties.timeseries[i].data.instant.details.wind_speed) : '';
                     resultNO.properties.timeseries[i].data.instant.details.hasOwnProperty('wind_from_direction') ? daily_wind_dir_5.push(resultNO.properties.timeseries[i].data.instant.details.wind_from_direction) : '';
                     resultNO.properties.timeseries[i].data.instant.details.hasOwnProperty('air_temperature') ? daily_temp_5.push(resultNO.properties.timeseries[i].data.instant.details.air_temperature) : '';
-                    if(resultNO.properties.timeseries[i].data.hasOwnProperty('next_1_hours')) {
+                    if (resultNO.properties.timeseries[i].data.hasOwnProperty('next_1_hours')) {
                         resultNO.properties.timeseries[i].data.next_1_hours.summary.hasOwnProperty('symbol_code') ? daily_icon_5.push((resultNO.properties.timeseries[i].data.next_1_hours.summary.symbol_code).split('_')[0]) : '';
-                    }
-                    else{
+                    } else {
                         resultNO.properties.timeseries[i].data.next_6_hours.summary.hasOwnProperty('symbol_code') ? daily_icon_5.push((resultNO.properties.timeseries[i].data.next_6_hours.summary.symbol_code).split('_')[0]) : '';
                     }
                 }
-                if( moment.unix(moment(resultNO.properties.timeseries[i].time).unix() + offsetUnix).format('DD') == daily_date_6_DD) {
+                if (moment.unix(moment(resultNO.properties.timeseries[i].time).unix() + offsetUnix).format('DD') == daily_date_6_DD) {
                     resultNO.properties.timeseries[i].data.instant.details.hasOwnProperty('ultraviolet_index_clear_sky') ? daily_uv_6.push(resultNO.properties.timeseries[i].data.instant.details.ultraviolet_index_clear_sky) : '';
                     resultNO.properties.timeseries[i].data.instant.details.hasOwnProperty('wind_speed') ? daily_wind_speed_6.push(resultNO.properties.timeseries[i].data.instant.details.wind_speed) : '';
                     resultNO.properties.timeseries[i].data.instant.details.hasOwnProperty('wind_from_direction') ? daily_wind_dir_6.push(resultNO.properties.timeseries[i].data.instant.details.wind_from_direction) : '';
                     resultNO.properties.timeseries[i].data.instant.details.hasOwnProperty('air_temperature') ? daily_temp_6.push(resultNO.properties.timeseries[i].data.instant.details.air_temperature) : '';
-                    if(resultNO.properties.timeseries[i].data.hasOwnProperty('next_1_hours')) {
+                    if (resultNO.properties.timeseries[i].data.hasOwnProperty('next_1_hours')) {
                         resultNO.properties.timeseries[i].data.next_1_hours.summary.hasOwnProperty('symbol_code') ? daily_icon_6.push((resultNO.properties.timeseries[i].data.next_1_hours.summary.symbol_code).split('_')[0]) : '';
-                    }
-                    else{
+                    } else {
                         resultNO.properties.timeseries[i].data.next_6_hours.summary.hasOwnProperty('symbol_code') ? daily_icon_6.push((resultNO.properties.timeseries[i].data.next_6_hours.summary.symbol_code).split('_')[0]) : '';
                     }
                 }
-                if( moment.unix(moment(resultNO.properties.timeseries[i].time).unix() + offsetUnix).format('DD') == daily_date_7_DD) {
+                if (moment.unix(moment(resultNO.properties.timeseries[i].time).unix() + offsetUnix).format('DD') == daily_date_7_DD) {
                     resultNO.properties.timeseries[i].data.instant.details.hasOwnProperty('ultraviolet_index_clear_sky') ? daily_uv_7.push(resultNO.properties.timeseries[i].data.instant.details.ultraviolet_index_clear_sky) : '';
                     resultNO.properties.timeseries[i].data.instant.details.hasOwnProperty('wind_speed') ? daily_wind_speed_7.push(resultNO.properties.timeseries[i].data.instant.details.wind_speed) : '';
                     resultNO.properties.timeseries[i].data.instant.details.hasOwnProperty('wind_from_direction') ? daily_wind_dir_7.push(resultNO.properties.timeseries[i].data.instant.details.wind_from_direction) : '';
                     resultNO.properties.timeseries[i].data.instant.details.hasOwnProperty('air_temperature') ? daily_temp_7.push(resultNO.properties.timeseries[i].data.instant.details.air_temperature) : '';
-                    if(resultNO.properties.timeseries[i].data.hasOwnProperty('next_1_hours')) {
+                    if (resultNO.properties.timeseries[i].data.hasOwnProperty('next_1_hours')) {
                         resultNO.properties.timeseries[i].data.next_1_hours.summary.hasOwnProperty('symbol_code') ? daily_icon_7.push((resultNO.properties.timeseries[i].data.next_1_hours.summary.symbol_code).split('_')[0]) : '';
-                    }
-                    else{
+                    } else {
                         resultNO.properties.timeseries[i].data.next_6_hours.summary.hasOwnProperty('symbol_code') ? daily_icon_7.push((resultNO.properties.timeseries[i].data.next_6_hours.summary.symbol_code).split('_')[0]) : '';
                     }
                 }
@@ -305,15 +282,15 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
 
             daily_icon = [];
             daily_icon_url = [];
-            daily_icon[1] = iconBadgeConvertNO_hourly(mode(daily_icon_1),'day');
-            daily_icon[2] = iconBadgeConvertNO_hourly(mode(daily_icon_2),'day');
-            daily_icon[3] = iconBadgeConvertNO_hourly(mode(daily_icon_3),'day');
-            daily_icon[4] = iconBadgeConvertNO_hourly(mode(daily_icon_4),'day');
-            daily_icon[5] = iconBadgeConvertNO_hourly(mode(daily_icon_5),'day');
-            daily_icon[6] = iconBadgeConvertNO_hourly(mode(daily_icon_6),'day');
-            daily_icon[7] = iconBadgeConvertNO_hourly(mode(daily_icon_7),'day');
+            daily_icon[1] = iconBadgeConvertNO_hourly(mode(daily_icon_1), 'day');
+            daily_icon[2] = iconBadgeConvertNO_hourly(mode(daily_icon_2), 'day');
+            daily_icon[3] = iconBadgeConvertNO_hourly(mode(daily_icon_3), 'day');
+            daily_icon[4] = iconBadgeConvertNO_hourly(mode(daily_icon_4), 'day');
+            daily_icon[5] = iconBadgeConvertNO_hourly(mode(daily_icon_5), 'day');
+            daily_icon[6] = iconBadgeConvertNO_hourly(mode(daily_icon_6), 'day');
+            daily_icon[7] = iconBadgeConvertNO_hourly(mode(daily_icon_7), 'day');
 
-            for(i = 1; i < 8; i++) {
+            for (i = 1; i < 8; i++) {
                 forecast_icon = daily_icon[i];
                 switch (forecast_icon) {
                     case 'clear-day':
@@ -410,99 +387,92 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
             daily_wind_dir_6.length > 0 ? daily_windBearing_6 = daily_wind_dir_6[daily_wind_speed_6.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0)] : daily_windBearing_6 = '-';
             daily_wind_dir_7.length > 0 ? daily_windBearing_7 = daily_wind_dir_7[daily_wind_speed_7.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0)] : daily_windBearing_7 = '-';
 
-            daily_wind_speed_1.length > 0 ? daily_wind_1 = ((daily_wind_speed_1).max())*2.236937 : daily_wind_1 = '-';
-            daily_wind_speed_2.length > 0 ? daily_wind_2 = ((daily_wind_speed_2).max())*2.236937 : daily_wind_2 = '-';
-            daily_wind_speed_3.length > 0 ? daily_wind_3 = ((daily_wind_speed_3).max())*2.236937 : daily_wind_3 = '-';
-            daily_wind_speed_4.length > 0 ? daily_wind_4 = ((daily_wind_speed_4).max())*2.236937 : daily_wind_4 = '-';
-            daily_wind_speed_5.length > 0 ? daily_wind_5 = ((daily_wind_speed_5).max())*2.236937 : daily_wind_5 = '-';
-            daily_wind_speed_6.length > 0 ? daily_wind_6 = ((daily_wind_speed_6).max())*2.236937 : daily_wind_6 = '-';
-            daily_wind_speed_7.length > 0 ? daily_wind_7 = ((daily_wind_speed_7).max())*2.236937 : daily_wind_7 = '-';
+            daily_wind_speed_1.length > 0 ? daily_wind_1 = ((daily_wind_speed_1).max()) * 2.236937 : daily_wind_1 = '-';
+            daily_wind_speed_2.length > 0 ? daily_wind_2 = ((daily_wind_speed_2).max()) * 2.236937 : daily_wind_2 = '-';
+            daily_wind_speed_3.length > 0 ? daily_wind_3 = ((daily_wind_speed_3).max()) * 2.236937 : daily_wind_3 = '-';
+            daily_wind_speed_4.length > 0 ? daily_wind_4 = ((daily_wind_speed_4).max()) * 2.236937 : daily_wind_4 = '-';
+            daily_wind_speed_5.length > 0 ? daily_wind_5 = ((daily_wind_speed_5).max()) * 2.236937 : daily_wind_5 = '-';
+            daily_wind_speed_6.length > 0 ? daily_wind_6 = ((daily_wind_speed_6).max()) * 2.236937 : daily_wind_6 = '-';
+            daily_wind_speed_7.length > 0 ? daily_wind_7 = ((daily_wind_speed_7).max()) * 2.236937 : daily_wind_7 = '-';
 
-            if(daily_temp_1.length > 0) {
+            if (daily_temp_1.length > 0) {
                 daily_tempF_max_1 = Math.round(c2f((daily_temp_1).max()));
                 daily_tempF_min_1 = Math.round(c2f((daily_temp_1).min()));
                 daily_tempC_max_1 = Math.round((daily_temp_1).max());
                 daily_tempC_min_1 = Math.round((daily_temp_1).min());
-            }
-            else{
+            } else {
                 daily_tempF_max_1 = '-';
                 daily_tempF_min_1 = '-';
                 daily_tempC_max_1 = '-';
                 daily_tempC_min_1 = '-';
             }
 
-            if(daily_temp_2.length > 0) {
+            if (daily_temp_2.length > 0) {
                 daily_tempF_max_2 = Math.round(c2f((daily_temp_2).max()));
                 daily_tempF_min_2 = Math.round(c2f((daily_temp_2).min()));
                 daily_tempC_max_2 = Math.round((daily_temp_2).max());
                 daily_tempC_min_2 = Math.round((daily_temp_2).min());
-            }
-            else{
+            } else {
                 daily_tempF_max_2 = '-';
                 daily_tempF_min_2 = '-';
                 daily_tempC_max_2 = '-';
                 daily_tempC_min_2 = '-';
             }
 
-            if(daily_temp_3.length > 0) {
+            if (daily_temp_3.length > 0) {
                 daily_tempF_max_3 = Math.round(c2f((daily_temp_3).max()));
                 daily_tempF_min_3 = Math.round(c2f((daily_temp_3).min()));
                 daily_tempC_max_3 = Math.round((daily_temp_3).max());
                 daily_tempC_min_3 = Math.round((daily_temp_3).min());
-            }
-            else{
+            } else {
                 daily_tempF_max_3 = '-';
                 daily_tempF_min_3 = '-';
                 daily_tempC_max_3 = '-';
                 daily_tempC_min_3 = '-';
             }
 
-            if(daily_temp_4.length > 0) {
+            if (daily_temp_4.length > 0) {
                 daily_tempF_max_4 = Math.round(c2f((daily_temp_4).max()));
                 daily_tempF_min_4 = Math.round(c2f((daily_temp_4).min()));
                 daily_tempC_max_4 = Math.round((daily_temp_4).max());
                 daily_tempC_min_4 = Math.round((daily_temp_4).min());
-            }
-            else{
+            } else {
                 daily_tempF_max_4 = '-';
                 daily_tempF_min_4 = '-';
                 daily_tempC_max_4 = '-';
                 daily_tempC_min_4 = '-';
             }
 
-            if(daily_temp_5.length > 0) {
+            if (daily_temp_5.length > 0) {
                 daily_tempF_max_5 = Math.round(c2f((daily_temp_5).max()));
                 daily_tempF_min_5 = Math.round(c2f((daily_temp_5).min()));
                 daily_tempC_max_5 = Math.round((daily_temp_5).max());
                 daily_tempC_min_5 = Math.round((daily_temp_5).min());
-            }
-            else{
+            } else {
                 daily_tempF_max_5 = '-';
                 daily_tempF_min_5 = '-';
                 daily_tempC_max_5 = '-';
                 daily_tempC_min_5 = '-';
             }
 
-            if(daily_temp_6.length > 0) {
+            if (daily_temp_6.length > 0) {
                 daily_tempF_max_6 = Math.round(c2f((daily_temp_6).max()));
                 daily_tempF_min_6 = Math.round(c2f((daily_temp_6).min()));
                 daily_tempC_max_6 = Math.round((daily_temp_6).max());
                 daily_tempC_min_6 = Math.round((daily_temp_6).min());
-            }
-            else{
+            } else {
                 daily_tempF_max_6 = '-';
                 daily_tempF_min_6 = '-';
                 daily_tempC_max_6 = '-';
                 daily_tempC_min_6 = '-';
             }
 
-            if(daily_temp_7.length > 0) {
+            if (daily_temp_7.length > 0) {
                 daily_tempF_max_7 = Math.round(c2f((daily_temp_7).max()));
                 daily_tempF_min_7 = Math.round(c2f((daily_temp_7).min()));
                 daily_tempC_max_7 = Math.round((daily_temp_7).max());
                 daily_tempC_min_7 = Math.round((daily_temp_7).min());
-            }
-            else{
+            } else {
                 daily_tempF_max_7 = '-';
                 daily_tempF_min_7 = '-';
                 daily_tempC_max_7 = '-';
@@ -513,37 +483,23 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
             summaryDailyC = ' ';
             summaryHourlyC = ' ';
             summaryDailyF = ' ';
-            summaryHourlyF = ' '; 
+            summaryHourlyF = ' ';
 
             function accu() {
                 utcSystemTime = new Date(new Date().toUTCString()).toISOString();
                 updateTimeBadge = toTimestamp(utcSystemTime);
                 localTimeMoment = moment.unix(updateTimeBadge + offsetUnix);
                 lat = (latlong.split(','))[0];
-                ghiSolarClearSki = solarcalc(lat,localTimeMoment); 
-                if(ghiSolarClearSki !== '-') {
-                    if(ghiSolarClearSki >= 250) {
-                        cloudAdj = cloudAdjUV2(cloudCoverBadge);
-                        ghiSolarCloud = ghiSolarClearSki * cloudAdj;
-                        TglobeC = 0.01498 * ghiSolarCloud + 1.184 * temperatureCbadge - 0.0789 * humidity - 2.739; //day
-                    } else { //Low GHI
-                        TglobeC = temperatureCbadge;
-                    }
-                } else {
-                    TglobeC = temperatureCbadge; //night
-                };
+                ghiSolarClearSki = solarcalc(lat, localTimeMoment);
 
-                Tmrta = Math.pow(TglobeC + 273.15, 4) + (2.5 * 100000000 * Math.pow(windSpeedMS, 0.60) * (TglobeC - temperatureCbadge));
-                TmrtC = Math.pow(Tmrta, 1 / 4) - 273.15;
+                var accufeelC = accufeel(temperatureCbadge, ghiSolarClearSki, windSpeedMS, humidity, cloudCoverBadge);
 
-                var accufeelC = accufeel(temperatureCbadge, TmrtC, windSpeedMS, humidity);
-
-                 if(Math.abs(accufeelC - temperatureCbadge) > 4) {
+                if (Math.abs(accufeelC - temperatureCbadge) > 4) {
                     (accufeelC > temperatureCbadge) ? (accufeelC = temperatureCbadge + 4) : (accufeelC = temperatureCbadge - 4);
                 }
                 accufeelResultC = Math.round(accufeelC);
-                accufeelResultF = Math.round(c2f(accufeelC));                        
-            }    
+                accufeelResultF = Math.round(c2f(accufeelC));
+            }
 
 
 
@@ -554,7 +510,7 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
                 setSettingUT = data.setSettingUT;
 
                 timeZoneBadge = parseFloat(data.timeZoneBadge);
-                if((country !== "CA" && country !== "ca" && country !== "Canada" && country !== "US" && country !== "us" && country !== "United States of America") || failedHTTP == '1' || setSettingUT == 'u') {
+                if ((country !== "CA" && country !== "ca" && country !== "Canada" && country !== "US" && country !== "us" && country !== "United States of America") || failedHTTP == '1' || setSettingUT == 'u') {
 
                     summaryBadge = summaryBadgeNO;
                     summaryMinutely = summaryMinutelyNO;
@@ -564,26 +520,32 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
                     accu();
                     solarNighDay(timeZoneBadge, latlong);
                     isNight ? (nightNO = 'night') : (nightNO = 'day')
-                    iconBadgeConvertNO(iconNO,nightNO);
+                    iconBadgeConvertNO(iconNO, nightNO);
                     badgeGeneral(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, temperatureCbadge, updateTimeBadge, citys, uv1);
-                
+
                 }
 
-                if(country == "CA" || country == "ca" || country == "Canada" || country == "US" || country == "us" || country == "United States of America") {
+                if (country == "CA" || country == "ca" || country == "Canada" || country == "US" || country == "us" || country == "United States of America") {
                     accu();
                 }
 
-                resolve && resolve( 'result of NO()' );  
+                resolve && resolve('result of NO()');
 
             });
-            
+
 
 
         }).catch(function(err) {
-            console.log('no err ' + err);
-                chrome.storage.local.set({'failedHTTP_NO': '1'});
+            //console.log('no err ' + err);
+            chrome.storage.local.set({
+                'failedHTTP_NO': '1'
+            });
 
-          });
+
+
+        });
+
+
 
 
 };

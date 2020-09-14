@@ -1,6 +1,6 @@
 function weatherUS2(latlong, citys, resolve) {
     //console.log('us');
-    
+
     lat = (latlong.split(','))[0];
     lng = (latlong.split(','))[1];
 
@@ -19,6 +19,7 @@ function weatherUS2(latlong, citys, resolve) {
             chrome.storage.local.set({
                 'failedHTTP': '0'
             });
+            failedHTTP = '0';
             //console.log(JSON.stringify(resultUS2));
 
             utcSystemTime = new Date(new Date().toUTCString()).toISOString();
@@ -61,11 +62,11 @@ function weatherUS2(latlong, citys, resolve) {
                     setSettingUT = data.setSettingUT;
                     timeZoneBadge = parseFloat(data.timeZoneBadge);
                     latlong = data.latlong;
-                        if (setSettingUT !== "u") {
-                            solarNighDay(timeZoneBadge, latlong);
-                            iconBadgeConvertUS(iconUS);
-                            badgeGeneral(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, temperatureCbadge, updateTimeBadge, citys);
-                        }
+                    if (setSettingUT !== "u") {
+                        solarNighDay(timeZoneBadge, latlong);
+                        iconBadgeConvertUS(iconUS);
+                        badgeGeneral(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, temperatureCbadge, updateTimeBadge, citys);
+                    }
 
                 });
                 resolve && resolve(resultUS2);
@@ -73,10 +74,11 @@ function weatherUS2(latlong, citys, resolve) {
 
 
         }).catch(function(err) {
-            console.log('us err ' + err);
+            //console.log('us err ' + err);
             chrome.storage.local.set({
                 'failedHTTP': '1'
             });
+            failedHTTP = '1';
             chrome.storage.local.get('timeZoneBadge', function(data) {
                 timeZoneBadge = data.timeZoneBadge;
                 weatherNO(latlong, citys, timeZoneBadge, resolve);

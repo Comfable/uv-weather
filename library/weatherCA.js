@@ -1,6 +1,6 @@
 function weatherCA(latlong, citys, resolve) {
     //console.log('ca');
-    
+
     lat = (latlong.split(','))[0];
     lng = (latlong.split(','))[1];
 
@@ -29,11 +29,11 @@ function weatherCA(latlong, citys, resolve) {
             fetchWithTimeout(`https://uvweather.herokuapp.com/https://dd.weather.gc.ca/citypage_weather/xml/${stateCA_code}/${cityCA_code}_e.xml`, optionsCA, 2500)
                 .then((resp) => resp.text())
                 .then(function(resultCA) {
-                    
+
                     chrome.storage.local.set({
                         'failedHTTP': '0'
                     });
-
+                    failedHTTP = '0';
                     const parser = new DOMParser();
                     const srcDOM = parser.parseFromString(resultCA, "application/xml");
 
@@ -47,8 +47,7 @@ function weatherCA(latlong, citys, resolve) {
                     if (tempCca !== "NA" && tempCca !== "" && tempCca !== null && tempCca !== "NULL") {
                         temperatureCbadge = Math.round(parseFloat(tempCca));
                         temperatureFbadge = Math.round((parseFloat(tempCca) * 1.8) + 32);
-                    }
-                    else{
+                    } else {
                         tempCca = srcDOMJsonCA.siteData.hourlyForecastGroup.hourlyForecast[0].temperature;
                         if (tempCca !== "NA" && tempCca !== "" && tempCca !== null && tempCca !== "NULL") {
                             temperatureCbadge = Math.round(parseFloat(tempCca));
@@ -69,9 +68,9 @@ function weatherCA(latlong, citys, resolve) {
                         iconCodeCA = srcDOMJsonCA.siteData.hourlyForecastGroup.hourlyForecast[0].iconCode;
                     }
 
-                    if (iconCodeCA == "" || tempCca == "" || summaryBadge == "" || 
-                        iconCodeCA == "NULL" || tempCca == "NULL" || summaryBadge == "NULL" || 
-                        iconCodeCA == null || tempCca == null || summaryBadge == null || 
+                    if (iconCodeCA == "" || tempCca == "" || summaryBadge == "" ||
+                        iconCodeCA == "NULL" || tempCca == "NULL" || summaryBadge == "NULL" ||
+                        iconCodeCA == null || tempCca == null || summaryBadge == null ||
                         tempCca == "NA" || iconCodeCA == "NA" || summaryBadge == "NA") {
                         throw Error();
                     } else {
@@ -83,22 +82,22 @@ function weatherCA(latlong, citys, resolve) {
                                 solarNighDay(timeZoneBadge, latlong);
                                 iconBadgeConvertCA(iconCodeCA);
                                 badgeGeneral(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, temperatureCbadge, updateTimeBadge, citys);
-                            }   
+                            }
                         });
-                        
-                        resolve && resolve( 'result of CA()' );
+
+                        resolve && resolve('result of CA()');
                     }
 
                 }).catch(function(err) {
-                    console.log('ca err ' + err);
+                    //console.log('ca err ' + err);
                     chrome.storage.local.set({
                         'failedHTTP': '1'
-                    });                    
-
-			         chrome.storage.local.get('timeZoneBadge', function(data) {
-			                timeZoneBadge = data.timeZoneBadge;
-			                weatherNO(latlong, citys, timeZoneBadge, resolve);
-			            });
+                    });
+                    failedHTTP = '1';
+                    chrome.storage.local.get('timeZoneBadge', function(data) {
+                        timeZoneBadge = data.timeZoneBadge;
+                        weatherNO(latlong, citys, timeZoneBadge, resolve);
+                    });
 
                 });
 
