@@ -1473,6 +1473,7 @@ document.addEventListener("DOMContentLoaded", function() {
     };
 
     function closeAllPopup() {
+        modalSetting.style.display = "none";
         modalAqi.style.display = "none";
         modalFeedback.style.display = "none";
         modal48hours.style.display = "none";
