@@ -23,7 +23,7 @@ chrome.storage.local.get(['verUpdate'], function(data) {
                     fullname = ((city.split('"'))[1].charAt(0).toUpperCase() + (city.split('"'))[1].slice(1)) + ", " + region.toUpperCase() + ", " + country;
                     timezone = (JSON.stringify(result.timezone).split('"'))[1];
                     timeZoneBadge = timezone2offset(timezone);
-                    
+
                     chrome.storage.local.set({
                         'timeZoneBadge': timeZoneBadge
                     });
@@ -33,7 +33,7 @@ chrome.storage.local.get(['verUpdate'], function(data) {
                     });
                     chrome.storage.local.set({
                         'latlong': latlong
-                    });                   
+                    });
                     chrome.storage.local.set({
                         'country': country
                     });
@@ -54,7 +54,7 @@ chrome.storage.local.get(['verUpdate'], function(data) {
                     latlong = '43.6629,-79.3987';
                     timezone = 'America/Toronto';
                     timeZoneBadge = timezone2offset(timeZone);
-                    
+
                     country = 'CA';
 
                     chrome.storage.local.set({
@@ -95,11 +95,11 @@ chrome.runtime.onStartup.addListener(function(details) {
         timeZoneBadge = data.timeZoneBadge;
         setSettingUT = data.setSettingUT;
         //if (navigator.onLine) {
-            if (data.setSettingUT == 'u') {
-                badgeUV(latlong, citys, country, timeZoneBadge);
-            } else {
-                badgeTemp(latlong, citys, country, timeZoneBadge);
-            }
+        if (data.setSettingUT == 'u') {
+            badgeUV(latlong, citys, country, timeZoneBadge);
+        } else {
+            badgeTemp(latlong, citys, country, timeZoneBadge);
+        }
         //}
     });
 });
@@ -185,7 +185,7 @@ function intervalUpdateFunction() {
                 citys = data.citys;
                 timeZoneBadge = data.timeZoneBadge;
                 setSettingUT = data.setSettingUT;
-                
+
                 if (data.setSettingUT == 'u') {
                     badgeUV(latlong, citys, country, timeZoneBadge);
                 } else {

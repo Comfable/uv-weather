@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function() {
     document.querySelector("#title_version_setting").textContent = 'Version ' + version_manifest;
     document.getElementById("preload_body").style.display = "block";
 
-    document.querySelector("#giveUsFeedback_sub").textContent =  'UV Weather ' + version_manifest;
+    document.querySelector("#giveUsFeedback_sub").textContent = 'UV Weather ' + version_manifest;
 
     chrome.storage.local.set({
         'firstTimeSaerchPopupInSession': 0
@@ -313,7 +313,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     function popup() {
-        
+        document.querySelector("#aqi").style.opacity = ".2";
         document.querySelector(".aqi-arrow").style.visibility = "hidden";
         document.querySelector("#aqi-current-svg").style.visibility = "hidden";
 
@@ -346,50 +346,50 @@ document.addEventListener("DOMContentLoaded", function() {
             });
 
             var promise3 = () => new Promise(resolve => {
-                    //aqi(latlong, resolve);
-                    //aqi_index = '1';
-                    resolve && resolve('result of NO()');
+                //aqi(latlong, resolve);
+                //aqi_index = '1';
+                resolve && resolve('result of NO()');
             });
 
             promise().then(() => {
-                promise2().then(() => {}).then(function() {
-                    promise3().then(() => {}).then(function() {
+                    promise2().then(() => {}).then(function() {
+                        promise3().then(() => {}).then(function() {
 
-                        UTFC();
-                        refreshPopup();
-                        updateBadge();
-                        const preloader = document.querySelector('.preloader');
-                        const fadeEffect = setInterval(() => {
-                            if (!preloader.style.opacity) {
-                                return preloader.style.opacity = 1;
-                            }
-                            if (preloader.style.opacity > 0) {
-                                return preloader.style.opacity -= 0.1;
-                            } else {
-                                clearInterval(fadeEffect);
-                            }
-                        }, 50);
+                            UTFC();
+                            refreshPopup();
+                            updateBadge();
+                            const preloader = document.querySelector('.preloader');
+                            const fadeEffect = setInterval(() => {
+                                if (!preloader.style.opacity) {
+                                    return preloader.style.opacity = 1;
+                                }
+                                if (preloader.style.opacity > 0) {
+                                    return preloader.style.opacity -= 0.1;
+                                } else {
+                                    clearInterval(fadeEffect);
+                                }
+                            }, 50);
 
 
-                        chrome.storage.local.get('firstTimePopup', function(data) {
-                            if (typeof data.firstTimePopup == 'undefined') {
-                                chrome.storage.local.set({
-                                    'firstTimePopup': 1
-                                });
-                            }
-                            if (data.firstTimePopup == 0) {
-                                locationToast.showToast();
-                                chrome.storage.local.set({
-                                    'firstTimePopup': 1
-                                });
-                            }
-                        });
+                            chrome.storage.local.get('firstTimePopup', function(data) {
+                                if (typeof data.firstTimePopup == 'undefined') {
+                                    chrome.storage.local.set({
+                                        'firstTimePopup': 1
+                                    });
+                                }
+                                if (data.firstTimePopup == 0) {
+                                    locationToast.showToast();
+                                    chrome.storage.local.set({
+                                        'firstTimePopup': 1
+                                    });
+                                }
+                            });
+
+                        })
 
                     })
 
                 })
-
-            })
                 .catch((error) => {
                     //console.log( 'promise error: ', error );
                 });
@@ -552,35 +552,30 @@ document.addEventListener("DOMContentLoaded", function() {
         document.querySelector(".aqi-current-text").textContent = aqi_index;
         document.querySelector(".aqi-arrow").style.visibility = "visible";
         document.querySelector("#aqi-current-svg").style.visibility = "visible";
+        document.querySelector("#aqi").style.opacity = "1";
 
-        if(aqi_index == '-') {
+        if (aqi_index == '-') {
             document.querySelector(".aqi-arrow").style.transform = "translateY(0px)";
             document.querySelector("#aqi-current-svg").style.fill = "#27AE60";
-        }
-        else if(aqi_index <= 50) {
+        } else if (aqi_index <= 50) {
             document.querySelector(".aqi-arrow").style.transform = "translateY(0px)";
             document.querySelector("#aqi-current-svg").style.fill = "#27AE60";
-        }
-        else if(aqi_index >= 51 && aqi_index <= 100) {
+        } else if (aqi_index >= 51 && aqi_index <= 100) {
             document.querySelector(".aqi-arrow").style.transform = "translateY(52px)";
             document.querySelector("#aqi-current-svg").style.fill = "#2ECC71";
-        }
-        else if(aqi_index >= 101 && aqi_index <= 150) {
+        } else if (aqi_index >= 101 && aqi_index <= 150) {
             document.querySelector(".aqi-arrow").style.transform = "translateY(104px)";
-            document.querySelector("#aqi-current-svg").style.fill = "#F1C40F"; 
-        }
-        else if(aqi_index >= 151 && aqi_index <= 200) {
+            document.querySelector("#aqi-current-svg").style.fill = "#F1C40F";
+        } else if (aqi_index >= 151 && aqi_index <= 200) {
             document.querySelector(".aqi-arrow").style.transform = "translateY(156px)";
             document.querySelector("#aqi-current-svg").style.fill = "#F39C12";
-        }
-        else if(aqi_index >= 201 && aqi_index <= 300) {
+        } else if (aqi_index >= 201 && aqi_index <= 300) {
             document.querySelector(".aqi-arrow").style.transform = "translateY(208px)";
             document.querySelector("#aqi-current-svg").style.fill = "#9B59B6";
-        }
-        else {
+        } else {
             document.querySelector(".aqi-arrow").style.transform = "translateY(260px)";
             document.querySelector("#aqi-current-svg").style.fill = "#E74C3C";
-        }        
+        }
     }
 
     function groundCurrent() {
@@ -1025,10 +1020,6 @@ document.addEventListener("DOMContentLoaded", function() {
         document.querySelector('#forecast_60_temp_min').textContent = daily_tempF_min_6 + "°";
         document.querySelector('#forecast_70_temp_min').textContent = daily_tempF_min_7 + "°";
 
-        for (i = 1; i < 8; i++) {
-            document.querySelector(`#forecast_${i*10}_temp`).textContent = Math.round(c2f(resultNO.properties.timeseries[i].data.instant.details.air_temperature)) + "°";
-            document.querySelector(`#forecast_${i*10}_temp_min`).textContent = Math.round(c2f(resultNO.properties.timeseries[i].data.instant.details.air_temperature)) + "°";
-        }
         for (i = 1; i < 49; i++) {
             document.querySelector(`#forecast_${i}_hours_temp`).textContent = Math.round(c2f(resultNO.properties.timeseries[i].data.instant.details.air_temperature)) + "°";
         }
@@ -1389,7 +1380,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (currentBadgeSize == 1) {
                     //setTimeout(function() {
                     largBadgeNumber(temperatureCbadge, currentWhiteIcon)
-                        //}, 550);
+                    //}, 550);
                 } else {
                     badgeBackgroundColor(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, currentWhiteIcon);
                     //setTimeout(function() {
@@ -1403,7 +1394,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (currentBadgeSize == 1) {
                     //setTimeout(function() {
                     largBadgeNumber(temperatureFbadge, currentWhiteIcon)
-                        //}, 550);
+                    //}, 550);
                 } else {
                     badgeBackgroundColor(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, currentWhiteIcon);
                     //setTimeout(function() {
@@ -1421,7 +1412,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     if (currentBadgeSize == 1) {
                         // setTimeout(function() {
                         largBadgeNumber(uv1, currentWhiteIcon)
-                            //}, 550);
+                        //}, 550);
                     } else {
                         badgeBackgroundColor(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, currentWhiteIcon);
                         //setTimeout(function() {
@@ -1435,7 +1426,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     if (currentBadgeSize == 1) {
                         //setTimeout(function() {
                         largBadgeNumber(uv1, currentWhiteIcon)
-                            //}, 550);
+                        //}, 550);
                     } else {
                         badgeBackgroundColor(isDay, isNight, sunnyDayBadge, cloudyBadge, rainyBadge, snowyBadge, temperatureFbadge, currentWhiteIcon);
                         //setTimeout(function() {
@@ -1743,6 +1734,7 @@ document.addEventListener("DOMContentLoaded", function() {
         closeAllPopup();
         removeClassIcons();
         document.querySelector(".aqi-loading-dots").style.display = "block";
+        document.querySelector("#aqi").style.opacity = ".2";
 
         modalAqi.style.display = "block";
         var element = document.getElementById("aqi_icon_popup_page");
@@ -1923,12 +1915,12 @@ document.addEventListener("DOMContentLoaded", function() {
     const nameFeedback = document.getElementById('nameFeedback');
     const messageFeedback = document.getElementById('messageFeedback');
 
-    var feedbackFunction = function (event) {
-      isValidEmail = emailFeedback.checkValidity();
-      isValidName = nameFeedback.checkValidity();
-      isValidMessage = messageFeedback.checkValidity();
+    var feedbackFunction = function(event) {
+        isValidEmail = emailFeedback.checkValidity();
+        isValidName = nameFeedback.checkValidity();
+        isValidMessage = messageFeedback.checkValidity();
 
-        if ( isValidEmail && isValidName && isValidMessage) {
+        if (isValidEmail && isValidName && isValidMessage) {
             submitFeedback.disabled = false;
             submitFeedback.style.cursor = "pointer";
             submitFeedback.style.color = "#ff662b";
@@ -1941,7 +1933,7 @@ document.addEventListener("DOMContentLoaded", function() {
             submitFeedback.style.fontWeight = "400";
         }
     };
-      
+
     emailFeedback.addEventListener('keyup', feedbackFunction, false);
     nameFeedback.addEventListener('keyup', feedbackFunction, false);
     messageFeedback.addEventListener('keyup', feedbackFunction, false);
@@ -2381,14 +2373,15 @@ document.addEventListener("DOMContentLoaded", function() {
                 updateGeocoderProximity();
 
                 var fullname = ev.result.place_name;
-                var cityAPI = ev.result.text;
+                //var cityAPI = ev.result.text;
+                var cityAPI = ((ev.result.place_name).split(','))[0];
                 var lat = ev.result.geometry.coordinates[1];
                 var lng = ev.result.geometry.coordinates[0];
 
-                    map.jumpTo({
-                        center: ev.result.center,
-                        zoom: 10
-                    });
+                map.jumpTo({
+                    center: ev.result.center,
+                    zoom: 10
+                });
 
 
                 // Special case the north pole. tz-lookup
@@ -2400,7 +2393,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 timeZoneBadge = timezone2offset(timezone);
                 latlong = lat + ',' + lng;
                 citys = cityAPI;
-
                 if (((ev.result.place_name).split(','))[2]) {
                     countryFull = ((ev.result.place_name).split(','))[2];
                 } else {
@@ -2492,7 +2484,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 "maxzoom": 8
             });
         });
-    
+
     };
 
 
@@ -2502,75 +2494,63 @@ document.addEventListener("DOMContentLoaded", function() {
         lat = (latlong.split(','))[0];
         lng = (latlong.split(','))[1];
 
-                 fetchWithTimeout(`https://uvweather.herokuapp.com/https://api.waqi.info/feed/geo:${lat};${lng}/?token=9311857ccf3e488b86121268b016304e3c5ca3b4`, 3000)
-                .then(CheckError)
-                .then(function(resultWaqi) {
+        fetchWithTimeout(`https://uvweather.herokuapp.com/https://api.waqi.info/feed/geo:${lat};${lng}/?token=9311857ccf3e488b86121268b016304e3c5ca3b4`, 3000)
+            .then(CheckError)
+            .then(function(resultWaqi) {
 
-                    if(JSON.stringify(resultWaqi) !== '[]' && resultWaqi.status=='ok') {
-                        aqi_dominant_pollutant = resultWaqi.data.hasOwnProperty('dominentpol') ?  resultWaqi.data.dominentpol : '-';
-                        aqi_index = resultWaqi.data.hasOwnProperty('aqi') ?  resultWaqi.data.aqi : '-';
+                if (JSON.stringify(resultWaqi) !== '[]' && resultWaqi.status == 'ok') {
+                    aqi_dominant_pollutant = resultWaqi.data.hasOwnProperty('dominentpol') ? resultWaqi.data.dominentpol : '-';
+                    aqi_index = resultWaqi.data.hasOwnProperty('aqi') ? resultWaqi.data.aqi : '-';
 
-                        if(aqi_index <= 50) {
-                            aqi_name = 'Good';
-                        }
-                        else if(aqi_index >= 51 && aqi_index <= 100) {
-                            aqi_name = 'Moderate';
-                        }
-                        else if(aqi_index >= 101 && aqi_index <= 150) {
-                            aqi_name = 'Unhealthy for Sensitive Groups';   
-                        }
-                        else if(aqi_index >= 151 && aqi_index <= 200) {
-                            aqi_name = 'Unhealthy';
-                        }
-                        else if(aqi_index >= 201 && aqi_index <= 300) {
-                            aqi_name = 'Very Unhealthy';
-                        }
-                        else {
-                            aqi_name = 'Hazardous';
-                        }
+                    if (aqi_index <= 50) {
+                        aqi_name = 'Good';
+                    } else if (aqi_index >= 51 && aqi_index <= 100) {
+                        aqi_name = 'Moderate';
+                    } else if (aqi_index >= 101 && aqi_index <= 150) {
+                        aqi_name = 'Unhealthy for Sensitive Groups';
+                    } else if (aqi_index >= 151 && aqi_index <= 200) {
+                        aqi_name = 'Unhealthy';
+                    } else if (aqi_index >= 201 && aqi_index <= 300) {
+                        aqi_name = 'Very Unhealthy';
+                    } else {
+                        aqi_name = 'Hazardous';
+                    }
 
                     aqi_popup();
 
-                    }
-                    else{
-                        AQIair(latlong);
-                    }
-
-                }).catch(function(err) {
+                } else {
                     AQIair(latlong);
-                });
+                }
+
+            }).catch(function(err) {
+                AQIair(latlong);
+            });
 
 
         function AQIair(latlong) {
-                 fetchWithTimeout(`https://uvweather.herokuapp.com/http://api.airvisual.com/v2/nearest_city?lat=${lat}&lon=${lng}&key=dcb6e387-e96b-424e-87fb-b2201c95d25c`, 3000)
+            fetchWithTimeout(`https://uvweather.herokuapp.com/http://api.airvisual.com/v2/nearest_city?lat=${lat}&lon=${lng}&key=dcb6e387-e96b-424e-87fb-b2201c95d25c`, 3000)
                 .then(CheckError)
                 .then(function(resultAQIair) {
 
-                    if(JSON.stringify(resultAQIair) !== '[]' && resultAQIair.status=='success') { // Good, Moderate, Unhealthy for Sensitive Groups, Unhealthy, Very Unhealthy, Hazardous, Unavailable
-                        aqi_dominant_pollutant = resultAQIair.data.current.pollution.hasOwnProperty('mainus') ?  resultAQIair.data.current.pollution.mainus : '-';
-                        aqi_index = resultAQIair.data.current.pollution.hasOwnProperty('aqius') ?  resultAQIair.data.current.pollution.aqius : '-';
+                    if (JSON.stringify(resultAQIair) !== '[]' && resultAQIair.status == 'success') { // Good, Moderate, Unhealthy for Sensitive Groups, Unhealthy, Very Unhealthy, Hazardous, Unavailable
+                        aqi_dominant_pollutant = resultAQIair.data.current.pollution.hasOwnProperty('mainus') ? resultAQIair.data.current.pollution.mainus : '-';
+                        aqi_index = resultAQIair.data.current.pollution.hasOwnProperty('aqius') ? resultAQIair.data.current.pollution.aqius : '-';
 
-                        if(aqi_index <= 50) {
+                        if (aqi_index <= 50) {
                             aqi_name = 'Good';
-                        }
-                        else if(aqi_index >= 51 && aqi_index <= 100) {
+                        } else if (aqi_index >= 51 && aqi_index <= 100) {
                             aqi_name = 'Moderate';
-                        }
-                        else if(aqi_index >= 101 && aqi_index <= 150) {
-                            aqi_name = 'Unhealthy for Sensitive Groups';   
-                        }
-                        else if(aqi_index >= 151 && aqi_index <= 200) {
+                        } else if (aqi_index >= 101 && aqi_index <= 150) {
+                            aqi_name = 'Unhealthy for Sensitive Groups';
+                        } else if (aqi_index >= 151 && aqi_index <= 200) {
                             aqi_name = 'Unhealthy';
-                        }
-                        else if(aqi_index >= 201 && aqi_index <= 300) {
+                        } else if (aqi_index >= 201 && aqi_index <= 300) {
                             aqi_name = 'Very Unhealthy';
-                        }
-                        else {
+                        } else {
                             aqi_name = 'Hazardous';
                         }
-                                            
-                    }
-                    else{
+
+                    } else {
                         aqi_dominant_pollutant = '-';
                         aqi_index = '-';
                         aqi_name = '-';
@@ -2585,27 +2565,21 @@ document.addEventListener("DOMContentLoaded", function() {
                 });
 
         }
-        
+
 
     };
 
 
     setTimeout(function() {
-    	chrome.storage.local.get('failedHTTP_NO', function(data) {
-	        if (navigator.onLine && data.failedHTTP_NO == '1') {
-	                document.querySelector("#overloaded_popup").style.visibility = "visible";
-	            }
-		    if (!navigator.onLine) {
-		        document.querySelector("#noInternet_popup").style.visibility = "visible";
-		    }
-		});
+        chrome.storage.local.get('failedHTTP_NO', function(data) {
+            if (navigator.onLine && data.failedHTTP_NO == '1') {
+                document.querySelector("#overloaded_popup").style.visibility = "visible";
+            }
+            if (!navigator.onLine) {
+                document.querySelector("#noInternet_popup").style.visibility = "visible";
+            }
+        });
     }, 6500);
-
-
-
-
-
-
 
 
 });

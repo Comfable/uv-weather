@@ -85,5 +85,4 @@ function weatherUS2(latlong, citys, resolve) {
             });
         });
 
-
 };
