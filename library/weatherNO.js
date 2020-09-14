@@ -11,8 +11,23 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
             'User-Agent': 'uvweather.net (info@uvweather.net)'
         }
     }
+    
+    chrome.storage.local.get(['country', 'timeZoneBadge', 'failedHTTP', 'setSettingUT'], function(data) {
 
-    fetchWithTimeout(`https://www.uvw.workers.dev/?https://api.met.no/weatherapi/locationforecast/2.0/?lat=${lat}&lon=${lng}`, optionsNO, 4000)
+        country = data.country;
+        failedHTTP = data.failedHTTP;
+        setSettingUT = data.setSettingUT;
+        country = data.country;
+
+        if(country == 'IR' || country == 'ir' || country == 'Iran' || country == 'iran' ) {
+            corsAPI = 'https://uvweather.herokuapp.com/'
+        }
+        else{
+            corsAPI = 'https://www.uvw.workers.dev/?'
+        }
+
+
+    fetchWithTimeout(`${corsAPI}https://api.met.no/weatherapi/locationforecast/2.0/?lat=${lat}&lon=${lng}`, optionsNO, 4000)
         .then(CheckError)
         .then(function(resultNO) {
             window.resultNO = resultNO;
@@ -574,12 +589,6 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
 
 
 
-            chrome.storage.local.get(['country', 'timeZoneBadge', 'failedHTTP', 'setSettingUT'], function(data) {
-
-                country = data.country;
-                failedHTTP = data.failedHTTP;
-                setSettingUT = data.setSettingUT;
-
                 timeZoneBadge = parseFloat(data.timeZoneBadge);
                 if ((country !== "CA" && country !== "ca" && country !== "Canada" && country !== "US" && country !== "us" && country !== "United States of America") || failedHTTP == '1' || setSettingUT == 'u') {
 
@@ -602,19 +611,19 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
 
                 resolve && resolve('result of NO()');
 
+
+
+
+            }).catch(function(err) {
+                console.log('no err ' + err);
+                chrome.storage.local.set({
+                    'failedHTTP_NO': '1'
+                });
+
+
             });
-
-
-
-        }).catch(function(err) {
-            console.log('no err ' + err);
-            chrome.storage.local.set({
-                'failedHTTP_NO': '1'
-            });
-
 
         });
-
 
 
 

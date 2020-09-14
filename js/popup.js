@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function() {
     var currentSubMenu = document.getElementById("sub_menu_home");
     currentSubMenu.classList.add("sub_menu_current_Class");
     var modalSetting = document.getElementById("setting_popup");
+    var modalFeedback = document.getElementById("feedback_popup");
     var modalSolar = document.getElementById("solar_popup");
     var modalInfo = document.getElementById("info_popup");
     var modal7days = document.getElementById("next7_popup");
@@ -52,6 +53,8 @@ document.addEventListener("DOMContentLoaded", function() {
     version_manifest = chrome.runtime.getManifest().version;
     document.querySelector("#title_version_setting").textContent = 'Version ' + version_manifest;
     document.getElementById("preload_body").style.display = "block";
+
+    document.querySelector("#giveUsFeedback_sub").textContent =  'UV Weather ' + version_manifest;
 
     chrome.storage.local.set({
         'firstTimeSaerchPopupInSession': 0
@@ -1425,6 +1428,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function closeAllPopup() {
         modalSetting.style.display = "none";
+        modalFeedback.style.display = "none";
         modal48hours.style.display = "none";
         modal7days.style.display = "none";
         modalSolar.style.display = "none";
@@ -1708,6 +1712,21 @@ document.addEventListener("DOMContentLoaded", function() {
         currentSubMenu.classList.add("sub_menu_current_Class");
     });
 
+    document.querySelector("#sidebar_feedback").addEventListener("click", (e) => {
+        document.getElementById("openSidebarMenu").checked = false;
+        closeAllPopup();
+        removeClassIcons();
+        modalFeedback.style.display = "flex";
+        var element = document.getElementById("setting_icon_popup_page");
+        element.classList.add("sub_menu_icon_active_Class");
+
+        var currentIcon = document.getElementById("setting_icon_popup_page");
+        currentIcon.classList.add("sub_menu_current_icon_Class");
+
+        var currentSubMenu = document.getElementById("sub_menu_setting");
+        currentSubMenu.classList.add("sub_menu_current_Class");
+    });
+
     document.querySelector("#sidebar_map").addEventListener("click", (e) => {
         document.getElementById("openSidebarMenu").checked = false;
         closeAllPopup();
@@ -1822,6 +1841,68 @@ document.addEventListener("DOMContentLoaded", function() {
 
         var currentSubMenu = document.getElementById("sub_menu_home");
         currentSubMenu.classList.add("sub_menu_current_Class");
+    });
+
+    document.querySelector("#feedback_popup_close").addEventListener("click", (e) => {
+        closeAllPopup();
+        removeClassIcons();
+        var element = document.getElementById("home_icon_popup_page");
+        element.classList.add("sub_menu_icon_active_Class");
+
+        var currentIcon = document.getElementById("home_icon_popup_page");
+        currentIcon.classList.add("sub_menu_current_icon_Class");
+
+        var currentSubMenu = document.getElementById("sub_menu_home");
+        currentSubMenu.classList.add("sub_menu_current_Class");
+    });
+
+
+    const feedback_popup = document.getElementById('feedback_popup');
+    const emailFeedback = document.getElementById('emailFeedback');
+    const submitFeedback = document.getElementById('submitFeedback');
+    const nameFeedback = document.getElementById('nameFeedback');
+    const messageFeedback = document.getElementById('messageFeedback');
+
+    var feedbackFunction = function (event) {
+      isValidEmail = emailFeedback.checkValidity();
+      isValidName = nameFeedback.checkValidity();
+      isValidMessage = messageFeedback.checkValidity();
+
+        if ( isValidEmail && isValidName && isValidMessage) {
+            submitFeedback.disabled = false;
+            submitFeedback.style.cursor = "pointer";
+            submitFeedback.style.color = "#000000";
+            submitFeedback.style.fontWeight = "500";
+
+        } else {
+            submitFeedback.disabled = true;
+            submitFeedback.style.cursor = "not-allowed";
+            submitFeedback.style.color = "#b3aca7";
+            submitFeedback.style.fontWeight = "400";
+        }
+    };
+      
+    emailFeedback.addEventListener('keyup', feedbackFunction, false);
+    nameFeedback.addEventListener('keyup', feedbackFunction, false);
+    messageFeedback.addEventListener('keyup', feedbackFunction, false);
+
+    // submitFeedback.addEventListener('click', function (event) {
+    //   feedback_popup.submit();
+    // });
+
+    document.querySelector("#submitFeedback").addEventListener("click", (e) => {
+        setTimeout(function() {
+            closeAllPopup();
+            removeClassIcons();
+            var element = document.getElementById("home_icon_popup_page");
+            element.classList.add("sub_menu_icon_active_Class");
+
+            var currentIcon = document.getElementById("home_icon_popup_page");
+            currentIcon.classList.add("sub_menu_current_icon_Class");
+
+            var currentSubMenu = document.getElementById("sub_menu_home");
+            currentSubMenu.classList.add("sub_menu_current_Class");
+        }, 400);
     });
 
     document.querySelector("#search_popup_close").addEventListener("click", (e) => {

@@ -31,8 +31,11 @@
 
   .preloader {
       align-items: center;
+      color: #ffffff;
+      font-size: 12px;
       background: #2C3E50;
       display: flex;
+      flex-direction: column;
       height: 100vh;
       justify-content: center;
       left: 0;
@@ -2975,3 +2978,212 @@
     z-index: 999999;
   }
   .dg .function .property-name { width: 100%; }
+
+
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+  color: #aca49c;
+  font-size: 0.875em;
+}
+
+input:focus::-webkit-input-placeholder, textarea:focus::-webkit-input-placeholder {
+  color: #bbb5af;
+}
+
+input::-moz-placeholder, textarea::-moz-placeholder {
+  color: #aca49c;
+  font-size: 0.875em;
+}
+
+input:focus::-moz-placeholder, textarea:focus::-moz-placeholder {
+  color: #bbb5af;
+}
+
+input::placeholder, textarea::placeholder {
+  color: #aca49c;
+  font-size: 0.875em;
+}
+
+input:focus::placeholder, textarea::focus:placeholder {
+  color: #bbb5af;
+}
+
+input::-ms-placeholder, textarea::-ms-placeholder {
+  color: #aca49c;
+  font-size: 0.875em;
+}
+
+input:focus::-ms-placeholder, textarea:focus::-ms-placeholder {
+  color: #bbb5af;
+}
+
+/* on hover placeholder */
+
+input:hover::-webkit-input-placeholder, textarea:hover::-webkit-input-placeholder {
+  color: #e2dedb;
+  font-size: 0.875em;
+}
+
+input:hover:focus::-webkit-input-placeholder, textarea:hover:focus::-webkit-input-placeholder {
+  color: #cbc6c1;
+}
+
+input:hover::-moz-placeholder, textarea:hover::-moz-placeholder {
+  color: #e2dedb;
+  font-size: 0.875em;
+}
+
+input:hover:focus::-moz-placeholder, textarea:hover:focus::-moz-placeholder {
+  color: #cbc6c1;
+}
+
+input:hover::placeholder, textarea:hover::placeholder {
+  color: #e2dedb;
+  font-size: 0.875em;
+}
+
+input:hover:focus::placeholder, textarea:hover:focus::placeholder {
+  color: #cbc6c1;
+}
+
+input:hover::placeholder, textarea:hover::placeholder {
+  color: #e2dedb;
+  font-size: 0.875em;
+}
+
+input:hover:focus::-ms-placeholder, textarea:hover::focus:-ms-placeholder {
+  color: #cbc6c1;
+}
+
+
+#form {
+  position: relative;
+  width: 250px;
+  max-width: 250px;
+  margin: 20px 0 0 0;
+  display: flex;
+  flex-direction: column;
+}
+
+input {
+  font-size: 14px;
+  width: 250px;
+  max-width: 250px;
+  height: 50px;
+  padding: 0px 30px 0px 30px;
+  
+  background: transparent;
+  outline: none;
+  color: #696969!important;
+  
+  border: solid 0px #b3aca7;
+  border-bottom: none;
+  
+  transition: all 0.3s ease-in-out;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+}
+
+input:hover {
+  background: #a9a9a9;
+  color: #ffffff!important;
+}
+
+textarea {
+  width: 250px;
+  max-width: 250px;
+  height: 95px;
+  max-height: 95px;
+  padding: 15px 30px 15px 30px;
+  resize: none;
+
+  background: transparent;
+  outline: none;
+  
+  color: #726659;
+  font-size: 15px;
+  
+  border: solid 0px #b3aca7;
+  
+  transition: all 0.3s ease-in-out;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+}
+
+textarea:hover {
+  background: #a9a9a9;
+  resize: none;
+  color: #ffffff!important;
+}
+
+#submitFeedback {
+  width: 310px;
+  max-width: 310px;
+
+  padding: 0;
+  margin: 10px 0px 0px 0px;
+  
+  font-size: 15px;
+  color: #b3aca7;
+  
+  outline:none;
+  cursor: not-allowed;
+  
+  border: solid 0px #b3aca7;
+  border-top: none;
+
+  background: var(--bg-color);
+}
+
+/*#okButton:hover {
+  color: #e2dedb;
+}*/
+
+  .modal_feedback {
+      position: absolute;
+      width: 310px;
+      height: 526px;
+      left: 250px;
+      top: 0;
+      padding-top: 67px;
+      max-width: 310px;
+      display: none;
+      flex-direction: column;
+      vertical-align: right;
+      width: 100%;
+      -webkit-border-radius: 0px !important;
+      -moz-border-radius: 0px !important;
+      -o-border-radius: 0px !important;
+      -ms-border-radius: 0px !important;
+      border-radius: 0px !important;
+      background-color: var(--bg-color);
+      color: var(--font-color);
+      z-index: 11000;
+  }
+
+  #giveUsFeedback {
+    position: relative;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 500 !important;
+  }
+
+  #giveUsFeedback_sub {
+    position: relative;
+    display: block;
+    white-space: normal;
+    text-align: center;
+    font-weight: 250;
+    font-size: 12px;
+    width: 250px;
+    margin: 0 30px 0 30px;
+    margin-top: 10px;
+  }
+
+  #emailField:valid {
+    border-color: black;
+  }
+  #emailField:invalid {
+    border-color: red;
+  }
