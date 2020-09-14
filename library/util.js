@@ -180,7 +180,7 @@ function badgeBackgroundColor(currentWhiteIcon) {
 		chrome.browserAction.setBadgeBackgroundColor({color: '#fc923b'});
 		}
 	else if(isDay && sunnyDayBadge && temperatureFbadge < 50) {
-		chrome.browserAction.setBadgeBackgroundColor({color: '#f8bd90'});
+		chrome.browserAction.setBadgeBackgroundColor({color: '#ffa25b'});
 		}			
 	else if(isDay && cloudyBadge && currentWhiteIcon == 0) {
 		chrome.browserAction.setBadgeBackgroundColor({color: '#549dd0'});

@@ -1228,8 +1228,8 @@ chrome.storage.local.get('closeAds', function(data) {
   function next7Function(){
     for(i=1;i<3;i++) {
         document.querySelector(`#forecast_${i}_day`).textContent = dayjs.unix(result.daily.data[i].time).format('dddd');
-        document.querySelector(`#forecast_${i}_wind`).textContent = Math.round(result.daily.data[i].windSpeed);
-        document.querySelector(`#forecast_${i}_wind_arrow`).style.transform = 'rotate(' + result.daily.data[i].windBearing + 'deg)';        
+        //document.querySelector(`#forecast_${i}_wind`).textContent = Math.round(result.daily.data[i].windSpeed);
+        //document.querySelector(`#forecast_${i}_wind_arrow`).style.transform = 'rotate(' + result.daily.data[i].windBearing + 'deg)';        
         //document.querySelector(`#forecast_${i}_uv`).textContent = "UVI " + (Math.round ((result.daily.data[i].uvIndex) * uv_adj_daily(result.daily.data[i].icon)));        
     }
 
@@ -2098,11 +2098,13 @@ chrome.storage.local.get('closeAds', function(data) {
                       countryFull = ((result.features[0].place_name).split(','))[1];
                     }
 
-                    for(var i = 0; i <= result.features[0].context.length; i++) {
-                          if(result.features[0].context[i].hasOwnProperty('short_code')) {
-                          country = (result.features[0].context[i].short_code).substring(0, 2);
-                          break;
-                        }                    
+                    if(result.features[0].hasOwnProperty('context')) {
+                      for(var i = 0; i <= result.features[0].context.length; i++) {
+                            if(result.features[0].context[i].hasOwnProperty('short_code')) {
+                            country = (result.features[0].context[i].short_code).substring(0, 2);
+                            break;
+                          }                    
+                      }
                     }
 
                     chrome.storage.local.set({'fullname': fullname});
