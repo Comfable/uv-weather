@@ -374,7 +374,7 @@ function popup() {
                   weatherDS(latlong,citys,country,resolve);
           });
           Promise.all([promise, promise2]).then(function () {
-                  if(iconCodeCA) {
+                  if(typeof iconCodeCA !== 'undefined') {
                     iconBadgeConvertCA(iconCodeCA);
                   }
                   else{
@@ -396,7 +396,7 @@ function popup() {
                   weatherDS(latlong,citys,country,resolve);
           });      
           Promise.all([promise, promise2]).then(function () {
-                  if(iconUS) {
+                  if(typeof iconUS !== 'undefined') {
                     iconBadgeConvertUS(iconUS);
                   }
                   else{
@@ -418,7 +418,7 @@ function popup() {
                   weatherDS(latlong,citys,country,resolve);
           });
           Promise.all([promise, promise2]).then(function () {
-                  if(summaryBadge) {
+                  if(typeof summaryBadge !== 'undefined') {
                     iconBadgeConvert(summaryBadge,summaryBadgeMain);
                   }
                   else{

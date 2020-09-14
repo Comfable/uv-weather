@@ -98,9 +98,3 @@ function weatherUS(latlong,citys,resolve) {
 
 
 };
-
-//https://www.weather.gov/documentation/services-web-api#
-//https://api.weather.gov/stations
-//https://w1.weather.gov/xml/current_obs/index.xml
-//https://api.weather.gov/points/34.3444,-118.1895/forecast/hourly
-//https://api.weather.gov/icons
