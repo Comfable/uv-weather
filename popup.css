@@ -31,24 +31,21 @@
 
   .preloader {
       align-items: center;
-      background: #2C3E50 !important;
+      background: #2C3E50;
       display: flex;
       height: 100vh;
       justify-content: center;
       left: 0;
       position: fixed;
       top: 0;
-      transition-delay: .4s;
-      transition: opacity 3.75s linear;
+       	transition-property: opacity;
+		    transition-timing-function: linear;
       width: 100%;
       z-index: 99999;
       opacity: 1;
-      /*transform: opacity 1.750s linear;*/
   }
 
   .preloader.loaded {
-      transition-delay: .4s;
-      opacity: 0;
       pointer-events: none;
   }
 

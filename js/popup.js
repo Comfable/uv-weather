@@ -44,18 +44,6 @@ document.addEventListener("DOMContentLoaded", function() {
     mapStyle = 'mapbox://styles/mapbox/light-v10';
     weathermapStyle = 'mapbox://styles/mapbox/light-v10';
 
-    const preloader = document.querySelector('.preloader');
-    const fadeEffect = setInterval(() => {
-        if (!preloader.style.opacity) {
-            return preloader.style.opacity = 1;
-        }
-        if (preloader.style.opacity > 0) {
-            return preloader.style.opacity -= 0.1;
-        } else {
-            clearInterval(fadeEffect);
-        }
-    }, 50);
-
     var locationToast = Toastify({
         className: "locationToast",
         text: "Get data specific to your location →", //Change your location here
@@ -393,10 +381,23 @@ document.addEventListener("DOMContentLoaded", function() {
 				                        UTFC();
 				                        refreshPopup();
 				                        updateBadge();
+
+                                        const preloader = document.querySelector('.preloader');
+                                        const fadeEffect = setInterval(() => {
+                                            if (!preloader.style.opacity) {
+                                                return preloader.style.opacity = 1;
+                                            }
+                                            if (preloader.style.opacity > 0) {
+                                                return preloader.style.opacity -= 0.1;
+                                            } else {
+                                                clearInterval(fadeEffect);
+                                            }
+                                        }, 50);
+
 						        })
 					} )
 					.catch( ( error ) => {
-					    //alert( 'promise error: ', error );
+					    //console.log( 'promise error: ', error );
 					} );
 
         });
