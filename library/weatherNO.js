@@ -592,7 +592,6 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
 
                 timeZoneBadge = parseFloat(data.timeZoneBadge);
                 if ((country !== "CA" && country !== "ca" && country !== "Canada" && country !== "US" && country !== "us" && country !== "United States of America") || failedHTTP == '1' || setSettingUT == 'u') {
-
                     summaryBadge = summaryBadgeNO;
                     summaryMinutely = summaryMinutelyNO;
                     temperatureCbadge = temperatureCbadgeNO;

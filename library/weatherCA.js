@@ -43,9 +43,9 @@ function weatherCA(latlong, citys, resolve) {
                     srcDOMJsonCA = xml2json(srcDOM);
                     //console.log(JSON.stringify(srcDOMJsonCA));
 
+                    var tempCca = "-";
                     tempCCca = srcDOMJsonCA.siteData.currentConditions.hasOwnProperty('temperature') ? srcDOMJsonCA.siteData.currentConditions.temperature : "NA";
-                    tempC0ca = srcDOMJsonCA.siteData.hourlyForecastGroup.hourlyForecast[0].hasOwnProperty('temperature') ? srcDOMJsonCA.siteData.currentConditions.temperature : "NA";
-                    
+                    tempC0ca = srcDOMJsonCA.siteData.hourlyForecastGroup.hourlyForecast[0].hasOwnProperty('temperature') ? srcDOMJsonCA.siteData.hourlyForecastGroup.hourlyForecast[0].temperature : "NA";
 
                     if (tempCCca !== "NA" && tempCCca !== "" && tempCCca !== null && tempCCca !== "NULL" && tempC0ca !== "NA" && tempC0ca !== "" && tempC0ca !== null && tempC0ca !== "NULL") 
                     {
@@ -63,7 +63,7 @@ function weatherCA(latlong, citys, resolve) {
                         temperatureFbadge = Math.round((parseFloat(tempC0ca) * 1.8) + 32);
                     }
                     else{
-                       tempCca = "NA";
+                        tempCca = "NA";
                     }
 
                     summaryBadge = srcDOMJsonCA.siteData.currentConditions.hasOwnProperty('condition') ? srcDOMJsonCA.siteData.currentConditions.condition : srcDOMJsonCA.siteData.hourlyForecastGroup.hourlyForecast[0].condition;
@@ -79,9 +79,9 @@ function weatherCA(latlong, citys, resolve) {
                         iconCodeCA = srcDOMJsonCA.siteData.hourlyForecastGroup.hourlyForecast[0].iconCode;
                     }
 
-                    if (iconCodeCA == "" || tempCca == "" || summaryBadge == "" ||
-                        iconCodeCA == "NULL" || tempCca == "NULL" || summaryBadge == "NULL" ||
-                        iconCodeCA == null || tempCca == null || summaryBadge == null ||
+                    if (iconCodeCA == "" || summaryBadge == "" ||
+                        iconCodeCA == "NULL" || summaryBadge == "NULL" ||
+                        iconCodeCA == null || summaryBadge == null ||
                         tempCca == "NA" || iconCodeCA == "NA" || summaryBadge == "NA") {
                         throw Error();
                     } else {

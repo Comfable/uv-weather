@@ -90,174 +90,174 @@ function solarNighDay(timeZoneBadge, latlong) {
 function code2description_no(iconCodeNO) {
     switch (iconCodeNO) {
         case 'lightssnowshowersandthunder':
-            summaryBadge = 'Lights snow showers and thunder'
+            summaryBadgeNO = 'Lights snow showers and thunder'
             break;
 
         case 'heavysleetshowers':
-            summaryBadge = 'Heavy sleet showers';
+            summaryBadgeNO = 'Heavy sleet showers';
             break;
 
         case 'rainshowersandthunder':
-            summaryBadge = 'Rain showers and thunder';
+            summaryBadgeNO = 'Rain showers and thunder';
             break;
 
         case 'lightssleetshowersandthunder':
-            summaryBadge = 'Lights sleet showers and thunder';
+            summaryBadgeNO = 'Lights sleet showers and thunder';
             break;
 
         case 'cloudy':
-            summaryBadge = 'Cloudy';
+            summaryBadgeNO = 'Cloudy';
             break;
 
         case 'rainshowers':
-            summaryBadge = 'Rain showers';
+            summaryBadgeNO = 'Rain showers';
             break;
 
         case 'lightsnow':
-            summaryBadge = 'Light snow';
+            summaryBadgeNO = 'Light snow';
             break;
 
         case 'sleetandthunder':
-            summaryBadge = 'Sleet and thunder';
+            summaryBadgeNO = 'Sleet and thunder';
             break;
 
         case 'lightsleetandthunder':
-            summaryBadge = 'Light sleet and thunder';
+            summaryBadgeNO = 'Light sleet and thunder';
             break;
 
         case 'heavyrainandthunder':
-            summaryBadge = 'Heavy rain and thunder';
+            summaryBadgeNO = 'Heavy rain and thunder';
             break;
 
         case 'heavysleetshowersandthunder':
-            summaryBadge = 'Heavy sleet showers and thunder';
+            summaryBadgeNO = 'Heavy sleet showers and thunder';
             break;
 
         case 'sleetshowers':
-            summaryBadge = 'Sleet showers';
+            summaryBadgeNO = 'Sleet showers';
             break;
 
         case 'clearsky':
-            summaryBadge = 'Clear sky';
+            summaryBadgeNO = 'Clear sky';
             break;
 
         case 'lightsnowshowers':
-            summaryBadge = 'Light snow showers';
+            summaryBadgeNO = 'Light snow showers';
             break;
 
         case 'heavyrainshowers':
-            summaryBadge = 'Heavy rain showers';
+            summaryBadgeNO = 'Heavy rain showers';
             break;
 
         case 'lightsnowandthunder':
-            summaryBadge = 'Light snow and thunder';
+            summaryBadgeNO = 'Light snow and thunder';
             break;
 
         case 'snow':
-            summaryBadge = 'Snow';
+            summaryBadgeNO = 'Snow';
             break;
 
         case 'heavysnowshowers':
-            summaryBadge = 'Heavy snow showers';
+            summaryBadgeNO = 'Heavy snow showers';
             break;
 
         case 'heavysleet':
-            summaryBadge = 'Heavy sleet';
+            summaryBadgeNO = 'Heavy sleet';
             break;
 
         case 'rain':
-            summaryBadge = 'Rain';
+            summaryBadgeNO = 'Rain';
             break;
 
         case 'heavysnowandthunder':
-            summaryBadge = 'Heavy snow and thunder';
+            summaryBadgeNO = 'Heavy snow and thunder';
             break;
 
         case 'lightrainshowers':
-            summaryBadge = 'Light rain showers';
+            summaryBadgeNO = 'Light rain showers';
             break;
 
         case 'fair':
-            summaryBadge = 'Fair';
+            summaryBadgeNO = 'Fair';
             break;
 
         case 'lightrain':
-            summaryBadge = 'Light rain';
+            summaryBadgeNO = 'Light rain';
             break;
 
         case 'lightsleet':
-            summaryBadge = 'Light sleet';
+            summaryBadgeNO = 'Light sleet';
             break;
 
         case 'snowshowers':
-            summaryBadge = 'Snow showers';
+            summaryBadgeNO = 'Snow showers';
             break;
 
         case 'lightsleetshowers':
-            summaryBadge = 'Light sleet showers';
+            summaryBadgeNO = 'Light sleet showers';
             break;
 
         case 'partlycloudy':
-            summaryBadge = 'Partly cloudy';
+            summaryBadgeNO = 'Partly cloudy';
             break;
 
         case 'lightrainshowersandthunder':
-            summaryBadge = 'Light rain showers and thunder';
+            summaryBadgeNO = 'Light rain showers and thunder';
             break;
 
         case 'lightrainandthunder':
-            summaryBadge = 'Light rain and thunder';
+            summaryBadgeNO = 'Light rain and thunder';
             break;
 
         case 'heavyrainshowersandthunder':
-            summaryBadge = 'Heavy rain showers and thunder';
+            summaryBadgeNO = 'Heavy rain showers and thunder';
             break;
 
         case 'fog':
-            summaryBadge = 'Fog';
+            summaryBadgeNO = 'Fog';
             break;
 
         case 'snowandthunder':
-            summaryBadge = 'Snow and thunder';
+            summaryBadgeNO = 'Snow and thunder';
             break;
 
         case 'rainandthunder':
-            summaryBadge = 'Rain and thunder';
+            summaryBadgeNO = 'Rain and thunder';
             break;
 
         case 'sleet':
-            summaryBadge = 'Sleet';
+            summaryBadgeNO = 'Sleet';
             break;
 
         case 'snowshowersandthunder':
-            summaryBadge = 'Snow showers and thunder';
+            summaryBadgeNO = 'Snow showers and thunder';
             break;
 
         case 'heavyrain':
-            summaryBadge = 'Heavy rain';
+            summaryBadgeNO = 'Heavy rain';
             break;
 
         case 'heavysleetandthunder':
-            summaryBadge = 'Heavy sleet and thunder';
+            summaryBadgeNO = 'Heavy sleet and thunder';
             break;
 
         case 'heavysnowshowersandthunder':
-            summaryBadge = 'Heavy snow showers and thunder';
+            summaryBadgeNO = 'Heavy snow showers and thunder';
             break;
 
         case 'heavysnow':
-            summaryBadge = 'Heavy snow';
+            summaryBadgeNO = 'Heavy snow';
             break;
 
         case 'sleetshowersandthunder':
-            summaryBadge = 'Sleet showers and thunder';
+            summaryBadgeNO = 'Sleet showers and thunder';
             break;
         default:
-            summaryBadge = 'Fair';
+            summaryBadgeNO = 'Fair';
             break;
     }
 
-    return summaryBadge;
+    return summaryBadgeNO;
 
 };
 
