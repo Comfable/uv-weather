@@ -107,18 +107,7 @@ function iconBadgeConvertCA(iconCodeCA) {
 		iconBadge = 'clear-day';
 	}
 
-
-	if(iconBadge === "cloudy" || iconBadge === "partly-cloudy-day" || iconBadge === "partly-cloudy-night" || iconBadge === "fog") {
-		cloudyBadge  = true;							
-	}
-		else if(iconBadge === "rain") {
-		rainyBadge  = true; 
-	}
-		else if(iconBadge === "snow" || iconBadge === "sleet") {
-		snowyBadge  = true; 
-	}	else {
-		sunnyDayBadge  = true;
-	};
+	return iconBadge;
 
 };
 
@@ -156,18 +145,7 @@ function iconBadgeConvert(summaryBadge,summaryBadgeMain) {
 		iconBadge = 'clear-day'; 
 	}
 
-
-	if(iconBadge === "cloudy" || iconBadge === "partly-cloudy-day" || iconBadge === "partly-cloudy-night" || iconBadge === "fog") {
-		cloudyBadge  = true;							
-	}
-		else if(iconBadge === "rain") {
-		rainyBadge  = true; 
-	}
-		else if(iconBadge === "snow" || iconBadge === "sleet") {
-		snowyBadge  = true; 
-	}	else {
-		sunnyDayBadge  = true;
-	};
+	return iconBadge;
 
 };
 
@@ -220,19 +198,7 @@ function iconBadgeConvertUS(iconUS) {
 		iconBadge = 'clear-day'; 
 	}
 
-
-	if(iconBadge === "cloudy" || iconBadge === "partly-cloudy-day" || iconBadge === "partly-cloudy-night" || iconBadge === "fog") {
-		cloudyBadge  = true;							
-	}
-		else if(iconBadge === "rain") {
-		rainyBadge  = true; 
-	}
-		else if(iconBadge === "snow" || iconBadge === "sleet") {
-		snowyBadge  = true; 
-	}	
-		else{
-		sunnyDayBadge  = true;
-	};
+	return iconBadge;
 
 };
 
@@ -326,7 +292,7 @@ function badgeBackgroundColor(currentWhiteIcon) {
 };
 
 
-function animatedBadge(isDayBadge,sunnyDayBadge,cloudyBadge,rainyBadge,snowyBadge) {
+function animatedBadge() {
 	var rotation = parseInt(((new Date() - start) / 1000) * lines) / lines;
 	context.save();
 	context.clearRect(0, 0, cW, cH);
@@ -338,15 +304,17 @@ function animatedBadge(isDayBadge,sunnyDayBadge,cloudyBadge,rainyBadge,snowyBadg
 		context.moveTo(cW / 10, 0);
 		context.lineTo(cW / 4, 0);
 		context.lineWidth = cW / 30;
-		if (isDayBadge && sunnyDayBadge) {
-			context.strokeStyle = 'rgba(254, 102, 1,' + i / lines + ')';
-		}
-		else if (isDayBadge && (cloudyBadge || rainyBadge || snowyBadge)) {
-			context.strokeStyle = 'rgba(31, 97, 143,' + i / lines + ')';
-		}
-		else {
-			context.strokeStyle = 'rgba(0, 0, 0,' + i / lines + ')';
-		}
+
+		context.strokeStyle = 'rgba(119, 136, 153,' + i / lines + ')';
+		// if (isDayBadge && sunnyDayBadge) {
+		// 	context.strokeStyle = 'rgba(254, 102, 1,' + i / lines + ')';
+		// }
+		// else if (isDayBadge && (cloudyBadge || rainyBadge || snowyBadge)) {
+		// 	context.strokeStyle = 'rgba(31, 97, 143,' + i / lines + ')';
+		// }
+		// else {
+		// 	context.strokeStyle = 'rgba(0, 0, 0,' + i / lines + ')';
+		// }
 		context.stroke();
 	}
 

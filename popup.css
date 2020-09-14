@@ -1692,7 +1692,7 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   	top: 0px;
 	width: 560px;
 	height: 526px;
-	z-index: 10600;
+	z-index: 1000000;
 	background-color: #ffffff;
 	align-items: center;
 	justify-content: center;

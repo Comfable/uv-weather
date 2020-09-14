@@ -56,20 +56,21 @@ chrome.runtime.onStartup.addListener(function(details) {
   			latlong = data.latlong;
  			country = data.country;
 		 	citys = data.citys;
-
-			if(data.setSettingUT == 'u') {
-					badgeUV(latlong,citys,country);
-			}
-			else {
-					badgeTemp(latlong,citys,country);
-			}
+		 	if(navigator.onLine) {
+				if(data.setSettingUT == 'u') {
+						badgeUV(latlong,citys,country);
+				}
+				else {
+						badgeTemp(latlong,citys,country);
+				}		 		
+		 	}
 
 	});
 });
 
 
 chrome.runtime.onInstalled.addListener(function(details) {
-	if(details.reason == "update") {
+	if(details.reason == "update" && navigator.onLine) {
 			chrome.storage.local.get(['latlong', 'country', 'setSettingUT', 'citys', 'city', 'windUnit'], function(data) {
 		 			if(typeof data.citys !== 'undefined' && data.citys !== 'undefined') {
 		 				citys = data.citys;
@@ -113,7 +114,7 @@ chrome.runtime.onInstalled.addListener(function(details) {
 
 chrome.runtime.onMessage.addListener(
 	function(request, sender, sendResponse) {
-		if(request.msg == "intervalUpdateMessage") {
+		if(request.msg == "intervalUpdateMessage" && navigator.onLine) {
 			intervalUpdateFunction();
 		}
 	}

@@ -1,5 +1,6 @@
 i_er = 1;
 function weatherUS(latlong,citys,resolve) {
+
       lat = (latlong.split(','))[0];
       lng = (latlong.split(','))[1];
 
@@ -36,11 +37,11 @@ function weatherUS(latlong,citys,resolve) {
             fetchWithTimeout(`https://uv-weather.herokuapp.com/https://api.weather.gov/stations/${station_id}/observations/latest`, optionsUS, 750)
             .then(CheckError)
             //.then((resp) => resp.json())
-            .then(function(result) {
-                status = result.status;
+            .then(function(resultUS) {
+                status = resultUS.status;
                 chrome.storage.local.set({'failedHTTP': '0'});
 
-                //console.log(JSON.stringify(result));
+                //console.log(JSON.stringify(resultUS));
                 systemTime = new Date();
                 utcSystemTime = new Date(new Date().toUTCString()).toISOString();
                 updateTimeBadge = toTimestamp(utcSystemTime);
@@ -49,12 +50,12 @@ function weatherUS(latlong,citys,resolve) {
                 timeZoneBadge = (utcSystemTimeM.tz(timeZone).utcOffset())*60;
                 chrome.storage.local.set({'timeZoneBadge': timeZoneBadge});
 
-                summaryBadge = result.properties.hasOwnProperty('textDescription') ? result.properties.textDescription : '';
-                iconUrlUS = result.properties.hasOwnProperty('icon') ? result.properties.icon : '';
-                iconUS = result.properties.hasOwnProperty('icon') ? ((new URL(iconUrlUS).pathname).split('/')).pop() : '';
+                summaryBadge = resultUS.properties.hasOwnProperty('textDescription') ? resultUS.properties.textDescription : '';
+                iconUrlUS = resultUS.properties.hasOwnProperty('icon') ? resultUS.properties.icon : '';
+                iconUS = resultUS.properties.hasOwnProperty('icon') ? ((new URL(iconUrlUS).pathname).split('/')).pop() : '';
 
-                temperatureCbadge = result.properties.temperature.hasOwnProperty('value') ? Math.round(parseFloat(result.properties.temperature.value)) : '';
-                temperatureFbadge = result.properties.temperature.hasOwnProperty('value') ? Math.round((1.8*temperatureCbadge) + 32) : '';
+                temperatureCbadge = resultUS.properties.temperature.hasOwnProperty('value') ? Math.round(parseFloat(resultUS.properties.temperature.value)) : '';
+                temperatureFbadge = resultUS.properties.temperature.hasOwnProperty('value') ? Math.round((1.8*temperatureCbadge) + 32) : '';
 
                 if(iconUrlUS == "" || temperatureCbadge == "" || summaryBadge == "" || iconUrlUS == null || isNaN(temperatureCbadge) || summaryBadge == null) {
                    throw Error();
@@ -65,11 +66,11 @@ function weatherUS(latlong,citys,resolve) {
                         if(setSettingUT !== "u") {
                             solarNighDay(timeZoneBadge,latlong);
                             iconBadgeConvertUS(iconUS);
+                            iconBadgeConvertDS(iconBadge);
                             badgeGeneral(isDay,isNight,sunnyDayBadge,cloudyBadge,rainyBadge,snowyBadge,temperatureFbadge,temperatureCbadge,updateTimeBadge,citys);
                         }
                     });
-
-                    resolve && resolve(result);
+                    resolve && resolve(resultUS["properties"]["temperature"]);
                 }
                               
 

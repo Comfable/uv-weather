@@ -1,5 +1,5 @@
 function weatherCA(latlong,citys,resolve) {
-      
+
       lat = (latlong.split(','))[0];
       lng = (latlong.split(','))[1];
 
@@ -27,11 +27,11 @@ function weatherCA(latlong,citys,resolve) {
 
             fetchWithTimeout(`https://uv-weather.herokuapp.com/https://dd.weather.gc.ca/citypage_weather/xml/${stateCA_code}/${cityCA_code}_e.xml`, optionsCA, 750)
             .then((resp) => resp.text())
-            .then(function(result) {
+            .then(function(resultCA) {
 
                 chrome.storage.local.set({'failedHTTP': '0'});
                 const parser = new DOMParser();
-                const srcDOM = parser.parseFromString(result, "application/xml");
+                const srcDOM = parser.parseFromString(resultCA, "application/xml");
                 
                 systemTime = new Date();
                 utcSystemTime = new Date(new Date().toUTCString()).toISOString();
@@ -57,18 +57,19 @@ function weatherCA(latlong,citys,resolve) {
 
                   if(iconCodeCA == "" || temperatureCbadge == "" || summaryBadge == "") {
                     throw Error();
-                  } 
+                  }
                   else {
                       chrome.storage.local.get('setSettingUT', function(data) {
-                        setSettingUT = data.setSettingUT;    
+                        setSettingUT = data.setSettingUT;
                         if(setSettingUT !== "u") {
                           solarNighDay(timeZoneBadge,latlong);
-                          iconBadgeConvertCA(iconCodeCA);                      
+                          iconBadgeConvertCA(iconCodeCA);
+                          iconBadgeConvertDS(iconBadge);
                           badgeGeneral(isDay,isNight,sunnyDayBadge,cloudyBadge,rainyBadge,snowyBadge,temperatureFbadge,temperatureCbadge,updateTimeBadge,citys);
                         }
                       });
                    
-                      resolve && resolve(result);
+                      resolve && resolve(resultCA);
                   }
 
 
