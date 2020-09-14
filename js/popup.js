@@ -357,11 +357,13 @@ function popup() {
       var promise = new Promise(function (resolve, reject) {
           weatherDS(latlong,citys,country,resolve);
       });
-      var promise2 = new Promise(async function (resolve, reject) {
-          await promise;
-          popupGeneral();
-          resolve(true);
-      });
+      Promise.all([promise]).then(function () {
+              accufeelCalc(ghiSolarClearSki,iconDS,cloudCoverBadge,temperatureCbadge,humidity,windSpeedMS);
+            }).then(function () {
+                  UTFC();
+                  refreshPopup();
+                  updateBadge();   
+            });
     }
 
     if((typeof setSettingUT === 'undefined' || setSettingUT == "t") && navigator.onLine) {
