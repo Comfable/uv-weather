@@ -925,6 +925,7 @@
       text-align: left;
       font-weight: 250;
       font-size: 15px;
+      cursor: pointer;
   }
 
   .forecast_uv_Class {
@@ -2683,12 +2684,12 @@
 
   .countryflagsClass {
       width: 15px;
-      margin-bottom: -3px;
+      margin-bottom: -1px;
       margin-left: 4px;
-      height: 15px;
+      height: 11px;
       background-position: center;
       background-repeat: no-repeat;
-      background-size: cover;
+      background-size: contain;
       display: inline-block;
       filter: opacity(80%);
   }

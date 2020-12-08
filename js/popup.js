@@ -514,16 +514,10 @@ document.addEventListener("DOMContentLoaded", function() {
         document.querySelector("#current_uv").textContent = uv1;
 
         if (typeof country !== 'undefined' && country !== 'undefined' && country !== ' ') {
-            country = (country.trim()).substring(0, 2);
-            url_flags = 'https://www.countryflags.io/' + country + '/flat/64.png';
-            var img = new Image();
-            img.src = url_flags;
-            img.addEventListener("error", function() {
-                document.querySelector('.countryflagsClass').style.backgroundImage = 'url("images/blank.svg")';
-            });
-            img.addEventListener("load", function() {
-                document.querySelector('.countryflagsClass').style.backgroundImage = 'url(' + url_flags + ')';
-            });
+            countryShortName = (country.trim()).substring(0, 2);
+            countryShortLowerCase = countryShortName.toLowerCase();
+            countryFlagURL = 'images/flag/' + countryShortLowerCase + '.png'
+            document.querySelector('.countryflagsClass').style.backgroundImage = 'url(' + countryFlagURL + ')';
         } else {
             document.querySelector('.countryflagsClass').style.backgroundImage = 'url("images/blank.svg")';
         }
@@ -1566,6 +1560,20 @@ document.addEventListener("DOMContentLoaded", function() {
         if (document.querySelector('.toastify-top') !== null) {
             locationToast.hideToast();
         }
+    });
+
+    document.querySelector(".forecast_day_Class").addEventListener("click", (e) => {
+        closeAllPopup();
+        removeClassIcons();
+        modal7days.style.display = "block";
+        var element = document.getElementById("next7_icon_popup_page");
+        element.classList.add("sub_menu_icon_active_Class");
+
+        var currentIcon = document.getElementById("next7_icon_popup_page");
+        currentIcon.classList.add("sub_menu_current_icon_Class");
+
+        var currentSubMenu = document.getElementById("sub_menu_next7");
+        currentSubMenu.classList.add("sub_menu_current_Class");
     });
 
     document.querySelector("#setting_defualt_theme_d_all").addEventListener("click", (e) => {
