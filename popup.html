@@ -12,39 +12,32 @@
      <title>UV Weather</title>
 
      <link rel="stylesheet" href="/popup.css" media="screen" />
-     <link rel="preload" href="/js/popup.js" as="script" />
+     <link type="text/javascript" rel="preload" href="/popup.js" as="script" />
 
-     <script src="/library/suncalc.js"></script>
-     <script src="/library/util.js"></script>
-     <script src="/library/acc.js"></script>
-     <script src="/js/background.js"></script>
-     <script rel="preload" src="/js/popup.js"></script>
-     <script src="/library/toastify.js"></script>
-     <script src="/library/weatherCA.js"></script>
-     <script src="/library/weatherUS2.js"></script>
-     <script src="/library/weatherNO.js"></script>
-     <script src="/library/papaparse.min.js"></script>
-     <script src="/library/moment.js"></script>
-     <script src="/library/moment-timezone-with-data-10-year-range.js"></script>
-     <script src="/library/countup.js"></script>
-
+     <script src="/library/tXml.min.js"></script>
+     <script type="text/javascript" src="/library/suncalc.js"></script>
+     <script type="text/javascript" src="/library/util.js"></script>
+     <script type="text/javascript" src="/library/acc.js"></script>
+     <!-- <script type="text/javascript" src="/background.js"></script> -->
+     <script type="text/javascript" rel="preload" src="/popup.js"></script>
+     <script type="text/javascript" src="/library/toastify.js"></script>
+     <script type="text/javascript" src="/library/weatherCA.js"></script>
+     <script type="text/javascript" src="/library/weatherUS2.js"></script>
+     <script type="text/javascript" src="/library/weatherNO.js"></script>
+     <script type="text/javascript" src="/library/papaparse.js"></script>
+     <script type="text/javascript" src="/library/moment.js"></script>
+     <script type="text/javascript" src="/library/moment-timezone-with-data-10-year-range.js"></script>
+     <script type="text/javascript" src="/library/countup.js"></script>
      <script type="text/javascript" src="/library/tz.js" defer></script>
-     <script type="text/javascript" src="/library/gtm.js" defer></script>
 
-
-     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.js' defer></script>
-     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.css' rel='stylesheet' />
-     <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js" defer></script>
-     <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css" type="text/css" />
-     <noscript>
-         <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N9SQMMN" height="0" width="0" style="display:none;visibility:hidden"></iframe>
-     </noscript>
+     <script src='/library/mapbox-gl.min.js' defer></script>
+     <link href='/library/mapbox-gl.css' rel='stylesheet' />
+     <script src="/library/mapbox-gl-geocoder.min.js" defer></script>
+     <link rel="stylesheet" href="/library/mapbox-gl-geocoder.css" type="text/css" />
 
  </head>
 
  <body>
-
-
 
      <div id="noInternet_popup" class="overlay_popup_Class">
          <div class="noInternet_content_Class">
@@ -63,9 +56,9 @@
      </div>
 
      <div id="preload_body">
+
          <!-- aside -->
          <aside id="image_background" class="image_background_Class"></aside>
-
 
          <div class="header"></div>
          <input type="checkbox" class="openSidebarMenu" id="openSidebarMenu">
@@ -104,7 +97,7 @@
                  <hr class="hr_forecast_menu">
 
                  <a id="sidebar_setting" class="whitelink">
-                     <li><img src="images/settings.svg" class="sidebar_icon_Class" />Settings</li>
+                     <li><img src="images/settings.svg" class="sidebar_icon_Class"/>Settings</li>
                  </a>
                  <hr class="hr_forecast_menu">
                  <a href="https://uvweather.net/faq/" target="_blank" class="whitelink">
@@ -114,10 +107,7 @@
                  <a href="https://uvweather.net/request-a-feature" target="_blank" class="whitelink">
                      <li><img src="images/puzzle.svg" class="sidebar_icon_Class" />Request a Feature</li>
                  </a>
-                 <!--                  <hr class="hr_forecast_menu">
-                 <a href="https://chrome.google.com/webstore/detail/uv-weather/ngeokhpbgoadbpdpnplcminbjhdecjeb/reviews" target="_blank" class="whitelink">
-                     <li><img src="images/like-fill.svg" class="sidebar_icon_Class" />Rate Us</li>
-                 </a> -->
+
                  <hr class="hr_forecast_menu">
                  <a id="sidebar_feedback" class="whitelink">
                      <li><img src="images/like-fill.svg" class="sidebar_icon_Class" />Send Feedback</li>
@@ -147,13 +137,6 @@
 
          <div id="current_icon_update" class="current_icon_update">
          </div>
-
-
-         <!--   <div class="appSuggestion_Class">
-          <div class="title_appSuggestion_Class">Also Try Out</div>
-          <div class="body_appSuggestion">Coronavirus Live Status</div>
-  </div> -->
-
 
          <div id="current_temp_groupA" class="current_temp_groupA_Class">
              <div id="current_temp_groupB" class="current_temp_groupB_Class">
@@ -226,7 +209,6 @@
          <div id="group_uv" class="group_uv_Class">
              <div id="current_uv_group" class="current_uv_group_Class"> <span id="current_uv_title" class="current_uv_title_Class">UV Index</span>
                  <span id="current_uv" class="current_uv_Class">-</span>
-                 <!-- <span id="current_uv_note" class="current_uv_note_Class">(-)</span> -->
              </div>
 
              <div id="icon_uv_top" class="icon_uv_top_Class">
@@ -278,10 +260,6 @@
 
          </div>
 
-
-
-
-
          <div id="link_qsun" class="link_qsun_Class">
              <a target='_blank' href="https://qsun.co/app?utm_source=uvweather&utm_medium=extension&utm_campaign=UV%20Weather" class="whitelink">
                  <img id="link_award_app" src="images/crown.svg" class="link_award_app_Class" />
@@ -306,10 +284,6 @@
              </a>
          </div>
 
-         <!--     <div id="forecast_tomorrow" class="forecast_tomorrow_Class"> <span>Forecast Tomorrow</span>
-    </div> -->
-
-
          <div id="icon_close_box" class="icon_close_box_Class">
              <img id="close_icon_box" src="images/close-box.svg" class="close_icon_box_Class" />
          </div>
@@ -325,19 +299,9 @@
 
 
          <div id="forecast" class="forecast_Class">
-             <div id="one_day" class="one_day_Class"> <span id="forecast_1_day" class="forecast_day_Class forecast_day_link_Class">
+             <div id="one_day_home" class="one_day_Class"> <span id="forecast_1_day" class="forecast_day_Class forecast_day1_link_Class">
                      1
                  </span>
-                 <!--         <span id="forecast_1_uv" class="forecast_uv_Class">
-        UVI 5
-      </span> -->
-                 <!--      <span class="forecast_wind_group_Class">
-          <span class="forecast_wind_group_sub_Class">
-              <span id="forecast_1_wind" class="forecast_wind_Class"> </span>
-              <span id="forecast_1_wind_unit" class="forecast_wind_unit_Class">mph</span>
-          </span>  
-          <span id="forecast_1_wind_arrow" class="forecast_wind_arrow_Class">↑</span>
-        </span>  -->
                  <span id="forecast_1_temp" class="forecast_temp_Class">-°</span>
                  <span id="forecast_1_temp_min" class="forecast_temp_Class">
                      15°
@@ -347,19 +311,9 @@
                  </span>
              </div>
              <hr class="hr_forecast">
-             <div id="two_day" class="two_day_Class"> <span id="forecast_2_day" class="forecast_day_Class forecast_day_link_Class">
+             <div id="two_day_home" class="two_day_Class"> <span id="forecast_2_day" class="forecast_day_Class forecast_day2_link_Class">
                      2
                  </span>
-                 <!--         <span id="forecast_2_uv" class="forecast_uv_Class">
-        UVI 5
-      </span> -->
-                 <!--      <span class="forecast_wind_group_Class">
-          <span class="forecast_wind_group_sub_Class">
-            <span id="forecast_2_wind" class="forecast_wind_Class"> </span>
-            <span id="forecast_2_wind_unit" class="forecast_wind_unit_Class">mph</span>
-          </span>
-          <span id="forecast_2_wind_arrow" class="forecast_wind_arrow_Class">↑</span>
-        </span> -->
                  <span id="forecast_2_temp" class="forecast_temp_Class">-°</span>
                  <span id="forecast_2_temp_min" class="forecast_temp_Class">
                      15°
@@ -423,32 +377,18 @@
                          </div>
                      </a>
                  </span>
-
-                 <!--                  <span id="sub_menu_setting" class="sub_menu_culumn_Class">
-                     <a id="setting_popup_page" class="blacklink">
-                         <div>
-                             <img src="images/settings.svg" id="setting_icon_popup_page" class="sub_menu_icon_Class" />
-                         </div>
-                         <div class="sub_menu_text_Class">Settings
-                         </div>
-                     </a>
-                 </span> -->
-
              </div>
          </div>
-
 
          <!-- Search Page -->
          <div id="search_popup">
              <div id="search_popup_close" class="modal_search_close"></div>
              <div id="mapSearch" class='search_Class'></div>
              <div id="geocoderID" class="geocoderClass"></div>
-             <!-- <div id="click_on_map" class="click_on_map_Class">Double-click on a name on the map<br>or</div> -->
              <a target='_blank' href="https://uvweather.net/add-a-place" class="whitelink">
                  <span id="search_popup_title" class="modal_search_title">Report a Missing Place</span>
              </a>
          </div>
-
 
          <!-- Next 48 Hours Page -->
          <div id="next48_popup" class="modal_next48">
@@ -1465,11 +1405,6 @@
                          .
                      </span>
                  </div>
-
-
-
-
-
                  <br>
                  <br>
                  <br>
@@ -1477,14 +1412,12 @@
 
          </div>
 
-
          <!-- Map Page -->
          <div id="map_popup">
              <div id="map_popup_close" class="modal_map_close"></div>
              <div id='mapWeather' class='map_Class'></div>
              <span id="map_popup_title" class="modal_map_title"></span>
          </div>
-
 
          <!-- Report Page -->
          <div id="currentReport_popup" class="modal_report">
@@ -1605,17 +1538,6 @@
 
                      <hr class="hr_forecast">
 
-                     <!--                      <div id="report_13" class="report_model_Class">
-                         <span id="current_report_title_13" class="current_report_title_Class">
-                             Wind Gust
-                         </span>
-                         <span id="current_report_windGust" class="current_report_value_Class">
-                             value
-                         </span>
-                     </div> -->
-
-                     <!-- <hr class="hr_forecast"> -->
-
                      <div id="report_9" class="report_model_Class">
                          <span id="current_report_title_9" class="current_report_title_Class">
                              Pressure
@@ -1625,27 +1547,6 @@
                          </span>
                      </div>
 
-                     <!-- <hr class="hr_forecast"> -->
-
-                     <!--                      <div id="report_8" class="report_model_Class">
-                         <span id="current_report_title_8" class="current_report_title_Class">
-                             Visibility
-                         </span>
-                         <span id="current_report_visibility" class="current_report_value_Class">
-                             value
-                         </span>
-                     </div> -->
-
-                     <!-- <hr class="hr_forecast"> -->
-
-                     <!--                      <div id="report_11" class="report_model_Class">
-                         <span id="current_report_title_11" class="current_report_title_Class">
-                             Ozone
-                         </span>
-                         <span id="current_report_ozone" class="current_report_value_Class">
-                             value
-                         </span>
-                     </div> -->
                      <br>
                      <br>
                  </div>
@@ -1654,25 +1555,17 @@
 
          </div>
 
-
-
-
          <!-- Next 7 Days Page -->
          <div id="next7_popup" class="modal">
-             <!-- <div id="next7_popup_close" class="modal_close"></div> -->
              <div id="title_next7" class="title_uv_group_Class_setting">
                  <div id="title_next7_text" class="title_page_Class">Next 7 Days</div>
                  <div id="next7_update_date" class="title_subtitle_modal_Class"></div>
              </div>
              <div class="next7_table_Class">
                  <div id="summery_next7_text" class="summery_modal_Class"></div>
-                 <div id="one_day" class="one_day_Class"> <span id="forecast_10_day" class="forecast_day_modal_Class">
+                 <div id="one_day7" class="one_day_Class"> <span id="forecast_10_day" class="forecast_day_modal_Class">
                          -
                      </span>
-                     <!-- 
-                     <span id="forecast_10_uv" class="forecast_uv_daily_modal_Class">
-                         UVI -
-                     </span> -->
 
                      <span class="forecast_wind_group_Class">
                          <span class="forecast_wind_group_sub_Class">
@@ -1697,10 +1590,6 @@
                          -
                      </span>
 
-                     <!--                      <span id="forecast_20_uv" class="forecast_uv_daily_modal_Class">
-                         UVI -
-                     </span> -->
-
                      <span class="forecast_wind_group_Class">
                          <span class="forecast_wind_group_sub_Class">
                              <span id="forecast_20_wind" class="forecast_wind_Class"> </span>
@@ -1724,10 +1613,6 @@
                          -
                      </span>
 
-                     <!--                      <span id="forecast_30_uv" class="forecast_uv_daily_modal_Class">
-                         UVI -
-                     </span> -->
-
                      <span class="forecast_wind_group_Class">
                          <span class="forecast_wind_group_sub_Class">
                              <span id="forecast_30_wind" class="forecast_wind_Class"> </span>
@@ -1750,10 +1635,7 @@
                      <span id="forecast_40_day" class="forecast_day_modal_Class">
                          -
                      </span>
-                     <!-- 
-                     <span id="forecast_40_uv" class="forecast_uv_daily_modal_Class">
-                         UVI -
-                     </span> -->
+   
                      <span class="forecast_wind_group_Class">
                          <span class="forecast_wind_group_sub_Class">
                              <span id="forecast_40_wind" class="forecast_wind_Class"> </span>
@@ -1776,9 +1658,6 @@
                      <span id="forecast_50_day" class="forecast_day_modal_Class">
                          -
                      </span>
-                     <!--                      <span id="forecast_50_uv" class="forecast_uv_daily_modal_Class">
-                         UVI -
-                     </span> -->
                      <span class="forecast_wind_group_Class">
                          <span class="forecast_wind_group_sub_Class">
                              <span id="forecast_50_wind" class="forecast_wind_Class"> </span>
@@ -1801,9 +1680,7 @@
                      <span id="forecast_60_day" class="forecast_day_modal_Class">
                          -
                      </span>
-                     <!--                      <span id="forecast_60_uv" class="forecast_uv_daily_modal_Class">
-                         UVI -
-                     </span> -->
+
                      <span class="forecast_wind_group_Class">
                          <span class="forecast_wind_group_sub_Class">
                              <span id="forecast_60_wind" class="forecast_wind_Class"> </span>
@@ -1826,9 +1703,6 @@
                      <span id="forecast_70_day" class="forecast_day_modal_Class">
                          -
                      </span>
-                     <!--                      <span id="forecast_70_uv" class="forecast_uv_daily_modal_Class">
-                         UVI -
-                     </span> -->
 
                      <span class="forecast_wind_group_Class">
                          <span class="forecast_wind_group_sub_Class">
@@ -1852,22 +1726,17 @@
 
          </div>
 
-
          <!-- Solar Page -->
          <div id="solar_popup" class="modal">
-             <!-- <div id="solar_popup_close" class="modal_close"></div> -->
              <div id="title_solar" class="title_uv_group_Class_setting">
                  <div id="title_solar_text" class="title_page_Class">
                      Solar Times
                  </div>
                  <div id="solar_now_date" class="title_subtitle_modal_Class">
-
                  </div>
              </div>
 
-
              <div class="solar_table_Class">
-
 
                  <div id="solar_8" class="solar_Class">
                      <span id="solar_8_name" class="solar_name_Class tooltip">
@@ -1961,7 +1830,6 @@
 
          </div>
 
-
          <!-- aqi Page -->
          <div id="aqi_popup" class="modal">
              <div id="title_aqi" class="title_uv_group_Class_setting">
@@ -1972,9 +1840,6 @@
                  </div>
                  <img id="raindrop" class="aqi-loading-dots" src="images/loading-dots.svg" />
              </div>
-
-
-
 
              <div id="aqi">
 
@@ -2051,40 +1916,11 @@
                  </div>
              </div>
 
-
-
-             <!--              <div class="aqi_table_Class">
-
-                 <div id="aqi_1" class="solar_Class">
-                     <span id="aqi_1_name" class="aqi_name_Class tooltip">
-                         AQI
-                         <span class="tooltiptext tooltip-top">Air Quality Index</span>
-                     </span>
-                     <span id="aqi_1_value" class="aqi_value_Class">
-                         -
-                     </span>
-                 </div>
-                 <hr class="hr_forecast">
-                 <div id="aqi_2" class="solar_Class">
-                     <span id="aqi_2_name" class="aqi_name_Class tooltip">
-                         Pollutant
-                         <span class="tooltiptext tooltip-top">Dominant (Main) pollutant</span>
-                     </span>
-                     <span id="aqi_2_value" class="aqi_value_Class">
-                         -
-                     </span>
-                 </div>
-                 
-             </div> -->
-
-
          </div>
-
 
          <!-- Setting Page -->
          <div id="setting_popup" class="modal_setting">
              <div id="setting_popup_close" class="modal_close"></div>
-
 
              <div class="setting_section_unit_Class">
                  <div class="setting_title_section_general_Class" id="setting_badge">GENERAL</div>
@@ -2261,12 +2097,9 @@
 
          </div>
 
-
          <!-- Feedback Page -->
          <div id="feedback_popup" class="modal_feedback">
              <div id="feedback_popup_close" class="modal_close"></div>
-
-
 
              <div id="giveUsFeedback">Give Us Feedback</div>
              <div id="giveUsFeedback_sub">1.1.15</div>
@@ -2280,8 +2113,8 @@
 
              </form>
 
-
          </div>
+
      </div>
 
      </div>

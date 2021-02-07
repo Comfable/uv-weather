@@ -1,26 +1,35 @@
-   {
-    "name": "UV Weather",
-    "version": "1.1.22",
-    "description": "Live Weather for Real Life",
-    "permissions": [ "activeTab","storage"],
-    "background": {
-    "scripts": ["/library/papaparse.min.js", "/library/suncalc.js",  "/library/moment.js", "/library/tz.js", "/library/moment-timezone-with-data-10-year-range.js", "/library/util.js", "/library/weatherNO.js", "/library/weatherCA.js", "/library/weatherUS2.js", "/js/background.js", "/library/acc.js"],
-    "persistent": true
-    },
-    "content_security_policy":"script-src 'self' https://sdk.clarifai.com https://www.gstatic.com https://www.google-analytics.com https://www.googletagmanager.com https://api.tiles.mapbox.com https://api.mapbox.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; object-src 'self'",
-    "browser_action": {
+{
+  "name": "UV Weather",
+  "version": "1.1.23",
+  "description": "Live Weather for Real Life",
+  "permissions": ["activeTab", "storage", "alarms"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
     "default_title": "UV Weather",
-      "default_popup": "popup.html",
-      "default_icon": {
-        "128": "images/UV_index128.png"
-      }
-    },
-	  "icons": {
-      "16": "images/UV_index16.png",
-        "32": "images/UV_index32.png",
-        "48": "images/UV_index48.png",
-        "128": "images/UV_index128.png"
-    },
-    "manifest_version": 2
-  }
-   
+    "default_popup": "popup.html",
+    "default_icon": {
+      "128": "images/UV_index128.png"
+    }
+  },
+  "icons": {
+    "16": "images/UV_index16.png",
+    "32": "images/UV_index32.png",
+    "48": "images/UV_index48.png",
+    "128": "images/UV_index128.png"
+  },
+  "host_permissions": [
+    "https://*.ipinfo.io/*",
+    "https://*.flickr.com/*",
+    "https://*.mapbox.com/*",
+    "https://*.uvweather.net/*",
+    "https://*.herokuapp.com/*",
+    "https://*.met.no/*",
+    "https://*.qsun.co/*",
+    "https://*.comfable.com/*",
+    "https://*.formspree.io/*",
+    "https://*.workers.dev/*"
+  ],
+  "manifest_version": 3
+}
