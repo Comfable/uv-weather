@@ -1,7 +1,7 @@
 if (self.document) {
-  // console.log("Main Thread - Background");
+  console.log("Main Thread - Background");
 } else {
-  // console.log("Worker Thread - Background");
+  console.log("Worker Thread - Background");
   importScripts(
     "./library/util_worker.js",
     "./library/weatherNO_worker.js",
@@ -207,12 +207,20 @@ if (self.document) {
     }
   });
 
+  // chrome.runtime.onMessage.addListener(({ type, name }) => {
+  //   if (type == "intervalUpdateMessage") {
+  //     // chrome.storage.local.set({name});
+  //     intervalUpdateFunction();
+  //   }
+  // });
+
   chrome.runtime.onMessage.addListener(function (
     request,
     sender,
     sendResponse
   ) {
     if (request.msg == "intervalUpdateMessage") {
+      console.log("intervalUpdateMessage");
       intervalUpdateFunction();
     }
   });

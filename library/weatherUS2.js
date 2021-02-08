@@ -113,7 +113,7 @@ function weatherUS2(latlong, citys, resolve) {
       }
     })
     .catch(function (err) {
-      // console.log("us err " + err);
+      console.log("us err " + err);
       chrome.storage.local.set({
         failedHTTP: "1",
       });

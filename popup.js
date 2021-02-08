@@ -409,7 +409,7 @@ document.addEventListener("DOMContentLoaded", function () {
               });
           })
           .catch((error) => {
-            //console.log( 'promise error: ', error );
+            // console.log( 'promise error: ', error );
           });
       }
     );

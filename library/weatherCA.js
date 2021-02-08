@@ -187,7 +187,7 @@ function weatherCA(latlong, citys, resolve) {
               }
             })
             .catch(function (err) {
-              // console.log("ca err " + err);
+              console.log("ca err " + err);
               chrome.storage.local.set({
                 failedHTTP: "1",
               });

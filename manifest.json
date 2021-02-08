@@ -24,12 +24,14 @@
     "https://*.flickr.com/*",
     "https://*.mapbox.com/*",
     "https://*.uvweather.net/*",
-    "https://*.herokuapp.com/*",
     "https://*.met.no/*",
     "https://*.qsun.co/*",
     "https://*.comfable.com/*",
     "https://*.formspree.io/*",
     "https://*.workers.dev/*"
   ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  },
   "manifest_version": 3
 }
