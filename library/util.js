@@ -979,7 +979,7 @@ function animatedBadge() {
 function largBadgeNumber(displayNumber, lightBadge) {
   var canvas = new OffscreenCanvas(100, 100);
   var ctx = canvas.getContext("2d");
-  ctx.font = "bold 18px Helvetica, Arial";
+  ctx.font = "normal 18px Arial";
   // if (lightBadge == 1) {
   //   ctx.fillStyle = "white";
   // } else {
