@@ -1,4 +1,18 @@
-document.addEventListener("DOMContentLoaded", function () {
+const pageBody = document.body;
+const ready = (callback) => {
+  if (document.readyState != "loading") callback();
+  else document.addEventListener("DOMContentLoaded", callback);
+};
+
+ready(() => {
+  activePopup();
+});
+
+chrome.runtime.sendMessage({
+  msg: "intervalUpdateMessage",
+});
+
+const activePopup = () => {
   popupOpen = "1";
   const options = {
     duration: 0.9,
@@ -3250,4 +3264,4 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }, 6500);
-});
+};

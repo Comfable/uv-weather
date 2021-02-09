@@ -1,5 +1,5 @@
 function weatherCA(latlong, citys, resolve) {
-  // console.log("ca");
+  //console.log("ca");
 
   lat = latlong.split(",")[0];
   lng = latlong.split(",")[1];
@@ -29,7 +29,6 @@ function weatherCA(latlong, citys, resolve) {
             },
           };
 
-          // fetchWithTimeout(`https://uvweather.herokuapp.com/https://dd.weather.gc.ca/citypage_weather/xml/${stateCA_code}/${cityCA_code}_e.xml`, optionsCA, 2500)
           fetchWithTimeout(
             `https://www.uvw.workers.dev/?https://dd.weather.gc.ca/citypage_weather/xml/${stateCA_code}/${cityCA_code}_e.xml`,
             optionsCA,
@@ -187,7 +186,7 @@ function weatherCA(latlong, citys, resolve) {
               }
             })
             .catch(function (err) {
-              console.log("ca err " + err);
+              //console.log("ca err " + err);
               chrome.storage.local.set({
                 failedHTTP: "1",
               });

@@ -1332,7 +1332,7 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
           resolve && resolve("result of NO()");
         })
         .catch(function (err) {
-          console.log("no err " + err);
+          //console.log("no err " + err);
           chrome.storage.local.set({
             failedHTTP_NO: "1",
           });
