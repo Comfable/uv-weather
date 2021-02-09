@@ -28,9 +28,9 @@ function weatherCA(latlong, citys, resolve) {
               Accept: "application/xml",
             },
           };
-
           fetchWithTimeout(
-            `https://www.uvw.workers.dev/?https://dd.weather.gc.ca/citypage_weather/xml/${stateCA_code}/${cityCA_code}_e.xml`,
+            "https://www.uvw.workers.dev/?https://dd.weather.gc.ca/citypage_weather/xml/ON/s0000458_e.xml",
+            //`https://www.uvw.workers.dev/?https://dd.weather.gc.ca/citypage_weather/xml/${stateCA_code}/${cityCA_code}_e.xml`,
             optionsCA,
             2500
           )

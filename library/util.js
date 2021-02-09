@@ -980,22 +980,19 @@ function largBadgeNumber(displayNumber, lightBadge) {
   var canvas = new OffscreenCanvas(100, 100);
   var ctx = canvas.getContext("2d");
   ctx.font = "bold 18px Helvetica, Arial";
-
-  if (lightBadge == 1) {
-    ctx.fillStyle = "rgb(255, 255, 255, 1)";
-  } else {
-    ctx.fillStyle = "rgb(0, 0, 0, 0.8)";
-  }
-
+  // if (lightBadge == 1) {
+  //   ctx.fillStyle = "white";
+  // } else {
+  //   ctx.fillStyle = "black";
+  // }
   ctx.textBaseline = "top";
   ctx.textAlign = "center";
   ctx.fillText(displayNumber, 9.5, 1, 19);
+  imgd = ctx.getImageData(0, 0, 19, 19);
   chrome.action.setIcon({
-    imageData: ctx.getImageData(0, 0, 19, 19),
+    imageData: imgd,
   });
-
   ctx.restore();
-
   chrome.action.setBadgeText({
     text: "",
   });

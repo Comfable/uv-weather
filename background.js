@@ -9,8 +9,8 @@ if (!self.document) {
     "./library/papaparse.js",
     "./library/suncalc.js",
     "./library/acc.js",
-    "./library/weatherCA.js",
     "./library/weatherNO.js",
+    "./library/weatherCA.js",
     "./library/weatherUS2.js"
   );
 
@@ -73,7 +73,7 @@ if (!self.document) {
             chrome.storage.local.set({
               badgeSize: "1",
             });
-            //badgeTemp(latlong, citys, country, timeZoneBadge);
+            badgeTemp(latlong, citys, country, timeZoneBadge);
           } else {
             city = '"Toronto"';
             citys = "Toronto";
@@ -109,7 +109,7 @@ if (!self.document) {
             chrome.storage.local.set({
               badgeSize: "1",
             });
-            //badgeTemp(latlong, citys, country, timeZoneBadge);
+            badgeTemp(latlong, citys, country, timeZoneBadge);
           }
         });
     }
@@ -233,12 +233,12 @@ if (!self.document) {
             IntervalUpdate: "60",
           });
         }
-        var intervalUpdates = chrome.alarms.create("intervalUpdateTimes", {
+        chrome.alarms.create("intervalUpdateTimes", {
           delayInMinutes: 0.05,
           periodInMinutes: parseInt(intervalUpdateNumber),
         });
 
-        chrome.alarms.onAlarm.addListener(function (intervalUpdates) {
+        chrome.alarms.onAlarm.addListener((alarm) => {
           chrome.storage.local.get(
             [
               "latlong",
@@ -266,7 +266,7 @@ if (!self.document) {
       }
     );
   }
-  //intervalUpdateFunction();
+  intervalUpdateFunction();
 
   function badgeTemp(latlong, citys, country, timeZoneBadge) {
     if (!self.document) {
