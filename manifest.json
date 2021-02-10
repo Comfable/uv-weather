@@ -19,17 +19,6 @@
     "48": "images/UV_index48.png",
     "128": "images/UV_index128.png"
   },
-  "host_permissions": [
-    "https://*.ipinfo.io/*",
-    "https://*.flickr.com/*",
-    "https://*.mapbox.com/*",
-    "https://*.uvweather.net/*",
-    "https://*.met.no/*",
-    "https://*.qsun.co/*",
-    "https://*.comfable.com/*",
-    "https://*.formspree.io/*",
-    "https://*.workers.dev/*"
-  ],
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self'"
   },
@@ -40,6 +29,5 @@
       "extension_ids": []
     }
   ],
-
   "manifest_version": 3
 }
