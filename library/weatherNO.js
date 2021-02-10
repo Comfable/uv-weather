@@ -1,6 +1,6 @@
-function weatherNO(latlong, citys, timeZoneBadge, resolve) {
-  // console.log("no");
+// console.log("no");
 
+function weatherNO(latlong, citys, timeZoneBadge, resolve) {
   lat = latlong.split(",")[0];
   lng = latlong.split(",")[1];
 
@@ -13,6 +13,9 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
       country = data.country;
 
       if (
+        country == "IR" ||
+        country == "ir" ||
+        country == "Iran" ||
         country == "CA" ||
         country == "ca" ||
         country == "Canada" ||
@@ -20,8 +23,7 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
         country == "us" ||
         country == "United States of America"
       ) {
-        // corsAPI = "https://uvweather.herokuapp.com/";
-        corsAPI = "https://www.uvw.workers.dev/?";
+        corsAPI = "https://uvweather.herokuapp.com/";
       } else {
         corsAPI = "https://www.uvw.workers.dev/?";
       }
@@ -47,9 +49,7 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
           chrome.storage.local.set({
             failedHTTP_NO: "0",
           });
-
           // console.log(JSON.stringify(resultNO));
-
           utcSystemTime = new Date(new Date().toUTCString()).toISOString();
           updateTimeBadge = toTimestamp(utcSystemTime);
 

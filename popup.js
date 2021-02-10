@@ -1,3 +1,5 @@
+// console.log("Main Thread - popup");
+
 const pageBody = document.body;
 const ready = (callback) => {
   if (document.readyState != "loading") callback();
@@ -9,6 +11,10 @@ ready(() => {
 });
 
 const activePopup = () => {
+  // chrome.runtime.sendMessage({
+  //   msg: "intervalUpdateMessage",
+  // });
+
   popupOpen = "1";
   const options = {
     duration: 0.9,
@@ -26,7 +32,6 @@ const activePopup = () => {
   var modalAqi = document.getElementById("aqi_popup");
   var modalFeedback = document.getElementById("feedback_popup");
   var modalSolar = document.getElementById("solar_popup");
-  var modalInfo = document.getElementById("info_popup");
   var modal7days = document.getElementById("next7_popup");
   var modal48hours = document.getElementById("next48_popup");
   var location = document.getElementById("location");
@@ -36,7 +41,6 @@ const activePopup = () => {
   var searchTitle = document.getElementById("search_popup_title");
   var modalCurrent = document.getElementById("currentReport_popup");
   var modalSearch = document.getElementById("search_popup");
-  var F_C_display = document.getElementById("F_C");
 
   var C_sign_elementStyle = document.getElementById("C_sign").style;
   var F_sign_elementStyle = document.getElementById("F_sign").style;
@@ -44,11 +48,6 @@ const activePopup = () => {
     '.badge_size_switch_setting input[type="checkbox"]'
   );
   var loadingIconBadgeDelay = 1;
-
-  var mapStyleLight = "mapbox://styles/mapbox/light-v10?optimize=true";
-  var weathermapStyleLight = "mapbox://styles/mapbox/light-v10?optimize=true";
-  var mapStyleDark = "mapbox://styles/mapbox/dark-v10?optimize=true";
-  var weathermapStyleDark = "mapbox://styles/mapbox/dark-v10?optimize=true";
 
   mapStyle = "mapbox://styles/mapbox/light-v10?optimize=true";
   weathermapStyle = "mapbox://styles/mapbox/light-v10?optimize=true";

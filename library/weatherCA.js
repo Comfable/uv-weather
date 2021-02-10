@@ -1,6 +1,6 @@
-function weatherCA(latlong, citys, resolve) {
-  //console.log("ca");
+// console.log("ca");
 
+function weatherCA(latlong, citys, resolve) {
   lat = latlong.split(",")[0];
   lng = latlong.split(",")[1];
 
@@ -29,8 +29,7 @@ function weatherCA(latlong, citys, resolve) {
             },
           };
           fetchWithTimeout(
-            "https://www.uvw.workers.dev/?https://dd.weather.gc.ca/citypage_weather/xml/ON/s0000458_e.xml",
-            //`https://www.uvw.workers.dev/?https://dd.weather.gc.ca/citypage_weather/xml/${stateCA_code}/${cityCA_code}_e.xml`,
+            `https://www.uvw.workers.dev/?https://dd.weather.gc.ca/citypage_weather/xml/${stateCA_code}/${cityCA_code}_e.xml`,
             optionsCA,
             2500
           )
@@ -45,8 +44,7 @@ function weatherCA(latlong, citys, resolve) {
                 "simplify"
               );
 
-              // console.log(JSON.stringify(srcDOMJsonCA));
-
+              //console.log(JSON.stringify(srcDOMJsonCA));
               utcSystemTime = new Date(new Date().toUTCString()).toISOString();
               updateTimeBadge = toTimestamp(utcSystemTime);
 

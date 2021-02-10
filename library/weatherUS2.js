@@ -1,6 +1,6 @@
-function weatherUS2(latlong, citys, resolve) {
-  //console.log('us');
+// console.log("us");
 
+function weatherUS2(latlong, citys, resolve) {
   lat = latlong.split(",")[0];
   lng = latlong.split(",")[1];
 
@@ -13,8 +13,7 @@ function weatherUS2(latlong, citys, resolve) {
   };
 
   fetchWithTimeout(
-    // `https://uvweather.herokuapp.com/https://forecast.weather.gov/MapClick.php?lat=${lat}&lon=${lng}&unit=0&lg=english&FcstType=json`,
-    `https://forecast.weather.gov/MapClick.php?lat=${lat}&lon=${lng}&unit=0&lg=english&FcstType=json`,
+    `https://www.uvw.workers.dev/?https://forecast.weather.gov/MapClick.php?lat=${lat}&lon=${lng}&unit=0&lg=english&FcstType=json`,
     optionsUS,
     2500
   )
@@ -24,8 +23,7 @@ function weatherUS2(latlong, citys, resolve) {
         failedHTTP: "0",
       });
       failedHTTP = "0";
-      //console.log(JSON.stringify(resultUS2));
-
+      // console.log(JSON.stringify(resultUS2));
       utcSystemTime = new Date(new Date().toUTCString()).toISOString();
       updateTimeBadge = toTimestamp(utcSystemTime);
 

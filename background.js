@@ -1,5 +1,5 @@
 if (!self.document) {
-  //console.log("Worker Thread - background");
+  // console.log("Worker Thread - background");
   importScripts(
     "./library/tz.js",
     "./library/tXml.min.js",
