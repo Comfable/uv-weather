@@ -13,12 +13,13 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
       country = data.country;
 
       if (
-        country == "IR" ||
-        country == "ir" ||
-        country == "Iran" ||
         country == "CA" ||
         country == "ca" ||
         country == "Canada" ||
+        country == "IR" ||
+        country == "ir" ||
+        country == "Iran" ||
+        country == "iran" ||
         country == "US" ||
         country == "us" ||
         country == "United States of America"

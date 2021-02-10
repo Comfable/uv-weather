@@ -13,7 +13,7 @@ function weatherUS2(latlong, citys, resolve) {
   };
 
   fetchWithTimeout(
-    `https://www.uvw.workers.dev/?https://forecast.weather.gov/MapClick.php?lat=${lat}&lon=${lng}&unit=0&lg=english&FcstType=json`,
+    `https://uvweather.herokuapp.com/https://forecast.weather.gov/MapClick.php?lat=${lat}&lon=${lng}&unit=0&lg=english&FcstType=json`,
     optionsUS,
     2500
   )

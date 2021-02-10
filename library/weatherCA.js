@@ -29,7 +29,7 @@ function weatherCA(latlong, citys, resolve) {
             },
           };
           fetchWithTimeout(
-            `https://www.uvw.workers.dev/?https://dd.weather.gc.ca/citypage_weather/xml/${stateCA_code}/${cityCA_code}_e.xml`,
+            `https://uvweather.herokuapp.com/https://dd.weather.gc.ca/citypage_weather/xml/${stateCA_code}/${cityCA_code}_e.xml`,
             optionsCA,
             2500
           )
