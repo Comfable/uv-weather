@@ -20,7 +20,7 @@ if (!self.document) {
       fetch("https://ipinfo.io/?token=6d819142de4288")
         .then((resp) => resp.json())
         .then(function (result) {
-          if (result) {
+          if (typeof JSON.stringify(result.error) == "undefined") {
             countryAPI = JSON.stringify(result.country);
             country = countryAPI.split('"')[1];
             if (country == "ZZ") {
@@ -80,8 +80,7 @@ if (!self.document) {
             latandlong = '"43.6629,-79.3987"';
             latlong = "43.6629,-79.3987";
             timezone = "America/Toronto";
-            timeZoneBadge = timezone2offset(timeZone);
-
+            timeZoneBadge = timezone2offset("America/Toronto");
             country = "CA";
 
             chrome.storage.local.set({
