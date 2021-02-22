@@ -37,6 +37,10 @@ function weatherUS2(latlong, citys, resolve) {
         ) {
           temperatureFbadge = Math.round(parseFloat(tempFus));
           temperatureCbadge = Math.round((parseFloat(tempFus) - 32) / 1.8);
+          temperatureFbadgeOrginal = Math.round(parseFloat(tempFus));
+          temperatureCbadgeOrginal = Math.round(
+            (parseFloat(tempFus) - 32) / 1.8
+          );
         } else {
           tempFus = "NA";
         }
@@ -111,14 +115,28 @@ function weatherUS2(latlong, citys, resolve) {
       }
     })
     .catch(function (err) {
-      //console.log("us err " + err);
+      // console.log("us err " + err);
+      if (
+        typeof temperatureCbadgeOrginal == "undefined" ||
+        typeof temperatureFbadgeOrginal == "undefined"
+      ) {
+        temperatureCbadgeOrginal = false;
+        temperatureFbadgeOrginal = false;
+      }
       chrome.storage.local.set({
         failedHTTP: "1",
       });
       failedHTTP = "1";
       chrome.storage.local.get("timeZoneBadge", function (data) {
         timeZoneBadge = data.timeZoneBadge;
-        weatherNO(latlong, citys, timeZoneBadge, resolve);
+        weatherNO(
+          latlong,
+          citys,
+          timeZoneBadge,
+          temperatureCbadgeOrginal,
+          temperatureFbadgeOrginal,
+          resolve
+        );
       });
     });
 }

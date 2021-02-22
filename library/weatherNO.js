@@ -1,6 +1,12 @@
 // console.log("no");
-
-function weatherNO(latlong, citys, timeZoneBadge, resolve) {
+function weatherNO(
+  latlong,
+  citys,
+  timeZoneBadge,
+  temperatureCbadgeOrginal,
+  temperatureFbadgeOrginal,
+  resolve
+) {
   lat = latlong.split(",")[0];
   lng = latlong.split(",")[1];
 
@@ -1297,8 +1303,14 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
           ) {
             summaryBadge = summaryBadgeNO;
             summaryMinutely = summaryMinutelyNO;
-            temperatureCbadge = temperatureCbadgeNO;
-            temperatureFbadge = temperatureFbadgeNO;
+
+            if (temperatureCbadgeOrginal && temperatureFbadgeOrginal) {
+              temperatureCbadge = temperatureCbadgeOrginal;
+              temperatureFbadge = temperatureFbadgeOrginal;
+            } else {
+              temperatureCbadge = temperatureCbadgeNO;
+              temperatureFbadge = temperatureFbadgeNO;
+            }
 
             accu();
             solarNighDay(timeZoneBadge, latlong);
@@ -1333,7 +1345,7 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
           resolve && resolve("result of NO()");
         })
         .catch(function (err) {
-          //console.log("no err " + err);
+          // console.log("no err " + err);
           chrome.storage.local.set({
             failedHTTP_NO: "1",
           });

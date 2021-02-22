@@ -375,7 +375,21 @@ const activePopup = () => {
                 country !== "ca" &&
                 country !== "Canada")
             ) {
-              weatherNO(latlong, citys, timeZoneBadge, resolve);
+              if (
+                typeof temperatureCbadgeOrginal == "undefined" ||
+                typeof temperatureFbadgeOrginal == "undefined"
+              ) {
+                temperatureCbadgeOrginal = false;
+                temperatureFbadgeOrginal = false;
+              }
+              weatherNO(
+                latlong,
+                citys,
+                timeZoneBadge,
+                temperatureCbadgeOrginal,
+                temperatureFbadgeOrginal,
+                resolve
+              );
             } else {
               resolve && resolve("result of NO()");
             }

@@ -278,13 +278,39 @@ if (!self.document) {
       ) {
         weatherUS2(latlong, citys);
       } else {
-        weatherNO(latlong, citys, timeZoneBadge);
+        if (
+          typeof temperatureCbadgeOrginal == "undefined" ||
+          typeof temperatureFbadgeOrginal == "undefined"
+        ) {
+          temperatureCbadgeOrginal = false;
+          temperatureFbadgeOrginal = false;
+        }
+        weatherNO(
+          latlong,
+          citys,
+          timeZoneBadge,
+          temperatureCbadgeOrginal,
+          temperatureFbadgeOrginal
+        );
       }
     }
   }
 
   function badgeUV(latlong, citys, country, timeZoneBadge) {
-    weatherNO(latlong, citys, timeZoneBadge);
+    if (
+      typeof temperatureCbadgeOrginal == "undefined" ||
+      typeof temperatureFbadgeOrginal == "undefined"
+    ) {
+      temperatureCbadgeOrginal = false;
+      temperatureFbadgeOrginal = false;
+    }
+    weatherNO(
+      latlong,
+      citys,
+      timeZoneBadge,
+      temperatureCbadgeOrginal,
+      temperatureFbadgeOrginal
+    );
   }
 
   chrome.runtime.onInstalled.addListener(function (details) {
