@@ -1304,7 +1304,17 @@ function weatherNO(
             summaryBadge = summaryBadgeNO;
             summaryMinutely = summaryMinutelyNO;
 
-            if (temperatureCbadgeOrginal && temperatureFbadgeOrginal) {
+            if (
+              failedHTTP == "1" &&
+              (country == "CA" ||
+                country == "ca" ||
+                country == "Canada" ||
+                country == "US" ||
+                country == "us" ||
+                country == "United States of America") &&
+              temperatureCbadgeOrginal &&
+              temperatureFbadgeOrginal
+            ) {
               temperatureCbadge = temperatureCbadgeOrginal;
               temperatureFbadge = temperatureFbadgeOrginal;
             } else {
@@ -1339,6 +1349,10 @@ function weatherNO(
             country == "us" ||
             country == "United States of America"
           ) {
+            if (temperatureCbadgeOrginal && temperatureFbadgeOrginal) {
+              temperatureCbadge = temperatureCbadgeOrginal;
+              temperatureFbadge = temperatureFbadgeOrginal;
+            }
             accu();
           }
 
