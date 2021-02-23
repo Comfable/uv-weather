@@ -1098,11 +1098,27 @@ const activePopup = () => {
     document.querySelector("#forecast_70_temp_min").textContent =
       daily_tempC_min_7 + "°";
 
-    for (i = 1; i < 49; i++) {
-      document.querySelector(`#forecast_${i}_hours_temp`).textContent =
-        Math.round(
-          resultNO.properties.timeseries[i].data.instant.details.air_temperature
-        ) + "°";
+    var hourlyArray = [];
+    var sum = 0;
+
+    hourlyArray.push(
+      resultNO.properties.timeseries[1].data.instant.details.air_temperature +
+        temperatureCbadge
+    );
+
+    for (i = 2; i < 49; i++) {
+      hourlyArray.push(
+        resultNO.properties.timeseries[i].data.instant.details.air_temperature
+      );
+    }
+
+    hourlyArray_update = hourlyArray.map(
+      (elem) => (sum = ((sum || 0) + elem) / 2)
+    );
+
+    for (i = 0; i < 48; i++) {
+      document.querySelector(`#forecast_${i + 1}_hours_temp`).textContent =
+        Math.round(hourlyArray_update[i]) + "°";
     }
 
     document.querySelector("#summery_next7_text").textContent = summaryDailyC;
@@ -1238,14 +1254,27 @@ const activePopup = () => {
     document.querySelector("#forecast_70_temp_min").textContent =
       daily_tempF_min_7 + "°";
 
-    for (i = 1; i < 49; i++) {
-      document.querySelector(`#forecast_${i}_hours_temp`).textContent =
-        Math.round(
-          c2f(
-            resultNO.properties.timeseries[i].data.instant.details
-              .air_temperature
-          )
-        ) + "°";
+    var hourlyArray = [];
+    var sum = 0;
+
+    hourlyArray.push(
+      resultNO.properties.timeseries[1].data.instant.details.air_temperature +
+        temperatureCbadge
+    );
+
+    for (i = 2; i < 49; i++) {
+      hourlyArray.push(
+        resultNO.properties.timeseries[i].data.instant.details.air_temperature
+      );
+    }
+
+    hourlyArray_update = hourlyArray.map(
+      (elem) => (sum = ((sum || 0) + elem) / 2)
+    );
+
+    for (i = 0; i < 48; i++) {
+      document.querySelector(`#forecast_${i + 1}_hours_temp`).textContent =
+        Math.round(c2f(hourlyArray_update[i])) + "°";
     }
 
     document.querySelector("#summery_next7_text").textContent = summaryDailyF;
