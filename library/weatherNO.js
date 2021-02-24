@@ -1,12 +1,5 @@
 // console.log("no");
-function weatherNO(
-  latlong,
-  citys,
-  timeZoneBadge,
-  temperatureCbadgeOrginal,
-  temperatureFbadgeOrginal,
-  resolve
-) {
+function weatherNO(latlong, citys, timeZoneBadge, resolve) {
   lat = latlong.split(",")[0];
   lng = latlong.split(",")[1];
 
@@ -1304,23 +1297,8 @@ function weatherNO(
             summaryBadge = summaryBadgeNO;
             summaryMinutely = summaryMinutelyNO;
 
-            if (
-              failedHTTP == "1" &&
-              (country == "CA" ||
-                country == "ca" ||
-                country == "Canada" ||
-                country == "US" ||
-                country == "us" ||
-                country == "United States of America") &&
-              temperatureCbadgeOrginal &&
-              temperatureFbadgeOrginal
-            ) {
-              temperatureCbadge = temperatureCbadgeOrginal;
-              temperatureFbadge = temperatureFbadgeOrginal;
-            } else {
-              temperatureCbadge = temperatureCbadgeNO;
-              temperatureFbadge = temperatureFbadgeNO;
-            }
+            temperatureCbadge = temperatureCbadgeNO;
+            temperatureFbadge = temperatureFbadgeNO;
 
             accu();
             solarNighDay(timeZoneBadge, latlong);
@@ -1341,20 +1319,7 @@ function weatherNO(
             );
           }
 
-          if (
-            country == "CA" ||
-            country == "ca" ||
-            country == "Canada" ||
-            country == "US" ||
-            country == "us" ||
-            country == "United States of America"
-          ) {
-            if (temperatureCbadgeOrginal && temperatureFbadgeOrginal) {
-              temperatureCbadge = temperatureCbadgeOrginal;
-              temperatureFbadge = temperatureFbadgeOrginal;
-            }
-            accu();
-          }
+          accu();
 
           resolve && resolve("result of NO()");
         })

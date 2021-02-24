@@ -80,15 +80,6 @@ function weatherCA(latlong, citys, resolve) {
                     (parseFloat(tempC0ca) * 1.8 + 32)) /
                     2
                 );
-                temperatureCbadgeOrginal = Math.round(
-                  (parseFloat(tempCCca) + parseFloat(tempC0ca)) / 2
-                );
-                temperatureFbadgeOrginal = Math.round(
-                  (parseFloat(tempCCca) * 1.8 +
-                    32 +
-                    (parseFloat(tempC0ca) * 1.8 + 32)) /
-                    2
-                );
               } else if (
                 tempCCca !== "NA" &&
                 tempCCca !== "" &&
@@ -97,10 +88,6 @@ function weatherCA(latlong, citys, resolve) {
               ) {
                 temperatureCbadge = Math.round(parseFloat(tempCCca));
                 temperatureFbadge = Math.round(parseFloat(tempCCca) * 1.8 + 32);
-                temperatureCbadgeOrginal = Math.round(parseFloat(tempCCca));
-                temperatureFbadgeOrginal = Math.round(
-                  parseFloat(tempCCca) * 1.8 + 32
-                );
               } else if (
                 tempC0ca !== "NA" &&
                 tempC0ca !== "" &&
@@ -109,10 +96,6 @@ function weatherCA(latlong, citys, resolve) {
               ) {
                 temperatureCbadge = Math.round(parseFloat(tempC0ca));
                 temperatureFbadge = Math.round(parseFloat(tempC0ca) * 1.8 + 32);
-                temperatureCbadgeOrginal = Math.round(parseFloat(tempC0ca));
-                temperatureFbadgeOrginal = Math.round(
-                  parseFloat(tempC0ca) * 1.8 + 32
-                );
               } else {
                 tempCca = "NA";
               }
@@ -202,27 +185,13 @@ function weatherCA(latlong, citys, resolve) {
             })
             .catch(function (err) {
               // console.log("ca err " + err);
-              if (
-                typeof temperatureCbadgeOrginal == "undefined" ||
-                typeof temperatureFbadgeOrginal == "undefined"
-              ) {
-                temperatureCbadgeOrginal = false;
-                temperatureFbadgeOrginal = false;
-              }
               chrome.storage.local.set({
                 failedHTTP: "1",
               });
               failedHTTP = "1";
               chrome.storage.local.get("timeZoneBadge", function (data) {
                 timeZoneBadge = data.timeZoneBadge;
-                weatherNO(
-                  latlong,
-                  citys,
-                  timeZoneBadge,
-                  temperatureCbadgeOrginal,
-                  temperatureFbadgeOrginal,
-                  resolve
-                );
+                weatherNO(latlong, citys, timeZoneBadge, resolve);
               });
             });
         },

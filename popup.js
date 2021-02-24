@@ -375,21 +375,7 @@ const activePopup = () => {
                 country !== "ca" &&
                 country !== "Canada")
             ) {
-              if (
-                typeof temperatureCbadgeOrginal == "undefined" ||
-                typeof temperatureFbadgeOrginal == "undefined"
-              ) {
-                temperatureCbadgeOrginal = false;
-                temperatureFbadgeOrginal = false;
-              }
-              weatherNO(
-                latlong,
-                citys,
-                timeZoneBadge,
-                temperatureCbadgeOrginal,
-                temperatureFbadgeOrginal,
-                resolve
-              );
+              weatherNO(latlong, citys, timeZoneBadge, resolve);
             } else {
               resolve && resolve("result of NO()");
             }
@@ -1098,27 +1084,27 @@ const activePopup = () => {
     document.querySelector("#forecast_70_temp_min").textContent =
       daily_tempC_min_7 + "°";
 
-    var hourlyArray = [];
-    var sum = 0;
-
-    hourlyArray.push(
-      resultNO.properties.timeseries[1].data.instant.details.air_temperature +
-        temperatureCbadge
-    );
-
-    for (i = 2; i < 49; i++) {
-      hourlyArray.push(
-        resultNO.properties.timeseries[i].data.instant.details.air_temperature
-      );
-    }
-
-    hourlyArray_update = hourlyArray.map(
-      (elem) => (sum = ((sum || 0) + elem) / 2)
-    );
-
-    for (i = 0; i < 48; i++) {
-      document.querySelector(`#forecast_${i + 1}_hours_temp`).textContent =
-        Math.round(hourlyArray_update[i]) + "°";
+    if (
+      (country == "US" ||
+        country == "us" ||
+        country == "United States of America") &&
+      failedHTTP !== "1"
+    ) {
+      for (i = 1; i < 49; i++) {
+        document.querySelector(`#forecast_${i}_hours_temp`).textContent =
+          Math.round(f2c(usHourlyTempXML[i])) + "°";
+      }
+    } else {
+      var hourlyArray = [];
+      for (i = 1; i < 49; i++) {
+        hourlyArray.push(
+          resultNO.properties.timeseries[i].data.instant.details.air_temperature
+        );
+      }
+      for (i = 0; i < 48; i++) {
+        document.querySelector(`#forecast_${i + 1}_hours_temp`).textContent =
+          Math.round(hourlyArray[i]) + "°";
+      }
     }
 
     document.querySelector("#summery_next7_text").textContent = summaryDailyC;
@@ -1254,27 +1240,27 @@ const activePopup = () => {
     document.querySelector("#forecast_70_temp_min").textContent =
       daily_tempF_min_7 + "°";
 
-    var hourlyArray = [];
-    var sum = 0;
-
-    hourlyArray.push(
-      resultNO.properties.timeseries[1].data.instant.details.air_temperature +
-        temperatureCbadge
-    );
-
-    for (i = 2; i < 49; i++) {
-      hourlyArray.push(
-        resultNO.properties.timeseries[i].data.instant.details.air_temperature
-      );
-    }
-
-    hourlyArray_update = hourlyArray.map(
-      (elem) => (sum = ((sum || 0) + elem) / 2)
-    );
-
-    for (i = 0; i < 48; i++) {
-      document.querySelector(`#forecast_${i + 1}_hours_temp`).textContent =
-        Math.round(c2f(hourlyArray_update[i])) + "°";
+    if (
+      (country == "US" ||
+        country == "us" ||
+        country == "United States of America") &&
+      failedHTTP !== "1"
+    ) {
+      for (i = 1; i < 49; i++) {
+        document.querySelector(`#forecast_${i}_hours_temp`).textContent =
+          Math.round(usHourlyTempXML[i]) + "°";
+      }
+    } else {
+      var hourlyArray = [];
+      for (i = 1; i < 49; i++) {
+        hourlyArray.push(
+          resultNO.properties.timeseries[i].data.instant.details.air_temperature
+        );
+      }
+      for (i = 0; i < 48; i++) {
+        document.querySelector(`#forecast_${i + 1}_hours_temp`).textContent =
+          Math.round(c2f(hourlyArray[i])) + "°";
+      }
     }
 
     document.querySelector("#summery_next7_text").textContent = summaryDailyF;
