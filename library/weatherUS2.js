@@ -27,6 +27,30 @@ function weatherUS2(latlong, citys, resolve) {
       utcSystemTime = new Date(new Date().toUTCString()).toISOString();
       updateTimeBadge = toTimestamp(utcSystemTime);
 
+      if (resultUS2.currentobservation.hasOwnProperty("Date")) {
+        usDateOrginal = resultUS2.currentobservation.Date;
+
+        usWeatherDateMoment = moment(usDateOrginal, "DD MMM hh:mm A").toDate();
+
+        systemTime = new Date();
+        systemTimeUnix = Math.round(systemTime.getTime() / 1000);
+        DeviceTimeDifferenceFromGMT = systemTime.getTimezoneOffset() / 60;
+        offsetTime = DeviceTimeDifferenceFromGMT + timeZoneBadge / 3600;
+        offsetUnix = offsetTime * 3600;
+
+        usWeatherDateUnix = moment(usWeatherDateMoment).unix();
+        usCurrentDateUnix = updateTimeBadge + offsetUnix;
+        ussDiffUpdateTime = (usCurrentDateUnix - usWeatherDateUnix) / 3600;
+
+        // console.log((usCurrentDateUnix - usWeatherDateUnix) / 3600);
+
+        if (ussDiffUpdateTime > 2.1) {
+          usDateOrginal = "NA";
+        }
+      } else {
+        usDateOrginal = "NA";
+      }
+
       if (resultUS2.currentobservation.hasOwnProperty("Temp")) {
         tempFus = resultUS2.currentobservation.Temp;
         if (
@@ -75,15 +99,19 @@ function weatherUS2(latlong, citys, resolve) {
         iconUS == "NULL" ||
         tempFus == "NULL" ||
         summaryBadge == "NULL" ||
+        usDateOrginal == "NULL" ||
         iconUS == "" ||
         tempFus == "" ||
         summaryBadge == "" ||
+        usDateOrginal == "" ||
         iconUS == null ||
         tempFus == null ||
         summaryBadge == null ||
+        usDateOrginal == null ||
         iconUS == "NA" ||
         tempFus == "NA" ||
-        summaryBadge == "NA"
+        summaryBadge == "NA" ||
+        usDateOrginal == "NA"
       ) {
         throw Error();
       } else {
@@ -118,7 +146,8 @@ function weatherUS2(latlong, citys, resolve) {
       // console.log("us err " + err);
       if (
         typeof temperatureCbadgeOrginal == "undefined" ||
-        typeof temperatureFbadgeOrginal == "undefined"
+        typeof temperatureFbadgeOrginal == "undefined" ||
+        ussDiffUpdateTime > 2.1
       ) {
         temperatureCbadgeOrginal = false;
         temperatureFbadgeOrginal = false;
