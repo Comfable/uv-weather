@@ -14,7 +14,6 @@ const activePopup = () => {
   // chrome.runtime.sendMessage({
   //   msg: "intervalUpdateMessage",
   // });
-
   popupOpen = "1";
   const options = {
     duration: 0.9,
@@ -1084,29 +1083,51 @@ const activePopup = () => {
     document.querySelector("#forecast_70_temp_min").textContent =
       daily_tempC_min_7 + "°";
 
-    if (
-      (country == "US" ||
-        country == "us" ||
-        country == "United States of America") &&
-      failedHTTP !== "1"
-    ) {
+    chrome.storage.local.get("hourlyCaAvailable", function (data) {
       for (i = 1; i < 49; i++) {
-        document.querySelector(`#forecast_${i}_hours_temp`).textContent =
-          Math.round(f2c(usHourlyTempXML[i])) + "°";
+        document.getElementById(`${i}_hours`).style.display = "block";
+        document.getElementById(`${i}_hours_hr`).style.display = "block";
       }
-    } else {
-      var hourlyArray = [];
-      for (i = 1; i < 49; i++) {
-        hourlyArray.push(
-          resultNO.properties.timeseries[i].data.instant.details.air_temperature
-        );
+      if (
+        data.hourlyCaAvailable == "1" &&
+        (country == "CA" || country == "ca" || country == "Canada")
+      ) {
+        for (i = 0; i < lenghtOfcaTemp; i++) {
+          document.querySelector(`#forecast_${i + 1}_hours_temp`).textContent =
+            Math.round(caHourlyTempXML[i]) + "°";
+        }
+        for (i = 25; i < 49; i++) {
+          document.querySelector(`#forecast_${i}_hours_temp`).textContent =
+            "--";
+        }
+        for (i = 25; i < 49; i++) {
+          document.getElementById(`${i}_hours`).style.display = "none";
+          document.getElementById(`${i}_hours_hr`).style.display = "none";
+        }
+      } else if (
+        (country == "US" ||
+          country == "us" ||
+          country == "United States of America") &&
+        failedHTTP !== "1"
+      ) {
+        for (i = 1; i < 49; i++) {
+          document.querySelector(`#forecast_${i}_hours_temp`).textContent =
+            Math.round(f2c(usHourlyTempXML[i])) + "°";
+        }
+      } else {
+        var hourlyArray = [];
+        for (i = 1; i < 49; i++) {
+          hourlyArray.push(
+            resultNO.properties.timeseries[i].data.instant.details
+              .air_temperature
+          );
+        }
+        for (i = 0; i < 48; i++) {
+          document.querySelector(`#forecast_${i + 1}_hours_temp`).textContent =
+            Math.round(hourlyArray[i]) + "°";
+        }
       }
-      for (i = 0; i < 48; i++) {
-        document.querySelector(`#forecast_${i + 1}_hours_temp`).textContent =
-          Math.round(hourlyArray[i]) + "°";
-      }
-    }
-
+    });
     document.querySelector("#summery_next7_text").textContent = summaryDailyC;
     document.querySelector("#summery_next48_text").textContent = summaryHourlyC;
 
@@ -1240,28 +1261,51 @@ const activePopup = () => {
     document.querySelector("#forecast_70_temp_min").textContent =
       daily_tempF_min_7 + "°";
 
-    if (
-      (country == "US" ||
-        country == "us" ||
-        country == "United States of America") &&
-      failedHTTP !== "1"
-    ) {
+    chrome.storage.local.get("hourlyCaAvailable", function (data) {
       for (i = 1; i < 49; i++) {
-        document.querySelector(`#forecast_${i}_hours_temp`).textContent =
-          Math.round(usHourlyTempXML[i]) + "°";
+        document.getElementById(`${i}_hours`).style.display = "block";
+        document.getElementById(`${i}_hours_hr`).style.display = "block";
       }
-    } else {
-      var hourlyArray = [];
-      for (i = 1; i < 49; i++) {
-        hourlyArray.push(
-          resultNO.properties.timeseries[i].data.instant.details.air_temperature
-        );
+      if (
+        data.hourlyCaAvailable == "1" &&
+        (country == "CA" || country == "ca" || country == "Canada")
+      ) {
+        for (i = 0; i < lenghtOfcaTemp; i++) {
+          document.querySelector(`#forecast_${i + 1}_hours_temp`).textContent =
+            Math.round(c2f(caHourlyTempXML[i])) + "°";
+        }
+        for (i = 25; i < 49; i++) {
+          document.querySelector(`#forecast_${i}_hours_temp`).textContent =
+            "--";
+        }
+        for (i = 25; i < 49; i++) {
+          document.getElementById(`${i}_hours`).style.display = "none";
+          document.getElementById(`${i}_hours_hr`).style.display = "none";
+        }
+      } else if (
+        (country == "US" ||
+          country == "us" ||
+          country == "United States of America") &&
+        failedHTTP !== "1"
+      ) {
+        for (i = 1; i < 49; i++) {
+          document.querySelector(`#forecast_${i}_hours_temp`).textContent =
+            Math.round(usHourlyTempXML[i]) + "°";
+        }
+      } else {
+        var hourlyArray = [];
+        for (i = 1; i < 49; i++) {
+          hourlyArray.push(
+            resultNO.properties.timeseries[i].data.instant.details
+              .air_temperature
+          );
+        }
+        for (i = 0; i < 48; i++) {
+          document.querySelector(`#forecast_${i + 1}_hours_temp`).textContent =
+            Math.round(c2f(hourlyArray[i])) + "°";
+        }
       }
-      for (i = 0; i < 48; i++) {
-        document.querySelector(`#forecast_${i + 1}_hours_temp`).textContent =
-          Math.round(c2f(hourlyArray[i])) + "°";
-      }
-    }
+    });
 
     document.querySelector("#summery_next7_text").textContent = summaryDailyF;
     document.querySelector("#summery_next48_text").textContent = summaryHourlyF;
@@ -1371,105 +1415,126 @@ const activePopup = () => {
   }
 
   function refresh24h12h() {
-    chrome.storage.local.get("TimeFormat", function (dataTime) {
-      if (dataTime.TimeFormat == "24h") {
-        solarFunction24H();
-        document.querySelector("#next7_update_date").textContent =
-          moment.unix(updateTimeBadge + offsetUnix).format("MMM DD, HH:mm") +
-          " (LT)";
-        document.querySelector("#report_update_date").textContent =
-          moment.unix(updateTimeBadge + offsetUnix).format("MMM DD, HH:mm") +
-          " (LT)";
-        document.querySelector("#next48_update_date").textContent =
-          moment.unix(updateTimeBadge + offsetUnix).format("MMM DD, HH:mm") +
-          " (LT)";
+    chrome.storage.local.get(
+      ["TimeFormat", "hourlyCaAvailable"],
+      function (dataTime) {
+        if (
+          dataTime.hourlyCaAvailable == 1 &&
+          (country == "CA" || country == "ca" || country == "Canada")
+        ) {
+          document.querySelector("#title_next48_text").textContent =
+            "Next 24 Hours";
+        } else {
+          document.querySelector("#title_next48_text").textContent =
+            "Next 48 Hours";
+        }
 
-        for (i = 1; i < 49; i++) {
-          document.querySelector(`#forecast_${i}_hours`).textContent =
+        if (dataTime.TimeFormat == "24h") {
+          solarFunction24H();
+          document.querySelector("#next7_update_date").textContent =
+            moment.unix(updateTimeBadge + offsetUnix).format("MMM DD, HH:mm") +
+            " (LT)";
+          document.querySelector("#report_update_date").textContent =
+            moment.unix(updateTimeBadge + offsetUnix).format("MMM DD, HH:mm") +
+            " (LT)";
+          document.querySelector("#next48_update_date").textContent =
+            moment.unix(updateTimeBadge + offsetUnix).format("MMM DD, HH:mm") +
+            " (LT)";
+
+          for (i = 1; i < 49; i++) {
+            document.querySelector(`#forecast_${i}_hours`).textContent =
+              moment
+                .unix(
+                  moment(resultNO.properties.timeseries[i].time).unix() +
+                    offsetUnix
+                )
+                .format("HH") + ":00";
+            document.querySelector(`#forecast_${i}_hours_uv`).textContent =
+              "UVI " +
+              Math.round(
+                resultNO.properties.timeseries[i].data.instant.details
+                  .ultraviolet_index_clear_sky *
+                  uv_adj_daily(
+                    resultNO.properties.timeseries[i].data.instant.details
+                      .cloud_area_fraction
+                  )
+              );
+            document.querySelector(`#forecast_${i}_hours_rain`).textContent =
+              resultNO.properties.timeseries[
+                i
+              ].data.next_1_hours.details.precipitation_amount;
+            document.querySelector(
+              `#forecast_${i}_hours_rain_unit`
+            ).textContent = "mm";
+          }
+
+          document.querySelector("#map_popup_title").textContent =
+            "PRECIPITATION FORECAST | UV WEATHER | " +
             moment
+              .unix(updateTimeBadge + offsetUnix)
+              .format("MMMM DD, YYYY HH:mm") +
+            " (LT)";
+          document.getElementById("setting_defualt_button_24h").checked = true;
+          document.getElementById("setting_defualt_button_12h").checked = false;
+          document.getElementById("setting_defualt_button_24h").disabled = true;
+          document.getElementById(
+            "setting_defualt_button_12h"
+          ).disabled = false;
+        } else {
+          solarFunction12H();
+          document.querySelector("#next7_update_date").textContent =
+            moment.unix(updateTimeBadge + offsetUnix).format("MMM DD, h:mm A") +
+            " (LT)";
+          document.querySelector("#report_update_date").textContent =
+            moment.unix(updateTimeBadge + offsetUnix).format("MMM DD, h:mm A") +
+            " (LT)";
+          document.querySelector("#next48_update_date").textContent =
+            moment.unix(updateTimeBadge + offsetUnix).format("MMM DD, h:mm A") +
+            " (LT)";
+
+          for (i = 1; i < 49; i++) {
+            document.querySelector(
+              `#forecast_${i}_hours`
+            ).textContent = moment
               .unix(
                 moment(resultNO.properties.timeseries[i].time).unix() +
                   offsetUnix
               )
-              .format("HH") + ":00";
-          document.querySelector(`#forecast_${i}_hours_uv`).textContent =
-            "UVI " +
-            Math.round(
-              resultNO.properties.timeseries[i].data.instant.details
-                .ultraviolet_index_clear_sky *
-                uv_adj_daily(
-                  resultNO.properties.timeseries[i].data.instant.details
-                    .cloud_area_fraction
-                )
-            );
-          document.querySelector(`#forecast_${i}_hours_rain`).textContent =
-            resultNO.properties.timeseries[
-              i
-            ].data.next_1_hours.details.precipitation_amount;
-          document.querySelector(`#forecast_${i}_hours_rain_unit`).textContent =
-            "mm";
+              .format("h A");
+            document.querySelector(`#forecast_${i}_hours_uv`).textContent =
+              "UVI " +
+              Math.round(
+                resultNO.properties.timeseries[i].data.instant.details
+                  .ultraviolet_index_clear_sky *
+                  uv_adj_daily(
+                    resultNO.properties.timeseries[i].data.instant.details
+                      .cloud_area_fraction
+                  )
+              );
+            document.querySelector(`#forecast_${i}_hours_rain`).textContent =
+              resultNO.properties.timeseries[
+                i
+              ].data.next_1_hours.details.precipitation_amount;
+            document.querySelector(
+              `#forecast_${i}_hours_rain_unit`
+            ).textContent = "mm";
+          }
+
+          document.querySelector("#map_popup_title").textContent =
+            "PRECIPITATION FORECAST | UV WEATHER | " +
+            moment
+              .unix(updateTimeBadge + offsetUnix)
+              .format("MMMM DD, YYYY h:mm A") +
+            " (LT)";
+          document.getElementById("setting_defualt_button_12h").checked = true;
+          document.getElementById("setting_defualt_button_24h").checked = false;
+          document.getElementById("setting_defualt_button_12h").disabled = true;
+          document.getElementById(
+            "setting_defualt_button_24h"
+          ).disabled = false;
         }
-
-        document.querySelector("#map_popup_title").textContent =
-          "PRECIPITATION FORECAST | UV WEATHER | " +
-          moment
-            .unix(updateTimeBadge + offsetUnix)
-            .format("MMMM DD, YYYY HH:mm") +
-          " (LT)";
-        document.getElementById("setting_defualt_button_24h").checked = true;
-        document.getElementById("setting_defualt_button_12h").checked = false;
-        document.getElementById("setting_defualt_button_24h").disabled = true;
-        document.getElementById("setting_defualt_button_12h").disabled = false;
-      } else {
-        solarFunction12H();
-        document.querySelector("#next7_update_date").textContent =
-          moment.unix(updateTimeBadge + offsetUnix).format("MMM DD, h:mm A") +
-          " (LT)";
-        document.querySelector("#report_update_date").textContent =
-          moment.unix(updateTimeBadge + offsetUnix).format("MMM DD, h:mm A") +
-          " (LT)";
-        document.querySelector("#next48_update_date").textContent =
-          moment.unix(updateTimeBadge + offsetUnix).format("MMM DD, h:mm A") +
-          " (LT)";
-
-        for (i = 1; i < 49; i++) {
-          document.querySelector(
-            `#forecast_${i}_hours`
-          ).textContent = moment
-            .unix(
-              moment(resultNO.properties.timeseries[i].time).unix() + offsetUnix
-            )
-            .format("h A");
-          document.querySelector(`#forecast_${i}_hours_uv`).textContent =
-            "UVI " +
-            Math.round(
-              resultNO.properties.timeseries[i].data.instant.details
-                .ultraviolet_index_clear_sky *
-                uv_adj_daily(
-                  resultNO.properties.timeseries[i].data.instant.details
-                    .cloud_area_fraction
-                )
-            );
-          document.querySelector(`#forecast_${i}_hours_rain`).textContent =
-            resultNO.properties.timeseries[
-              i
-            ].data.next_1_hours.details.precipitation_amount;
-          document.querySelector(`#forecast_${i}_hours_rain_unit`).textContent =
-            "mm";
-        }
-
-        document.querySelector("#map_popup_title").textContent =
-          "PRECIPITATION FORECAST | UV WEATHER | " +
-          moment
-            .unix(updateTimeBadge + offsetUnix)
-            .format("MMMM DD, YYYY h:mm A") +
-          " (LT)";
-        document.getElementById("setting_defualt_button_12h").checked = true;
-        document.getElementById("setting_defualt_button_24h").checked = false;
-        document.getElementById("setting_defualt_button_12h").disabled = true;
-        document.getElementById("setting_defualt_button_24h").disabled = false;
       }
-    });
+    );
   }
 
   function windFunctionMPH() {

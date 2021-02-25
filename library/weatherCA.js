@@ -3,7 +3,7 @@
 function weatherCA(latlong, citys, resolve) {
   lat = latlong.split(",")[0];
   lng = latlong.split(",")[1];
-
+  // caHourlyTempXML = [];
   fetch("/library/weatherstationca.csv")
     .then((response) => response.text())
     .then((text) => {
@@ -31,7 +31,7 @@ function weatherCA(latlong, citys, resolve) {
           fetchWithTimeout(
             `https://uvweather.herokuapp.com/https://dd.weather.gc.ca/citypage_weather/xml/${stateCA_code}/${cityCA_code}_e.xml`,
             optionsCA,
-            2500
+            3500
           )
             .then((resp) => resp.text())
             .then(function (resultCA) {
@@ -60,6 +60,38 @@ function weatherCA(latlong, citys, resolve) {
                 ? srcDOMJsonCA.siteData.hourlyForecastGroup.hourlyForecast[0]
                     .temperature
                 : "NA";
+
+              if (
+                srcDOMJsonCA.siteData.hourlyForecastGroup.hourlyForecast[0].hasOwnProperty(
+                  "temperature"
+                )
+              ) {
+                lenghtOfcaTemp =
+                  srcDOMJsonCA.siteData.hourlyForecastGroup.hourlyForecast
+                    .length;
+                if (lenghtOfcaTemp == 24) {
+                  caHourlyTempArray = [];
+                  for (i = 0; i < lenghtOfcaTemp; i++) {
+                    caHourlyTempArray.push(
+                      srcDOMJsonCA.siteData.hourlyForecastGroup.hourlyForecast[
+                        i
+                      ].temperature
+                    );
+                  }
+                  caHourlyTempXML = caHourlyTempArray;
+                  chrome.storage.local.set({
+                    hourlyCaAvailable: "1",
+                  });
+                } else {
+                  chrome.storage.local.set({
+                    hourlyCaAvailable: "0",
+                  });
+                }
+              } else {
+                chrome.storage.local.set({
+                  hourlyCaAvailable: "0",
+                });
+              }
 
               if (
                 tempCCca !== "NA" &&

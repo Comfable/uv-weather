@@ -39,7 +39,7 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
       fetchWithTimeout(
         `${corsAPI}https://api.met.no/weatherapi/locationforecast/2.0/?lat=${lat}&lon=${lng}`,
         optionsNO,
-        4000
+        4500
       )
         .then(CheckError)
         .then(function (resultNO) {
