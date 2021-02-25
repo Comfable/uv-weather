@@ -64,11 +64,22 @@ const activePopup = () => {
 
   version_manifest = chrome.runtime.getManifest().version;
   document.querySelector("#title_version_setting").textContent =
-    "Version " + version_manifest;
+    "UV Weather " + version_manifest;
   document.getElementById("preload_body").style.display = "block";
 
   document.querySelector("#giveUsFeedback_sub").textContent =
     "UV Weather " + version_manifest;
+
+  ChromeVersion = getChromeVersion();
+  document.querySelector("#chrome_version_setting").textContent =
+    "Chrome " +
+    ChromeVersion.pieces[1] +
+    "." +
+    ChromeVersion.pieces[2] +
+    "." +
+    ChromeVersion.pieces[3] +
+    "." +
+    ChromeVersion.pieces[4];
 
   chrome.storage.local.set({
     firstTimeSaerchPopupInSession: 0,

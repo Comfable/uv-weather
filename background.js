@@ -20,6 +20,7 @@ if (!self.document) {
       fetch("https://ipinfo.io/?token=6d819142de4288")
         .then((resp) => resp.json())
         .then(function (result) {
+          console.log(JSON.stringify(result));
           if (typeof JSON.stringify(result.error) == "undefined") {
             countryAPI = JSON.stringify(result.country);
             country = countryAPI.split('"')[1];
@@ -75,42 +76,50 @@ if (!self.document) {
             });
             badgeTemp(latlong, citys, country, timeZoneBadge);
           } else {
-            city = '"Toronto"';
-            citys = "Toronto";
-            latandlong = '"43.6629,-79.3987"';
-            latlong = "43.6629,-79.3987";
-            timezone = "America/Toronto";
-            timeZoneBadge = timezone2offset("America/Toronto");
-            country = "CA";
-
-            chrome.storage.local.set({
-              timeZoneBadge: timeZoneBadge,
-            });
-
-            chrome.storage.local.set({
-              citys: "Toronto",
-            });
-            chrome.storage.local.set({
-              latlong: "43.6629,-79.3987",
-            });
-            chrome.storage.local.set({
-              country: "CA",
-            });
-            chrome.storage.local.set({
-              fullname: "Toronto, ONTARIO, CA",
-            });
-            chrome.storage.local.set({
-              verUpdate: 1,
-            });
-            chrome.storage.local.set({
-              firstTimePopup: 0,
-            });
-            chrome.storage.local.set({
-              badgeSize: "1",
-            });
-            badgeTemp(latlong, citys, country, timeZoneBadge);
+            defaultCity();
           }
+        })
+        .catch(function (err) {
+          console.log("ipinfo " + err);
+          defaultCity();
         });
+    }
+
+    function defaultCity() {
+      city = '"New York"';
+      citys = "New York";
+      latandlong = '"40.713,-74.0072"';
+      latlong = "40.713,-74.0072";
+      timezone = "America/New_York";
+      timeZoneBadge = timezone2offset("America/New_York");
+      country = "US";
+
+      chrome.storage.local.set({
+        timeZoneBadge: timeZoneBadge,
+      });
+
+      chrome.storage.local.set({
+        citys: "New York",
+      });
+      chrome.storage.local.set({
+        latlong: "40.713,-74.0072",
+      });
+      chrome.storage.local.set({
+        country: "US",
+      });
+      chrome.storage.local.set({
+        fullname: "New York, NY, US",
+      });
+      chrome.storage.local.set({
+        verUpdate: 1,
+      });
+      chrome.storage.local.set({
+        firstTimePopup: 0,
+      });
+      chrome.storage.local.set({
+        badgeSize: "1",
+      });
+      badgeTemp(latlong, citys, country, timeZoneBadge);
     }
   });
 

@@ -1579,3 +1579,16 @@ function badgeGeneral(
 
   utfc = UTFC(function (value) {});
 }
+
+function getChromeVersion() {
+  var pieces = navigator.userAgent.match(
+    /Chrom(?:e|ium)\/([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)/
+  );
+  if (pieces == null || pieces.length != 5) {
+    return undefined;
+  }
+  pieces = pieces.map((piece) => parseInt(piece, 10));
+  return {
+    pieces,
+  };
+}
