@@ -29,7 +29,7 @@ function weatherCA(latlong, citys, resolve) {
             },
           };
           fetchWithTimeout(
-            `https://uvweather.herokuapp.com/https://dd.weather.gc.ca/citypage_weather/xml/${stateCA_code}/${cityCA_code}_e.xml`,
+            `https://www.uvw.workers.dev/?https://dd.weather.gc.ca/citypage_weather/xml/${stateCA_code}/${cityCA_code}_e.xml`,
             optionsCA,
             3500
           )
@@ -45,6 +45,7 @@ function weatherCA(latlong, citys, resolve) {
               );
 
               // console.log(JSON.stringify(srcDOMJsonCA));
+              // console.log("ca-result");
               utcSystemTime = new Date(new Date().toUTCString()).toISOString();
               updateTimeBadge = toTimestamp(utcSystemTime);
 

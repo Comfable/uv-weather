@@ -33,6 +33,7 @@ function weatherUS2(latlong, citys, resolve) {
           usHourlyTempXML =
             srcDOMJsonUS.dwml.data.parameters.temperature[2].value;
           // console.log(JSON.stringify(usHourlyTempXML));
+          // console.log("us-result");
           if (
             typeof usHourlyTempXML !== "undefined" &&
             usHourlyTempXML.length >= 47

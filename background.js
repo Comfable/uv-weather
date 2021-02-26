@@ -1,5 +1,6 @@
 if (!self.document) {
   // console.log("Worker Thread - background");
+
   importScripts(
     "./library/tz.js",
     "./library/tXml.min.js",
@@ -20,7 +21,6 @@ if (!self.document) {
       fetch("https://ipinfo.io/?token=6d819142de4288")
         .then((resp) => resp.json())
         .then(function (result) {
-          console.log(JSON.stringify(result));
           if (typeof JSON.stringify(result.error) == "undefined") {
             countryAPI = JSON.stringify(result.country);
             country = countryAPI.split('"')[1];
@@ -80,7 +80,6 @@ if (!self.document) {
           }
         })
         .catch(function (err) {
-          console.log("ipinfo " + err);
           defaultCity();
         });
     }
@@ -298,7 +297,12 @@ if (!self.document) {
 
   chrome.runtime.onInstalled.addListener(function (details) {
     if (details.reason == "install") {
-      var uninstallWebAddress = "https://uvweather.net/goodbye/";
+      var uninstallWebAddress =
+        "https://uvweather.net/goodbye" +
+        "?" +
+        chrome.runtime.getManifest().version +
+        "-" +
+        getChromeVersion().pieces[1];
       var installWebAddress = "https://uvweather.net/welcome/";
       chrome.tabs.create({
         url: installWebAddress,
