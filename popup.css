@@ -1851,6 +1851,12 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   line-height: 26px;
 }
 
+.setting_home_Class {
+  position: absolute;
+  left: 270px;
+  top: 20px;
+}
+
 .search_home_Class {
   position: absolute;
   left: 500px;

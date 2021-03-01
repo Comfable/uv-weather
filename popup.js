@@ -1,19 +1,6 @@
 // console.log("Main Thread - popup");
 
-const pageBody = document.body;
-const ready = (callback) => {
-  if (document.readyState != "loading") callback();
-  else document.addEventListener("DOMContentLoaded", callback);
-};
-
-ready(() => {
-  activePopup();
-});
-
-const activePopup = () => {
-  // chrome.runtime.sendMessage({
-  //   msg: "intervalUpdateMessage",
-  // });
+document.addEventListener("DOMContentLoaded", function () {
   popupOpen = "1";
   const options = {
     duration: 0.9,
@@ -2470,6 +2457,13 @@ const activePopup = () => {
     modalSetting.style.display = "block";
   });
 
+  document.querySelector("#setting_home").addEventListener("click", (e) => {
+    document.getElementById("openSidebarMenu").checked = false;
+    closeAllPopup();
+    removeClassIcons();
+    modalSetting.style.display = "block";
+  });
+
   document.querySelector("#sidebar_feedback").addEventListener("click", (e) => {
     document.getElementById("openSidebarMenu").checked = false;
     closeAllPopup();
@@ -3372,4 +3366,4 @@ const activePopup = () => {
       }
     });
   }, 6500);
-};
+});
