@@ -423,7 +423,7 @@ document.addEventListener("DOMContentLoaded", function () {
               });
           })
           .catch((error) => {
-            // console.log( 'promise error: ', error );
+            // console.log("promise error: ", error);
           });
       }
     );
@@ -2970,13 +2970,15 @@ document.addEventListener("DOMContentLoaded", function () {
       element.classList.add("blurOut");
     }, 400);
 
+    // console.log("latlong " + latlong);
+
     mapboxgl.accessToken =
       "pk.eyJ1IjoidXZ3IiwiYSI6ImNrOTY4dzRiMTAyMnUzZXBheHppanV2MXIifQ.jFdHCvYe2u-LUw-_9mcw_g";
     if (typeof latlong !== "undefined") {
       latandlongMapBox = latlong.split(",").reverse().join(",");
       latandlongMapBox = JSON.parse("[" + latandlongMapBox + "]");
     } else {
-      latandlongMapBox = [-79.3832, 43.6532];
+      latandlongMapBox = [-74.0072, 40.713];
     }
 
     function updateGeocoderProximity() {
@@ -3072,7 +3074,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     var map = new mapboxgl.Map({
       container: "mapSearch",
-      animate: false,
+      animate: true,
       style: mapStyle,
       center: latandlongMapBox,
       minZoom: 2,
@@ -3090,8 +3092,8 @@ document.addEventListener("DOMContentLoaded", function () {
       accessToken: mapboxgl.accessToken,
       mapboxgl: mapboxgl,
       marker: false,
-      flyTo: false,
-      essential: false, //If true , then the animation is considered essential
+      // flyTo: false,
+      // essential: false, //If true , then the animation is considered essential
       types: "place, locality, postcode",
       limit: 8,
       placeholder: "Enter the city or ZIP code",
@@ -3116,6 +3118,8 @@ document.addEventListener("DOMContentLoaded", function () {
       },
     });
 
+    map.addControl(geocoder);
+
     var marker = new mapboxgl.Marker({
       color: "#ff662b",
       draggable: true,
@@ -3134,7 +3138,6 @@ document.addEventListener("DOMContentLoaded", function () {
       )
       .addTo(map);
 
-    map.addControl(geocoder);
     map.addControl(new mapboxgl.NavigationControl());
 
     map.on("load", function () {
@@ -3151,11 +3154,10 @@ document.addEventListener("DOMContentLoaded", function () {
       geocoder.on("result", function (ev) {
         updateGeocoderProximity();
 
-        var fullname = ev.result.place_name;
-        var cityAPI = ev.result.place_name.split(",")[0];
-        var lat = ev.result.geometry.coordinates[1];
-        var lng = ev.result.geometry.coordinates[0];
-
+        fullname = ev.result.place_name;
+        cityAPI = ev.result.place_name.split(",")[0];
+        lat = ev.result.geometry.coordinates[1];
+        lng = ev.result.geometry.coordinates[0];
         map.jumpTo({
           center: ev.result.center,
           zoom: 10,
@@ -3208,7 +3210,8 @@ document.addEventListener("DOMContentLoaded", function () {
         popup();
 
         map.on("moveend", function (e) {
-          searchMap(mapStyle);
+          // searchMap(mapStyle);
+          marker.on("dragend", onDragEnd);
         });
       });
 
@@ -3223,7 +3226,7 @@ document.addEventListener("DOMContentLoaded", function () {
       latandlongMapBox = latlong.split(",").reverse().join(",");
       latandlongMapBox = JSON.parse("[" + latandlongMapBox + "]");
     } else {
-      latandlongMapBox = [-79.3832, 43.6532];
+      latandlongMapBox = [-74.0072, 40.713];
     }
 
     var mapWeather = new mapboxgl.Map({

@@ -33,6 +33,7 @@ function weatherUS2(latlong, citys, resolve) {
           usHourlyTempXML =
             srcDOMJsonUS.dwml.data.parameters.temperature[2].value;
           // console.log(JSON.stringify(usHourlyTempXML));
+          // console.log("US-1");
           // console.log("us-result");
           if (
             typeof usHourlyTempXML !== "undefined" &&
@@ -64,6 +65,7 @@ function weatherUS2(latlong, citys, resolve) {
           });
           failedHTTP = "0";
           // console.log(JSON.stringify(resultUS2));
+          // console.log("US-2");
           utcSystemTime = new Date(new Date().toUTCString()).toISOString();
           updateTimeBadge = toTimestamp(utcSystemTime);
 
@@ -124,13 +126,14 @@ function weatherUS2(latlong, citys, resolve) {
                     citys
                   );
                 }
+                // console.log("US-3");
               }
             );
             resolve && resolve(resultUS2);
           }
         })
         .catch(function (err) {
-          console.log("us err JSON " + err);
+          // console.log("us err JSON " + err);
           chrome.storage.local.set({
             failedHTTP: "1",
           });
@@ -142,7 +145,7 @@ function weatherUS2(latlong, citys, resolve) {
         });
     })
     .catch(function (err) {
-      console.log("us err XML " + err);
+      // console.log("us err XML " + err);
       chrome.storage.local.set({
         failedHTTP: "1",
       });

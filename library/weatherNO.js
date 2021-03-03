@@ -4,6 +4,20 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
   lat = latlong.split(",")[0];
   lng = latlong.split(",")[1];
 
+  if (
+    country !== "CA" &&
+    country !== "ca" &&
+    country !== "Canada" &&
+    country !== "US" &&
+    country !== "us" &&
+    country !== "United States of America"
+  ) {
+    chrome.storage.local.set({
+      failedHTTP: "0",
+    });
+    failedHTTP = "0";
+  }
+
   chrome.storage.local.get(
     ["country", "timeZoneBadge", "failedHTTP", "setSettingUT"],
     function (data) {
@@ -1301,7 +1315,6 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
 
             temperatureCbadge = temperatureCbadgeNO;
             temperatureFbadge = temperatureFbadgeNO;
-
             accu();
             solarNighDay(timeZoneBadge, latlong);
             isNight ? (nightNO = "night") : (nightNO = "day");
