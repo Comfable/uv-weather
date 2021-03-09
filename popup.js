@@ -1019,16 +1019,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     document.querySelector("#current_report_dewPoint").textContent =
       dewPointC + "° C";
-    if (temperatureCbadge >= 6 || temperatureCbadge <= -6) {
-      const countUptemperatureCbadge = new CountUp(
-        "current_temp",
-        temperatureCbadge,
-        options
-      );
-      countUptemperatureCbadge.start();
-    } else {
-      document.querySelector("#current_temp").textContent = temperatureCbadge;
-    }
+    document.querySelector("#current_temp").textContent = temperatureCbadge;
     document.querySelector("#current_report_temp").textContent =
       temperatureCbadge + "° C";
     document.querySelector("#current_accufeel").textContent =
@@ -1198,16 +1189,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     document.querySelector("#current_report_dewPoint").textContent =
       dewPointF + "° F";
-    if (temperatureFbadge >= 6 || temperatureFbadge <= -6) {
-      const countUptemperatureFbadge = new CountUp(
-        "current_temp",
-        temperatureFbadge,
-        options
-      );
-      countUptemperatureFbadge.start();
-    } else {
-      document.querySelector("#current_temp").textContent = temperatureFbadge;
-    }
+    document.querySelector("#current_temp").textContent = temperatureFbadge;
     document.querySelector("#current_report_temp").textContent =
       temperatureFbadge + "° F";
     document.querySelector("#current_accufeel").textContent =

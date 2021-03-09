@@ -1315,6 +1315,7 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
 
             temperatureCbadge = temperatureCbadgeNO;
             temperatureFbadge = temperatureFbadgeNO;
+
             accu();
             solarNighDay(timeZoneBadge, latlong);
             isNight ? (nightNO = "night") : (nightNO = "day");
