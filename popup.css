@@ -560,6 +560,25 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
+.radar_button_Class {
+  position: absolute;
+  top: 358px;
+  left: 195px;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+}
+
+.radar_icon_Class {
+  width: 25px;
+  height: 25px;
+}
+
+.radar_icon_Class:hover {
+  filter: invert(48%) sepia(52%) saturate(2544%) hue-rotate(342deg)
+    brightness(101%) contrast(101%) !important;
+}
+
 .current_icon_Class {
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }

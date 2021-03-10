@@ -1447,13 +1447,6 @@ document.addEventListener("DOMContentLoaded", function () {
               `#forecast_${i}_hours_rain_unit`
             ).textContent = "mm";
           }
-
-          document.querySelector("#map_popup_title").textContent =
-            "PRECIPITATION FORECAST | UV WEATHER | " +
-            moment
-              .unix(updateTimeBadge + offsetUnix)
-              .format("MMMM DD, YYYY HH:mm") +
-            " (LT)";
           document.getElementById("setting_defualt_button_24h").checked = true;
           document.getElementById("setting_defualt_button_12h").checked = false;
           document.getElementById("setting_defualt_button_24h").disabled = true;
@@ -1499,13 +1492,6 @@ document.addEventListener("DOMContentLoaded", function () {
               `#forecast_${i}_hours_rain_unit`
             ).textContent = "mm";
           }
-
-          document.querySelector("#map_popup_title").textContent =
-            "PRECIPITATION FORECAST | UV WEATHER | " +
-            moment
-              .unix(updateTimeBadge + offsetUnix)
-              .format("MMMM DD, YYYY h:mm A") +
-            " (LT)";
           document.getElementById("setting_defualt_button_12h").checked = true;
           document.getElementById("setting_defualt_button_24h").checked = false;
           document.getElementById("setting_defualt_button_12h").disabled = true;
@@ -2483,6 +2469,28 @@ document.addEventListener("DOMContentLoaded", function () {
     currentSubMenu.classList.add("sub_menu_current_Class");
   });
 
+  document.querySelector("#radar_button").addEventListener("click", (e) => {
+    document.getElementById("openSidebarMenu").checked = false;
+    closeAllPopup();
+    removeClassIcons();
+    setTimeout(function () {
+      document.getElementById("map_popup_close").style.visibility = "visible";
+    }, 300);
+
+    searchTitle.style.visibility = "hidden";
+    searchInner.style.visibility = "hidden";
+
+    mapTitle.style.visibility = "visible";
+    mapInner.style.visibility = "visible";
+    weatherMap(weathermapStyle);
+
+    var currentIcon = document.getElementById("home_icon_popup_page");
+    currentIcon.classList.add("sub_menu_current_icon_Class");
+
+    var currentSubMenu = document.getElementById("sub_menu_home");
+    currentSubMenu.classList.add("sub_menu_current_Class");
+  });
+
   document.querySelector("#solar_popup_page").addEventListener("click", (e) => {
     closeAllPopup();
     removeClassIcons();
@@ -2663,6 +2671,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
   document.querySelector("#map_popup_close").addEventListener("click", (e) => {
+    clearInterval(intervalWeatherMap);
     document.getElementById("map_popup_close").style.transition = "all 0s";
     document.getElementById("map_popup_close").style.visibility = "hidden";
     mapTitle.style.visibility = "hidden";
@@ -3215,33 +3224,78 @@ document.addEventListener("DOMContentLoaded", function () {
       container: "mapWeather",
       style: weathermapStyle,
       center: latandlongMapBox,
-      minZoom: 1,
-      maxZoom: 7,
-      zoom: 2,
+      minZoom: 2,
+      maxZoom: 12,
+      zoom: 4,
     });
 
-    mapWeather.on("load", function () {
-      mapWeather.addLayer({
-        id: "simple-tiles",
-        type: "raster",
-        paint: {
-          "raster-opacity": 0.3,
-          "raster-saturation": 0.15,
-          "raster-contrast": 0,
-          "raster-resampling": "nearest",
-          "raster-hue-rotate": 350,
-          "raster-fade-duration": 500,
-        },
-        source: {
-          type: "raster",
-          tiles: [
-            "https://tile.openweathermap.org/map/precipitation/{z}/{x}/{y}.png?appid=6761dd7f8d0c3c216f9af6813064f867",
-          ],
-          tileSize: 256,
-        },
-        minzoom: 1,
-        maxzoom: 8,
-      });
+    mapWeather.on("load", () => {
+      fetch("https://api.rainviewer.com/public/weather-maps.json")
+        .then((res) => res.json())
+        .then((apiData) => {
+          apiData.radar.past.forEach((frame) => {
+            mapWeather.addLayer({
+              id: `rainviewer_${frame.path}`,
+              type: "raster",
+              source: {
+                type: "raster",
+                tiles: [
+                  apiData.host + frame.path + "/256/{z}/{x}/{y}/8/1_1.png",
+                ],
+                tileSize: 256,
+              },
+              layout: { visibility: "none" },
+              minzoom: 2,
+              maxzoom: 12,
+            });
+          });
+
+          let i = 0;
+          let opacityRadar = 0.6;
+          intervalWeatherMap = setInterval(() => {
+            if (i > apiData.radar.past.length - 1) {
+              i = 0;
+            }
+
+            updateTimeWeatherMap = parseInt(
+              JSON.stringify(apiData.radar.past[i].time)
+            );
+
+            chrome.storage.local.get("TimeFormat", function (dataTime) {
+              if (dataTime.TimeFormat == "24h") {
+                document.querySelector("#map_popup_title").textContent =
+                  "WEATHER RADAR MAP | UV WEATHER | " +
+                  moment
+                    .unix(updateTimeWeatherMap + offsetUnix)
+                    .format("MMMM DD, YYYY HH:mm") +
+                  " (LT)";
+              } else {
+                document.querySelector("#map_popup_title").textContent =
+                  "WEATHER RADAR MAP | UV WEATHER | " +
+                  moment
+                    .unix(updateTimeWeatherMap + offsetUnix)
+                    .format("MMMM DD, YYYY h:mm A") +
+                  " (LT)";
+              }
+            });
+
+            apiData.radar.past.forEach((frame, index) => {
+              mapWeather.setLayoutProperty(
+                `rainviewer_${frame.path}`,
+                "visibility",
+                index === i || index === i - 1 ? "visible" : "none"
+              );
+              mapWeather.setPaintProperty(
+                `rainviewer_${frame.path}`,
+                "raster-opacity",
+                opacityRadar
+              );
+            });
+
+            i += 1;
+          }, 400);
+        })
+        .catch(console.error);
     });
   }
 
