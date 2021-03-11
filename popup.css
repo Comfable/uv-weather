@@ -1712,7 +1712,7 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   z-index: 13500;
   text-align: left;
   font-weight: 250;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--font-color);
   visibility: hidden;
   backdrop-filter: blur(1px);
@@ -3544,4 +3544,42 @@ textarea:hover {
   position: absolute;
   top: 40px;
   left: 105px;
+}
+
+.legend_image_Class {
+  width: 180px;
+  height: 50px;
+  padding: 0;
+  margin: 0;
+  z-index: 1000000;
+  position: absolute;
+  top: 450px;
+  left: 365px;
+  display: block;
+  /* filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.5)); */
+  text-align: left;
+  font-weight: 250;
+  font-size: 13px;
+  color: var(--font-color);
+  visibility: hidden;
+  /* backdrop-filter: blur(1px); */
+}
+
+.legend_text_Class {
+  width: 180px;
+  height: 50px;
+  padding: 0;
+  margin: 0;
+  z-index: 1000000;
+  position: absolute;
+  top: 431px;
+  left: 367px;
+  display: block;
+  filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.5));
+  text-align: left;
+  font-weight: 250;
+  font-size: 13px;
+  color: var(--font-color);
+  visibility: hidden;
+  backdrop-filter: blur(1px);
 }

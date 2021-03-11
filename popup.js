@@ -23,6 +23,8 @@ document.addEventListener("DOMContentLoaded", function () {
   var location = document.getElementById("location");
   var mapInner = document.getElementById("mapWeather");
   var mapTitle = document.getElementById("map_popup_title");
+  var mapLegend = document.getElementById("legend_image");
+  var mapLegendText = document.getElementById("legend_text");
   var searchInner = document.getElementById("mapSearch");
   var searchTitle = document.getElementById("search_popup_title");
   var modalCurrent = document.getElementById("currentReport_popup");
@@ -2315,6 +2317,8 @@ document.addEventListener("DOMContentLoaded", function () {
     searchTitle.style.visibility = "hidden";
     searchInner.style.visibility = "hidden";
     mapTitle.style.visibility = "visible";
+    mapLegend.style.visibility = "visible";
+    mapLegendText.style.visibility = "visible";
     mapInner.style.visibility = "visible";
     weatherMap(weathermapStyle);
 
@@ -2459,6 +2463,8 @@ document.addEventListener("DOMContentLoaded", function () {
     searchInner.style.visibility = "hidden";
 
     mapTitle.style.visibility = "visible";
+    mapLegend.style.visibility = "visible";
+    mapLegendText.style.visibility = "visible";
     mapInner.style.visibility = "visible";
     weatherMap(weathermapStyle);
 
@@ -2481,6 +2487,8 @@ document.addEventListener("DOMContentLoaded", function () {
     searchInner.style.visibility = "hidden";
 
     mapTitle.style.visibility = "visible";
+    mapLegend.style.visibility = "visible";
+    mapLegendText.style.visibility = "visible";
     mapInner.style.visibility = "visible";
     weatherMap(weathermapStyle);
 
@@ -2675,6 +2683,8 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("map_popup_close").style.transition = "all 0s";
     document.getElementById("map_popup_close").style.visibility = "hidden";
     mapTitle.style.visibility = "hidden";
+    mapLegend.style.visibility = "hidden";
+    mapLegendText.style.visibility = "hidden";
     mapInner.style.visibility = "hidden";
     closeAllPopup();
 
@@ -3251,12 +3261,11 @@ document.addEventListener("DOMContentLoaded", function () {
           });
 
           let i = 0;
-          let opacityRadar = 0.6;
+          let opacityRadar = 0.8;
           intervalWeatherMap = setInterval(() => {
             if (i > apiData.radar.past.length - 1) {
               i = 0;
             }
-
             updateTimeWeatherMap = parseInt(
               JSON.stringify(apiData.radar.past[i].time)
             );
@@ -3264,14 +3273,14 @@ document.addEventListener("DOMContentLoaded", function () {
             chrome.storage.local.get("TimeFormat", function (dataTime) {
               if (dataTime.TimeFormat == "24h") {
                 document.querySelector("#map_popup_title").textContent =
-                  "WEATHER RADAR MAP | UV WEATHER | " +
+                  "WEATHER RADAR MAP | " +
                   moment
                     .unix(updateTimeWeatherMap + offsetUnix)
                     .format("MMMM DD, YYYY HH:mm") +
                   " (LT)";
               } else {
                 document.querySelector("#map_popup_title").textContent =
-                  "WEATHER RADAR MAP | UV WEATHER | " +
+                  "WEATHER RADAR MAP | " +
                   moment
                     .unix(updateTimeWeatherMap + offsetUnix)
                     .format("MMMM DD, YYYY h:mm A") +
@@ -3291,7 +3300,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 opacityRadar
               );
             });
-
             i += 1;
           }, 400);
         })
