@@ -2314,11 +2314,15 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("map_popup_close").style.visibility = "visible";
     }, 300);
 
+    setTimeout(function () {
+      mapLegend.style.visibility = "visible";
+      mapLegendText.style.visibility = "visible";
+    }, 150);
+
+    mapTitle.style.visibility = "visible";
     searchTitle.style.visibility = "hidden";
     searchInner.style.visibility = "hidden";
-    mapTitle.style.visibility = "visible";
-    mapLegend.style.visibility = "visible";
-    mapLegendText.style.visibility = "visible";
+
     mapInner.style.visibility = "visible";
     weatherMap(weathermapStyle);
 
@@ -2459,12 +2463,15 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("map_popup_close").style.visibility = "visible";
     }, 300);
 
+    setTimeout(function () {
+      mapLegend.style.visibility = "visible";
+      mapLegendText.style.visibility = "visible";
+    }, 150);
+
+    mapTitle.style.visibility = "visible";
     searchTitle.style.visibility = "hidden";
     searchInner.style.visibility = "hidden";
 
-    mapTitle.style.visibility = "visible";
-    mapLegend.style.visibility = "visible";
-    mapLegendText.style.visibility = "visible";
     mapInner.style.visibility = "visible";
     weatherMap(weathermapStyle);
 
@@ -2483,12 +2490,15 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("map_popup_close").style.visibility = "visible";
     }, 300);
 
+    setTimeout(function () {
+      mapLegend.style.visibility = "visible";
+      mapLegendText.style.visibility = "visible";
+    }, 150);
+
+    mapTitle.style.visibility = "visible";
     searchTitle.style.visibility = "hidden";
     searchInner.style.visibility = "hidden";
 
-    mapTitle.style.visibility = "visible";
-    mapLegend.style.visibility = "visible";
-    mapLegendText.style.visibility = "visible";
     mapInner.style.visibility = "visible";
     weatherMap(weathermapStyle);
 
