@@ -3327,6 +3327,7 @@ document.addEventListener("DOMContentLoaded", function () {
     )
       .then(CheckError)
       .then(function (resultWaqi) {
+        // console.log(JSON.stringify(resultWaqi));
         if (JSON.stringify(resultWaqi) !== "[]" && resultWaqi.status == "ok") {
           aqi_dominant_pollutant = resultWaqi.data.hasOwnProperty("dominentpol")
             ? resultWaqi.data.dominentpol
