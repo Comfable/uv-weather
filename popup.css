@@ -1631,7 +1631,8 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 
 .sub_menu_text_Class {
   font-weight: 250;
-  font-size: 9px;
+  font-size: 10px;
+  filter: brightness(225%) !important;
 }
 
 .sub_menu_icon_Class:hover {
