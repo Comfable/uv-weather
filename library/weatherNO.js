@@ -38,7 +38,7 @@ function weatherNO(latlong, citys, timeZoneBadge, resolve) {
         country == "us" ||
         country == "United States of America"
       ) {
-        corsAPI = "https://uvweather.herokuapp.com/";
+        corsAPI = "https://www.uvw.workers.dev/?";
       } else {
         corsAPI = "https://www.uvw.workers.dev/?";
       }

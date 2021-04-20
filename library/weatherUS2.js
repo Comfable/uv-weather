@@ -13,7 +13,7 @@ function weatherUS2(latlong, citys, resolve) {
   };
 
   fetchWithTimeout(
-    `https://uvweather.herokuapp.com/https://forecast.weather.gov/MapClick.php?lat=${lat}&lon=${lng}&unit=0&lg=english&FcstType=digitalDWML`,
+    `https://www.uvw.workers.dev/?https://forecast.weather.gov/MapClick.php?lat=${lat}&lon=${lng}&unit=0&lg=english&FcstType=digitalDWML`,
     optionsUS,
     3500
   )
@@ -54,7 +54,7 @@ function weatherUS2(latlong, citys, resolve) {
       }
 
       fetchWithTimeout(
-        `https://uvweather.herokuapp.com/https://forecast.weather.gov/MapClick.php?lat=${lat}&lon=${lng}&unit=0&lg=english&FcstType=json`,
+        `https://www.uvw.workers.dev/?https://forecast.weather.gov/MapClick.php?lat=${lat}&lon=${lng}&unit=0&lg=english&FcstType=json`,
         optionsUS,
         3500
       )
