@@ -141,7 +141,8 @@ input:checked + .slider:before {
   height: 25px;
   position: relative;
   width: 50px;
-  margin-left: 15px;
+  margin-left: 2px;
+  margin-bottom: -4px;
 }
 
 .theme-switch_setting input {
@@ -153,7 +154,8 @@ input:checked + .slider:before {
   height: 25px;
   position: relative;
   width: 50px;
-  margin-left: -12px;
+  margin-left: -18px;
+  margin-bottom: -5px;
 }
 
 .theme-switch_setting_auto_dark input {
@@ -170,15 +172,15 @@ input:checked + .slider:before {
   top: 0;
   transition: 0.4s;
   margin-right: 8px !important;
-  margin-top: 9px !important;
+  margin-top: 5px !important;
 }
 
 .slider_setting:before {
   background-color: #fff;
   bottom: 2px;
   content: "";
-  height: 12px !important;
-  width: 12px !important;
+  height: 16px !important;
+  width: 16px !important;
   left: 2px;
   position: absolute;
   transition: 0.4s;
@@ -188,11 +190,11 @@ input:checked + .slider:before {
 input:checked + .slider_setting {
   background-color: #ff662b;
   margin-right: 8px !important;
-  margin-top: 9px !important;
+  margin-top: 5px !important;
 }
 
 input:checked + .slider_setting:before {
-  transform: translateX(25px);
+  transform: translateX(22px);
 }
 
 .slider_setting.round {
@@ -2158,7 +2160,7 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 .setting_section_unit_Class {
   position: absolute;
   left: 25px;
-  top: 60px;
+  top: 80px;
 }
 
 .setting_title_section_unit_Class {
@@ -2170,35 +2172,46 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 .setting_section_badge_Class {
   position: absolute;
   left: 25px;
-  top: 190px;
-  width: 260px;
-  margin-top: 10px;
+  top: 223px;
 }
 
 .setting_title_section_badge_Class {
-  font-size: 12px !important;
-  margin-bottom: 10px;
+  font-size: 16px !important;
+  margin-bottom: 15px;
+  margin-top: -25px;
+  background-color: var(--bg-color);
+  width: 270px;
+  padding-left: 10px;
 }
 
 .setting_title_section_general_Class {
-  font-size: 12px !important;
-  margin-bottom: 10px;
+  font-size: 16px !important;
+  margin-bottom: 20px;
+  margin-top: -25px;
+  background-color: var(--bg-color);
+  width: 90px;
+  padding-left: 10px;
 }
 
 .setting_title_section_theme_Class {
-  font-size: 12px !important;
-  margin-bottom: 10px;
+  font-size: 16px !important;
+  margin-bottom: 13px;
+  margin-top: -25px;
+  background-color: var(--bg-color);
+  width: 120px;
+  padding-left: 10px;
 }
 
 .setting_section_theme_Class {
   position: absolute;
   left: 25px;
-  top: 335px;
+  top: 342px;
 }
 
 .setting_unit_row_2 {
   position: relative;
   margin-top: 10px;
+  margin-bottom: 20px;
 }
 
 .setting_section_badge_color_Class {
@@ -2209,10 +2222,11 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 
 .setting_section_auto_dark_Class {
   position: relative;
+  margin-left: 95px;
 }
 
 .setting_section_title_auto_dark_Class {
-  margin-right: 35px !important;
+  margin-right: 20px !important;
 }
 
 .setting_defualt_theme_l_Class {
@@ -2223,6 +2237,11 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   display: inline-block;
   position: relative;
   margin-left: 9px;
+}
+
+.setting_badge_section_Class {
+  display: inline-block;
+  position: relative;
 }
 
 #setting_defualt_button_kmh_all {
@@ -2242,13 +2261,18 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 .setting_time_section_Class {
   display: inline-block;
   position: relative;
-  margin-left: 34px;
+  margin-left: 10px;
+}
+
+.setting_badge_section_Class {
+  display: inline-block;
+  position: relative;
 }
 
 .setting_interval_section_Class {
   display: inline-block;
   position: relative;
-  margin-left: 0px;
+  margin-left: 10px;
   margin-top: 10px;
 }
 
@@ -2448,6 +2472,11 @@ i {
   position: relative;
   margin-bottom: 25px;
   margin-top: 10px;
+  margin-left: 35px;
+}
+
+.setting_badge_section_Class {
+  position: relative;
 }
 
 .setting_section_iner_Class input[type="radio"] {
@@ -2457,10 +2486,8 @@ i {
 
 .setting_section_iner_Class label {
   position: relative;
-  font-weight: 300;
-  font-size: 13px;
   padding: 10px 0px 5px 5px;
-  margin: 0px 15px 0px 12px;
+  margin: 0px 15px 0px 15px;
   z-index: 9;
   -webkit-transition: all 0.25s linear;
 }
@@ -2481,8 +2508,8 @@ i {
   border: 2px solid;
   border-color: var(--font-color);
   border-radius: 100%;
-  height: 10px;
-  width: 10px;
+  height: 12px;
+  width: 12px;
   z-index: 5;
   cursor: pointer;
   transition: border 0.25s linear;
@@ -2498,8 +2525,8 @@ i {
   position: absolute;
   content: "";
   border-radius: 100%;
-  height: 8px;
-  width: 8px;
+  height: 10px;
+  width: 10px;
   top: 1px;
   left: 1px;
   margin: auto;
@@ -2521,8 +2548,7 @@ input[type="radio"]:checked ~ label {
 
 .setting_section_badge_size_Class {
   position: relative;
-  margin-right: 25px !important;
-  padding-right: 25px !important;
+  margin-left: 55px !important;
 }
 
 .badge_size_switch_setting {
@@ -2530,7 +2556,8 @@ input[type="radio"]:checked ~ label {
   height: 25px;
   position: relative;
   width: 50px;
-  margin-left: 8px;
+  margin-left: 3px;
+  margin-bottom: -4px;
 }
 
 .badge_size_switch_setting input {
@@ -2539,10 +2566,6 @@ input[type="radio"]:checked ~ label {
 
 .setting_section_theme_Class {
   margin-top: 30px;
-}
-
-.setting_section_unit_Class {
-  width: 260px;
 }
 
 .madein_Class {
@@ -2596,11 +2619,11 @@ input[type="radio"]:checked ~ label {
 
 .modal_setting {
   position: absolute;
-  width: 310px;
+  width: 560px;
   height: 526px;
-  left: 250px;
+  left: 0;
   top: 0;
-  max-width: 310px;
+  max-width: 560px;
   display: none;
   vertical-align: right;
   width: 100%;
@@ -2612,6 +2635,8 @@ input[type="radio"]:checked ~ label {
   background-color: var(--bg-color);
   color: var(--font-color);
   z-index: 11000;
+  font-size: 14px;
+  font-weight: 300;
 }
 
 .setting_section_badge_interval_Class {
@@ -2656,7 +2681,7 @@ ul li {
 }
 
 .setting_section_title_animated_icon_Class {
-  margin-right: 35px !important;
+  margin-right: 5px !important;
 }
 
 .theme-switch_setting_animated_icon {
@@ -2664,7 +2689,8 @@ ul li {
   height: 25px;
   position: relative;
   width: 50px;
-  margin-left: 4px;
+  margin-left: -3px;
+  margin-bottom: -4px;
 }
 
 .theme-switch_setting_animated_icon input {
@@ -3583,4 +3609,16 @@ textarea:hover {
   color: var(--font-color);
   visibility: hidden;
   backdrop-filter: blur(1px);
+}
+
+.setting_unit_row_1 {
+  margin-bottom: 20px;
+}
+
+.cardSetting {
+  width: 85%;
+  padding: 15px 15px 0 15px;
+  border-radius: 10px;
+  border: 1px var(--font-color) solid;
+  margin-bottom: 60px !important;
 }
