@@ -1,7 +1,7 @@
 {
   "name": "UV Weather",
-  "version": "1.1.38",
-  "description": "Live Weather for Real Life",
+  "version": "1.1.39",
+  "description": "Real time weather and detailed forecast",
   "permissions": ["activeTab", "storage", "alarms"],
   "background": {
     "service_worker": "background.js"
