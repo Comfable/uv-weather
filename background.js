@@ -229,6 +229,33 @@ if (!self.document) {
     }
   });
 
+  chrome.idle.onStateChanged.addListener(function (state) {
+    if (state == "active") {
+      chrome.storage.local.get(
+        [
+          "latlong",
+          "country",
+          "setSettingUT",
+          "citys",
+          "timeZoneBadge",
+          "setSettingUT",
+        ],
+        function (data) {
+          latlong = data.latlong;
+          country = data.country;
+          citys = data.citys;
+          timeZoneBadge = data.timeZoneBadge;
+          setSettingUT = data.setSettingUT;
+          if (data.setSettingUT == "u") {
+            badgeUV(latlong, citys, country, timeZoneBadge);
+          } else {
+            badgeTemp(latlong, citys, country, timeZoneBadge);
+          }
+        }
+      );
+    }
+  });
+
   function intervalUpdateFunction() {
     chrome.storage.local.get(
       ["IntervalUpdate", "setSettingUT"],
