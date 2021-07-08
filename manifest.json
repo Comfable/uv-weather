@@ -1,8 +1,8 @@
 {
   "name": "UV Weather",
-  "version": "1.1.39",
+  "version": "1.1.40",
   "description": "Real time weather and detailed forecast",
-  "permissions": ["activeTab", "storage", "alarms"],
+  "permissions": ["storage", "alarms"],
   "background": {
     "service_worker": "background.js"
   },
