@@ -1,6 +1,6 @@
 {
   "name": "UV Weather",
-  "version": "1.1.41",
+  "version": "1.1.42",
   "description": "Real time weather and detailed forecast",
   "permissions": ["storage", "alarms", "idle"],
   "background": {

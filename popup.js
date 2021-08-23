@@ -1,6 +1,17 @@
 // console.log("Main Thread - popup");
 
 document.addEventListener("DOMContentLoaded", function () {
+  const mediaQueryDark = window.matchMedia("(prefers-color-scheme: dark)");
+  if (window.matchMedia && mediaQueryDark.matches) {
+    chrome.storage.local.set({
+      whiteIcon: "1",
+    });
+  } else {
+    chrome.storage.local.set({
+      whiteIcon: "0",
+    });
+  }
+
   popupOpen = "1";
   const options = {
     duration: 0.9,
@@ -131,10 +142,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
         document.getElementById("checkbox_largIcon").checked = true;
         document.getElementById("checkbox_largIcon").disabled = true;
-        document.getElementById("checkbox_whiteIcon").checked = false;
-        chrome.storage.local.set({
-          whiteIcon: "0",
-        });
         updateBadge();
         delayButtonBadgeSize();
         delayButtonSetting();
@@ -229,10 +236,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
         document.getElementById("checkbox_whiteIcon").checked = true;
         document.getElementById("checkbox_whiteIcon").disabled = true;
-        document.getElementById("checkbox_largIcon").checked = false;
-        chrome.storage.local.set({
-          badgeSize: "0",
-        });
         updateBadge();
         delayButtonWhiteIcon();
       } else {

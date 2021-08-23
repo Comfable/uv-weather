@@ -980,11 +980,12 @@ function largBadgeNumber(displayNumber, lightBadge) {
   var canvas = new OffscreenCanvas(100, 100);
   var ctx = canvas.getContext("2d");
   ctx.font = "normal 18px Arial";
-  // if (lightBadge == 1) {
-  //   ctx.fillStyle = "white";
-  // } else {
-  //   ctx.fillStyle = "black";
-  // }
+
+  if (lightBadge == 1) {
+    ctx.fillStyle = "white";
+  } else {
+    ctx.fillStyle = "black";
+  }
   ctx.textBaseline = "top";
   ctx.textAlign = "center";
   ctx.fillText(displayNumber, 9.5, 1, 19);
