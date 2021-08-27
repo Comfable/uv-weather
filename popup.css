@@ -2317,7 +2317,7 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 }
 
 .card {
-  width: 250px;
+  width: 270px;
   text-align: center;
   display: inline-block;
   vertical-align: middle;
@@ -2354,7 +2354,7 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   position: absolute;
   top: 402px;
   left: 280px;
-  width: 250px;
+  width: 260px;
   text-align: center;
   display: inline-block;
   vertical-align: middle;
@@ -2440,7 +2440,7 @@ i {
 
 .icon_close_box_Class {
   position: absolute;
-  left: 519px;
+  left: 529px;
   top: 309px;
   z-index: 1150;
 }
@@ -2728,7 +2728,7 @@ ul li {
 .icon_box_Class {
   position: absolute;
   top: 318px;
-  left: 280px;
+  left: 270px;
   z-index: 1000;
 }
 
