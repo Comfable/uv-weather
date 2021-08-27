@@ -1041,11 +1041,19 @@ document.addEventListener("DOMContentLoaded", function () {
       daily_tempC_max_1 + "°";
     document.querySelector("#forecast_2_temp").textContent =
       daily_tempC_max_2 + "°";
+    document.querySelector("#forecast_3_temp").textContent =
+      daily_tempC_max_3 + "°";
+    document.querySelector("#forecast_4_temp").textContent =
+      daily_tempC_max_4 + "°";
 
     document.querySelector("#forecast_1_temp_min").textContent =
       daily_tempC_min_1 + "°";
     document.querySelector("#forecast_2_temp_min").textContent =
       daily_tempC_min_2 + "°";
+    document.querySelector("#forecast_3_temp_min").textContent =
+      daily_tempC_min_3 + "°";
+    document.querySelector("#forecast_4_temp_min").textContent =
+      daily_tempC_min_4 + "°";
 
     document.querySelector("#forecast_10_temp").textContent =
       daily_tempC_max_1 + "°";
@@ -1210,11 +1218,19 @@ document.addEventListener("DOMContentLoaded", function () {
       daily_tempF_max_1 + "°";
     document.querySelector("#forecast_2_temp").textContent =
       daily_tempF_max_2 + "°";
+    document.querySelector("#forecast_3_temp").textContent =
+      daily_tempF_max_3 + "°";
+    document.querySelector("#forecast_4_temp").textContent =
+      daily_tempF_max_4 + "°";
 
     document.querySelector("#forecast_1_temp_min").textContent =
       daily_tempF_min_1 + "°";
     document.querySelector("#forecast_2_temp_min").textContent =
       daily_tempF_min_2 + "°";
+    document.querySelector("#forecast_3_temp_min").textContent =
+      daily_tempF_min_3 + "°";
+    document.querySelector("#forecast_4_temp_min").textContent =
+      daily_tempF_min_4 + "°";
 
     document.querySelector("#forecast_10_temp").textContent =
       daily_tempF_max_1 + "°";
@@ -1700,10 +1716,20 @@ document.addEventListener("DOMContentLoaded", function () {
   function next7Function() {
     document.querySelector("#forecast_1_day").textContent = moment
       .unix(daily_date_1)
-      .format("dddd");
+      .format("ddd")
+      .toUpperCase();
     document.querySelector("#forecast_2_day").textContent = moment
       .unix(daily_date_2)
-      .format("dddd");
+      .format("ddd")
+      .toUpperCase();
+    document.querySelector("#forecast_3_day").textContent = moment
+      .unix(daily_date_3)
+      .format("ddd")
+      .toUpperCase();
+    document.querySelector("#forecast_4_day").textContent = moment
+      .unix(daily_date_4)
+      .format("ddd")
+      .toUpperCase();
 
     document.querySelector("#forecast_10_day").textContent = moment
       .unix(daily_date_1)
@@ -1760,6 +1786,12 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelector(
       ".forecast_20_homePage_icon_Class"
     ).style.backgroundImage = daily_icon_url[2];
+    document.querySelector(
+      ".forecast_30_homePage_icon_Class"
+    ).style.backgroundImage = daily_icon_url[3];
+    document.querySelector(
+      ".forecast_40_homePage_icon_Class"
+    ).style.backgroundImage = daily_icon_url[4];
 
     document.querySelector(".forecast_1_icon_Class").style.backgroundImage =
       daily_icon_url[1];
@@ -2191,23 +2223,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
   document
-    .querySelector(".forecast_day1_link_Class")
-    .addEventListener("click", (e) => {
-      closeAllPopup();
-      removeClassIcons();
-      modal7days.style.display = "block";
-      var element = document.getElementById("next7_icon_popup_page");
-      element.classList.add("sub_menu_icon_active_Class");
-
-      var currentIcon = document.getElementById("next7_icon_popup_page");
-      currentIcon.classList.add("sub_menu_current_icon_Class");
-
-      var currentSubMenu = document.getElementById("sub_menu_next7");
-      currentSubMenu.classList.add("sub_menu_current_Class");
-    });
-
-  document
-    .querySelector(".forecast_day2_link_Class")
+    .querySelector(".forecast_day_link_Class")
     .addEventListener("click", (e) => {
       closeAllPopup();
       removeClassIcons();
@@ -3251,6 +3267,14 @@ document.addEventListener("DOMContentLoaded", function () {
       maxZoom: 12,
       zoom: 4,
     });
+
+    var marker = new mapboxgl.Marker({
+      color: "#ff662b",
+      symbol: "rocket",
+      draggable: false,
+    })
+      .setLngLat(latandlongMapBox)
+      .addTo(mapWeather);
 
     mapWeather.on("load", () => {
       fetch("https://api.rainviewer.com/public/weather-maps.json")

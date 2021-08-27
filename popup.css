@@ -13,11 +13,11 @@
   --bg-color-hr: -webkit-gradient(
     linear,
     0 0,
-    100% 0,
+    100% 100%,
     from(white),
     to(white),
-    color-stop(25%, #cfcfcf),
-    color-stop(75%, #cfcfcf)
+    color-stop(15%, #cfcfcf),
+    color-stop(85%, #cfcfcf)
   );
   --icon-color: invert(29%) sepia(32%) saturate(4%) hue-rotate(318deg)
     brightness(94%) contrast(94%);
@@ -35,11 +35,11 @@
   --bg-color-hr: -webkit-gradient(
     linear,
     0 0,
-    100% 0,
+    100% 100%,
     from(black),
     to(black),
-    color-stop(25%, #8a8b8c),
-    color-stop(75%, #8a8b8c)
+    color-stop(15%, #8a8b8c),
+    color-stop(85%, #8a8b8c)
   );
   --icon-color: invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg)
     brightness(103%) contrast(103%);
@@ -213,7 +213,7 @@ input:checked + .slider_setting:before {
 body {
   width: 560px;
   height: 526px;
-  font-weight: 250 !important;
+  font-weight: 200 !important;
   background-color: var(--bg-color);
   border: 0px solid transparent;
   margin: 0;
@@ -904,12 +904,11 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 
 .forecast_day_Class {
   position: relative;
-  width: 140px;
-  max-width: 140px;
+  width: 15px;
   display: inline-block;
   text-align: left;
-  font-weight: 250;
-  font-size: 15px;
+  font-weight: 200;
+  font-size: 10px;
   cursor: pointer;
 }
 
@@ -967,22 +966,21 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 
 .forecast_temp_Class {
   position: relative;
-  width: 18px;
-  max-width: 20px;
+  width: 19px;
   display: inline-block;
   text-align: right;
-  font-weight: 250;
-  font-size: 15px;
-  padding-right: 3px;
-  padding-left: 14px;
+  font-weight: 200;
+  font-size: 12px;
+  padding-right: 2px;
+  padding-left: 0px;
 }
 
 .forecast_icon_Class {
   position: relative;
   color: rgba(0, 0, 0, 0);
   line-height: 20px;
-  width: 18px;
-  max-width: 18px;
+  width: 17px;
+  max-width: 17px;
   display: inline-block;
   background-position: center;
   background-repeat: no-repeat;
@@ -2711,8 +2709,8 @@ ul li {
 
 .forecast_Class {
   position: absolute;
-  left: 280px;
-  top: 340px;
+  left: 270px;
+  top: 335px;
 }
 
 .one_day_Class {
@@ -3621,4 +3619,16 @@ textarea:hover {
   border-radius: 10px;
   border: 1px var(--font-color) solid;
   margin-bottom: 60px !important;
+}
+
+.forecast_Class_inner {
+  display: flex;
+  flex-direction: row;
+  width: 95%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.forecast_Class_inner_sub {
+  padding-right: 27px;
 }
