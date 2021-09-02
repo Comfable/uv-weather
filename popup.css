@@ -550,8 +550,8 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 .report_button_Class {
   position: absolute;
   top: 348px;
-  width: 250px;
-  margin: 0 auto;
+  left: 60px;
+  width: 128px;
   font-weight: 250;
   font-size: 14px;
   color: rgba(255, 255, 255, 1);
@@ -559,15 +559,14 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   flex-direction: row;
   align-items: flex-end;
   justify-content: center;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 .radar_button_Class {
   position: absolute;
   top: 358px;
   left: 195px;
-  width: 100px;
-  height: 100px;
+  width: 25px;
+  height: 25px;
   margin: 0 auto;
 }
 
@@ -709,7 +708,7 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   width: 250px;
   text-align: center;
   font-weight: 250;
-  font-size: 12px;
+  font-size: 11.5px;
   color: #ffffff;
   margin: 0 auto;
 }
@@ -928,7 +927,8 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   display: inline-block;
   text-align: right;
   font-weight: 250;
-  font-size: 14px;
+  font-size: 11px;
+  color: #a9a9a9;
 }
 
 .forecast_wind_unit_Class {
@@ -937,6 +937,7 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   text-align: right;
   font-weight: 250;
   font-size: 11px;
+  color: #a9a9a9;
 }
 
 .forecast_wind_arrow_Class {
@@ -960,7 +961,7 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   width: 65px;
   max-width: 65px;
   display: inline-block;
-  padding-right: 25px;
+  padding-right: 7px;
   padding-left: 0px;
 }
 
@@ -1144,23 +1145,21 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 
 .forecast_day_modal_Class {
   position: relative;
-  width: 75px;
-  max-width: 75px;
+  width: 95px;
   display: inline-block;
   text-align: left;
   font-weight: 250;
-  font-size: 13px;
+  font-size: 12px;
   /*text-transform: uppercase;*/
 }
 
 .forecast_hour_modal_Class {
   position: relative;
-  width: 55px;
-  max-width: 55px;
+  width: 78px;
   display: inline-block;
   text-align: left;
   font-weight: 250;
-  font-size: 12.5px;
+  font-size: 12px;
 }
 
 .forecast_uv_modal_Class {
@@ -1170,26 +1169,26 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   display: inline-block;
   text-align: left;
   font-weight: 250;
-  font-size: 12.5px;
+  font-size: 11px;
   padding-left: 5px;
+  color: #a9a9a9;
 }
 
 .forecast_temp_modal_Class {
   position: relative;
-  width: 20px;
-  max-width: 20px;
-  display: inline-block;
-  text-align: right;
+  /* width: 20px;
+  max-width: 20px; */
+  text-align: left;
   font-weight: 250;
   font-size: 13px;
-  padding-right: 6px;
+  /* padding-right: 6px; */
 }
 
 .forecast_temp_min_modal_Class {
   position: relative;
   display: inline-block;
-  width: 23px;
-  max-width: 23px;
+  /* width: 23px;
+  max-width: 23px; */
   text-align: right;
   font-weight: 250;
   font-size: 13px;
@@ -1206,7 +1205,7 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   background-repeat: no-repeat;
   background-size: cover;
   border: 0px solid transparent;
-  margin-left: 5px;
+  margin-right: 3px;
   filter: var(--icon-color);
 }
 
@@ -1434,37 +1433,28 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   line-height: 150%;
 }
 
-.button_current_report_missing_Class {
-  background-color: #ff662b;
-  border: solid 1px #ff662b;
+.button_current_report_Class {
+  background-color: rgba(27, 41, 52, 0);
+  border: solid 2px white;
   border-radius: 20px;
+  opacity: 0.8;
   color: white;
   padding: 10px 30px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 12px;
-  margin: 25px 0px 25px 5px;
+  margin: 4px 2px;
   cursor: pointer;
   transition: all 0.15s;
-  align-content: center;
 }
 
-.button_current_report_missing_Class:hover {
-  background-color: white;
-  border: solid 1px #ff662b;
-  color: #ff662b;
-}
-
-.button_current_report_missing_Class:focus {
-  outline: 0 !important;
-}
-
-.button_current_report_Class {
-  background-color: rgba(27, 41, 52, 0);
-  border: solid 1px white;
+.button_current_report_Class:hover {
+  background-color: rgba(255, 255, 255, 1);
+  border: solid 2px white;
   border-radius: 20px;
-  color: white;
+  opacity: 0.7;
+  color: black;
   padding: 10px 30px;
   text-align: center;
   text-decoration: none;
@@ -1485,7 +1475,7 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   display: inline-block;
   text-align: left;
   font-weight: 250;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .current_report_value_Class {
@@ -1541,8 +1531,8 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 }
 
 .icon_raindrop_Class {
-  width: 10px;
-  height: 10px;
+  width: 7px;
+  height: 7px;
   margin-left: 16px;
   margin-top: 2px;
   margin-right: 0;
@@ -1555,7 +1545,8 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   display: inline-block;
   text-align: left;
   font-weight: 250;
-  font-size: 12.5px;
+  font-size: 11px;
+  color: #a9a9a9;
 }
 
 .forecast_uv_daily_modal_Class {
@@ -1643,11 +1634,6 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 .sub_menu_icon_active_Class {
   filter: invert(48%) sepia(52%) saturate(2544%) hue-rotate(342deg)
     brightness(101%) contrast(101%) !important;
-}
-
-.report_button_Class:hover {
-  filter: sepia(5%) saturate(652%) hue-rotate(198deg) brightness(117%)
-    contrast(77%);
 }
 
 .link_flickr_Class {
@@ -2706,23 +2692,16 @@ ul li {
   display: inline-block;
   filter: opacity(80%);
 }
-
+.forecast_daily_mainScreen_Class {
+  display: block;
+}
+.forecast_hourly_mainScreen_Class {
+  display: none;
+}
 .forecast_Class {
   position: absolute;
   left: 270px;
-  top: 335px;
-}
-
-.one_day_Class {
-  position: relative;
-}
-
-.two_day_Class {
-  position: relative;
-}
-
-.three_day_Class {
-  position: relative;
+  top: 350px;
 }
 
 .icon_box_Class {
@@ -2967,6 +2946,7 @@ ul li {
 
 .forecast_rain_unit_modal_Class {
   font-size: 10px;
+  color: #a9a9a9;
 }
 
 .forecast_rain_group_modal_Class {
@@ -2976,7 +2956,7 @@ ul li {
   text-align: left;
   font-weight: 250;
   font-size: 12px;
-  margin-right: 10px;
+  margin-right: 0;
 }
 
 .leaflet-control-attribution {
@@ -3624,11 +3604,87 @@ textarea:hover {
 .forecast_Class_inner {
   display: flex;
   flex-direction: row;
-  width: 95%;
+  width: 290px;
   height: 100%;
   cursor: pointer;
 }
 
 .forecast_Class_inner_sub {
   padding-right: 27px;
+}
+
+.daily_hourly_mainPage_Class {
+  position: absolute;
+  display: block;
+  z-index: 100;
+  top: 41px;
+  right: 30px;
+  text-align: right;
+  font-weight: 200;
+  font-size: 11.5px;
+  color: #a9a9a9;
+}
+
+/* .image_background_Class:hover .folding-angle {
+  border-width: 28px;
+}
+
+.current_icon_update:hover .folding-angle {
+  border-width: 28px;
+}
+
+.folding-angle {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-style: solid;
+  box-shadow: 1px 1px 10px 5px rgba(0, 0, 0, 0.85);
+  width: 0;
+  border-width: 0px;
+  border-color: rgba(255, 255, 255, 1) rgba(255, 255, 255, 0.6)
+    rgba(255, 255, 255, 0.6) rgba(255, 255, 255, 1);
+  border-radius: 0 0 3px 0;
+  transition: border-width 0.4s;
+}
+
+.kid_icon_hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 526px;
+  z-index: 100;
+}
+
+.kid_icon_hover a {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s linear 100ms, opacity 100ms;
+}
+
+.kid_icon_hover:hover a {
+  visibility: visible;
+  opacity: 1;
+  transition: visibility 0s linear 100ms, opacity 100ms;
+}
+
+.kid_icon {
+  z-index: 10000;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 15px;
+  width: 15px;
+  padding: 10px;
+  filter: invert(53%) sepia(78%) saturate(4480%) hue-rotate(343deg)
+    brightness(103%) contrast(98%);
+} */
+
+.forecast_daily_mainScreen_sub {
+  width: 45px;
+}
+
+.forecast_hourly_mainScreen_sub {
+  width: 48px;
 }

@@ -31,6 +31,9 @@
      <script src='/library/mapbox-gl.min.js' defer></script>
      <link href='/library/mapbox-gl.css' rel='stylesheet' />
      <script src="/library/mapbox-gl-geocoder.min.js" defer></script>
+     <script type="text/javascript" src="/library/tinycolor.js"></script>
+     <script type="text/javascript" src="/library/tinygradient.js"></script>
+     <script type="text/javascript" src="/library/d3.js"></script>
      <link rel="stylesheet" href="/library/mapbox-gl-geocoder.css" type="text/css" />
 
  </head>
@@ -56,7 +59,16 @@
      <div id="preload_body">
 
          <!-- aside -->
-         <aside id="image_background" class="image_background_Class"></aside>
+
+         <aside id="image_background" class="image_background_Class">
+            <!-- 
+            <div class='kid_icon_hover'>
+                <a href="https://uvweather.net/faq/" target="_blank"><img src='images/plus_icon.svg' class='kid_icon'/></a>
+            </div>
+            <div class="folding-angle">
+            </div>
+            -->
+         </aside>
 
          <div class="header"></div>
          <input type="checkbox" class="openSidebarMenu" id="openSidebarMenu">
@@ -310,71 +322,138 @@
 
 
          <div id="forecast" class="forecast_Class">
-             <hr class="hr_forecast" style="width: 100% !important;">
-            
-            <div class="forecast_Class_inner forecast_day_link_Class">
-            <span class="forecast_Class_inner_sub">
-             <div id="one_day_home" class="one_day_Class"> <span id="forecast_1_day" class="forecast_day_Class">
-                     1
-                 </span>
-                 <span id="forecast_1_icon" class="forecast_10_homePage_icon_Class forecast_icon_Class">
-                     .
-                 </span>
-                 <div style="margin-top: 2px;">
-                    <span id="forecast_1_temp" class="forecast_temp_Class">-°</span>
-                    <span id="forecast_1_temp_min" class="forecast_temp_Class" style="opacity: .55">
-                        -°
+            <div id="forecast_daily_mainScreen" class="forecast_daily_mainScreen_Class">
+                <div class="forecast_Class_inner forecast_day_link_Class">
+                <span class="forecast_Class_inner_sub">
+                <div class="forecast_daily_mainScreen_sub"> <span id="forecast_1_day" class="forecast_day_Class">
+                        1
                     </span>
-                 </div>
-             </div>
-             </span>
-             <span class="forecast_Class_inner_sub">
-             <div id="two_day_home" class="two_day_Class"> <span id="forecast_2_day" class="forecast_day_Class">
-                     2
-                 </span>
-                <span id="forecast_2_icon" class="forecast_20_homePage_icon_Class forecast_icon_Class">
+                    <span id="forecast_1_icon" class="forecast_10_homePage_icon_Class forecast_icon_Class">
                         .
                     </span>
-                 <div style="margin-top: 2px;">
-                    <span id="forecast_2_temp" class="forecast_temp_Class">-°</span>
-                    <span id="forecast_2_temp_min" class="forecast_temp_Class" style="opacity: .55">
-                        -°
-                    </span>
+                    <div style="margin-top: 2px;">
+                        <span id="forecast_1_temp" class="forecast_temp_Class">-°</span>
+                        <span id="forecast_1_temp_min" class="forecast_temp_Class" style="opacity: .55">
+                            -°
+                        </span>
+                    </div>
                 </div>
-             </div>
-            </span>
-            <span class="forecast_Class_inner_sub">
-             <div id="two_day_home" class="two_day_Class"> <span id="forecast_3_day" class="forecast_day_Class forecast_day2_link_Class">
-                     3
-                 </span>
-                <span id="forecast_3_icon" class="forecast_30_homePage_icon_Class forecast_icon_Class">
-                        .
+                </span>
+                <span class="forecast_Class_inner_sub">
+                <div class="forecast_daily_mainScreen_sub"> <span id="forecast_2_day" class="forecast_day_Class">
+                        2
                     </span>
-                 <div style="margin-top: 2px;">
-                    <span id="forecast_3_temp" class="forecast_temp_Class">-°</span>
-                    <span id="forecast_3_temp_min" class="forecast_temp_Class" style="opacity: .55;">
-                        -°
-                    </span>
+                    <span id="forecast_2_icon" class="forecast_20_homePage_icon_Class forecast_icon_Class">
+                            .
+                        </span>
+                    <div style="margin-top: 2px;">
+                        <span id="forecast_2_temp" class="forecast_temp_Class">-°</span>
+                        <span id="forecast_2_temp_min" class="forecast_temp_Class" style="opacity: .55">
+                            -°
+                        </span>
+                    </div>
                 </div>
-             </div>
-            </span>
-            <span class="forecast_Class_inner_sub">
-             <div id="two_day_home" class="two_day_Class"> <span id="forecast_4_day" class="forecast_day_Class forecast_day2_link_Class">
-                     4
-                 </span>
-                <span id="forecast_4_icon" class="forecast_40_homePage_icon_Class forecast_icon_Class">
-                        .
+                </span>
+                <span class="forecast_Class_inner_sub">
+                <div class="forecast_daily_mainScreen_sub"> <span id="forecast_3_day" class="forecast_day_Class">
+                        3
                     </span>
-                 <div style="margin-top: 2px;">
-                    <span id="forecast_4_temp" class="forecast_temp_Class">-°</span>
-                    <span id="forecast_4_temp_min" class="forecast_temp_Class" style="opacity: .55">
-                        -°
-                    </span>
+                    <span id="forecast_3_icon" class="forecast_30_homePage_icon_Class forecast_icon_Class">
+                            .
+                        </span>
+                    <div style="margin-top: 2px;">
+                        <span id="forecast_3_temp" class="forecast_temp_Class">-°</span>
+                        <span id="forecast_3_temp_min" class="forecast_temp_Class" style="opacity: .55;">
+                            -°
+                        </span>
+                    </div>
                 </div>
-             </div>
-            </span>
+                </span>
+                <span class="forecast_Class_inner_sub">
+                <div class="forecast_daily_mainScreen_sub"> <span id="forecast_4_day" class="forecast_day_Class">
+                        4
+                    </span>
+                    <span id="forecast_4_icon" class="forecast_40_homePage_icon_Class forecast_icon_Class">
+                            .
+                        </span>
+                    <div style="margin-top: 2px;">
+                        <span id="forecast_4_temp" class="forecast_temp_Class">-°</span>
+                        <span id="forecast_4_temp_min" class="forecast_temp_Class" style="opacity: .55">
+                            -°
+                        </span>
+                    </div>
+                </div>
+                </span>
+                </div>
+                <div id="hourly_link_mainPage" class="daily_hourly_mainPage_Class">
+                    <a target='_blank' class='blacklink'>
+                        + hourly forecast
+                    </a>
+                </div>
             </div>
-             <hr class="hr_forecast" style="width: 100% !important;">
+            <div id="forecast_hourly_mainScreen" class="forecast_hourly_mainScreen_Class">
+                <div class="forecast_Class_inner forecast_hour_link_Class" style="padding-top: 3px;">
+                    <span class="forecast_Class_inner_sub">
+                        <div class="forecast_hourly_mainScreen_sub"> 
+                            <span id="forecast_1_hourly" class="forecast_day_Class" style="font-size: 11px; font-weight: 200;">
+                                -
+                            </span>
+                            <div style="margin-top: 2px;">
+                                <span id="forecast_1_hourly_temp" class="forecast_temp_Class" style="width: 16px !important;">-°</span>
+                                <span id="forecast_1_hourly_icon" class="forecast_100_hours_icon_Class forecast_icon_Class" style="margin-left:0!important;">
+                                    .
+                                </span>
+                            </div>
+                        </div>
+                    </span>
+                    <span class="forecast_Class_inner_sub">
+                        <div class="forecast_hourly_mainScreen_sub"> 
+                            <span id="forecast_2_hourly" class="forecast_day_Class" style="font-size: 11px; font-weight: 200;">
+                                - 
+                            </span>
+
+                            <div style="margin-top: 2px;">
+                                <span id="forecast_2_hourly_temp" class="forecast_temp_Class" style="width: 16px !important;">-°</span>
+                                <span id="forecast_2_hourly_icon" class="forecast_200_hours_icon_Class forecast_icon_Class" style="margin-left:0!important;">
+                                        .
+                                </span>                                
+                            </div>
+                        </div>
+                    </span>
+                    <span class="forecast_Class_inner_sub">
+                        <div class="forecast_hourly_mainScreen_sub"> 
+                            <span id="forecast_3_hourly" class="forecast_day_Class" style="font-size: 11px; font-weight: 200;">
+                                - 
+                            </span>
+                            <div style="margin-top: 2px;">
+                                <span id="forecast_3_hourly_temp" class="forecast_temp_Class" style="width: 16px !important;">-°</span>
+                                <span id="forecast_3_hourly_icon" class="forecast_300_hours_icon_Class forecast_icon_Class" style="margin-left:0!important;">
+                                        .
+                                </span>                                
+                            </div>
+                        </div>
+                    </span>
+                    <span class="forecast_Class_inner_sub">
+                        <div class="forecast_hourly_mainScreen_sub"> 
+                            <span id="forecast_4_hourly" class="forecast_day_Class" style="font-size: 11px; font-weight: 200;">
+                                - 
+                            </span>
+                            <div style="margin-top: 2px;">
+                                <span id="forecast_4_hourly_temp" class="forecast_temp_Class" style="width: 16px !important;">-°</span>
+                                <span id="forecast_4_hourly_icon" class="forecast_400_hours_icon_Class forecast_icon_Class" style="margin-left:0!important;">
+                                        .
+                                </span>                                
+                            </div>
+                        </div>
+                    </span>
+                </div>
+                <div id="daily_link_mainPage" class="daily_hourly_mainPage_Class">
+                    <a target='_blank' class='blacklink'>
+                        + daily forecast
+                    </a>
+                </div>
+            </div>
+
          </div>
 
 
@@ -454,12 +533,6 @@
                  <div id="1_hours" class="1_hours_Class"> <span id="forecast_1_hours" class="forecast_hour_modal_Class">
                          -
                      </span>
-                     <span id="forecast_1_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_1_hours_temp" class="forecast_temp_modal_Class">
-                         -°
-                     </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
                          <span id="forecast_1_hours_rain" class="forecast_rain_modal_Class">
@@ -467,19 +540,19 @@
                          <span id="forecast_1_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_1_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_1_hours_icon" class="forecast_1_hours_icon_Class forecast_icon_modal_Class">
                          .
+                     </span>
+                    <span id="forecast_1_hours_temp" class="forecast_temp_modal_Class">
+                         -°
                      </span>
                  </div>
                  <hr id="1_hours_hr" class="hr_forecast">
                  <div id="2_hours" class="2_hours_Class"> <span id="forecast_2_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_2_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_2_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -488,19 +561,19 @@
                          <span id="forecast_2_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_2_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_2_hours_icon" class="forecast_2_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_2_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="2_hours_hr" class="hr_forecast">
                  <div id="3_hours" class="3_hours_Class"> <span id="forecast_3_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_3_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_3_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -509,19 +582,19 @@
                          <span id="forecast_3_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_3_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_3_hours_icon" class="forecast_3_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_3_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="3_hours_hr" class="hr_forecast">
                  <div id="4_hours" class="4_hours_Class"> <span id="forecast_4_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_4_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_4_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -530,19 +603,19 @@
                          <span id="forecast_4_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_4_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_4_hours_icon" class="forecast_4_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_4_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="4_hours_hr" class="hr_forecast">
                  <div id="5_hours" class="5_hours_Class"> <span id="forecast_5_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_5_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_5_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -551,19 +624,19 @@
                          <span id="forecast_5_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_5_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_5_hours_icon" class="forecast_5_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_5_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="5_hours_hr" class="hr_forecast">
                  <div id="6_hours" class="6_hours_Class"> <span id="forecast_6_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_6_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_6_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -572,20 +645,21 @@
                          <span id="forecast_6_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_6_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_6_hours_icon" class="forecast_6_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_6_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="6_hours_hr" class="hr_forecast">
                  <div id="7_hours" class="7_hours_Class"> <span id="forecast_7_hours" class="forecast_hour_modal_Class">
                          -
                      </span>
-                     <span id="forecast_7_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_7_hours_temp" class="forecast_temp_modal_Class">
-                         -°
-                     </span>
+
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
                          <span id="forecast_7_hours_rain" class="forecast_rain_modal_Class">
@@ -593,19 +667,19 @@
                          <span id="forecast_7_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_7_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                    
                      <span id="forecast_7_hours_icon" class="forecast_7_hours_icon_Class forecast_icon_modal_Class">
                          .
+                     </span>
+                    <span id="forecast_7_hours_temp" class="forecast_temp_modal_Class">
+                         -°
                      </span>
                  </div>
                  <hr id="7_hours_hr" class="hr_forecast">
                  <div id="8_hours" class="8_hours_Class"> <span id="forecast_8_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_8_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_8_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -614,19 +688,19 @@
                          <span id="forecast_8_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_8_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_8_hours_icon" class="forecast_8_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_8_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="8_hours_hr" class="hr_forecast">
                  <div id="9_hours" class="9_hours_Class"> <span id="forecast_9_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_9_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_9_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -635,19 +709,19 @@
                          <span id="forecast_9_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_9_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_9_hours_icon" class="forecast_9_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_9_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="9_hours_hr" class="hr_forecast">
                  <div id="10_hours" class="10_hours_Class"> <span id="forecast_10_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_10_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_10_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -656,19 +730,19 @@
                          <span id="forecast_10_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_10_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_10_hours_icon" class="forecast_10_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                    <span id="forecast_10_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="10_hours_hr" class="hr_forecast">
                  <div id="11_hours" class="11_hours_Class"> <span id="forecast_11_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_11_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_11_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -677,19 +751,19 @@
                          <span id="forecast_11_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_11_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_11_hours_icon" class="forecast_11_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_11_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="11_hours_hr" class="hr_forecast">
                  <div id="12_hours" class="12_hours_Class"> <span id="forecast_12_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_12_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_12_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -698,19 +772,19 @@
                          <span id="forecast_12_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_12_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_12_hours_icon" class="forecast_12_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_12_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="12_hours_hr" class="hr_forecast">
                  <div id="13_hours" class="13_hours_Class"> <span id="forecast_13_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_13_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_13_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -719,19 +793,19 @@
                          <span id="forecast_13_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_13_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_13_hours_icon" class="forecast_13_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_13_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="13_hours_hr" class="hr_forecast">
                  <div id="14_hours" class="14_hours_Class"> <span id="forecast_14_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_14_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_14_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -740,19 +814,19 @@
                          <span id="forecast_14_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_14_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_14_hours_icon" class="forecast_14_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_14_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="14_hours_hr" class="hr_forecast">
                  <div id="15_hours" class="15_hours_Class"> <span id="forecast_15_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_15_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_15_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -761,19 +835,19 @@
                          <span id="forecast_15_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_15_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_15_hours_icon" class="forecast_15_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_15_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="15_hours_hr" class="hr_forecast">
                  <div id="16_hours" class="16_hours_Class"> <span id="forecast_16_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_16_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_16_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -782,19 +856,19 @@
                          <span id="forecast_16_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_16_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_16_hours_icon" class="forecast_16_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_16_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="16_hours_hr" class="hr_forecast">
                  <div id="17_hours" class="17_hours_Class"> <span id="forecast_17_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_17_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_17_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -803,19 +877,19 @@
                          <span id="forecast_17_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_17_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_17_hours_icon" class="forecast_17_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_17_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="17_hours_hr" class="hr_forecast">
                  <div id="18_hours" class="18_hours_Class"> <span id="forecast_18_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_18_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_18_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -824,19 +898,19 @@
                          <span id="forecast_18_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_18_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_18_hours_icon" class="forecast_18_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_18_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="18_hours_hr" class="hr_forecast">
                  <div id="19_hours" class="19_hours_Class"> <span id="forecast_19_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_19_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_19_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -845,20 +919,21 @@
                          <span id="forecast_19_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_19_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_19_hours_icon" class="forecast_19_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_19_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="19_hours_hr" class="hr_forecast">
                  <div id="20_hours" class="20_hours_Class"> <span id="forecast_20_hours" class="forecast_hour_modal_Class">
                          -
                      </span>
-                     <span id="forecast_20_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_20_hours_temp" class="forecast_temp_modal_Class">
-                         -°
-                     </span>
+
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
                          <span id="forecast_20_hours_rain" class="forecast_rain_modal_Class">
@@ -866,19 +941,19 @@
                          <span id="forecast_20_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_20_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_20_hours_icon" class="forecast_20_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_20_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="20_hours_hr" class="hr_forecast">
                  <div id="21_hours" class="21_hours_Class"> <span id="forecast_21_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_21_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_21_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -887,19 +962,19 @@
                          <span id="forecast_21_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_21_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_21_hours_icon" class="forecast_21_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_21_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="21_hours_hr" class="hr_forecast">
                  <div id="22_hours" class="22_hours_Class"> <span id="forecast_22_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_22_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_22_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -908,19 +983,19 @@
                          <span id="forecast_22_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_22_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_22_hours_icon" class="forecast_22_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_22_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="22_hours_hr" class="hr_forecast">
                  <div id="23_hours" class="23_hours_Class"> <span id="forecast_23_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_23_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_23_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -929,20 +1004,21 @@
                          <span id="forecast_23_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_23_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_23_hours_icon" class="forecast_23_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_23_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="23_hours_hr" class="hr_forecast">
                  <div id="24_hours" class="24_hours_Class"> <span id="forecast_24_hours" class="forecast_hour_modal_Class">
                          -
                      </span>
-                     <span id="forecast_24_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_24_hours_temp" class="forecast_temp_modal_Class">
-                         -°
-                     </span>
+
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
                          <span id="forecast_24_hours_rain" class="forecast_rain_modal_Class">
@@ -950,19 +1026,19 @@
                          <span id="forecast_24_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_24_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_24_hours_icon" class="forecast_24_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_24_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="24_hours_hr" class="hr_forecast">
                  <div id="25_hours" class="25_hours_Class"> <span id="forecast_25_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_25_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_25_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -971,19 +1047,19 @@
                          <span id="forecast_25_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_25_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_25_hours_icon" class="forecast_25_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_25_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="25_hours_hr" class="hr_forecast">
                  <div id="26_hours" class="26_hours_Class"> <span id="forecast_26_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_26_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_26_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -992,19 +1068,19 @@
                          <span id="forecast_26_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_26_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_26_hours_icon" class="forecast_26_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_26_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="26_hours_hr" class="hr_forecast">
                  <div id="27_hours" class="27_hours_Class"> <span id="forecast_27_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_27_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_27_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -1013,19 +1089,19 @@
                          <span id="forecast_27_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_27_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_27_hours_icon" class="forecast_27_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_27_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="27_hours_hr" class="hr_forecast">
                  <div id="28_hours" class="28_hours_Class"> <span id="forecast_28_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_28_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_28_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -1034,19 +1110,19 @@
                          <span id="forecast_28_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_28_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_28_hours_icon" class="forecast_28_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_28_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="28_hours_hr" class="hr_forecast">
                  <div id="29_hours" class="29_hours_Class"> <span id="forecast_29_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_29_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_29_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -1055,19 +1131,19 @@
                          <span id="forecast_29_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_29_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_29_hours_icon" class="forecast_29_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_29_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="29_hours_hr" class="hr_forecast">
                  <div id="30_hours" class="30_hours_Class"> <span id="forecast_30_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_30_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_30_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -1076,19 +1152,19 @@
                          <span id="forecast_30_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_30_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_30_hours_icon" class="forecast_30_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_30_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="30_hours_hr" class="hr_forecast">
                  <div id="31_hours" class="31_hours_Class"> <span id="forecast_31_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_31_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_31_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -1097,19 +1173,19 @@
                          <span id="forecast_31_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_31_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_31_hours_icon" class="forecast_31_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_31_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="31_hours_hr" class="hr_forecast">
                  <div id="32_hours" class="32_hours_Class"> <span id="forecast_32_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_32_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_32_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -1118,19 +1194,19 @@
                          <span id="forecast_32_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_32_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_32_hours_icon" class="forecast_32_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_32_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="32_hours_hr" class="hr_forecast">
                  <div id="33_hours" class="33_hours_Class"> <span id="forecast_33_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_33_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_33_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -1139,19 +1215,19 @@
                          <span id="forecast_33_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_33_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_33_hours_icon" class="forecast_33_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_33_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="33_hours_hr" class="hr_forecast">
                  <div id="34_hours" class="34_hours_Class"> <span id="forecast_34_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_34_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_34_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -1160,19 +1236,19 @@
                          <span id="forecast_34_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_34_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_34_hours_icon" class="forecast_34_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_34_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="34_hours_hr" class="hr_forecast">
                  <div id="35_hours" class="35_hours_Class"> <span id="forecast_35_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_35_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_35_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -1181,19 +1257,19 @@
                          <span id="forecast_35_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_35_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_35_hours_icon" class="forecast_35_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_35_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="35_hours_hr" class="hr_forecast">
                  <div id="36_hours" class="36_hours_Class"> <span id="forecast_36_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_36_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_36_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -1202,19 +1278,19 @@
                          <span id="forecast_36_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_36_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_36_hours_icon" class="forecast_36_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_36_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="36_hours_hr" class="hr_forecast">
                  <div id="37_hours" class="37_hours_Class"> <span id="forecast_37_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_37_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_37_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -1223,19 +1299,19 @@
                          <span id="forecast_37_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_37_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_37_hours_icon" class="forecast_37_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_37_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="37_hours_hr" class="hr_forecast">
                  <div id="38_hours" class="38_hours_Class"> <span id="forecast_38_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_38_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_38_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -1244,19 +1320,19 @@
                          <span id="forecast_38_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_38_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_38_hours_icon" class="forecast_38_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_38_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="38_hours_hr" class="hr_forecast">
                  <div id="39_hours" class="39_hours_Class"> <span id="forecast_39_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_39_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_39_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -1265,19 +1341,19 @@
                          <span id="forecast_39_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_39_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_39_hours_icon" class="forecast_39_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_39_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="39_hours_hr" class="hr_forecast">
                  <div id="40_hours" class="40_hours_Class"> <span id="forecast_40_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_40_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_40_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -1286,19 +1362,19 @@
                          <span id="forecast_40_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_40_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_40_hours_icon" class="forecast_40_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_40_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="40_hours_hr" class="hr_forecast">
                  <div id="41_hours" class="41_hours_Class"> <span id="forecast_41_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_41_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_41_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -1307,19 +1383,19 @@
                          <span id="forecast_41_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_41_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_41_hours_icon" class="forecast_41_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_41_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="41_hours_hr" class="hr_forecast">
                  <div id="42_hours" class="42_hours_Class"> <span id="forecast_42_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_42_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_42_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -1328,19 +1404,19 @@
                          <span id="forecast_42_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_42_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_42_hours_icon" class="forecast_42_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_42_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="42_hours_hr" class="hr_forecast">
                  <div id="43_hours" class="43_hours_Class"> <span id="forecast_43_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_43_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_43_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -1349,19 +1425,19 @@
                          <span id="forecast_43_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_43_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_43_hours_icon" class="forecast_43_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_43_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="43_hours_hr" class="hr_forecast">
                  <div id="44_hours" class="44_hours_Class"> <span id="forecast_44_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_44_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_44_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -1370,19 +1446,19 @@
                          <span id="forecast_44_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_44_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_44_hours_icon" class="forecast_44_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_44_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="44_hours_hr" class="hr_forecast">
                  <div id="45_hours" class="45_hours_Class"> <span id="forecast_45_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_45_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_45_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -1391,19 +1467,19 @@
                          <span id="forecast_45_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_45_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_45_hours_icon" class="forecast_45_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_45_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="45_hours_hr" class="hr_forecast">
                  <div id="46_hours" class="46_hours_Class"> <span id="forecast_46_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_46_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_46_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -1412,19 +1488,19 @@
                          <span id="forecast_46_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_46_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_46_hours_icon" class="forecast_46_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_46_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="46_hours_hr" class="hr_forecast">
                  <div id="47_hours" class="47_hours_Class"> <span id="forecast_47_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_47_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_47_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -1433,19 +1509,19 @@
                          <span id="forecast_47_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_47_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_47_hours_icon" class="forecast_47_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_47_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="47_hours_hr" class="hr_forecast">
                  <div id="48_hours" class="48_hours_Class"> <span id="forecast_48_hours" class="forecast_hour_modal_Class">
                          -
-                     </span>
-                     <span id="forecast_48_hours_uv" class="forecast_uv_modal_Class">
-                         UVI -
-                     </span>
-                     <span id="forecast_48_hours_temp" class="forecast_temp_modal_Class">
-                         -°
                      </span>
                      <img id="raindrop" src="images/drop.svg" class="icon_raindrop_Class" />
                      <span class="forecast_rain_group_modal_Class">
@@ -1454,9 +1530,15 @@
                          <span id="forecast_48_hours_rain_unit" class="forecast_rain_unit_modal_Class">
                          </span>
                      </span>
+                     <span id="forecast_48_hours_uv" class="forecast_uv_modal_Class">
+                         UVI -
+                     </span>                     
                      <span id="forecast_48_hours_icon" class="forecast_48_hours_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_48_hours_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>                     
                  </div>
                  <hr id="48_hours_hr" class="hr_forecast">
                  <br>
@@ -1634,18 +1716,22 @@
                              <span id="forecast_10_wind" class="forecast_wind_Class"> </span>
                              <span id="forecast_10_wind_unit" class="forecast_wind_unit_Class">mph</span>
                          </span>
-                         <span id="forecast_10_wind_arrow" class="forecast_wind_arrow_Class">↑</span>
                      </span>
 
-                     <span id="forecast_10_temp" class="forecast_temp_modal_Class">
-                         -°
-                     </span>
-                     <span id="forecast_10_temp_min" class="forecast_temp_min_modal_Class">
-                         -°
-                     </span>
                      <span id="forecast_10_icon" class="forecast_1_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     
+                     <span id="forecast_10_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>
+                     <span>
+                         /
+                     </span>                     
+                     <span id="forecast_10_temp_min" class="forecast_temp_min_modal_Class">
+                         -°
+                     </span>
+
                  </div>
                  <hr class="hr_forecast">
                  <div id="two_day" class="two_day_Class"> <span id="forecast_20_day" class="forecast_day_modal_Class">
@@ -1657,18 +1743,20 @@
                              <span id="forecast_20_wind" class="forecast_wind_Class"> </span>
                              <span id="forecast_20_wind_unit" class="forecast_wind_unit_Class">mph</span>
                          </span>
-                         <span id="forecast_20_wind_arrow" class="forecast_wind_arrow_Class">↑</span>
-                     </span>
-
-                     <span id="forecast_20_temp" class="forecast_temp_modal_Class">
-                         -°
-                     </span>
-                     <span id="forecast_20_temp_min" class="forecast_temp_min_modal_Class">
-                         -°
                      </span>
                      <span id="forecast_20_icon" class="forecast_2_icon_Class forecast_icon_modal_Class">
                          .
                      </span>
+                     <span id="forecast_20_temp" class="forecast_temp_modal_Class">
+                         -°
+                     </span>
+                     <span>
+                         /
+                     </span>                     
+                     <span id="forecast_20_temp_min" class="forecast_temp_min_modal_Class">
+                         -°
+                     </span>
+
                  </div>
                  <hr class="hr_forecast">
                  <div id="three_day" class="three_day_Class"> <span id="forecast_30_day" class="forecast_day_modal_Class">
@@ -1680,17 +1768,20 @@
                              <span id="forecast_30_wind" class="forecast_wind_Class"> </span>
                              <span id="forecast_30_wind_unit" class="forecast_wind_unit_Class">mph</span>
                          </span>
-                         <span id="forecast_30_wind_arrow" class="forecast_wind_arrow_Class">↑</span>
                      </span>
-
+                    <span id="forecast_30_icon" class="forecast_3_icon_Class forecast_icon_modal_Class">
+                         .
+                    </span>
                      <span id="forecast_30_temp" class="forecast_temp_modal_Class">
                          -°
                      </span>
+                     <span>
+                         /
+                     </span>                     
                      <span id="forecast_30_temp_min" class="forecast_temp_min_modal_Class">
                          -°
-                     </span> <span id="forecast_30_icon" class="forecast_3_icon_Class forecast_icon_modal_Class">
-                         .
-                         c
+                     </span> 
+      
                  </div>
                  <hr class="hr_forecast">
                  <div id="four_day" class="three_day_Class">
@@ -1703,17 +1794,20 @@
                              <span id="forecast_40_wind" class="forecast_wind_Class"> </span>
                              <span id="forecast_40_wind_unit" class="forecast_wind_unit_Class">mph</span>
                          </span>
-                         <span id="forecast_40_wind_arrow" class="forecast_wind_arrow_Class">↑</span>
                      </span>
-
+                     <span id="forecast_40_icon" class="forecast_4_icon_Class forecast_icon_modal_Class">
+                         .
+                     </span>
                      <span id="forecast_40_temp" class="forecast_temp_modal_Class">
                          -°
                      </span>
+                     <span>
+                         /
+                     </span>                     
                      <span id="forecast_40_temp_min" class="forecast_temp_min_modal_Class">
                          -°
-                     </span> <span id="forecast_40_icon" class="forecast_4_icon_Class forecast_icon_modal_Class">
-                         .
-                         c
+                     </span> 
+
                  </div>
                  <hr class="hr_forecast">
                  <div id="five_day" class="three_day_Class">
@@ -1725,17 +1819,20 @@
                              <span id="forecast_50_wind" class="forecast_wind_Class"> </span>
                              <span id="forecast_50_wind_unit" class="forecast_wind_unit_Class">mph</span>
                          </span>
-                         <span id="forecast_50_wind_arrow" class="forecast_wind_arrow_Class">↑</span>
                      </span>
-
+                     <span id="forecast_50_icon" class="forecast_5_icon_Class forecast_icon_modal_Class">
+                         .
+                     </span>
                      <span id="forecast_50_temp" class="forecast_temp_modal_Class">
                          -°
                      </span>
+                     <span>
+                         /
+                     </span>                     
                      <span id="forecast_50_temp_min" class="forecast_temp_min_modal_Class">
                          -°
-                     </span> <span id="forecast_50_icon" class="forecast_5_icon_Class forecast_icon_modal_Class">
-                         .
-                         c
+                     </span> 
+
                  </div>
                  <hr class="hr_forecast">
                  <div id="six_day" class="three_day_Class">
@@ -1748,17 +1845,20 @@
                              <span id="forecast_60_wind" class="forecast_wind_Class"> </span>
                              <span id="forecast_60_wind_unit" class="forecast_wind_unit_Class">mph</span>
                          </span>
-                         <span id="forecast_60_wind_arrow" class="forecast_wind_arrow_Class">↑</span>
                      </span>
-
+                     <span id="forecast_60_icon" class="forecast_6_icon_Class forecast_icon_modal_Class">
+                         .
+                     </span>
                      <span id="forecast_60_temp" class="forecast_temp_modal_Class">
                          -°
                      </span>
+                     <span>
+                         /
+                     </span>                     
                      <span id="forecast_60_temp_min" class="forecast_temp_min_modal_Class">
                          -°
-                     </span> <span id="forecast_60_icon" class="forecast_6_icon_Class forecast_icon_modal_Class">
-                         .
-                         c
+                     </span> 
+
                  </div>
                  <hr class="hr_forecast">
                  <div id="seven_day" class="three_day_Class">
@@ -1771,17 +1871,20 @@
                              <span id="forecast_70_wind" class="forecast_wind_Class"> </span>
                              <span id="forecast_70_wind_unit" class="forecast_wind_unit_Class">mph</span>
                          </span>
-                         <span id="forecast_70_wind_arrow" class="forecast_wind_arrow_Class">↑</span>
                      </span>
-
+                     <span id="forecast_70_icon" class="forecast_7_icon_Class forecast_icon_modal_Class">
+                         .
+                     </span>
                      <span id="forecast_70_temp" class="forecast_temp_modal_Class">
                          -°
                      </span>
+                     <span>
+                         /
+                     </span>                     
                      <span id="forecast_70_temp_min" class="forecast_temp_min_modal_Class">
                          -°
-                     </span> <span id="forecast_70_icon" class="forecast_7_icon_Class forecast_icon_modal_Class">
-                         .
-                         c
+                     </span> 
+
                  </div>
 
              </div>
@@ -2160,7 +2263,7 @@
                     </span>
 
                     <span class="setting_section_animated_icon_Class">
-                        <sp class="setting_section_title_animated_icon_Class">Animated Main Screen Icon</sp>
+                        <sp class="setting_section_title_animated_icon_Class">Animated Current weather Icon</sp>
                         <label class="theme-switch_setting_animated_icon" for="checkbox_animatedIcon">
                             <input type="checkbox" id="checkbox_animatedIcon" />
                             <div class="slider_setting round"></div>

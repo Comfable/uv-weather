@@ -32,7 +32,7 @@ function weatherUS2(latlong, citys, resolve) {
         ) {
           usHourlyTempXML =
             srcDOMJsonUS.dwml.data.parameters.temperature[2].value;
-          // console.log(JSON.stringify(usHourlyTempXML));
+          // console.log(JSON.stringify(srcDOMJsonUS.dwml.data.parameters));
           // console.log("US-1");
           // console.log("us-result");
           if (

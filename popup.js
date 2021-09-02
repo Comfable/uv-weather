@@ -120,6 +120,20 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+  chrome.storage.local.get("hourlySelected", function (data) {
+    if (data.hourlySelected == 0 || typeof data.hourlySelected == "undefined") {
+      document.getElementById("forecast_daily_mainScreen").style.display =
+        "block";
+      document.getElementById("forecast_hourly_mainScreen").style.display =
+        "none";
+    } else {
+      document.getElementById("forecast_daily_mainScreen").style.display =
+        "none";
+      document.getElementById("forecast_hourly_mainScreen").style.display =
+        "block";
+    }
+  });
+
   chrome.storage.local.get("badgeSize", function (data) {
     if (data.badgeSize) {
       if (data.badgeSize === "1") {
@@ -179,9 +193,9 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       }
     } else {
-      toggleSwitchAnimatedIcon.checked = true;
+      toggleSwitchAnimatedIcon.checked = false;
       chrome.storage.local.set({
-        animatedIcon: "1",
+        animatedIcon: "0",
       });
     }
 
@@ -1098,6 +1112,15 @@ document.addEventListener("DOMContentLoaded", function () {
           document.querySelector(`#forecast_${i + 1}_hours_temp`).textContent =
             Math.round(caHourlyTempXML[i]) + "°";
         }
+        document.querySelector("#forecast_1_hourly_temp").textContent =
+          Math.round(caHourlyTempXML[0]) + "°";
+        document.querySelector("#forecast_2_hourly_temp").textContent =
+          Math.round(caHourlyTempXML[1]) + "°";
+        document.querySelector("#forecast_3_hourly_temp").textContent =
+          Math.round(caHourlyTempXML[2]) + "°";
+        document.querySelector("#forecast_4_hourly_temp").textContent =
+          Math.round(caHourlyTempXML[3]) + "°";
+
         for (i = 25; i < 49; i++) {
           document.querySelector(`#forecast_${i}_hours_temp`).textContent =
             "--";
@@ -1116,6 +1139,14 @@ document.addEventListener("DOMContentLoaded", function () {
           document.querySelector(`#forecast_${i}_hours_temp`).textContent =
             Math.round(f2c(usHourlyTempXML[i])) + "°";
         }
+        document.querySelector("#forecast_1_hourly_temp").textContent =
+          Math.round(f2c(usHourlyTempXML[1])) + "°";
+        document.querySelector("#forecast_2_hourly_temp").textContent =
+          Math.round(f2c(usHourlyTempXML[2])) + "°";
+        document.querySelector("#forecast_3_hourly_temp").textContent =
+          Math.round(f2c(usHourlyTempXML[3])) + "°";
+        document.querySelector("#forecast_4_hourly_temp").textContent =
+          Math.round(f2c(usHourlyTempXML[4])) + "°";
       } else {
         var hourlyArray = [];
         for (i = 1; i < 49; i++) {
@@ -1128,6 +1159,14 @@ document.addEventListener("DOMContentLoaded", function () {
           document.querySelector(`#forecast_${i + 1}_hours_temp`).textContent =
             Math.round(hourlyArray[i]) + "°";
         }
+        document.querySelector("#forecast_1_hourly_temp").textContent =
+          Math.round(hourlyArray[0]) + "°";
+        document.querySelector("#forecast_2_hourly_temp").textContent =
+          Math.round(hourlyArray[1]) + "°";
+        document.querySelector("#forecast_3_hourly_temp").textContent =
+          Math.round(hourlyArray[2]) + "°";
+        document.querySelector("#forecast_4_hourly_temp").textContent =
+          Math.round(hourlyArray[3]) + "°";
       }
     });
     document.querySelector("#summery_next7_text").textContent = summaryDailyC;
@@ -1275,6 +1314,14 @@ document.addEventListener("DOMContentLoaded", function () {
           document.querySelector(`#forecast_${i + 1}_hours_temp`).textContent =
             Math.round(c2f(caHourlyTempXML[i])) + "°";
         }
+        document.querySelector("#forecast_1_hourly_temp").textContent =
+          Math.round(c2f(caHourlyTempXML[0])) + "°";
+        document.querySelector("#forecast_2_hourly_temp").textContent =
+          Math.round(c2f(caHourlyTempXML[1])) + "°";
+        document.querySelector("#forecast_3_hourly_temp").textContent =
+          Math.round(c2f(caHourlyTempXML[2])) + "°";
+        document.querySelector("#forecast_4_hourly_temp").textContent =
+          Math.round(c2f(caHourlyTempXML[3])) + "°";
         for (i = 25; i < 49; i++) {
           document.querySelector(`#forecast_${i}_hours_temp`).textContent =
             "--";
@@ -1293,6 +1340,14 @@ document.addEventListener("DOMContentLoaded", function () {
           document.querySelector(`#forecast_${i}_hours_temp`).textContent =
             Math.round(usHourlyTempXML[i]) + "°";
         }
+        document.querySelector("#forecast_1_hourly_temp").textContent =
+          Math.round(usHourlyTempXML[1]) + "°";
+        document.querySelector("#forecast_2_hourly_temp").textContent =
+          Math.round(usHourlyTempXML[2]) + "°";
+        document.querySelector("#forecast_3_hourly_temp").textContent =
+          Math.round(usHourlyTempXML[3]) + "°";
+        document.querySelector("#forecast_4_hourly_temp").textContent =
+          Math.round(usHourlyTempXML[4]) + "°";
       } else {
         var hourlyArray = [];
         for (i = 1; i < 49; i++) {
@@ -1305,6 +1360,14 @@ document.addEventListener("DOMContentLoaded", function () {
           document.querySelector(`#forecast_${i + 1}_hours_temp`).textContent =
             Math.round(c2f(hourlyArray[i])) + "°";
         }
+        document.querySelector("#forecast_1_hourly_temp").textContent =
+          Math.round(c2f(hourlyArray[0])) + "°";
+        document.querySelector("#forecast_2_hourly_temp").textContent =
+          Math.round(c2f(hourlyArray[1])) + "°";
+        document.querySelector("#forecast_3_hourly_temp").textContent =
+          Math.round(c2f(hourlyArray[2])) + "°";
+        document.querySelector("#forecast_4_hourly_temp").textContent =
+          Math.round(c2f(hourlyArray[3])) + "°";
       }
     });
 
@@ -1450,6 +1513,36 @@ document.addEventListener("DOMContentLoaded", function () {
                     offsetUnix
                 )
                 .format("HH") + ":00";
+
+            document.querySelector("#forecast_1_hourly").textContent =
+              moment
+                .unix(
+                  moment(resultNO.properties.timeseries[1].time).unix() +
+                    offsetUnix
+                )
+                .format("HH") + ":00";
+            document.querySelector("#forecast_2_hourly").textContent =
+              moment
+                .unix(
+                  moment(resultNO.properties.timeseries[2].time).unix() +
+                    offsetUnix
+                )
+                .format("HH") + ":00";
+            document.querySelector("#forecast_3_hourly").textContent =
+              moment
+                .unix(
+                  moment(resultNO.properties.timeseries[3].time).unix() +
+                    offsetUnix
+                )
+                .format("HH") + ":00";
+            document.querySelector("#forecast_4_hourly").textContent =
+              moment
+                .unix(
+                  moment(resultNO.properties.timeseries[4].time).unix() +
+                    offsetUnix
+                )
+                .format("HH") + ":00";
+
             document.querySelector(`#forecast_${i}_hours_uv`).textContent =
               "UVI " +
               Math.round(
@@ -1513,6 +1606,34 @@ document.addEventListener("DOMContentLoaded", function () {
               `#forecast_${i}_hours_rain_unit`
             ).textContent = "mm";
           }
+          document.querySelector(
+            "#forecast_1_hourly"
+          ).textContent = moment
+            .unix(
+              moment(resultNO.properties.timeseries[1].time).unix() + offsetUnix
+            )
+            .format("h A");
+          document.querySelector(
+            "#forecast_2_hourly"
+          ).textContent = moment
+            .unix(
+              moment(resultNO.properties.timeseries[2].time).unix() + offsetUnix
+            )
+            .format("h A");
+          document.querySelector(
+            "#forecast_3_hourly"
+          ).textContent = moment
+            .unix(
+              moment(resultNO.properties.timeseries[3].time).unix() + offsetUnix
+            )
+            .format("h A");
+          document.querySelector(
+            "#forecast_4_hourly"
+          ).textContent = moment
+            .unix(
+              moment(resultNO.properties.timeseries[4].time).unix() + offsetUnix
+            )
+            .format("h A");
           document.getElementById("setting_defualt_button_12h").checked = true;
           document.getElementById("setting_defualt_button_24h").checked = false;
           document.getElementById("setting_defualt_button_12h").disabled = true;
@@ -1652,62 +1773,123 @@ document.addEventListener("DOMContentLoaded", function () {
           document.querySelector(
             ".forecast_" + i + "_hours_icon_Class"
           ).style.backgroundImage = 'url("images/weather_icon/b_sun.svg")';
+          if (i < 5) {
+            document.querySelector(
+              ".forecast_" + i * 100 + "_hours_icon_Class"
+            ).style.backgroundImage = 'url("images/weather_icon/b_sun.svg")';
+          }
           break;
         case "clear-night":
           document.querySelector(
             ".forecast_" + i + "_hours_icon_Class"
           ).style.backgroundImage = 'url("images/weather_icon/b_moon.svg")';
+          if (i < 5) {
+            document.querySelector(
+              ".forecast_" + i * 100 + "_hours_icon_Class"
+            ).style.backgroundImage = 'url("images/weather_icon/b_moon.svg")';
+          }
           break;
         case "rain":
           document.querySelector(
             ".forecast_" + i + "_hours_icon_Class"
           ).style.backgroundImage =
             'url("images/weather_icon/b_cloud_rain.svg")';
+          if (i < 5) {
+            document.querySelector(
+              ".forecast_" + i * 100 + "_hours_icon_Class"
+            ).style.backgroundImage =
+              'url("images/weather_icon/b_cloud_rain.svg")';
+          }
           break;
         case "snow":
           document.querySelector(
             ".forecast_" + i + "_hours_icon_Class"
           ).style.backgroundImage =
             'url("images/weather_icon/b_cloud_snow.svg")';
+          if (i < 5) {
+            document.querySelector(
+              ".forecast_" + i * 100 + "_hours_icon_Class"
+            ).style.backgroundImage =
+              'url("images/weather_icon/b_cloud_snow.svg")';
+          }
           break;
         case "sleet":
           document.querySelector(
             ".forecast_" + i + "_hours_icon_Class"
           ).style.backgroundImage =
             'url("images/weather_icon/b_cloud_snow_alt.svg")';
+          if (i < 5) {
+            document.querySelector(
+              ".forecast_" + i * 100 + "_hours_icon_Class"
+            ).style.backgroundImage =
+              'url("images/weather_icon/b_cloud_snow_alt.svg")';
+          }
           break;
         case "wind":
           document.querySelector(
             ".forecast_" + i + "_hours_icon_Class"
           ).style.backgroundImage = 'url("images/weather_icon/b_wind.svg")';
+          if (i < 5) {
+            document.querySelector(
+              ".forecast_" + i * 100 + "_hours_icon_Class"
+            ).style.backgroundImage = 'url("images/weather_icon/b_wind.svg")';
+          }
           break;
         case "fog":
           document.querySelector(
             ".forecast_" + i + "_hours_icon_Class"
           ).style.backgroundImage =
             'url("images/weather_icon/b_cloud_fog_alt.svg")';
+          if (i < 5) {
+            document.querySelector(
+              ".forecast_" + i * 100 + "_hours_icon_Class"
+            ).style.backgroundImage =
+              'url("images/weather_icon/b_cloud_fog_alt.svg")';
+          }
           break;
         case "cloudy":
           document.querySelector(
             ".forecast_" + i + "_hours_icon_Class"
           ).style.backgroundImage = 'url("images/weather_icon/b_cloud.svg")';
+          if (i < 5) {
+            document.querySelector(
+              ".forecast_" + i * 100 + "_hours_icon_Class"
+            ).style.backgroundImage = 'url("images/weather_icon/b_cloud.svg")';
+          }
           break;
         case "partly-cloudy-day":
           document.querySelector(
             ".forecast_" + i + "_hours_icon_Class"
           ).style.backgroundImage =
             'url("images/weather_icon/b_cloud_sun.svg")';
+          if (i < 5) {
+            document.querySelector(
+              ".forecast_" + i * 100 + "_hours_icon_Class"
+            ).style.backgroundImage =
+              'url("images/weather_icon/b_cloud_sun.svg")';
+          }
           break;
         case "partly-cloudy-night":
           document.querySelector(
             ".forecast_" + i + "_hours_icon_Class"
           ).style.backgroundImage =
             'url("images/weather_icon/b_cloud_moon.svg")';
+          if (i < 5) {
+            document.querySelector(
+              ".forecast_" + i * 100 + "_hours_icon_Class"
+            ).style.backgroundImage =
+              'url("images/weather_icon/b_cloud_moon.svg")';
+          }
           break;
         default:
           document.querySelector(
             ".forecast_" + i + "_hours_icon_Class"
           ).style.backgroundImage = 'url("images/weather_icon/b_sun.svg")';
+          if (i < 5) {
+            document.querySelector(
+              ".forecast_" + i * 100 + "_hours_icon_Class"
+            ).style.backgroundImage = 'url("images/weather_icon/b_sun.svg")';
+          }
           break;
       }
     }
@@ -1735,50 +1917,50 @@ document.addEventListener("DOMContentLoaded", function () {
       .unix(daily_date_1)
       .format("dddd");
 
-    document.querySelector("#forecast_10_wind_arrow").style.transform =
-      "rotate(" + daily_windBearing_1 + "deg)";
+    // document.querySelector("#forecast_10_wind_arrow").style.transform =
+    //   "rotate(" + daily_windBearing_1 + "deg)";
 
     document.querySelector("#forecast_20_day").textContent = moment
       .unix(daily_date_2)
       .format("dddd");
 
-    document.querySelector("#forecast_20_wind_arrow").style.transform =
-      "rotate(" + daily_windBearing_2 + "deg)";
+    // document.querySelector("#forecast_20_wind_arrow").style.transform =
+    //   "rotate(" + daily_windBearing_2 + "deg)";
 
     document.querySelector("#forecast_30_day").textContent = moment
       .unix(daily_date_3)
       .format("dddd");
 
-    document.querySelector("#forecast_30_wind_arrow").style.transform =
-      "rotate(" + daily_windBearing_3 + "deg)";
+    // document.querySelector("#forecast_30_wind_arrow").style.transform =
+    //   "rotate(" + daily_windBearing_3 + "deg)";
 
     document.querySelector("#forecast_40_day").textContent = moment
       .unix(daily_date_4)
       .format("dddd");
 
-    document.querySelector("#forecast_40_wind_arrow").style.transform =
-      "rotate(" + daily_windBearing_4 + "deg)";
+    // document.querySelector("#forecast_40_wind_arrow").style.transform =
+    //   "rotate(" + daily_windBearing_4 + "deg)";
 
     document.querySelector("#forecast_50_day").textContent = moment
       .unix(daily_date_5)
       .format("dddd");
 
-    document.querySelector("#forecast_50_wind_arrow").style.transform =
-      "rotate(" + daily_windBearing_5 + "deg)";
+    // document.querySelector("#forecast_50_wind_arrow").style.transform =
+    //   "rotate(" + daily_windBearing_5 + "deg)";
 
     document.querySelector("#forecast_60_day").textContent = moment
       .unix(daily_date_6)
       .format("dddd");
 
-    document.querySelector("#forecast_60_wind_arrow").style.transform =
-      "rotate(" + daily_windBearing_6 + "deg)";
+    // document.querySelector("#forecast_60_wind_arrow").style.transform =
+    //   "rotate(" + daily_windBearing_6 + "deg)";
 
     document.querySelector("#forecast_70_day").textContent = moment
       .unix(daily_date_7)
       .format("dddd");
 
-    document.querySelector("#forecast_70_wind_arrow").style.transform =
-      "rotate(" + daily_windBearing_7 + "deg)";
+    // document.querySelector("#forecast_70_wind_arrow").style.transform =
+    //   "rotate(" + daily_windBearing_7 + "deg)";
 
     document.querySelector(
       ".forecast_10_homePage_icon_Class"
@@ -2235,6 +2417,22 @@ document.addEventListener("DOMContentLoaded", function () {
       currentIcon.classList.add("sub_menu_current_icon_Class");
 
       var currentSubMenu = document.getElementById("sub_menu_next7");
+      currentSubMenu.classList.add("sub_menu_current_Class");
+    });
+
+  document
+    .querySelector(".forecast_hour_link_Class")
+    .addEventListener("click", (e) => {
+      closeAllPopup();
+      removeClassIcons();
+      modal48hours.style.display = "block";
+      var element = document.getElementById("next48_icon_popup_page");
+      element.classList.add("sub_menu_icon_active_Class");
+
+      var currentIcon = document.getElementById("next48_icon_popup_page");
+      currentIcon.classList.add("sub_menu_current_icon_Class");
+
+      var currentSubMenu = document.getElementById("sub_menu_next48");
       currentSubMenu.classList.add("sub_menu_current_Class");
     });
 
@@ -2990,6 +3188,29 @@ document.addEventListener("DOMContentLoaded", function () {
       ).style.pointerEvents = "none";
       document.getElementById("setting_defualt_button_120").checked = true;
       delayButtonIntervalUpdate();
+    });
+
+  document
+    .querySelector("#hourly_link_mainPage")
+    .addEventListener("click", (e) => {
+      document.getElementById("forecast_daily_mainScreen").style.display =
+        "none";
+      document.getElementById("forecast_hourly_mainScreen").style.display =
+        "block";
+      chrome.storage.local.set({
+        hourlySelected: 1,
+      });
+    });
+  document
+    .querySelector("#daily_link_mainPage")
+    .addEventListener("click", (e) => {
+      document.getElementById("forecast_daily_mainScreen").style.display =
+        "block";
+      document.getElementById("forecast_hourly_mainScreen").style.display =
+        "none";
+      chrome.storage.local.set({
+        hourlySelected: 0,
+      });
     });
 
   /// Search & Map-------------------------------------------------------------------------------
