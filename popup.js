@@ -47,6 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
     '.badge_size_switch_setting input[type="checkbox"]'
   );
   var loadingIconBadgeDelay = 1;
+  var selectedLocationMax = 8;
 
   mapStyle = "mapbox://styles/mapbox/light-v10?optimize=true";
   weathermapStyle = "mapbox://styles/mapbox/light-v10?optimize=true";
@@ -351,6 +352,238 @@ document.addEventListener("DOMContentLoaded", function () {
     toggleSwitchAutoDark.addEventListener("change", switchAutoDark, false);
   });
 
+  chrome.storage.local.get(
+    ["selectedLocation", "selectedLocationNumber"],
+    function (data) {
+      if (
+        typeof data.selectedLocationNumber !== "undefined" &&
+        data.selectedLocationNumber > 1
+      ) {
+        document.getElementById("nextLocationGroup_home").style.visibility =
+          "visible";
+      }
+    }
+  );
+
+  function updateMenuItem() {
+    chrome.storage.local.get(
+      [
+        "citys",
+        "country",
+        "latlong",
+        "timeZoneBadge",
+        "selectedLocation",
+        "selectedLocationNumber",
+      ],
+      function (data) {
+        if (
+          typeof data.selectedLocationNumber !== "undefined" &&
+          data.selectedLocationNumber > 1
+        ) {
+          document.getElementById("nextLocationGroup_home").style.visibility =
+            "visible";
+        }
+
+        if (
+          data.selectedLocationNumber !== 1 &&
+          typeof data.selectedLocationNumber !== "undefined"
+        ) {
+          const locationListAll = document.querySelector("#locationNameGroup");
+
+          function removeAllChildNodes(parent) {
+            while (parent.firstChild) {
+              parent.removeChild(parent.firstChild);
+            }
+          }
+          removeAllChildNodes(locationListAll);
+
+          selectedLocation = data.selectedLocation;
+          for (i = 0; i < data.selectedLocationNumber; i++) {
+            const locationListAll = document.querySelector(
+              "#locationNameGroup"
+            );
+
+            locationListAll.appendChild(
+              createMenuItem(
+                data.selectedLocation[i].split(",")[0], //city
+                data.selectedLocation[i].split(",")[1], //country
+                data.selectedLocation[i].split(",")[2], //lat
+                data.selectedLocation[i].split(",")[3], //long
+                data.selectedLocation[i].split(",")[4], //timezone
+                "locationListID", //id
+                data.selectedLocation[i].split(",")[6] //class
+              )
+            );
+          }
+        } else {
+          selectedLocation = [];
+          const locationListAll = document.querySelector("#locationNameGroup");
+          locationListClass = "locationDefaultTitle";
+
+          function removeAllChildNodes(parent) {
+            while (parent.firstChild) {
+              parent.removeChild(parent.firstChild);
+            }
+          }
+          removeAllChildNodes(locationListAll);
+
+          locationListAll.appendChild(
+            createMenuItem(
+              data.citys,
+              data.country,
+              data.latlong.split(",")[0],
+              data.latlong.split(",")[1],
+              data.timeZoneBadge,
+              "locationListID",
+              locationListClass
+            )
+          );
+
+          selectedLocation.push(
+            data.citys +
+              "," +
+              data.country +
+              "," +
+              data.latlong.split(",")[0] +
+              "," +
+              data.latlong.split(",")[1] +
+              "," +
+              data.timeZoneBadge +
+              "," +
+              "locationListID" +
+              "," +
+              locationListClass
+          );
+
+          chrome.storage.local.set({
+            clickedIndex: 0,
+            selectedLocation: selectedLocation,
+            selectedLocationNumber: selectedLocation.length,
+          });
+        }
+      }
+    );
+  }
+
+  function createMenuItem(
+    citys,
+    country,
+    lat,
+    long,
+    timeZoneBadge,
+    cityID,
+    cityClass
+  ) {
+    let wrapCity = document.createElement("div");
+    wrapCity.setAttribute("class", "wrapCity_Class");
+
+    let imageCity = document.createElement("img");
+    imageCity.setAttribute("id", "locationNameIcon");
+
+    let spanCity = document.createElement("span");
+
+    if (cityClass == "locationDefaultTitle") {
+      imageCity.src = "images/location-default.svg";
+      imageCity.setAttribute("class", "locationNameIconDefault_Class");
+      spanCity.setAttribute("class", "locationDefaultTitle");
+    } else {
+      imageCity.src = "images/location-remove.svg";
+      imageCity.setAttribute("class", "locationNameIcon_Class");
+      spanCity.setAttribute("class", "locationListTitle");
+    }
+
+    spanCity.id = cityID;
+    spanCity.textContent = citys + ", " + country.toUpperCase();
+
+    wrapCity.appendChild(imageCity);
+    wrapCity.appendChild(spanCity);
+
+    document.querySelector(".locationNameGroup_Class").appendChild(wrapCity);
+
+    imageCity.onclick = function () {
+      deletedIndex = [...wrapCity.parentElement.children].indexOf(wrapCity);
+
+      let defaultStyle = selectedLocation[deletedIndex].split(",");
+
+      chrome.storage.local.get("clickedIndex", function (data) {
+        if (
+          deletedIndex !== data.clickedIndex &&
+          defaultStyle[6] !== "locationDefaultTitle"
+        ) {
+          wrapCity.parentElement.removeChild(wrapCity);
+          selectedLocation.splice(deletedIndex, 1);
+          chrome.storage.local.set({
+            selectedLocation: selectedLocation,
+            selectedLocationNumber: selectedLocation.length,
+          });
+        }
+      });
+    };
+
+    spanCity.onclick = function () {
+      chrome.storage.local.set({
+        citys: citys,
+      });
+      chrome.storage.local.set({
+        country: country,
+      });
+      chrome.storage.local.set({
+        latlong: lat + "," + long,
+      });
+      chrome.storage.local.set({
+        timeZoneBadge: timeZoneBadge,
+      });
+
+      popup();
+      closeAddLocation();
+
+      clickedIndex = [...wrapCity.parentElement.children].indexOf(wrapCity);
+
+      for (var i = 0; i < selectedLocation.length; i++) {
+        let splitResult = selectedLocation[i].split(",");
+        splitResult[6] = "locationListTitle";
+        selectedLocation[i] = splitResult.reduce((a, b) => `${a},${b}`);
+      }
+
+      let splitResult = selectedLocation[clickedIndex].split(",");
+      splitResult[6] = "locationDefaultTitle";
+      selectedLocation[clickedIndex] = splitResult.reduce(
+        (a, b) => `${a},${b}`
+      );
+
+      selectedLocation.unshift(selectedLocation.splice(clickedIndex, 1)[0]);
+
+      chrome.storage.local.set({
+        clickedIndex: 0,
+        selectedLocation: selectedLocation,
+        selectedLocationNumber: selectedLocation.length,
+      });
+    };
+    return wrapCity;
+  }
+
+  function closeAddLocation() {
+    setTimeout(function () {
+      document.getElementById("maximumNumber").style.visibility = "hidden";
+      searchTitle.style.visibility = "hidden";
+      searchInner.style.visibility = "hidden";
+      document.getElementById("addLocation_popup").style.visibility = "hidden";
+      closeAllPopup();
+      removeClassIcons();
+      var element = document.getElementById("home_icon_popup_page");
+      element.classList.add("sub_menu_icon_active_Class");
+
+      var currentIcon = document.getElementById("home_icon_popup_page");
+      currentIcon.classList.add("sub_menu_current_icon_Class");
+
+      var currentSubMenu = document.getElementById("sub_menu_home");
+      currentSubMenu.classList.add("sub_menu_current_Class");
+
+      var searchBoxGecoder = document.getElementById("geocoder");
+      searchBoxGecoder.removeChild(searchBoxGecoder.firstChild);
+    }, 0);
+  }
+
   function popup() {
     document.querySelector("#aqi").style.opacity = ".2";
     document.querySelector(".aqi-arrow").style.visibility = "hidden";
@@ -495,6 +728,12 @@ document.addEventListener("DOMContentLoaded", function () {
         ctemp();
       }
     });
+  }
+
+  function delayButtonNext() {
+    setTimeout(function () {
+      document.getElementById("nextLocation_home").style.pointerEvents = "auto";
+    }, 1000);
   }
 
   function delayButtonDarkmode() {
@@ -2527,6 +2766,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document.querySelector("#map_popup_page").addEventListener("click", (e) => {
     closeAllPopup();
     removeClassIcons();
+
     setTimeout(function () {
       document.getElementById("map_popup_close").style.visibility = "visible";
     }, 300);
@@ -2557,17 +2797,20 @@ document.addEventListener("DOMContentLoaded", function () {
         chrome.storage.local.set({
           firstTimeSaerchPopupInSession: 1,
         });
+        updateMenuItem();
         closeAllPopup();
         removeClassIcons();
         modalSearch.style.display = "block";
         setTimeout(function () {
-          document.getElementById("search_popup_close").style.visibility =
-            "visible";
           searchTitle.style.visibility = "visible";
           searchInner.style.visibility = "visible";
-          searchMap(mapStyle);
         }, 300);
 
+        searchMap(mapStyle);
+        setTimeout(function () {
+          document.getElementById("addLocation_popup").style.visibility =
+            "visible";
+        }, 300);
         var currentIcon = document.getElementById("home_icon_popup_page");
         currentIcon.classList.add("sub_menu_current_icon_Class");
 
@@ -2581,18 +2824,21 @@ document.addEventListener("DOMContentLoaded", function () {
       chrome.storage.local.set({
         firstTimeSaerchPopupInSession: 1,
       });
+
       document.getElementById("openSidebarMenu").checked = false;
       closeAllPopup();
+      updateMenuItem();
       removeClassIcons();
       modalSearch.style.display = "block";
       setTimeout(function () {
-        document.getElementById("search_popup_close").style.visibility =
-          "visible";
         searchTitle.style.visibility = "visible";
         searchInner.style.visibility = "visible";
       }, 300);
       searchMap(mapStyle);
-
+      setTimeout(function () {
+        document.getElementById("addLocation_popup").style.visibility =
+          "visible";
+      }, 300);
       var currentIcon = document.getElementById("home_icon_popup_page");
       currentIcon.classList.add("sub_menu_current_icon_Class");
 
@@ -2601,22 +2847,49 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  document.querySelector("#sidebar_search").addEventListener("click", (e) => {
+  document.querySelector("#kid_icon_id").addEventListener("click", (e) => {
     chrome.storage.local.set({
       firstTimeSaerchPopupInSession: 1,
     });
+
     document.getElementById("openSidebarMenu").checked = false;
     closeAllPopup();
+    updateMenuItem();
     removeClassIcons();
     modalSearch.style.display = "block";
     setTimeout(function () {
-      document.getElementById("search_popup_close").style.visibility =
-        "visible";
       searchTitle.style.visibility = "visible";
       searchInner.style.visibility = "visible";
     }, 300);
     searchMap(mapStyle);
+    setTimeout(function () {
+      document.getElementById("addLocation_popup").style.visibility = "visible";
+    }, 300);
+    var currentIcon = document.getElementById("home_icon_popup_page");
+    currentIcon.classList.add("sub_menu_current_icon_Class");
 
+    var currentSubMenu = document.getElementById("sub_menu_home");
+    currentSubMenu.classList.add("sub_menu_current_Class");
+  });
+
+  document.querySelector("#sidebar_search").addEventListener("click", (e) => {
+    chrome.storage.local.set({
+      firstTimeSaerchPopupInSession: 1,
+    });
+
+    document.getElementById("openSidebarMenu").checked = false;
+    closeAllPopup();
+    updateMenuItem();
+    removeClassIcons();
+    modalSearch.style.display = "block";
+    setTimeout(function () {
+      searchTitle.style.visibility = "visible";
+      searchInner.style.visibility = "visible";
+    }, 300);
+    searchMap(mapStyle);
+    setTimeout(function () {
+      document.getElementById("addLocation_popup").style.visibility = "visible";
+    }, 300);
     var currentIcon = document.getElementById("home_icon_popup_page");
     currentIcon.classList.add("sub_menu_current_icon_Class");
 
@@ -2885,24 +3158,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document
     .querySelector("#search_popup_close")
     .addEventListener("click", (e) => {
-      setTimeout(function () {
-        document.getElementById("search_popup_close").style.transition =
-          "all 0s";
-        document.getElementById("search_popup_close").style.visibility =
-          "hidden";
-        searchTitle.style.visibility = "hidden";
-        searchInner.style.visibility = "hidden";
-        closeAllPopup();
-        removeClassIcons();
-        var element = document.getElementById("home_icon_popup_page");
-        element.classList.add("sub_menu_icon_active_Class");
-
-        var currentIcon = document.getElementById("home_icon_popup_page");
-        currentIcon.classList.add("sub_menu_current_icon_Class");
-
-        var currentSubMenu = document.getElementById("sub_menu_home");
-        currentSubMenu.classList.add("sub_menu_current_Class");
-      }, 500);
+      closeAddLocation();
     });
 
   document.querySelector("#map_popup_close").addEventListener("click", (e) => {
@@ -2924,23 +3180,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     var currentSubMenu = document.getElementById("sub_menu_home");
     currentSubMenu.classList.add("sub_menu_current_Class");
-  });
-
-  document.querySelector("#image_background").addEventListener("click", (e) => {
-    setTimeout(function () {
-      document.getElementById("openSidebarMenu").checked = false;
-      closeAllPopup();
-      removeClassIcons();
-
-      var element = document.getElementById("home_icon_popup_page");
-      element.classList.add("sub_menu_icon_active_Class");
-
-      var currentIcon = document.getElementById("home_icon_popup_page");
-      currentIcon.classList.add("sub_menu_current_icon_Class");
-
-      var currentSubMenu = document.getElementById("sub_menu_home");
-      currentSubMenu.classList.add("sub_menu_current_Class");
-    }, 500);
   });
 
   document.querySelector("#F_sign").addEventListener("click", (e) => {
@@ -3201,6 +3440,7 @@ document.addEventListener("DOMContentLoaded", function () {
         hourlySelected: 1,
       });
     });
+
   document
     .querySelector("#daily_link_mainPage")
     .addEventListener("click", (e) => {
@@ -3213,15 +3453,88 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
 
+  document
+    .querySelector("#nextLocation_home")
+    .addEventListener("click", (e) => {
+      document.getElementById("nextLocation_home").style.pointerEvents = "none";
+      delayButtonNext();
+
+      chrome.storage.local.get(
+        ["clickedIndex", "selectedLocationNumber", "selectedLocation"],
+        function (data) {
+          selectedLocationNumber = data.selectedLocationNumber;
+          clickedIndex = data.clickedIndex;
+          selectedLocation = data.selectedLocation;
+
+          var nextLocation = clickedIndex + 1;
+          chrome.storage.local.set({
+            clickedIndex: nextLocation,
+          });
+          if (nextLocation > selectedLocationNumber - 1) {
+            var nextLocation = 0;
+            chrome.storage.local.set({
+              clickedIndex: nextLocation,
+            });
+          }
+
+          citys = selectedLocation[nextLocation].split(",")[0]; //city
+          country = selectedLocation[nextLocation].split(",")[1]; //country
+          lat = selectedLocation[nextLocation].split(",")[2]; //lat
+          long = selectedLocation[nextLocation].split(",")[3]; //long
+          timeZoneBadge = selectedLocation[nextLocation].split(",")[4]; //timezone
+
+          for (var i = 0; i < selectedLocationNumber; i++) {
+            let splitResult = selectedLocation[i].split(",");
+            splitResult[6] = "locationListTitle";
+            selectedLocation[i] = splitResult.reduce((a, b) => `${a},${b}`);
+          }
+
+          let splitResult = selectedLocation[nextLocation].split(",");
+          splitResult[6] = "locationDefaultTitle";
+          selectedLocation[nextLocation] = splitResult.reduce(
+            (a, b) => `${a},${b}`
+          );
+
+          chrome.storage.local.set({
+            selectedLocation: selectedLocation,
+          });
+
+          chrome.storage.local.set({
+            citys: citys,
+          });
+          chrome.storage.local.set({
+            country: country,
+          });
+          chrome.storage.local.set({
+            latlong: lat + "," + long,
+          });
+          chrome.storage.local.set({
+            timeZoneBadge: timeZoneBadge,
+          });
+
+          popup();
+        }
+      );
+    });
+
   /// Search & Map-------------------------------------------------------------------------------
   function searchMap(mapStyle) {
     var element = document.getElementById("mapSearch");
     element.classList.add("blurIn");
+
+    chrome.storage.local.get(["selectedLocationNumber"], function (data) {
+      if (data.selectedLocationNumber == selectedLocationMax) {
+        document.getElementById("geocoder").style.display = "none";
+      }
+    });
     setTimeout(function () {
+      chrome.storage.local.get(["selectedLocationNumber"], function (data) {
+        if (data.selectedLocationNumber == selectedLocationMax) {
+          document.getElementById("maximumNumber").style.visibility = "visible";
+        }
+      });
       element.classList.add("blurOut");
     }, 400);
-
-    // console.log("latlong " + latlong);
 
     mapboxgl.accessToken =
       "pk.eyJ1IjoidXZ3IiwiYSI6ImNrOTY4dzRiMTAyMnUzZXBheHppanV2MXIifQ.jFdHCvYe2u-LUw-_9mcw_g";
@@ -3346,7 +3659,7 @@ document.addEventListener("DOMContentLoaded", function () {
       // flyTo: false,
       // essential: false, //If true , then the animation is considered essential
       types: "place, locality, postcode",
-      limit: 8,
+      limit: 7,
       placeholder: "Enter the city or ZIP code",
       proximity: {
         longitude: center.lng,
@@ -3354,7 +3667,7 @@ document.addEventListener("DOMContentLoaded", function () {
       },
       marker: {
         color: "#ff662b",
-        draggable: true,
+        draggable: false, //true
       },
 
       render: function (item) {
@@ -3369,25 +3682,26 @@ document.addEventListener("DOMContentLoaded", function () {
       },
     });
 
-    map.addControl(geocoder);
+    // map.addControl(geocoder);
+    document.getElementById("geocoder").appendChild(geocoder.onAdd(map));
 
     var marker = new mapboxgl.Marker({
       color: "#ff662b",
-      draggable: true,
+      draggable: false, //true
     })
       .setLngLat(latandlongMapBox)
       .addTo(map);
 
-    var popupSeachPin = new mapboxgl.Popup({
-      closeButton: false,
-      closeOnMove: true,
-      offset: 38,
-    })
-      .setLngLat(latandlongMapBox)
-      .setHTML(
-        "Drag and drop the pin to your location<br>to get accurate weather data."
-      )
-      .addTo(map);
+    // var popupSeachPin = new mapboxgl.Popup({
+    //   closeButton: false,
+    //   closeOnMove: true,
+    //   offset: 38,
+    // })
+    //   .setLngLat(latandlongMapBox)
+    //   .setHTML(
+    //     "Drag and drop the pin to your location<br>to get accurate weather data."
+    //   )
+    //   .addTo(map);
 
     map.addControl(new mapboxgl.NavigationControl());
 
@@ -3458,12 +3772,67 @@ document.addEventListener("DOMContentLoaded", function () {
           timeZoneBadge: timeZoneBadge,
         });
 
-        popup();
+        for (var i = 0; i < selectedLocation.length; i++) {
+          let splitResult = selectedLocation[i].split(",");
+          splitResult[6] = "locationListTitle";
+          selectedLocation[i] = splitResult.reduce((a, b) => `${a},${b}`);
+        }
 
-        map.on("moveend", function (e) {
-          // searchMap(mapStyle);
-          marker.on("dragend", onDragEnd);
+        locationListClass = "locationDefaultTitle";
+        selectedLocation.unshift(
+          citys +
+            "," +
+            country +
+            "," +
+            latlong +
+            "," +
+            timeZoneBadge +
+            "," +
+            "locationListID" +
+            "," +
+            locationListClass
+        );
+
+        chrome.storage.local.set({
+          clickedIndex: 0,
+          selectedLocation: selectedLocation,
+          selectedLocationNumber: selectedLocation.length,
         });
+
+        chrome.storage.local.get(["selectedLocationNumber"], function (data) {
+          if (data.selectedLocationNumber == selectedLocationMax) {
+            document.getElementById("geocoder").style.display = "none";
+            document.getElementById("maximumNumber").style.visibility =
+              "visible";
+          }
+
+          if (data.selectedLocationNumber > 1) {
+            document.getElementById("nextLocationGroup_home").style.visibility =
+              "visible";
+          }
+        });
+
+        const locationListAll = document.querySelector("#locationNameGroup");
+
+        locationListAll.appendChild(
+          createMenuItem(
+            citys,
+            country,
+            lat,
+            lng,
+            timeZoneBadge,
+            "locationListID",
+            locationListClass
+          )
+        );
+
+        popup();
+        closeAddLocation();
+
+        // map.on("moveend", function (e) {
+        //   // searchMap(mapStyle);
+        //   marker.on("dragend", onDragEnd);
+        // });
       });
 
       geocoder.on("error", function (ev) {});

@@ -455,7 +455,7 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   left: 0px;
   top: 0px;
   filter: brightness(20%);
-  background-color: #2a2a2a;
+  background-color: #2a2a2a; /*#2a2a2a */
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -1859,7 +1859,7 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 
 .setting_home_Class {
   position: absolute;
-  left: 270px;
+  left: 473px;
   top: 20px;
 }
 
@@ -1885,11 +1885,20 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 .top_menu_icon_Class {
   width: 17px;
   height: 17px;
-  filter: opacity(50%);
   filter: var(--icon-color);
 }
 
 .top_menu_icon_Class:hover {
+  filter: invert(48%) sepia(52%) saturate(2544%) hue-rotate(342deg)
+    brightness(101%) contrast(101%);
+}
+
+.top_loop_icon_Class {
+  width: 25px;
+  height: 25px;
+}
+
+.top_loop_icon_Class:hover {
   filter: invert(48%) sepia(52%) saturate(2544%) hue-rotate(342deg)
     brightness(101%) contrast(101%);
 }
@@ -1983,32 +1992,34 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   z-index: 27500 !important;
 }
 
-.geocoderClass {
+/* .geocoderClass {
   position: absolute;
   width: 250px;
   left: 250px;
   margin-left: 50px;
   top: 10px;
   z-index: 17500 !important;
-}
+} */
 
 .mapboxgl-ctrl-geocoder {
   font-size: 14px !important;
   line-height: 18px;
   position: relative;
   background-color: #fff;
-  width: 100%;
-  min-width: 250px !important;
+  width: 215px !important;
+  min-width: 215px !important;
+  height: 35px !important;
   z-index: 27500 !important;
   border-radius: 2px !important;
   transition: width 0.25s, min-width 0.25s;
+  opacity: 1;
 }
 
 .mapboxgl-ctrl-geocoder--input {
-  height: 40px !important;
+  height: 35px !important;
   padding-left: 12px !important;
   line-height: 14px !important;
-  z-index: 27500 !important;
+  z-index: 275000 !important;
 }
 
 .mapboxgl-ctrl-geocoder--icon-search {
@@ -2023,7 +2034,7 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 .mapboxgl-ctrl-geocoder--icon-close {
   width: 20px;
   height: 20px;
-  margin-top: 3px !important;
+  margin-top: 1px !important;
   margin-right: 3px;
 }
 
@@ -2039,7 +2050,7 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 
 .mapboxgl-ctrl-geocoder,
 .mapboxgl-ctrl-geocoder .suggestions {
-  box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.1); */
   z-index: 27500 !important;
 }
 
@@ -2059,22 +2070,6 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   height: 526px;
   z-index: 15000;
   filter: brightness(105%) !important;
-  visibility: hidden;
-}
-
-.modal_search_close {
-  position: absolute;
-  top: 15.5px;
-  left: 265.5px;
-  width: 30px;
-  height: 30px;
-  background-image: url("/images/left-arrow.svg");
-  filter: var(--icon-color);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  cursor: pointer;
-  z-index: 15500;
   visibility: hidden;
 }
 
@@ -3625,12 +3620,13 @@ textarea:hover {
   color: #a9a9a9;
 }
 
-/* .image_background_Class:hover .folding-angle {
+.image_background_Class:hover .folding-angle {
   border-width: 28px;
 }
 
 .current_icon_update:hover .folding-angle {
   border-width: 28px;
+  background-color: #ff0000;
 }
 
 .folding-angle {
@@ -3641,14 +3637,14 @@ textarea:hover {
   border-style: solid;
   box-shadow: 1px 1px 10px 5px rgba(0, 0, 0, 0.85);
   width: 0;
-  border-width: 0px;
+  border-width: 10px;
   border-color: rgba(255, 255, 255, 1) rgba(255, 255, 255, 0.6)
     rgba(255, 255, 255, 0.6) rgba(255, 255, 255, 1);
   border-radius: 0 0 3px 0;
   transition: border-width 0.4s;
 }
 
-.kid_icon_hover {
+.kid_icon_hover_Class {
   position: absolute;
   top: 0;
   left: 0;
@@ -3657,13 +3653,13 @@ textarea:hover {
   z-index: 100;
 }
 
-.kid_icon_hover a {
+.kid_icon_hover_Class a {
   visibility: hidden;
   opacity: 0;
   transition: visibility 0s linear 100ms, opacity 100ms;
 }
 
-.kid_icon_hover:hover a {
+.kid_icon_hover_Class:hover a {
   visibility: visible;
   opacity: 1;
   transition: visibility 0s linear 100ms, opacity 100ms;
@@ -3677,9 +3673,8 @@ textarea:hover {
   height: 15px;
   width: 15px;
   padding: 10px;
-  filter: invert(53%) sepia(78%) saturate(4480%) hue-rotate(343deg)
-    brightness(103%) contrast(98%);
-} */
+  filter: brightness(100%);
+}
 
 .forecast_daily_mainScreen_sub {
   width: 45px;
@@ -3687,4 +3682,223 @@ textarea:hover {
 
 .forecast_hourly_mainScreen_sub {
   width: 48px;
+}
+
+.addLocation_popup_Class {
+  z-index: 100000;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 526px;
+  width: 250px;
+  background-color: #121212;
+  visibility: hidden;
+}
+
+.addLocation_close {
+  position: absolute;
+  top: 17.5px;
+  right: 15.5px;
+  display: block;
+  width: 17px;
+  height: 17px;
+  background-image: url("/images/close.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  cursor: pointer;
+  z-index: 10500;
+  filter: brightness(200%);
+}
+
+.addLocation_add_title {
+  position: absolute;
+  top: 45px;
+  left: 15.5px;
+  display: block;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 250;
+  text-align: left;
+  text-transform: uppercase;
+}
+.addLocation_add_subtitle {
+  position: absolute;
+  top: 95px;
+  left: 15.5px;
+  display: block;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 250;
+  text-align: left;
+  text-transform: none;
+  white-space: normal;
+  line-height: 18px;
+  padding-right: 15.5px;
+}
+
+.addLocation_title {
+  position: absolute;
+  top: 150px;
+  left: 15.5px;
+  display: block;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 200;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.addLocation_subtitle {
+  position: absolute;
+  top: 178px;
+  left: 15.5px;
+  display: block;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 200;
+  text-align: left;
+  text-transform: none;
+  white-space: normal;
+  line-height: 18px;
+  padding-right: 15.5px;
+  opacity: 0.7;
+}
+
+.locationList_Class {
+  position: absolute;
+  top: 225px;
+  left: 15.5px;
+  display: block;
+  color: #ffffff;
+  font-size: 13.5px;
+  font-weight: 200;
+  text-align: left;
+  text-transform: none;
+  white-space: normal;
+  line-height: 25px;
+  padding-right: 15.5px;
+}
+
+.locationNameGroup_Class {
+  display: flex;
+  flex-direction: column;
+  vertical-align: center;
+  justify-content: left;
+  margin-top: 0;
+}
+
+.locationNameIcon_Class {
+  position: relative;
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+  padding-right: 10px;
+  margin-top: -3px;
+}
+
+.locationNameIconDefault_Class {
+  position: relative;
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  padding-right: 10px;
+  margin-top: -3px;
+}
+
+.locationNameIcon_Class:hover {
+  color: #f06522;
+  opacity: 0.7;
+}
+
+.locationNameTitle_Class {
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 200;
+  text-align: left;
+  text-transform: none;
+  white-space: normal;
+}
+
+.geocoder {
+  position: absolute;
+  z-index: 1;
+  width: 200px;
+  left: 15.5px;
+  margin-left: 0;
+  top: 75px;
+}
+
+.addLocation_bottomText {
+  position: absolute;
+  top: 477px;
+  left: 15.5px;
+  display: block;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 200;
+  text-align: left;
+  text-transform: none;
+  white-space: normal;
+  line-height: 20px;
+  padding-right: 15.5px;
+  opacity: 0.7;
+}
+
+.locationListTitle {
+  color: #ffffff;
+  font-size: 13.5px;
+  font-weight: 200;
+  text-align: left;
+  text-transform: none;
+  white-space: normal;
+  line-height: 30px;
+  cursor: pointer;
+}
+
+.locationListTitle:hover {
+  color: #f06522;
+  opacity: 0.7;
+}
+
+.maximumNumber_Class {
+  color: #f06522;
+  font-size: 13.5px;
+  font-weight: 200;
+  position: absolute;
+  text-transform: none;
+  white-space: normal;
+  line-height: 20px;
+  z-index: 1000000;
+  width: 200px;
+  left: 15.5px;
+  margin-left: 0;
+  top: 75px;
+  visibility: hidden;
+}
+
+.nextLocationGroup_home_Class {
+  position: absolute;
+  left: 210px;
+  top: 14px;
+  visibility: hidden;
+}
+
+.locationDefaultTitle {
+  color: #ff662b;
+  font-size: 13.5px;
+  font-weight: 200;
+  text-align: left;
+  text-transform: none;
+  white-space: normal;
+  line-height: 30px;
+}
+
+.wrapCity_Class {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+  align-content: center;
 }
