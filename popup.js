@@ -493,7 +493,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     spanCity.id = cityID;
-    spanCity.textContent = citys + ", " + country.toUpperCase();
+    if (citys.length > 18) {
+      spanCity.textContent =
+        citys.slice(0, 15) + "..." + ", " + country.toUpperCase();
+    } else {
+      spanCity.textContent = citys + ", " + country.toUpperCase();
+    }
 
     wrapCity.appendChild(imageCity);
     wrapCity.appendChild(spanCity);
@@ -505,19 +510,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
       let defaultStyle = selectedLocation[deletedIndex].split(",");
 
-      chrome.storage.local.get("clickedIndex", function (data) {
-        if (
-          deletedIndex !== data.clickedIndex &&
-          defaultStyle[6] !== "locationDefaultTitle"
-        ) {
-          wrapCity.parentElement.removeChild(wrapCity);
-          selectedLocation.splice(deletedIndex, 1);
-          chrome.storage.local.set({
-            selectedLocation: selectedLocation,
-            selectedLocationNumber: selectedLocation.length,
-          });
+      chrome.storage.local.get(
+        ["clickedIndex", "selectedLocationNumber"],
+        function (data) {
+          if (
+            deletedIndex !== data.clickedIndex &&
+            defaultStyle[6] !== "locationDefaultTitle"
+          ) {
+            wrapCity.parentElement.removeChild(wrapCity);
+            selectedLocation.splice(deletedIndex, 1);
+            chrome.storage.local.set({
+              selectedLocation: selectedLocation,
+              selectedLocationNumber: selectedLocation.length,
+            });
+
+            if (data.selectedLocationNumber == selectedLocationMax) {
+              document.getElementById("geocoder").style.display = "block";
+              document.getElementById("maximumNumber").style.display = "none";
+            }
+          }
         }
-      });
+      );
     };
 
     spanCity.onclick = function () {
@@ -563,25 +576,32 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function closeAddLocation() {
-    setTimeout(function () {
-      document.getElementById("maximumNumber").style.visibility = "hidden";
-      searchTitle.style.visibility = "hidden";
-      searchInner.style.visibility = "hidden";
-      document.getElementById("addLocation_popup").style.visibility = "hidden";
-      closeAllPopup();
-      removeClassIcons();
-      var element = document.getElementById("home_icon_popup_page");
-      element.classList.add("sub_menu_icon_active_Class");
+    document.getElementById("maximumNumber").style.display = "none";
+    document.getElementById("addLocation_popup").style.visibility = "hidden";
+    searchTitle.style.visibility = "hidden";
+    searchInner.style.visibility = "hidden";
+    closeAllPopup();
+    removeClassIcons();
+    var element = document.getElementById("home_icon_popup_page");
+    element.classList.add("sub_menu_icon_active_Class");
 
-      var currentIcon = document.getElementById("home_icon_popup_page");
-      currentIcon.classList.add("sub_menu_current_icon_Class");
+    var currentIcon = document.getElementById("home_icon_popup_page");
+    currentIcon.classList.add("sub_menu_current_icon_Class");
 
-      var currentSubMenu = document.getElementById("sub_menu_home");
-      currentSubMenu.classList.add("sub_menu_current_Class");
+    var currentSubMenu = document.getElementById("sub_menu_home");
+    currentSubMenu.classList.add("sub_menu_current_Class");
 
-      var searchBoxGecoder = document.getElementById("geocoder");
-      searchBoxGecoder.removeChild(searchBoxGecoder.firstChild);
-    }, 0);
+    var searchBoxGecoder = document.getElementById("geocoder");
+    searchBoxGecoder.removeChild(searchBoxGecoder.firstChild);
+    chrome.storage.local.get(["selectedLocationNumber"], function (data) {
+      if (data.selectedLocationNumber > 1) {
+        document.getElementById("nextLocationGroup_home").style.visibility =
+          "visible";
+      } else {
+        document.getElementById("nextLocationGroup_home").style.visibility =
+          "hidden";
+      }
+    });
   }
 
   function popup() {
@@ -3483,6 +3503,14 @@ document.addEventListener("DOMContentLoaded", function () {
           long = selectedLocation[nextLocation].split(",")[3]; //long
           timeZoneBadge = selectedLocation[nextLocation].split(",")[4]; //timezone
 
+          if (document.getElementById("aqi_popup").style.display == "block") {
+            document.querySelector(".aqi-loading-dots").style.display = "block";
+            document.querySelector("#aqi").style.opacity = ".2";
+            modalAqi.style.display = "block";
+            latlong = lat + "," + long;
+            aqi(latlong);
+          }
+
           for (var i = 0; i < selectedLocationNumber; i++) {
             let splitResult = selectedLocation[i].split(",");
             splitResult[6] = "locationListTitle";
@@ -3525,16 +3553,20 @@ document.addEventListener("DOMContentLoaded", function () {
     chrome.storage.local.get(["selectedLocationNumber"], function (data) {
       if (data.selectedLocationNumber == selectedLocationMax) {
         document.getElementById("geocoder").style.display = "none";
+      } else {
+        document.getElementById("geocoder").style.display = "block";
       }
     });
     setTimeout(function () {
       chrome.storage.local.get(["selectedLocationNumber"], function (data) {
         if (data.selectedLocationNumber == selectedLocationMax) {
-          document.getElementById("maximumNumber").style.visibility = "visible";
+          document.getElementById("maximumNumber").style.display = "block";
+        } else {
+          document.getElementById("maximumNumber").style.display = "none";
         }
       });
       element.classList.add("blurOut");
-    }, 400);
+    }, 450);
 
     mapboxgl.accessToken =
       "pk.eyJ1IjoidXZ3IiwiYSI6ImNrOTY4dzRiMTAyMnUzZXBheHppanV2MXIifQ.jFdHCvYe2u-LUw-_9mcw_g";
@@ -3802,13 +3834,15 @@ document.addEventListener("DOMContentLoaded", function () {
         chrome.storage.local.get(["selectedLocationNumber"], function (data) {
           if (data.selectedLocationNumber == selectedLocationMax) {
             document.getElementById("geocoder").style.display = "none";
-            document.getElementById("maximumNumber").style.visibility =
-              "visible";
+            document.getElementById("maximumNumber").style.display = "none";
           }
 
           if (data.selectedLocationNumber > 1) {
             document.getElementById("nextLocationGroup_home").style.visibility =
               "visible";
+          } else {
+            document.getElementById("nextLocationGroup_home").style.visibility =
+              "hidden";
           }
         });
 

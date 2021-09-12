@@ -3875,7 +3875,7 @@ textarea:hover {
   left: 15.5px;
   margin-left: 0;
   top: 75px;
-  visibility: hidden;
+  display: none;
 }
 
 .nextLocationGroup_home_Class {
