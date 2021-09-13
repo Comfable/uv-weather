@@ -548,6 +548,9 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       popup();
+      const preloaderLocation = document.querySelector(".preloaderLocation");
+      preloaderLocation.style.display = "block";
+      preloaderLocation.style.opacity = 0.9;
       closeAddLocation();
 
       clickedIndex = [...wrapCity.parentElement.children].indexOf(wrapCity);
@@ -677,6 +680,22 @@ document.addEventListener("DOMContentLoaded", function () {
                         clearInterval(fadeEffect);
                       }
                     }, 50);
+
+                    if (preloader.style.opacity) {
+                      const preloaderLocation = document.querySelector(
+                        ".preloaderLocation"
+                      );
+                      preloaderLocation.style.display = "block";
+                      preloaderLocation.style.opacity = 0.9;
+                      const fadeEffectLocation = setInterval(() => {
+                        if (preloaderLocation.style.opacity > 0) {
+                          return (preloaderLocation.style.opacity -= 0.1);
+                        } else {
+                          preloaderLocation.style.display = "none";
+                          clearInterval(fadeEffectLocation);
+                        }
+                      }, 50);
+                    }
 
                     chrome.storage.local.get("firstTimePopup", function (data) {
                       if (typeof data.firstTimePopup == "undefined") {
@@ -3540,6 +3559,12 @@ document.addEventListener("DOMContentLoaded", function () {
             timeZoneBadge: timeZoneBadge,
           });
 
+          const preloaderLocation = document.querySelector(
+            ".preloaderLocation"
+          );
+          preloaderLocation.style.display = "block";
+          preloaderLocation.style.opacity = 0.9;
+
           popup();
         }
       );
@@ -3861,6 +3886,9 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
         popup();
+        const preloaderLocation = document.querySelector(".preloaderLocation");
+        preloaderLocation.style.display = "block";
+        preloaderLocation.style.opacity = 0.9;
         closeAddLocation();
 
         // map.on("moveend", function (e) {

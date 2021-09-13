@@ -3902,3 +3902,25 @@ textarea:hover {
   align-items: center;
   align-content: center;
 }
+
+.preloaderLocation {
+  align-items: center;
+  color: #ffffff;
+  font-size: 12px;
+  background: #2c3e50;
+  display: none;
+  flex-direction: row;
+  height: 526px;
+  width: 250px;
+  justify-content: center;
+  align-content: center;
+  position: relative;
+  transition-property: opacity;
+  transition-timing-function: linear;
+  z-index: 99999;
+  opacity: 0.9;
+}
+
+.preloaderLocation.loaded {
+  pointer-events: none;
+}
