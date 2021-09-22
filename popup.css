@@ -1155,7 +1155,7 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 
 .forecast_hour_modal_Class {
   position: relative;
-  width: 78px;
+  width: 73px;
   display: inline-block;
   text-align: left;
   font-weight: 250;
@@ -2946,7 +2946,7 @@ ul li {
 
 .forecast_rain_group_modal_Class {
   position: relative;
-  width: 30px;
+  width: 35px;
   display: inline-block;
   text-align: left;
   font-weight: 250;

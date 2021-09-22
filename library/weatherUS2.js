@@ -53,6 +53,8 @@ function weatherUS2(latlong, citys, resolve) {
         throw Error();
       }
 
+      // chrome.storage.local.get(["badgeSize"], function (data) {
+      //   if (data.badgeSize == 0) {
       fetchWithTimeout(
         `https://www.uvw.workers.dev/?https://forecast.weather.gov/MapClick.php?lat=${lat}&lon=${lng}&unit=0&lg=english&FcstType=json`,
         optionsUS,
@@ -143,6 +145,8 @@ function weatherUS2(latlong, citys, resolve) {
             weatherNO(latlong, citys, timeZoneBadge, resolve);
           });
         });
+      //   }
+      // });
     })
     .catch(function (err) {
       // console.log("us err XML " + err);

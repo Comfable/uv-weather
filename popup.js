@@ -769,6 +769,12 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  function delayKidSearch() {
+    setTimeout(function () {
+      document.getElementById("kid_icon_hover").style.pointerEvents = "auto";
+    }, 1000);
+  }
+
   function delayButtonNext() {
     setTimeout(function () {
       document.getElementById("nextLocation_home").style.pointerEvents = "auto";
@@ -2302,10 +2308,10 @@ document.addEventListener("DOMContentLoaded", function () {
   function trackSunExposure() {
     if (uv1 == 0 || isNight) {
       document.querySelector("#link_qsun_text").textContent =
-        "UV Weather App for iOS & Android";
+        "Learn a New Language while you browse";
     } else {
       document.querySelector("#link_qsun_text").textContent =
-        "UV Weather App for iOS & Android";
+        "Learn a New Language while you browse";
     }
   }
 
@@ -2886,7 +2892,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  document.querySelector("#kid_icon_id").addEventListener("click", (e) => {
+  document.querySelector("#kid_icon_hover").addEventListener("click", (e) => {
+    document.getElementById("kid_icon_hover").style.pointerEvents = "none";
+    delayKidSearch();
     chrome.storage.local.set({
       firstTimeSaerchPopupInSession: 1,
     });
@@ -2896,14 +2904,14 @@ document.addEventListener("DOMContentLoaded", function () {
     updateMenuItem();
     removeClassIcons();
     modalSearch.style.display = "block";
-    setTimeout(function () {
-      searchTitle.style.visibility = "visible";
-      searchInner.style.visibility = "visible";
-    }, 300);
+    // setTimeout(function () {
+    searchTitle.style.visibility = "visible";
+    searchInner.style.visibility = "visible";
+    // }, 300);
     searchMap(mapStyle);
-    setTimeout(function () {
-      document.getElementById("addLocation_popup").style.visibility = "visible";
-    }, 300);
+    // setTimeout(function () {
+    document.getElementById("addLocation_popup").style.visibility = "visible";
+    // }, 300);
     var currentIcon = document.getElementById("home_icon_popup_page");
     currentIcon.classList.add("sub_menu_current_icon_Class");
 
@@ -3686,7 +3694,81 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById(
                   "setting_defualt_button_60"
                 ).checked = true;
+
+                for (var i = 0; i < selectedLocation.length; i++) {
+                  let splitResult = selectedLocation[i].split(",");
+                  splitResult[6] = "locationListTitle";
+                  selectedLocation[i] = splitResult.reduce(
+                    (a, b) => `${a},${b}`
+                  );
+                }
+
+                locationListClass = "locationDefaultTitle";
+                selectedLocation.unshift(
+                  citys +
+                    "," +
+                    country +
+                    "," +
+                    latlong +
+                    "," +
+                    timeZoneBadge +
+                    "," +
+                    "locationListID" +
+                    "," +
+                    locationListClass
+                );
+
+                chrome.storage.local.set({
+                  clickedIndex: 0,
+                  selectedLocation: selectedLocation,
+                  selectedLocationNumber: selectedLocation.length,
+                });
+
+                chrome.storage.local.get(
+                  ["selectedLocationNumber"],
+                  function (data) {
+                    if (data.selectedLocationNumber == selectedLocationMax) {
+                      document.getElementById("geocoder").style.display =
+                        "none";
+                      document.getElementById("maximumNumber").style.display =
+                        "none";
+                    }
+
+                    if (data.selectedLocationNumber > 1) {
+                      document.getElementById(
+                        "nextLocationGroup_home"
+                      ).style.visibility = "visible";
+                    } else {
+                      document.getElementById(
+                        "nextLocationGroup_home"
+                      ).style.visibility = "hidden";
+                    }
+                  }
+                );
+
+                const locationListAll = document.querySelector(
+                  "#locationNameGroup"
+                );
+
+                locationListAll.appendChild(
+                  createMenuItem(
+                    citys,
+                    country,
+                    lat,
+                    lng,
+                    timeZoneBadge,
+                    "locationListID",
+                    locationListClass
+                  )
+                );
+
                 popup();
+                const preloaderLocation = document.querySelector(
+                  ".preloaderLocation"
+                );
+                preloaderLocation.style.display = "block";
+                preloaderLocation.style.opacity = 0.9;
+                closeAddLocation();
               }
             }
           }
@@ -3724,7 +3806,7 @@ document.addEventListener("DOMContentLoaded", function () {
       },
       marker: {
         color: "#ff662b",
-        draggable: false, //true
+        draggable: true, //true
       },
 
       render: function (item) {
@@ -3744,21 +3826,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
     var marker = new mapboxgl.Marker({
       color: "#ff662b",
-      draggable: false, //true
+      draggable: true, //true
     })
       .setLngLat(latandlongMapBox)
       .addTo(map);
 
-    // var popupSeachPin = new mapboxgl.Popup({
-    //   closeButton: false,
-    //   closeOnMove: true,
-    //   offset: 38,
-    // })
-    //   .setLngLat(latandlongMapBox)
-    //   .setHTML(
-    //     "Drag and drop the pin to your location<br>to get accurate weather data."
-    //   )
-    //   .addTo(map);
+    var popupSeachPin = new mapboxgl.Popup({
+      closeButton: false,
+      closeOnMove: true,
+      offset: 38,
+    })
+      .setLngLat(latandlongMapBox)
+      .setHTML(
+        "Drag and drop the pin to your location<br>to get accurate weather data."
+      )
+      .addTo(map);
 
     map.addControl(new mapboxgl.NavigationControl());
 
