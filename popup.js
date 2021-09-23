@@ -3626,7 +3626,11 @@ document.addEventListener("DOMContentLoaded", function () {
       latlong = latClick + "," + lngClick;
       latandlongbyClick = [lngClick, latClick];
 
-      popupSeachPin.remove();
+      chrome.storage.local.get(["selectedLocationNumber"], function (data) {
+        if (data.selectedLocationNumber < selectedLocationMax) {
+          popupSeachPin.remove();
+        }
+      });
 
       token =
         "pk.eyJ1IjoidXZ3IiwiYSI6ImNrOTY4dzRiMTAyMnUzZXBheHppanV2MXIifQ.jFdHCvYe2u-LUw-_9mcw_g";
@@ -3780,7 +3784,7 @@ document.addEventListener("DOMContentLoaded", function () {
       animate: true,
       style: mapStyle,
       center: latandlongMapBox,
-      minZoom: 2,
+      minZoom: 1,
       maxZoom: 12,
       zoom: 10,
       interactive: true,
@@ -3804,9 +3808,10 @@ document.addEventListener("DOMContentLoaded", function () {
         longitude: center.lng,
         latitude: center.lat,
       },
+
       marker: {
         color: "#ff662b",
-        draggable: true, //true
+        draggable: false, //true
       },
 
       render: function (item) {
@@ -3824,23 +3829,34 @@ document.addEventListener("DOMContentLoaded", function () {
     // map.addControl(geocoder);
     document.getElementById("geocoder").appendChild(geocoder.onAdd(map));
 
-    var marker = new mapboxgl.Marker({
-      color: "#ff662b",
-      draggable: true, //true
-    })
-      .setLngLat(latandlongMapBox)
-      .addTo(map);
+    chrome.storage.local.get(["selectedLocationNumber"], function (data) {
+      if (data.selectedLocationNumber < selectedLocationMax) {
+        marker = new mapboxgl.Marker({
+          color: "#ff662b",
+          draggable: true,
+        })
+          .setLngLat(latandlongMapBox)
+          .addTo(map);
 
-    var popupSeachPin = new mapboxgl.Popup({
-      closeButton: false,
-      closeOnMove: true,
-      offset: 38,
-    })
-      .setLngLat(latandlongMapBox)
-      .setHTML(
-        "Drag and drop the pin to your location<br>to get accurate weather data."
-      )
-      .addTo(map);
+        popupSeachPin = new mapboxgl.Popup({
+          closeButton: false,
+          closeOnMove: true,
+          offset: 38,
+        })
+          .setLngLat(latandlongMapBox)
+          .setHTML(
+            "Drag and drop the pin to your location<br>to get accurate weather data."
+          )
+          .addTo(map);
+      } else {
+        marker = new mapboxgl.Marker({
+          color: "#ff662b",
+          draggable: false,
+        })
+          .setLngLat(latandlongMapBox)
+          .addTo(map);
+      }
+    });
 
     map.addControl(new mapboxgl.NavigationControl());
 
