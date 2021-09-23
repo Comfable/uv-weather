@@ -3830,7 +3830,10 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("geocoder").appendChild(geocoder.onAdd(map));
 
     chrome.storage.local.get(["selectedLocationNumber"], function (data) {
-      if (data.selectedLocationNumber < selectedLocationMax) {
+      if (
+        data.selectedLocationNumber < selectedLocationMax ||
+        typeof data.selectedLocationNumber == "undefined"
+      ) {
         marker = new mapboxgl.Marker({
           color: "#ff662b",
           draggable: true,
